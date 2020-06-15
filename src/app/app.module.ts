@@ -9,6 +9,7 @@ import { UsersComponent } from './users/users.component';
 import { DetailsComponent } from './details/details.component';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { AgmCoreModule } from '@agm/core'
 import { ProductsComponent } from './products/products.component';
 import { UploadFileService } from './_services/upload-file.service';
 import { UploadFileComponent } from './_components/upload-file/upload-file.component';
@@ -30,7 +31,10 @@ HttpClientModule
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    AgmCoreModule.forRoot({
+      apiKey: ''
+    })
   ],
   providers: [UploadFileService ],
   bootstrap: [AppComponent]
