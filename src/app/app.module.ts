@@ -33,7 +33,7 @@ HttpClientModule
     HttpClientModule,
     BrowserAnimationsModule,
     AgmCoreModule.forRoot({
-      apiKey: ''
+      apiKey: 'YOUR-API-KEY-HERE'
     })
   ],
   providers: [UploadFileService ],
