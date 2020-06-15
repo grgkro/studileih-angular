@@ -1,0 +1,19 @@
+version: 0.1
+phases:
+  install:
+    commands:
+      - npm install -g @angular/cli
+  build:
+    commands:
+      - npm install
+      - ng build --prod --configuration=${BUILD_ENV}
+  post_build:
+    commands:
+      - aws s3 cp dist s3://${S3_BUCKET} --recursive
+      - aws configure set preview.cloudfront true
+      - echo ${S3_BUCKET}
+artifacts:
+  files:
+    - '**/*'
+base-directory: 'dist*'
+discard-paths: yes
