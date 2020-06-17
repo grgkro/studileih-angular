@@ -1,7 +1,7 @@
 # Studileih
 
 ## Google Maps zum Laufen bekommen:
-Get the file gmaps_environment.ts and put it in the folder environments.
+Get the file gmaps_environment.ts and put it in the folder environments
 
 ## version
 

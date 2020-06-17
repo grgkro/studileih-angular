@@ -45,5 +45,5 @@ testem.log
 .DS_Store
 Thumbs.db
 
-# gmaps_environment.ts contains the GMaps API KEY, which mustn't end up on GITHUB 
+# gmaps_environment.ts contains the GMaps API KEY, which mustn't end up on GITHUB. 
 gmaps_environment.ts
