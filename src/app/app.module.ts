@@ -14,6 +14,8 @@ import { ProductsComponent } from './products/products.component';
 import { UploadFileService } from './_services/upload-file.service';
 import { UploadFileComponent } from './_components/upload-file/upload-file.component';
 import { GoogleMapsComponent } from './_components/google-maps/google-maps.component';
+import { gmaps_environment } from '../environments/gmaps_environment';
+
 
 HttpClientModule
 @NgModule({
@@ -33,7 +35,8 @@ HttpClientModule
     HttpClientModule,
     BrowserAnimationsModule,
     AgmCoreModule.forRoot({
-      apiKey: 'YOUR-API-KEY-HERE'
+      apiKey: gmaps_environment.GMAPS_API_KEY // The API KEY belongs to Georg and can't be exposed on GITHUB (Hackers are crazy) 
+      //-> Therefore it's loaded as a variable from the file gmaps_environment.ts in folder environments. gmaps_environment.ts is in .gitignore, so it won't get pushed to git.
     })
   ],
   providers: [UploadFileService ],

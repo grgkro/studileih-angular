@@ -1,5 +1,10 @@
 # Studileih
 
+## Google Maps zum Laufen bekommen:
+Get the file gmaps_environment.ts and put it in the folder environments.
+
+## version
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.1.
 
 ## Development server
