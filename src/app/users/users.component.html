@@ -1,7 +1,7 @@
 <h1>Users</h1>
 
-<ul [@listStagger]="users$">
-    <li *ngFor="let user of users$">
+<ul [@listStagger]="users$">  <!--listStagger ist eine spezielle Animation, bei der die Liste nicht auf einmal dargestellt wird, sondern zeitlich verzögert auftaucht-->
+    <li *ngFor="let user of users$"> <!-- for Schleife über alle geladenen User -->
         <a routerLink="/details/{{ user.id }}">{{user.name}}</a>
 
         <ul>

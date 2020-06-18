@@ -1,3 +1,5 @@
+// the model is needed to receive the dto from the backend
+
 import { Product } from './product';
 
 export interface User {
