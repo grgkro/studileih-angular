@@ -7,8 +7,8 @@ import { trigger,style,transition,animate,keyframes,query,stagger } from '@angul
   selector: 'app-users',
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss'],
-  animations: [
-    trigger('listStagger', [
+  animations: [  // ermöglicht das Erstellen von kleinen Animationen
+    trigger('listStagger', [  // listStagger ist eine spezielle Animation, bei der die Liste nicht auf einmal dargestellt wird, sondern zeitlich verzögert auftaucht
       transition('* <=> *', [
         query(
           ':enter',
