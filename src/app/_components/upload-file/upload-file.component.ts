@@ -31,18 +31,16 @@ export class UploadFileComponent implements OnInit {
   }
 
   uploadUserPic() {
-    // we only allow one file to be uploaded
+    // we only allow one file to be uploaded -> item(0) - without the 0 in item(0), you could upload many files at once (which would break the backend code).
     this.currentFileUpload = this.selectedFiles.item(0);
     // This uploadfunction is only responsible for handling uploads of user profile images,
     // therefore we only send the userId with the photo -> after saving the photo to the local storage 
     // we also need to update the user in the DB and assign the new photoId to him.  
     // The parameters for groupId and postId are set to 0 in pushFileToStorage().
-    // location.reload(); reloads the page so that the profile picture is shown immediately <- removed, because now that we don't pass the userId in the url anymore, this would refresh the page and lose the userId
     // TODO: create also group and post image upload methods
     this.uploadFileService.pushFileToStorage(this.currentFileUpload, this.userId, 0, 0, "userPic").subscribe(event => {
-      this.router.navigate(['']);
+      this.router.navigate(['']); // after uploading a photo we go back to the main page immediatly -> could be changed, maybe better show a success message and stay on the current page...
     });
-    this.selectedFiles = undefined;
   }
 
 

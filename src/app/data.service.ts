@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class DataService {
 
-  serverPath = 'http://studileih.eu-central-1.elasticbeanstalk.com';
+  serverPath = 'http://localhost:8090';
 
   constructor(private http: HttpClient) { }
 
