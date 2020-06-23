@@ -5,6 +5,7 @@ import { UsersComponent } from './users/users.component';
 import { ProductsComponent } from './products/products.component';
 import { UploadFileComponent } from './_components/upload-file/upload-file.component';
 import { GoogleMapsComponent } from './_components/google-maps/google-maps.component';
+import { AddUserComponent } from './add-user/add-user.component';
 
 const routes: Routes = [
   {
@@ -22,6 +23,10 @@ const routes: Routes = [
   {
     path: 'upload-userPic',
     component: UploadFileComponent
+  },
+  {
+    path: 'add-user',
+    component: AddUserComponent
   },
   {
     path: 'google-maps',
