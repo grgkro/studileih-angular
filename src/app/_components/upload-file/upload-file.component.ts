@@ -23,6 +23,7 @@ export class UploadFileComponent implements OnInit {
     this.updateService.currentUserId.subscribe(userId => this.userId = userId)
   }
 
+  // this function checks if the selected file is an image filetype (.jpg, .png, ...)
   selectFile(event) {
     const file = event.target.files[0];
     if (file.type.match('image.*')) {
@@ -38,8 +39,8 @@ export class UploadFileComponent implements OnInit {
     // This uploadfunction is only responsible for handling uploads of user profile images,
     // therefore we only send the userId with the photo -> after saving the photo to the local storage 
     // we also need to update the user in the DB and assign the new photoId to him.  
-    // The parameters for groupId and postId are set to 0 in pushFileToStorage().
-    // TODO: create also group and post image upload methods
+    // The parameters for productId and postId are set to 0 in pushFileToStorage().
+    // TODO: create also product and post image upload methods
     this.uploadFileService.pushFileToStorage(this.currentFileUpload, this.userId, 0, 0, "userPic").subscribe((response: any) => {
       if (response == "Image was saved.")
         console.log(response);
@@ -48,7 +49,8 @@ export class UploadFileComponent implements OnInit {
       (err: HttpErrorResponse) => {
         if (err.error instanceof Error) {
           //A client-side or network error occurred.
-          console.log('An error occurred:', err.error.message);
+          alert("Image could't be uploaded. Client-side error.")
+          console.log('An client-side or network error occurred:', err.error.message);
         } else {
           //Backend returns unsuccessful response codes such as 404, 500 etc.
           alert("Image could't be uploaded. Image with same name already exists or uploaded file is not an actual image or image type not supported or file size > 1048 KBs.")
