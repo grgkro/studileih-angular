@@ -26,9 +26,12 @@ export class UploadFileService {
     return this.http.post(this.serverPath + '/postImage', formdata, {responseType: 'text' });  //ohne {responseType: 'text' } hat es auch bei Http Status: 200 einen error gegeben (Vom Backend kommt eine Response mit Text statt JSON im Body)  
     }
   
- 
-  getFiles(): Observable<any> {
-    return this.http.get(this.serverPath + '/getallfiles');
+  // loads profilePic of user -> it's a post request, because we have to post the userId to Spring.
+  getUserPic(): Observable<any> {
+    console.log("Hier");
+    const formdata: FormData = new FormData();
+    formdata.append('userId', '2');
+    return this.http.post(this.serverPath + '/loadProfilePicByUserId', 2, { responseType: 'blob' } );
   }
 
   /* // loads profilePic of user -> Spring returns a fake userDto with the base64code as groupName
