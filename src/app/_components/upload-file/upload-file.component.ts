@@ -49,6 +49,7 @@ export class UploadFileComponent implements OnInit {
       (error: any) => {
         console.log(error)
         alert("Image could't be uploaded. Image with same name already exists or image type not supported.")
+        
       }
     );
   }
