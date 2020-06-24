@@ -1,9 +1,20 @@
-<h1>Users</h1>
+<div class="row justify-content-md-center">
+    <div class="col">
+        <h1>Users</h1>
+    </div>
+    <div class="col-md-auto">
+      </div>
+    <div class="col col-lg-2">
+        <a routerLink="add-user" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}">
+            <i class="material-icons">add</i>
+          </a> 
+    </div>
+</div>
+
 
 <ul [@listStagger]="users$">  <!--listStagger ist eine spezielle Animation, bei der die Liste nicht auf einmal dargestellt wird, sondern zeitlich verzögert auftaucht-->
     <li *ngFor="let user of users$"> <!-- for Schleife über alle geladenen User -->
         <a routerLink="/details/{{ user.id }}">{{user.name}}</a>
-
         <ul>
             <li>{{ user.email }}</li>
             <li><a href="http://{{ user.website }}"></a>{{ user.website }}</li>
