@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UploadFileService } from 'src/app/_services/upload-file.service';
-import { DataService } from 'src/app/data.service';
 import { UpdateService } from 'src/app/_services/update.service';
-import { HttpHeaders, HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
+
 
 @Component({
   selector: 'app-upload-file',
@@ -16,7 +16,7 @@ export class UploadFileComponent implements OnInit {
   userId: number;
 
 
-  constructor(private router: Router, private uploadFileService: UploadFileService, private dataService: DataService, private updateService: UpdateService) { }
+  constructor(private router: Router, private uploadFileService: UploadFileService, private updateService: UpdateService) { }
 
   ngOnInit(): void {
     // always get the latest userId -> if the userId changes, this will get updated:
@@ -57,7 +57,6 @@ export class UploadFileComponent implements OnInit {
           console.log('Backend returned status code: ', err.status);
           console.log('Response body:', err.error);
         }
-
       }
     );
   }
