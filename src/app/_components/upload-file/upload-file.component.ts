@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { UploadFileService } from 'src/app/_services/upload-file.service';
 import { DataService } from 'src/app/data.service';
 import { UpdateService } from 'src/app/_services/update.service';
-import { HttpHeaders } from '@angular/common/http';
+import { HttpHeaders, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-upload-file',
@@ -41,15 +41,21 @@ export class UploadFileComponent implements OnInit {
     // The parameters for groupId and postId are set to 0 in pushFileToStorage().
     // TODO: create also group and post image upload methods
     this.uploadFileService.pushFileToStorage(this.currentFileUpload, this.userId, 0, 0, "userPic").subscribe((response: any) => {
-      if (response == "Image was saved.") {
+      if (response == "Image was saved.")
         console.log(response);
-        this.router.navigate(['']);  // after uploading a photo we go back to the main page immediatly -> could be changed, maybe better show a success message and stay on the current page...
-      }
+      this.router.navigate(['']);  // after uploading a photo we go back to the main page immediatly -> could be changed, maybe better show a success message and stay on the current page...
     },
-      (error: any) => {
-        console.log(error)
-        alert("Image could't be uploaded. Image with same name already exists or image type not supported.")
-        
+      (err: HttpErrorResponse) => {
+        if (err.error instanceof Error) {
+          //A client-side or network error occurred.
+          console.log('An error occurred:', err.error.message);
+        } else {
+          //Backend returns unsuccessful response codes such as 404, 500 etc.
+          alert("Image could't be uploaded. Image with same name already exists or uploaded file is not an actual image or image type not supported or file size > 1048 KBs.")
+          console.log('Backend returned status code: ', err.status);
+          console.log('Response body:', err.error);
+        }
+
       }
     );
   }
