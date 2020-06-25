@@ -3,9 +3,9 @@ import { ActivatedRoute } from "@angular/router";
 
 import { switchMap } from 'rxjs/operators';
 
-import { DataService } from '../data.service';
+import { DataService } from '../../data.service';
 import { UploadFileService } from 'src/app/_services/upload-file.service';
-import { UpdateService } from '../_services/update.service';
+import { UpdateService } from '../../_services/update.service';
 import { Observable } from 'rxjs';
 
 // import { saveAs } from 'file-saver';  
