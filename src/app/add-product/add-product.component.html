@@ -1,0 +1,125 @@
+
+<div class="col user-container">
+    <div class="jumbotron">
+        <h1 class="display-4">Add Product</h1>
+       
+        <hr class="my-2">
+        <form [formGroup]="addForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+              <label for="userId">User Id:</label>
+              <input
+                type="number"
+                formControlName="userId"
+                placeholder="userId"
+                name="UserId"
+                class="form-control"
+                id="userId"
+              />
+            </div>
+        
+            <div class="form-group">
+              <label for="name">Product name:</label>
+              <input
+                type="text"
+                formControlName="name"
+                placeholder="name"
+                name="Name"
+                class="form-control"
+                id="name"
+              />
+            </div>
+        
+            <div class="form-group">
+              <label for="email">Title:</label>
+              <input
+                formControlName="title"
+                placeholder="Title"
+                name="title"
+                class="form-control"
+                id="title"
+              />
+            </div>
+            <div class="form-group">
+              <label for="price">Price:</label>
+              <input
+                type="number"
+                formControlName="price"
+                placeholder="Price"
+                name="price"
+                class="form-control"
+                id="price"
+              />
+            </div>
+        
+            <div class="form-group">
+              <label for="views">Views:</label>
+              <input
+                type="number"
+                formControlName="views"
+                placeholder="Views"
+                name="views"
+                class="form-control"
+                id="views"
+              />
+            </div>
+        
+            <div class="form-group">
+              <label for="available">Available:</label>
+              <input
+                type="boolean"
+                formControlName="available"
+                placeholder="Available"
+                name="available"
+                class="form-control"
+                id="available"
+              />
+            </div>
+        
+            <div class="form-group">
+              <label for="createdAt">Created at:</label>
+              <input
+                type="text"
+                formControlName="createdAt"
+                placeholder="Created at"
+                name="createdAt"
+                class="form-control"
+                id="createdAt"
+              />
+            </div>
+        
+            <div class="form-group">
+              <label for="updatedAt">Updated at:</label>
+              <input
+                type="text"
+                formControlName="updatedAt"
+                placeholder="Updated at"
+                name="updatedAt"
+                class="form-control"
+                id="updatedAt"
+              />
+            </div>
+        
+            <div class="form-group">
+              <label for="picPaths">Pic paths:</label>
+              <input
+                type="text"
+                formControlName="picPaths"
+                placeholder="Pic paths"
+                name="picPaths"
+                class="form-control"
+                id="picPaths"
+              />
+            </div>
+        
+            <div class="row">
+              <div class="col-4">
+                <button class="btn btn-success">Add</button>
+              </div>
+              <div class="col-4">
+                <button class="btn btn-danger">Cancel</button>
+              </div>
+            </div>
+          </form>
+    </div>
+
+</div>

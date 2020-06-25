@@ -1,23 +1,38 @@
-
-    <div class="row justify-content-md-center">
-        <div class="col">
-            <h1>Products</h1>
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1 class="display-3">Products</h1>
+            </div>
+            <div class="col-md-auto">
+                <button class="btn btn-dark">
+                    <a routerLink="/add-product">
+                        Add Product
+                      </a>
+                </button>
+            </div>
         </div>
-        <div class="col-md-auto">
-          </div>
-        <div class="col col-lg-2">
-            <a routerLink="" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}">
-                <i class="material-icons">add</i>
-              </a> 
+        
+        <hr class="my-2">
+        <div class="row justify-content-md-center">
+            <div class="col">
+               
+            </div>
+            <div class="col-md-auto">
+              </div>
+            <div class="col col-lg-2">
+            </div>
         </div>
-    </div>
+<div class="jumbotron">
+    <ul>
+        <li *ngFor="let product of products">
+            <ul>
+                <li>{{ product.name }}</li>
+            </ul>
+        </li>
+    </ul>
+</div>
+    
 
 
-<ul>
-    <li *ngFor="let product of products">
-        <ul>
-            <li>{{ product.name }}</li>
-        </ul>
-    </li>
-</ul>
 

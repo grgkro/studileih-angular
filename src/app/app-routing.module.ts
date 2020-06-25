@@ -6,6 +6,7 @@ import { ProductsComponent } from './products/products.component';
 import { UploadFileComponent } from './_components/upload-file/upload-file.component';
 import { GoogleMapsComponent } from './_components/google-maps/google-maps.component';
 import { AddUserComponent } from './add-user/add-user.component';
+import { AddProductComponent } from './add-product/add-product.component';
 
 const routes: Routes = [
   {
@@ -19,6 +20,10 @@ const routes: Routes = [
   {
     path: 'products',
     component: ProductsComponent
+  },
+  {
+    path: 'add-product',
+    component: AddProductComponent
   },
   {
     path: 'upload-userPic',
