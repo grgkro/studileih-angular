@@ -23,7 +23,7 @@ export class UploadFileService {
     formdata.append('dormPic', dormPic.toString());
     formdata.append('imgType', imgType);
 
-    return this.http.post(this.serverPath + '/postImage', formdata);
+    return this.http.post(this.serverPath + '/postImage', formdata, {responseType: 'text' });  //ohne {responseType: 'text' } hat es auch bei Http Status: 200 einen error gegeben (Vom Backend kommt eine Response mit Text statt JSON im Body)  
     }
   
  

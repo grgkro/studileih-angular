@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { UploadFileService } from 'src/app/_services/upload-file.service';
 import { DataService } from 'src/app/data.service';
 import { UpdateService } from 'src/app/_services/update.service';
+import { HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-upload-file',
@@ -13,6 +14,7 @@ export class UploadFileComponent implements OnInit {
   selectedFiles: FileList;
   currentFileUpload: File;
   userId: number;
+
 
   constructor(private router: Router, private uploadFileService: UploadFileService, private dataService: DataService, private updateService: UpdateService) { }
 
@@ -26,7 +28,7 @@ export class UploadFileComponent implements OnInit {
     if (file.type.match('image.*')) {
       this.selectedFiles = event.target.files;
     } else {
-      alert('invalid format!');
+      alert('Invalid format! Only images allowed');
     }
   }
 
@@ -38,12 +40,17 @@ export class UploadFileComponent implements OnInit {
     // we also need to update the user in the DB and assign the new photoId to him.  
     // The parameters for groupId and postId are set to 0 in pushFileToStorage().
     // TODO: create also group and post image upload methods
-    this.uploadFileService.pushFileToStorage(this.currentFileUpload, this.userId, 0, 0, "userPic").subscribe(event => {
-      this.router.navigate(['']); // after uploading a photo we go back to the main page immediatly -> could be changed, maybe better show a success message and stay on the current page...
-    });
+    this.uploadFileService.pushFileToStorage(this.currentFileUpload, this.userId, 0, 0, "userPic").subscribe((response: any) => {
+      if (response == "Image was saved.") {
+        console.log(response);
+        this.router.navigate(['']);  // after uploading a photo we go back to the main page immediatly -> could be changed, maybe better show a success message and stay on the current page...
+      }
+    },
+      (error: any) => {
+        console.log(error)
+        alert("Image could't be uploaded. Image with same name already exists or image type not supported.")
+        
+      }
+    );
   }
-
-
-  
-
 }
