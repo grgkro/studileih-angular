@@ -36,7 +36,7 @@ export class DetailsComponent implements OnInit {
 
   ngOnInit() {
    //load the user:
-    this.route.params.pipe(switchMap(params => this.data.getUser(params['id'])))
+    this.route.params.pipe(switchMap(params => this.data.getUser(params['id'])))  // pipe & switchMap take care, that if the userId changes for some reason, the following process gets stopped: https://www.concretepage.com/angular/angular-switchmap-example (not necessary yet, because the user profile image loads pretty fast, but if that takes longer and the user switches to another site, it's better to stop the process)
       .subscribe(
         data => { 
           this.user = data;
