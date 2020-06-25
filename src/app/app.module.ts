@@ -30,7 +30,8 @@ HttpClientModule
     ProductsComponent,
     UploadFileComponent,
     GoogleMapsComponent,
-    AddUserComponent
+    AddUserComponent,
+    
   ],
   imports: [
     BrowserModule,
