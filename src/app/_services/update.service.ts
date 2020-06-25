@@ -12,7 +12,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class UpdateService {
 
-  private userIdSource = new BehaviorSubject(2);
+  private userIdSource = new BehaviorSubject(0);  // userId = 0 is the default value. The id in the DB always starts at 1, so this will result in an error (you have to insert a value there, so we need any default value)
   currentUserId = this.userIdSource.asObservable();
 
   constructor() { }
