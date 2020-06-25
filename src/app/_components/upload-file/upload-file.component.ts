@@ -47,10 +47,10 @@ export class UploadFileComponent implements OnInit {
       // TODO: create also product and post image upload methods
       this.uploadFileService.pushFileToStorage(this.currentFileUpload, this.userId, 0, 0, "userPic").subscribe((response: any) => {
         if (response == "Image was saved.")
-          console.log(response);
-
-        this.router.navigate(['']);  // after uploading a photo we go back to the main page immediatly -> could be changed, maybe better show a success message and stay on the current page...
-        this.response = response;
+          this.response = response;
+          setTimeout(() => { this.router.navigate(['']); }, 700);  // after uploading a photo we go back to the main page immediatly -> could be changed, maybe better show a success message and stay on the current page...
+        
+           
       },
         (err: HttpErrorResponse) => {
           if (err.error instanceof Error) {
