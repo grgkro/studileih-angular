@@ -1,5 +1,4 @@
-<div *ngIf="user">
-  <!-- Falls der User schon geladen ist, dann führe das folgende aus-->
+<div *ngIf="user"> <!-- Falls der User schon geladen ist, dann führe das Folgende aus-->
   <h1>{{ user?.name }}</h1>
 
   <ul>
@@ -27,5 +26,13 @@
       </div>
     </li>
   </ul>
+
+  <!-- loads the user image. If no image is available, a default pic gets shown -->
+  <img [src]="imageToShow"
+     alt="User Profile Picture"
+     *ngIf="imageToShow; else noImageFound">
+<ng-template #noImageFound>
+     <img src="https://cdn-0.askleo.com/wp-content/uploads/2013/07/image_not_found.png" alt="Fallbackimage"> <!-- <= default picture --> 
+</ng-template>
 
 </div>
