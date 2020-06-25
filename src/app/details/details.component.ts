@@ -5,6 +5,7 @@ import { switchMap } from 'rxjs/operators';
 
 import { DataService } from '../data.service';
 import { UploadFileService } from 'src/app/_services/upload-file.service';
+import { UpdateService } from '../_services/update.service';
 import { Observable } from 'rxjs';
 
 // import { saveAs } from 'file-saver';  
@@ -15,6 +16,7 @@ import { Observable } from 'rxjs';
 //3) uncomment the import and the saveAs(val, "test.png") line in ngOnInit()
 
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
+
 
 @Component({
   selector: 'app-details',
@@ -30,14 +32,16 @@ export class DetailsComponent implements OnInit {
   displayImage: any; 
   imageToShow: any;
 
-  constructor(private route: ActivatedRoute, private data: DataService, private uploadFileService: UploadFileService, private sanitization: DomSanitizer) { }
+  constructor(private route: ActivatedRoute, private data: DataService, private _update: UpdateService, private uploadFileService: UploadFileService, private sanitization: DomSanitizer) { }
 
   ngOnInit() {
    //load the user:
     this.route.params.pipe(switchMap(params => this.data.getUser(params['id'])))
       .subscribe(
         data => { 
-          this.user = data;  
+          this.user = data;
+          // change userId in all components that are subscribed to dataService.currentUserId
+          this._update.changeUserId(data.id);  
           // load user image:
           this.uploadFileService.getUserPic(data.id).subscribe( val => { this.createImageFromBlob(val);
             // saveAs(val, "test.png")  // uncomment this to download the image in the browser 
