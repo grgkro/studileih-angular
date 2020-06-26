@@ -17,6 +17,7 @@ import { GoogleMapsComponent } from './_components/google-maps/google-maps.compo
 import { gmaps_environment } from '../environments/gmaps_environment';
 import { AddUserComponent } from './add-user/add-user.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ProductDetailsComponent } from './_components/product-details/product-details.component';
 
 
 HttpClientModule
@@ -31,6 +32,7 @@ HttpClientModule
     UploadFileComponent,
     GoogleMapsComponent,
     AddUserComponent,
+    ProductDetailsComponent,
     
   ],
   imports: [

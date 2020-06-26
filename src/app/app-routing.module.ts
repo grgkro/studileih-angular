@@ -6,11 +6,16 @@ import { ProductsComponent } from './products/products.component';
 import { UploadFileComponent } from './_components/upload-file/upload-file.component';
 import { GoogleMapsComponent } from './_components/google-maps/google-maps.component';
 import { AddUserComponent } from './add-user/add-user.component';
+import { ProductDetailsComponent } from './_components/product-details/product-details.component';
 
 const routes: Routes = [
   {
     path: '',
     component: ProductsComponent
+  },
+  {
+    path: 'product-deteils/:id',
+    component: ProductDetailsComponent
   },
   {
     path: 'users',
@@ -20,6 +25,7 @@ const routes: Routes = [
     path: 'details/:id',
     component: DetailsComponent
   },
+  
   {
     path: 'upload-userPic',
     component: UploadFileComponent
