@@ -44,12 +44,11 @@ export class UploadFileComponent implements OnInit {
     if (this.checkBeforeUpload()) {
       // we only allow one file to be uploaded -> item(0) - without the 0 in item(0), you could upload many files at once (which would break the backend code).
       this.currentFileUpload = this.selectedFiles.item(0);
-      // This uploadfunction is only responsible for handling uploads of user profile images,
+      // This uploadfunction is responsible for handling uploads of user profile images and product pics,
       // therefore we only send the userId with the photo -> after saving the photo to the local storage 
       // we also need to update the user in the DB and assign the new photoId to him.  
       // The parameters for productId and postId are set to 0 in pushFileToStorage().
-      // TODO: create also product and post image upload methods
-      this.uploadFileService.pushFileToStorage(this.currentFileUpload, this.user.id, this.product.id, 0, this.imgType).subscribe((response: any) => {
+      this.uploadFileService.pushFileToStorage(this.currentFileUpload, this.user.id, this.product.id, this.imgType).subscribe((response: any) => {
         if (response == "Dein Foto wurde gespeichert.")
           this.response = response;
           setTimeout(() => { this.router.navigate(['']); }, 700);  // after uploading a photo we go back to the main page immediatly -> could be changed, maybe better show a success message and stay on the current page...

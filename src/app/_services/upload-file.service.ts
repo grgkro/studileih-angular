@@ -18,14 +18,13 @@ export class UploadFileService {
    // With this uploadfunction you can send the userId, productId, dormId 
    // along with a type: "userPic" "productPic" or "dormPic" along with a file(=photo) 
    // -> Spring will save it locally and update the user in the DB with the filepath (group and postPics are not implemented yet) 
-  pushFileToStorage(file: File, userId: number, productPic: number, dormPic: number, imgType: string) {
+  pushFileToStorage(file: File, userId: number, productId: number, imgType: string) {
     const formdata: FormData = new FormData();
     formdata.append('file', file);
     formdata.append('userId', userId.toString());
-    formdata.append('productPic', productPic.toString());
-    formdata.append('dormPic', dormPic.toString());
+    formdata.append('productId', productId.toString());
     formdata.append('imgType', imgType);
-
+    
     return this.http.post(this.serverPath + '/postImage', formdata, {responseType: 'text' });  //ohne {responseType: 'text' } hat es auch bei Http Status: 200 einen error gegeben (Vom Backend kommt eine Response mit Text statt JSON im Body)  
     }
   
