@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { UploadFileService } from 'src/app/_services/upload-file.service';
 import { UpdateService } from 'src/app/_services/update.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { User } from 'src/app/_models/user';
 
 
 @Component({
@@ -15,12 +16,12 @@ export class UploadFileComponent implements OnInit {
   currentFileUpload: File;
   userId: number;
   response: string;
+  user: User;
 
   constructor(private router: Router, private uploadFileService: UploadFileService, private updateService: UpdateService) { }
 
   ngOnInit(): void {
-    // always get the latest userId -> if the userId changes, this will get updated:
-    this.updateService.currentUserId.subscribe(userId => this.userId = userId)
+    this.updateService.currentUser.subscribe(user => this.user = user)  // always get the latest logged in user -> if the user changes, this will get updated
   }
 
   // this function checks if the selected file is an image filetype (.jpg, .png, ...)
@@ -35,8 +36,6 @@ export class UploadFileComponent implements OnInit {
   }
 
   uploadUserPic() {
-    
-    
     if (this.checkBeforeUpload()) {
       // we only allow one file to be uploaded -> item(0) - without the 0 in item(0), you could upload many files at once (which would break the backend code).
       this.currentFileUpload = this.selectedFiles.item(0);
@@ -45,7 +44,7 @@ export class UploadFileComponent implements OnInit {
       // we also need to update the user in the DB and assign the new photoId to him.  
       // The parameters for productId and postId are set to 0 in pushFileToStorage().
       // TODO: create also product and post image upload methods
-      this.uploadFileService.pushFileToStorage(this.currentFileUpload, this.userId, 0, 0, "userPic").subscribe((response: any) => {
+      this.uploadFileService.pushFileToStorage(this.currentFileUpload, this.user.id, 0, 0, "userPic").subscribe((response: any) => {
         if (response == "Dein Foto wurde gespeichert.")
           this.response = response;
           setTimeout(() => { this.router.navigate(['']); }, 700);  // after uploading a photo we go back to the main page immediatly -> could be changed, maybe better show a success message and stay on the current page...
@@ -73,7 +72,7 @@ export class UploadFileComponent implements OnInit {
   }
 
   checkBeforeUpload(): boolean {
-    if (this.selectedFiles == undefined || this.userId == 0) {
+    if (this.selectedFiles == undefined || this.user.id == 0) {
       if (this.selectedFiles == undefined) {
         this.response = "Please select an image.";
         return false;
