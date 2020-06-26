@@ -1,20 +1,50 @@
-<div *ngIf="product"> <!-- Falls der User schon geladen ist, dann führe das Folgende aus-->
-    <h1>{{ product?.title }}</h1>
-  
-    <ul>
-      <li><strong>Name:</strong> {{ product?.name }}</li>
-      <li><strong>Price:</strong> {{ product?.price }}</li>
-      <li><strong>Id:</strong> {{ product?.id }}</li>
-      
-    </ul>
+<div *ngIf="product">
+     <!-- Falls der User schon geladen ist, dann führe das Folgende aus-->
+     <h1>{{ product?.title }}</h1>
+     <ul>
+          <li><strong>Name:</strong> {{ product?.name }}</li>
+          <li><strong>Price:</strong> {{ product?.price }}</li>
+          <li><strong>Id:</strong> {{ product?.id }}</li>
+          <li><strong>productUserId:</strong> {{ product?.userId }}</li>
+          <li><strong>user.id:</strong> {{ user?.id }}</li>
+          <li *ngIf="isCurrentUserOwner">
+               <!-- if the current user is the owner, he will see the delete and update button -->
+               <div class="row">
+                    <div class="col-4">
+                         <div class="row">
+                              <div class="col">
+                                   <button class="btn btn-danger">
+                                        <svg class="bi bi-trash" width="1.5em" height="1.5em" viewBox="0 0 16 16"
+                                             fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                             <path
+                                                  d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                             <path fill-rule="evenodd"
+                                                  d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                                        </svg>
+                                   </button>
+                              </div>
+                              <div class="col">
+                                   <button class="btn btn-primary">update</button>
+                              </div>
+                         </div>
+                    </div>
+                    <div class="col-8"></div>
+               </div>
+          </li>
+     </ul>
 
-    <!-- loads the user image. If no image is available, a default pic gets shown -->
-    <img [src]="imageToShow"
-       alt="Product Picture"
-       *ngIf="imageToShow; else noImageFound">
-  <ng-template #noImageFound>
-       <img src="https://cdn-0.askleo.com/wp-content/uploads/2013/07/image_not_found.png" alt="Fallbackimage"> <!-- <= default picture --> 
-  </ng-template>
-  
-  </div>
-  
+     <!-- loads the user image. If no image is available, a default pic gets shown -->
+     <img [src]="imageToShow" alt="Product Picture" *ngIf="imageToShow; else noImageFound">
+     <ng-template #noImageFound>
+          <img src="https://cdn-0.askleo.com/wp-content/uploads/2013/07/image_not_found.png" alt="Fallbackimage">
+          <!-- <= default picture -->
+     </ng-template>
+
+     <div *ngIf="isCurrentUserOwner">
+          <div *ngIf="showUploadComponent">
+               <app-upload-file></app-upload-file>
+          </div>
+          <button (click)="toggleUploadComponent()" class="btn btn-success">Upload new Photo</button>
+     </div>
+
+</div>
