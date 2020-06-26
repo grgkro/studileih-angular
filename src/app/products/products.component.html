@@ -15,8 +15,10 @@
 
 <ul>
     <li *ngFor="let product of products">
+        <a routerLink="/details/1">{{ product.name }}</a>  <!-- wenn der username angeklickt wird, wird man weitergeleitet per routerLink zur details component.-->
         <ul>
             <li>{{ product.name }}</li>
+            <li>{{ product.price }}</li>
         </ul>
     </li>
 </ul>
