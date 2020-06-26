@@ -1,4 +1,17 @@
-<h1>Products</h1>
+
+    <div class="row justify-content-md-center">
+        <div class="col">
+            <h1>Products</h1>
+        </div>
+        <div class="col-md-auto">
+          </div>
+        <div class="col col-lg-2">
+            <a routerLink="" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}">
+                <i class="material-icons">add</i>
+              </a> 
+        </div>
+    </div>
+
 
 <ul>
     <li *ngFor="let product of products">
