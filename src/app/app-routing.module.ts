@@ -10,15 +10,15 @@ import { AddUserComponent } from './add-user/add-user.component';
 const routes: Routes = [
   {
     path: '',
+    component: ProductsComponent
+  },
+  {
+    path: 'users',
     component: UsersComponent
   },
   {
     path: 'details/:id',
     component: DetailsComponent
-  },
-  {
-    path: 'products',
-    component: ProductsComponent
   },
   {
     path: 'upload-userPic',
