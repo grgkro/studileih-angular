@@ -19,7 +19,7 @@ export class DataService {
     return this.http.get(this.productsPath);
   }
 
-  getProduct(id: number) {
+  getProduct(id: number): Observable<Product> {
     return this.http.get(this.productsPath + '/' + id);
   }
 

@@ -1,1 +1,20 @@
-<p>product-details works!</p>
+<div *ngIf="product"> <!-- Falls der User schon geladen ist, dann führe das Folgende aus-->
+    <h1>{{ product?.title }}</h1>
+  
+    <ul>
+      <li><strong>Name:</strong> {{ product?.name }}</li>
+      <li><strong>Price:</strong> {{ product?.price }}</li>
+      <li><strong>Id:</strong> {{ product?.id }}</li>
+      
+    </ul>
+
+    <!-- loads the user image. If no image is available, a default pic gets shown -->
+    <img [src]="imageToShow"
+       alt="Product Picture"
+       *ngIf="imageToShow; else noImageFound">
+  <ng-template #noImageFound>
+       <img src="https://cdn-0.askleo.com/wp-content/uploads/2013/07/image_not_found.png" alt="Fallbackimage"> <!-- <= default picture --> 
+  </ng-template>
+  
+  </div>
+  
