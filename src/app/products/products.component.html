@@ -20,11 +20,12 @@
 <ul [@listStagger]="products">
     <!--listStagger ist eine spezielle Animation, bei der die Liste nicht auf einmal dargestellt wird, sondern zeitlich verzögert auftaucht-->
     <li *ngFor="let product of products">
-        <a routerLink="/product-deteils/1">{{ product.name }}</a>
+        <a routerLink="/product-details/{{ product.id }}">{{ product.title }}</a>
         <!-- wenn der username angeklickt wird, wird man weitergeleitet per routerLink zur details component.-->
         <ul>
-            <li>{{ product.name }}</li>
-            <li>{{ product.price }}</li>
+            <li>name: {{ product.name }}</li>
+            <li>price: {{ product.price }}</li>
+            <li>id: {{ product.id }}</li>
         </ul>
     </li>
 </ul>
