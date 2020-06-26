@@ -16,6 +16,7 @@ import { Observable } from 'rxjs';
 //3) uncomment the import and the saveAs(val, "test.png") line in ngOnInit()
 
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
+import { HttpErrorResponse } from '@angular/common/http';
 
 
 @Component({
@@ -43,9 +44,27 @@ export class DetailsComponent implements OnInit {
           // change userId in all components that are subscribed to dataService.currentUserId
           this._update.changeUserId(data.id);  
           // load user image:
-          this.uploadFileService.getUserPic(data.id).subscribe( val => { this.createImageFromBlob(val);
+          this.uploadFileService.getUserPic(data.id).subscribe( 
+            val => { this.createImageFromBlob(val);
             // saveAs(val, "test.png")  // uncomment this to download the image in the browser 
-          });
+          },
+          (err: HttpErrorResponse) => {
+          
+          if (err.error instanceof Error) {
+            //A client-side or network error occurred.
+            console.log('An client-side or network error occurred:', err.error);
+          } else if (err.status == 404) {
+            console.log("User or ProfilePic not found");
+          }  else {
+            //Backend returns unsuccessful response codes such as 400, 500 etc.
+            console.log('Backend returned status code: ', err.status);
+            console.log('Response body:', err.error);
+          }
+        }
+          
+          
+          
+          );
         }
       );
   }
