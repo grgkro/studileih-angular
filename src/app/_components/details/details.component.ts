@@ -25,7 +25,7 @@ import { HttpErrorResponse } from '@angular/common/http';
   styleUrls: ['./details.component.scss']
 })
 export class DetailsComponent implements OnInit {
-  
+
   user: any;
   imageToShow: any;
 
@@ -39,6 +39,7 @@ export class DetailsComponent implements OnInit {
           user => {
             this.user = user;                             // user is the user that was just loaded from the database. this.user is the variable, that we store the user in, so that we can access it outside of the scope of the Observable.
             this._update.changeUser(this.user);           // change the user in all components that are subscribed to dataService.currentUser
+            this._update.changeImgType("userPic");
             this.uploadFileService.getUserPic(this.user.id).subscribe(       // load user image
               image => { 
                 this.createImageFromBlob(image);

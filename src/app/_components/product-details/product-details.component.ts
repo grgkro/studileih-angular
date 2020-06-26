@@ -28,9 +28,11 @@ export class ProductDetailsComponent implements OnInit {
       .subscribe(
         data => {
           this.product = data;
+          this._update.changeProduct(this.product); 
           // is the user who looks at the details of this product also the owner of the product? if he is the owner -> show "delete", "update" and "Upload new Photo" button
           if (this.product.userId == this.user.id) {
             this.isCurrentUserOwner = true;
+            this._update.changeImgType("productPic");   
           }
         });
   }

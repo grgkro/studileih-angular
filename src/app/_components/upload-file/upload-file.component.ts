@@ -4,6 +4,7 @@ import { UploadFileService } from 'src/app/_services/upload-file.service';
 import { UpdateService } from 'src/app/_services/update.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { User } from 'src/app/_models/user';
+import { Product } from 'src/app/_models/product';
 
 
 @Component({
@@ -17,11 +18,15 @@ export class UploadFileComponent implements OnInit {
   userId: number;
   response: string;
   user: User;
+  imgType: string;
+  product: Product;
 
-  constructor(private router: Router, private uploadFileService: UploadFileService, private updateService: UpdateService) { }
+  constructor(private router: Router, private uploadFileService: UploadFileService, private _update: UpdateService) { }
 
   ngOnInit(): void {
-    this.updateService.currentUser.subscribe(user => this.user = user)  // always get the latest logged in user -> if the user changes, this will get updated
+    this._update.currentUser.subscribe(user => this.user = user)  //  if the user changes, this will get updated
+    this._update.currentProduct.subscribe(product => this.product = product)  //  if the product changes, this will get updated
+    this._update.currentImgType.subscribe(imgType => this.imgType = imgType)  // if the imgType changes, this will get updated (for example, if you upload a product pic from the product-details componente, the component just needs to set the imageType to productPic before uploading the photo.)
   }
 
   // this function checks if the selected file is an image filetype (.jpg, .png, ...)
@@ -44,7 +49,7 @@ export class UploadFileComponent implements OnInit {
       // we also need to update the user in the DB and assign the new photoId to him.  
       // The parameters for productId and postId are set to 0 in pushFileToStorage().
       // TODO: create also product and post image upload methods
-      this.uploadFileService.pushFileToStorage(this.currentFileUpload, this.user.id, 0, 0, "userPic").subscribe((response: any) => {
+      this.uploadFileService.pushFileToStorage(this.currentFileUpload, this.user.id, this.product.id, 0, this.imgType).subscribe((response: any) => {
         if (response == "Dein Foto wurde gespeichert.")
           this.response = response;
           setTimeout(() => { this.router.navigate(['']); }, 700);  // after uploading a photo we go back to the main page immediatly -> could be changed, maybe better show a success message and stay on the current page...
