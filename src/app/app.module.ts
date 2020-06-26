@@ -19,6 +19,8 @@ import { AddUserComponent } from './add-user/add-user.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddProductComponent } from './add-product/add-product.component';
 import { EditProductComponent } from './edit-product/edit-product.component';
+import { UserLoginComponent } from './user-login/user-login.component';
+import { EditUserComponent } from './edit-user/edit-user.component';
 
 
 HttpClientModule
@@ -35,6 +37,8 @@ HttpClientModule
     AddUserComponent,
     AddProductComponent,
     EditProductComponent,
+    UserLoginComponent,
+    EditUserComponent,
     
   ],
   imports: [

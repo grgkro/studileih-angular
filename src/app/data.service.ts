@@ -15,46 +15,50 @@ export class DataService {
 
   constructor(private http: HttpClient) { }
 
-  getProducts() {
-    return this.http.get(this.productsPath);
+  login(loginPayload) : Observable<User> {
+    return this.http.post<User>(this.serverPath + '/token/generate-token', loginPayload);
   }
 
-  getProduct(id: number) {
-    return this.http.get(this.productsPath + '/' + id);
+  getProducts() : Observable<Product> {
+    return this.http.get<Product>(this.productsPath);
   }
 
-  addProduct(product: Product) {
-    return this.http.post(this.usersPath, product)
+  getProduct(id: number) : Observable<Product>  {
+    return this.http.get<Product>(this.productsPath + '/' + id);
+  }
+
+  addProduct(product: Product)  : Observable<Product> {
+    return this.http.post<Product>(this.usersPath, product)
   }
 
   deleteProduct(id: number) {
     return this.http.delete(this.productsPath + '/' + id)
   }
 
-  updateProduct(product: Product) {
-    return this.http.put(this.productsPath + '/' + product.id, product)
+  updateProduct(product: Product) : Observable<Product>  {
+    return this.http.put<Product>(this.productsPath + '/' + product.id, product)
   }
 
 
 
   getUsers(): Observable<User> {
-    return this.http.get(this.usersPath)
+    return this.http.get<User>(this.usersPath)
   }
 
   getUser(userId): Observable<User> {
-    return this.http.get('https://jsonplaceholder.typicode.com/users/' + userId)
+    return this.http.get<User>('https://jsonplaceholder.typicode.com/users/' + userId)
   }
 
-  addUser(user: User){
-    return this.http.post(this.usersPath,user)
+  addUser(user: User): Observable<User>{
+    return this.http.post<User>(this.usersPath,user)
   }
 
-  deleteUser(id: number) {
-    this.http.delete(this.usersPath + '/' + id)
+  deleteUser(id: number): Observable<User> {
+    return this.http.delete<User>(this.usersPath + '/' + id)
   }
 
-  updateUser(user: User) {
-    this.http.put(this.usersPath + '/' + user.id, user)
+  updateUser(user: User): Observable<User> {
+    return this.http.put<User>(this.usersPath + '/' + user.id, user)
   }
 
   getPosts() {

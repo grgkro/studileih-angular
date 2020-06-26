@@ -7,6 +7,9 @@ import { UploadFileComponent } from './_components/upload-file/upload-file.compo
 import { GoogleMapsComponent } from './_components/google-maps/google-maps.component';
 import { AddUserComponent } from './add-user/add-user.component';
 import { AddProductComponent } from './add-product/add-product.component';
+import { EditProductComponent } from './edit-product/edit-product.component';
+import { UserLoginComponent } from './user-login/user-login.component';
+import { EditUserComponent } from './edit-user/edit-user.component';
 
 const routes: Routes = [
   {
@@ -14,12 +17,24 @@ const routes: Routes = [
     component: UsersComponent
   },
   {
+    path: 'user-login',
+    component: UserLoginComponent
+  },
+  {
     path: 'details/:id',
     component: DetailsComponent
   },
   {
+    path: 'edit-user/:id',
+    component: EditUserComponent
+  },
+  {
     path: 'products',
     component: ProductsComponent
+  },
+  {
+    path: 'edit-product/:id',
+    component: EditProductComponent
   },
   {
     path: 'add-product',
