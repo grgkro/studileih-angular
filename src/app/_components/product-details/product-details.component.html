@@ -1,3 +1,4 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons&display=block" rel="stylesheet">
 <div *ngIf="product">
      <!-- Falls der User schon geladen ist, dann führe das Folgende aus-->
      <h1>{{ product?.title }}</h1>
@@ -46,5 +47,34 @@
           </div>
           <button (click)="toggleUploadComponent()" class="btn btn-success">Upload new Photo</button>
      </div>
+     <br>
+     <br>
 
 </div>
+
+
+<!-- Date picker: das ist eine UI Komponente von Angular Material.
+Um das zum Laufen zu kriegen müsst ihr wahrscheinlich folgende Befehle im Terminal abschicken:
+ng update @angular/cli @angular/core    <- updated auf das neue Angular 10
+npm install @angular/cdk
+npm install @angular/material
+ng add @angular/material
+  -> chose prebuild theme: indigo/pink
+  -> set up global...: yes
+  -> Yes
+Hier mehr dazu: 
+https://next.material.angular.io/components/datepicker/overview
+https://stackoverflow.com/questions/62615428/angular-10-date-range-picker-calender-opens-at-wrong-place/62615566#62615566
+https://blog.angular.io/version-10-of-angular-now-available-78960babd41
+-->
+<h1>Ausleihen:</h1>
+
+<mat-form-field appearance="fill">
+     <mat-label>Von wann bis wann?</mat-label>
+     <mat-date-range-input [rangePicker]="picker">
+          <input matStartDate matInput placeholder="Anfangsdatum">
+          <input matEndDate matInput placeholder="Enddatum">
+     </mat-date-range-input>
+     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+     <mat-date-range-picker #picker></mat-date-range-picker>
+</mat-form-field>

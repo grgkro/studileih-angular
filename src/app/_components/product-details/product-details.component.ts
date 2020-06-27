@@ -5,6 +5,7 @@ import { switchMap } from 'rxjs/operators';
 import { Product } from 'src/app/_models/product';
 import { UpdateService } from 'src/app/_services/update.service';
 import { User } from 'src/app/_models/user';
+import {MatDatepickerModule} from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-product-details',

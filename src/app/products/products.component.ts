@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { DataService } from '../data.service';
 import { trigger,style,transition,animate,query,stagger } from '@angular/animations';
 
-
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
