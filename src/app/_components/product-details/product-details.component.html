@@ -1,13 +1,14 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons&display=block" rel="stylesheet">
+<h1>{{errorMessage}}</h1>
 <div *ngIf="product">
      <!-- Falls der User schon geladen ist, dann führe das Folgende aus-->
      <h1>{{ product?.title }}</h1>
      <ul>
           <li><strong>Name:</strong> {{ product?.name }}</li>
-          <li><strong>Price:</strong> {{ product?.price }}</li>
-          <li><strong>Id:</strong> {{ product?.id }}</li>
-          <li><strong>productUserId:</strong> {{ product?.userId }}</li>
-          <li><strong>user.id:</strong> {{ user?.id }}</li>
+          <li><strong>Price:</strong> {{ product?.price }} €</li>
+          <li><strong>Product Id:</strong> {{ product?.id }}</li>
+          <li><strong>product.UserId:</strong> {{ product?.userId }}</li>
+          <li><strong>user.id (id des gerade aktiven users):</strong> {{ user?.id }}</li>
           <li *ngIf="isCurrentUserOwner">
                <!-- if the current user is the owner, he will see the delete and update button -->
                <div class="row">
@@ -45,7 +46,8 @@
           <div *ngIf="showUploadComponent">
                <app-upload-file></app-upload-file>
           </div>
-          <button (click)="toggleUploadComponent()" class="btn btn-success">Upload new Photo</button>
+          <button *ngIf="!showUploadComponent" (click)="toggleUploadComponent()" class="btn btn-success">Upload new
+               Photo</button>
      </div>
      <br>
      <br>
@@ -67,14 +69,16 @@ https://next.material.angular.io/components/datepicker/overview
 https://stackoverflow.com/questions/62615428/angular-10-date-range-picker-calender-opens-at-wrong-place/62615566#62615566
 https://blog.angular.io/version-10-of-angular-now-available-78960babd41
 -->
-<h1>Ausleihen:</h1>
+<div *ngIf="!isCurrentUserOwner">  <!-- only show the date picker, if the user is not the owner of the product. The owner can't rent his own product, so he doesn't need the date picker to chose when he wants to rent it.-->
+     <h1>Ausleihen:</h1>
 
-<mat-form-field appearance="fill">
-     <mat-label>Von wann bis wann?</mat-label>
-     <mat-date-range-input [rangePicker]="picker">
-          <input matStartDate matInput placeholder="Anfangsdatum">
-          <input matEndDate matInput placeholder="Enddatum">
-     </mat-date-range-input>
-     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-     <mat-date-range-picker #picker></mat-date-range-picker>
-</mat-form-field>
+     <mat-form-field appearance="fill">
+          <mat-label>Von wann bis wann?</mat-label>
+          <mat-date-range-input [rangePicker]="picker">
+               <input matStartDate matInput placeholder="Anfangsdatum">
+               <input matEndDate matInput placeholder="Enddatum">
+          </mat-date-range-input>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+     </mat-form-field>
+</div>

@@ -25,6 +25,10 @@ export class UpdateService {
   imgType: string = "userPic";  // the default imgType is userPic, so if you directly upload a photo from the upload-file component after starting the app, it will treat the upload as a user profile pic. But if you upload a photo from the product-details component, the product-component will change the imgType to productPic.
   private imgTypeSource = new BehaviorSubject(this.imgType);  // userId = 0 is the default value. The id in the DB always starts at 1, so this will result in an error (you have to insert a value there, so we need any default value)
   currentImgType = this.imgTypeSource.asObservable();
+
+  showUploadComponent: boolean = false;  // the default imgType is userPic, so if you directly upload a photo from the upload-file component after starting the app, it will treat the upload as a user profile pic. But if you upload a photo from the product-details component, the product-component will change the imgType to productPic.
+  private showUploadComponentSource = new BehaviorSubject(this.showUploadComponent);  // userId = 0 is the default value. The id in the DB always starts at 1, so this will result in an error (you have to insert a value there, so we need any default value)
+  currentShowUploadComponent = this.showUploadComponentSource.asObservable();
   
   constructor() { }
 
@@ -38,6 +42,10 @@ export class UpdateService {
 
   changeImgType(imgType: string) {
     this.imgTypeSource.next(imgType);
+  }
+
+  changeShowUploadComponent(showUploadComponent: boolean) {
+    this.showUploadComponentSource.next(showUploadComponent);
   }
 
 }

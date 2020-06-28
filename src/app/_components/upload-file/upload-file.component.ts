@@ -52,7 +52,7 @@ export class UploadFileComponent implements OnInit {
         if (response == "Dein Foto wurde gespeichert.")
           this.response = response;
           setTimeout(() => { this.router.navigate(['']); }, 700);  // after uploading a photo we go back to the main page immediatly -> could be changed, maybe better show a success message and stay on the current page...
-        
+          if (this.imgType == "productPic") this._update.changeShowUploadComponent(false);  // if the user uploaded a product photo, we want do not show the upload component anymore in the productdetails component. But therefore we need the information in the productdetails component. -> If a user successfully uploads a product photo (status 200), the upload component changes showUploadComponent to false here. The _update service then updates this value for all subscribes.
            
       },
         (err: HttpErrorResponse) => {
@@ -63,6 +63,8 @@ export class UploadFileComponent implements OnInit {
             console.log('An client-side or network error occurred:', err.error.message);
           } else if (err.status == 304) {
             this.response = "Foto mit selbem Namen wurde vom gleichen User schonmal hochgeladen.";
+          } else if (err.status == 304) {
+            this.response = "Foto mit selbem Namen wurde schonmal hochgeladen.";
           } else if (err.status == 0) {
             this.response = "Foto abgelehnt, Foto muss kleiner 500KB sein.";
           } else {
