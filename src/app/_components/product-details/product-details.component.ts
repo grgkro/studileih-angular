@@ -5,7 +5,6 @@ import { switchMap } from 'rxjs/operators';
 import { Product } from 'src/app/_models/product';
 import { UpdateService } from 'src/app/_services/update.service';
 import { User } from 'src/app/_models/user';
-import {MatDatepickerModule} from '@angular/material/datepicker';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
@@ -21,8 +20,17 @@ export class ProductDetailsComponent implements OnInit {
   isCurrentUserOwner: boolean = false;
   showUploadComponent: boolean = false;
   errorMessage: string;
-
-  constructor(private route: ActivatedRoute, private data: DataService, private _update: UpdateService,) { }
+  imagesList = [];
+ 
+  constructor(private route: ActivatedRoute, private data: DataService, private _update: UpdateService) {
+    for (let i = 0; i < 50; i++) {
+      const url = 'https://loremflickr.com/640/480?random=' + (i +1);
+      this.imagesList[i] = {
+        url: url,
+        show: false
+    };
+  }
+   }
 
   ngOnInit(): void {
      this._update.currentUser.subscribe(user => this.user = user)  // always get the latest logged in user -> if the user changes, this will get updated

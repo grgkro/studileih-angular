@@ -11,6 +11,7 @@ export class DataService {
 
   serverPath = 'http://localhost:8090';
   productsPath = 'http://localhost:8090/products';
+  imagesPath = 'http://localhost:8090/images';
   usersPath = 'https://jsonplaceholder.typicode.com/users'
 
   constructor(private http: HttpClient) { }
@@ -33,6 +34,14 @@ export class DataService {
 
   updateProduct(product: Product) {
     return this.http.put(this.productsPath + '/' + product.id, product)
+  }
+
+  // loadProductPics() {
+  //   return this.http.get(this.imagesPath + '/productPics');
+  // }
+
+  loadProductPics(): Observable<Blob> {
+    return this.http.get(this.imagesPath + '/productPics', { responseType: 'blob' });
   }
 
 

@@ -23,6 +23,8 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatInputModule} from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 
+import { DeferLoadModule } from '@trademe/ng-defer-load';
+
 
 
 HttpClientModule
@@ -51,6 +53,8 @@ HttpClientModule
     MatDatepickerModule,
     MatInputModule,
     MatNativeDateModule,
+
+    DeferLoadModule,
   
     AgmCoreModule.forRoot({
       apiKey: gmaps_environment.GMAPS_API_KEY // The API KEY belongs to Georg and can't be exposed on GITHUB (Hackers are crazy) 

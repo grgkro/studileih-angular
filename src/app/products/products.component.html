@@ -4,6 +4,16 @@
 <br>
 <br>
 
+<!-- loads the user image. If no image is available, a default pic gets shown -->
+<img [src]="imageToShow"
+alt="Product Picture"
+*ngIf="imageToShow; else noImageFound">
+<ng-template #noImageFound>
+<img src="https://cdn-0.askleo.com/wp-content/uploads/2013/07/image_not_found.png" alt="Fallbackimage"> <!-- <= default picture --> 
+</ng-template>
+
+<br>
+
 <div class="row justify-content-md-center">
     <div class="col">
         <h1>Products</h1>
@@ -29,3 +39,5 @@
         </ul>
     </li>
 </ul>
+
+ 

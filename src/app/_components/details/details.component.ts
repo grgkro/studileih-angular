@@ -6,7 +6,7 @@ import { switchMap } from 'rxjs/operators';
 import { DataService } from '../../data.service';
 import { UploadFileService } from 'src/app/_services/upload-file.service';
 import { UpdateService } from '../../_services/update.service';
-import { Observable } from 'rxjs';
+
 
 // import { saveAs } from 'file-saver';  
 // To use the file download feature, you need to install file-saver.js by running these 2 commands in your terminal: 
@@ -15,7 +15,7 @@ import { Observable } from 'rxjs';
 // https://www.javascripting.com/view/filesaver-js
 //3) uncomment the import and the saveAs(val, "test.png") line in ngOnInit()
 
-import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
 import { HttpErrorResponse } from '@angular/common/http';
 
 
@@ -42,6 +42,7 @@ export class DetailsComponent implements OnInit {
             this._update.changeImgType("userPic");
             this.uploadFileService.getUserPic(this.user.id).subscribe(       // load user image
               image => { 
+                console.log(image)
                 this.createImageFromBlob(image);
                 // saveAs(val, "test.png")                // uncomment this to download the image in the browser (you also need to uncomment the import file-saver)
               },
@@ -56,9 +57,6 @@ export class DetailsComponent implements OnInit {
                   console.log('Response body:', err.error);
                 }
               }
-
-
-
             );
           }
         );

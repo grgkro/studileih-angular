@@ -60,6 +60,7 @@ Um das zum Laufen zu kriegen müsst ihr wahrscheinlich folgende Befehle im Termi
 ng update @angular/cli @angular/core    <- updated auf das neue Angular 10
 npm install @angular/cdk
 npm install @angular/material
+falls es dann noch nicht geht:
 ng add @angular/material
   -> chose prebuild theme: indigo/pink
   -> set up global...: yes
@@ -82,3 +83,9 @@ https://blog.angular.io/version-10-of-angular-now-available-78960babd41
           <mat-date-range-picker #picker></mat-date-range-picker>
      </mat-form-field>
 </div>
+
+<div class="images" *ngFor="let image of imagesList" (deferLoad)="image.show = true">  <!--https://www.talkingdotnet.com/how-to-lazy-load-images-angular-6/-->
+     <ng-container *ngIf="image.show">
+       <img src={{image.url}}>
+     </ng-container>
+ </div>
