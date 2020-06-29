@@ -21,14 +21,14 @@ import { AddProductComponent } from './add-product/add-product.component';
 import { EditProductComponent } from './edit-product/edit-product.component';
 import { UserLoginComponent } from './user-login/user-login.component';
 import { EditUserComponent } from './edit-user/edit-user.component';
-import { ProductDetailsComponent } from './product-details/product-details.component';
-import { ProductDetailsComponent } from './_components/product-details/product-details.component';
+
 
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatInputModule} from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 
 import { DeferLoadModule } from '@trademe/ng-defer-load';
+import { ProductDetailsComponent } from './_components/product-details/product-details.component';
 
 
 
