@@ -17,6 +17,7 @@ import { UpdateService } from '../../_services/update.service';
 
 import { DomSanitizer } from '@angular/platform-browser';
 import { HttpErrorResponse } from '@angular/common/http';
+import { HelperService } from 'src/app/_services/helper.service';
 
 
 @Component({
@@ -28,8 +29,9 @@ export class DetailsComponent implements OnInit {
 
   user: any;
   imageToShow: any;
+  errorMessage: string;
 
-  constructor(private route: ActivatedRoute, private data: DataService, private _update: UpdateService, private uploadFileService: UploadFileService, private sanitization: DomSanitizer) { }
+  constructor(private route: ActivatedRoute, private data: DataService, private _update: UpdateService, private _helper: HelperService, private uploadFileService: UploadFileService, private sanitization: DomSanitizer) { }
 
   ngOnInit() {
     // here we create 3 Observables, one gets the parameters/userId from the url "http://localhost:4200/details/{userId}. The next load the user, and the last loads the profile pic of that user.
@@ -47,16 +49,8 @@ export class DetailsComponent implements OnInit {
                 // saveAs(val, "test.png")                // uncomment this to download the image in the browser (you also need to uncomment the import file-saver)
               },
               (err: HttpErrorResponse) => {                 // if the image could not be loaded, this part will be executed instead 
-                if (err.error instanceof Error) {
-                  console.log('An client-side or network error occurred:', err.error);
-                } else if (err.status == 404) {
-                  console.log("User or ProfilePic not found");
-                } else {
-                  //Backend returns unsuccessful response codes such as 400, 500 etc.
-                  console.log('Backend returned status code: ', err.status);
-                  console.log('Response body:', err.error);
+                this.errorMessage = this._helper.createErrorMessage(err, "User oder Profilfoto konnte nicht gefunden werden");
                 }
-              }
             );
           }
         );

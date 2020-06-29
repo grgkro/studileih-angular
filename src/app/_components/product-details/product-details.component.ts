@@ -4,6 +4,7 @@ import { DataService } from '../../data.service';
 import { switchMap } from 'rxjs/operators';
 import { Product } from 'src/app/_models/product';
 import { UpdateService } from 'src/app/_services/update.service';
+import { HelperService } from 'src/app/_services/helper.service';
 import { User } from 'src/app/_models/user';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -23,7 +24,7 @@ export class ProductDetailsComponent implements OnInit {
   errorMessage: string;
   imagesList = [];
 
-  constructor(private route: ActivatedRoute, private _data: DataService, private _update: UpdateService, private sanitization: DomSanitizer) {
+  constructor(private route: ActivatedRoute, private _data: DataService, private _update: UpdateService, private _helper: HelperService, private sanitization: DomSanitizer) {
     // creates a list of cat images for testing the lazy loading function (lazy loading = loading pictures only when they are in the viewport. Georg will delete this later!-->
     for (let i = 0; i < 50; i++) {
       const url = 'https://loremflickr.com/640/480?random=' + (i + 1);
@@ -52,29 +53,12 @@ export class ProductDetailsComponent implements OnInit {
           // saveAs(val, "test.png")                // uncomment this to download the image in the browser (you also need to uncomment the import file-saver)
         },
           (err: HttpErrorResponse) => {                 // if the image could not be loaded, this part will be executed instead 
-            if (err.error instanceof Error) {
-              console.log('An client-side or network error occurred:', err.error);
-            } else if (err.status == 404) {
-              console.log("User or ProfilePic not found");
-            } else {
-              //Backend returns unsuccessful response codes such as 400, 500 etc.
-              console.log('Backend returned status code: ', err.status);
-              console.log('Response body:', err.error);
-            }
+            this.errorMessage = this._helper.createErrorMessage(err, "User oder Profilfoto konnte nicht gefunden werden");
           }
         );
       },
         (err: HttpErrorResponse) => {                 // if the product could not be loaded, this part will be executed instead 
-          if (err.error instanceof Error) {
-            console.log('An client-side or network error occurred:', err.error);
-          } else if (err.status == 500 || err.status == 404) {
-            this.errorMessage = "Produkt konnte nicht gefunden werden.";
-          } else {
-            //Backend returns unsuccessful response codes such as 400, 500 etc.
-            console.log('Backend returned status code: ', err.status);
-            console.log('Response body:', err.error);
-
-          }
+          this.errorMessage = this._helper.createErrorMessage(err, "Produkt konnte nicht gefunden werden.");
         }
       );
     this._update.currentUser.subscribe(user => this.user = user)  // always get the latest logged in user -> if the user changes, this will get updated
@@ -100,4 +84,6 @@ export class ProductDetailsComponent implements OnInit {
       reader.readAsDataURL(image); //this triggers the reader EventListener
     }
   }
+
+  
 }

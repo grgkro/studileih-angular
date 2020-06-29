@@ -56,29 +56,15 @@ export class UploadFileComponent implements OnInit {
            
       },
         (err: HttpErrorResponse) => {
-          
-          if (err.error instanceof Error) {
-            //A client-side or network error occurred.
-            alert("Image could't be uploaded. Client-side error.")
-            console.log('An client-side or network error occurred:', err.error.message);
-          } else if (err.status == 304) {
-            this.response = "Foto mit selbem Namen wurde vom gleichen User schonmal hochgeladen.";
-          } else if (err.status == 304) {
-            this.response = "Foto mit selbem Namen wurde schonmal hochgeladen.";
-          } else if (err.status == 0) {
-            this.response = "Foto abgelehnt, Foto muss kleiner 500KB sein.";
-          } else {
-            //Backend returns unsuccessful response codes such as 404, 500 etc.
-            console.log('Backend returned status code: ', err.status);
-            console.log('Response body:', err.error);
-          }
+          this.processError(err);
         }
       );
     }
   }
 
+  // checks, if at least one file was selected for upload and if a user is logged in
   checkBeforeUpload(): boolean {
-    if (this.selectedFiles == undefined || this.user.id == 0) {
+    if (this.selectedFiles == undefined || this.user.id == 0) {  // is that necessary?
       if (this.selectedFiles == undefined) {
         this.response = "Please select an image.";
         return false;
@@ -88,5 +74,24 @@ export class UploadFileComponent implements OnInit {
       }
     }
     return true;
+  }
+
+  // takes the error and then displays a response to the user or only logs the error on the console (depending on if the error is useful for the user)
+  processError(err: HttpErrorResponse) {
+    if (err.error instanceof Error) {
+      //A client-side or network error occurred.
+      alert("Image could't be uploaded. Client-side error.")
+      console.log('An client-side or network error occurred:', err.error.message);
+    } else if (err.status == 304) {
+      this.response = "Foto mit selbem Namen wurde vom gleichen User schonmal hochgeladen.";
+    } else if (err.status == 304) {
+      this.response = "Foto mit selbem Namen wurde schonmal hochgeladen.";
+    } else if (err.status == 0) {
+      this.response = "Foto abgelehnt, Foto muss kleiner 500KB sein.";
+    } else {
+      //Backend returns unsuccessful response codes such as 404, 500 etc.
+      console.log('Backend returned status code: ', err.status);
+      console.log('Response body:', err.error);
+    }
   }
 }

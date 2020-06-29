@@ -16,8 +16,8 @@ export class DataService {
 
   constructor(private http: HttpClient) { }
 
-  getProducts() {
-    return this.http.get(this.productsPath);
+  getProducts(): Observable<Product[]> {
+    return this.http.get<Product[]>(this.productsPath);
   }
 
   getProduct(id: number): Observable<Product> {
