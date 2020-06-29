@@ -38,10 +38,7 @@ export class ProductsComponent implements OnInit {
   editProduct(product: Product) {
     window.localStorage.removeItem("productId");
     window.localStorage.setItem("productId", product.id.toString());
-<<<<<<< HEAD
-=======
     this.router.navigate(['edit-product/:' + product.id]);
->>>>>>> 73b855903b69d45879e627630e87981c95e4c0db
   };
 
 }
