@@ -1,1 +1,139 @@
-<p>edit-product works!</p>
+
+<div class="col user-container">
+    <div class="jumbotron">
+        <h1 class="display-4">Edit Product</h1>
+       
+        <hr class="my-2">
+        <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
+            
+            <div class="form-group">
+              <label for="name">Product name:</label>
+              <input
+                type="text"
+                formControlName="name"
+                placeholder="name"
+                name="Name"
+                class="form-control"
+                id="name"
+              />
+              <div *ngIf="f.body.touched && f.body.invalid" class="alert alert-danger">
+                <div *ngIf="f.body.errors.required">Product name is required.</div>
+            </div>
+            </div>
+        
+            <div class="form-group">
+              <label for="email">Title:</label>
+              <input
+                formControlName="title"
+                placeholder="Title"
+                name="title"
+                class="form-control"
+                id="title"
+              />
+              <div *ngIf="f.body.touched && f.body.invalid" class="alert alert-danger">
+                <div *ngIf="f.body.errors.required">Title is required.</div>
+            </div>
+            </div>
+            <div class="form-group">
+              <label for="price">Price:</label>
+              <input
+                type="number"
+                formControlName="price"
+                placeholder="Price"
+                name="price"
+                class="form-control"
+                id="price"
+              />
+              <div *ngIf="f.body.touched && f.body.invalid" class="alert alert-danger">
+                <div *ngIf="f.body.errors.required">Price is required.</div>
+            </div>
+            </div>
+        
+            <div class="form-group">
+              <label for="views">Views:</label>
+              <input
+                type="number"
+                formControlName="views"
+                placeholder="Views"
+                name="views"
+                class="form-control"
+                id="views"
+              />
+              <div *ngIf="f.body.touched && f.body.invalid" class="alert alert-danger">
+                <div *ngIf="f.body.errors.required">Views is required.</div>
+            </div>
+            </div>
+        
+            <div class="form-group">
+              <label for="available">Available:</label>
+              <input
+                type="boolean"
+                formControlName="available"
+                placeholder="Available"
+                name="available"
+                class="form-control"
+                id="available"
+              />
+              <div *ngIf="f.body.touched && f.body.invalid" class="alert alert-danger">
+                <div *ngIf="f.body.errors.required">Available is required.</div>
+            </div>
+            </div>
+        
+            <div class="form-group">
+              <label for="createdAt">Created at:</label>
+              <input
+                type="text"
+                formControlName="createdAt"
+                placeholder="Created at"
+                name="createdAt"
+                class="form-control"
+                id="createdAt"
+              />
+              <div *ngIf="f.body.touched && f.body.invalid" class="alert alert-danger">
+                <div *ngIf="f.body.errors.required">Create date is required.</div>
+            </div>
+            </div>
+        
+            <div class="form-group">
+              <label for="updatedAt">Updated at:</label>
+              <input
+                type="text"
+                formControlName="updatedAt"
+                placeholder="Updated at"
+                name="updatedAt"
+                class="form-control"
+                id="updatedAt"
+              />
+              <div *ngIf="f.body.touched && f.body.invalid" class="alert alert-danger">
+                <div *ngIf="f.body.errors.required">Update date is required.</div>
+            </div>
+            </div>
+        
+            <div class="form-group">
+              <label for="picPaths">Pic paths:</label>
+              <input
+                type="text"
+                formControlName="picPaths"
+                placeholder="Pic paths"
+                name="picPaths"
+                class="form-control"
+                id="picPaths"
+              />
+              <div *ngIf="f.body.touched && f.body.invalid" class="alert alert-danger">
+                <div *ngIf="f.body.errors.required">Pic paths are required.</div>
+            </div>
+            </div>
+        
+            <div class="row">
+              <div class="col-4">
+                <button type="submit" class="btn btn-success" type="submit">Add</button>
+              </div>
+              <div class="col-4">
+                <a href="#" routerLink="roducts" class="btn btn-primary">Cancel</a>
+              </div>
+            </div>
+          </form>
+    </div>
+
+</div>
+

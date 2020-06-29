@@ -61,18 +61,19 @@ export class EditProductComponent implements OnInit {
       this.id = data.id;
       this.userId = data.userId;
       this.editForm.setValue({
-        name: data.name,
-        title: data.title,
-        price: data.price,
-        views: data.views,
-        createdAt: data.createdAt,
-        updatedAt: data.updatedAt,
-        picPaths: data.picPaths
+      name: ['',Validators.required],
+      title: ['',Validators.required],
+      price: ['',Validators.required],
+      views: ['',Validators.required],
+      available: ['',Validators.required],
+      createdAt: ['',Validators.required],
+      updatedAt: ['',Validators.required],
+      picPaths: ['',Validators.required]
       });
     });
   }
 
- /*  onSubmit() {
+ onSubmit() {
     this.dataService.updateProduct(this.editForm.value)
     .pipe(first()).subscribe(
       data => {
@@ -87,7 +88,7 @@ export class EditProductComponent implements OnInit {
         alert(error);
       });
       
-  } */
+  } 
 
   onFormSubmit() {
     this.dataService.updateProduct(this.editForm.value)
@@ -102,6 +103,10 @@ export class EditProductComponent implements OnInit {
 
   productDetails() {
     this.router.navigate(['/cases-details', this.id]);
+  }
+
+  get f(){
+    return this.editForm.controls;
   }
 
 }

@@ -21,6 +21,7 @@ import { AddProductComponent } from './add-product/add-product.component';
 import { EditProductComponent } from './edit-product/edit-product.component';
 import { UserLoginComponent } from './user-login/user-login.component';
 import { EditUserComponent } from './edit-user/edit-user.component';
+import { ProductDetailsComponent } from './product-details/product-details.component';
 
 
 HttpClientModule
@@ -39,6 +40,7 @@ HttpClientModule
     EditProductComponent,
     UserLoginComponent,
     EditUserComponent,
+    ProductDetailsComponent,
     
   ],
   imports: [

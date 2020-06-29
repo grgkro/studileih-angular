@@ -40,8 +40,8 @@ export class DetailsComponent implements OnInit {
   };
 
   editUser(user: User): void {
-     window.localStorage.removeItem("userId");
-    window.localStorage.setItem("userId", user.id.toString()); 
+     window.localStorage.removeItem("id");
+    window.localStorage.setItem("id", user.id.toString()); 
     this.router.navigate(['edit-user']);
   };
 

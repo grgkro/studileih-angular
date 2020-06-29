@@ -1,35 +1,64 @@
 <div class="jumbotron jumbotron-fluid">
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <h1 class="display-3">Products</h1>
-            </div>
-            <div class="col-md-auto">
-                <button class="btn btn-dark">
-                    <a routerLink="/add-product">
-                        Add Product
-                      </a>
-                </button>
-            </div>
-        </div>
-        
-        <hr class="my-2">
-        <div class="row justify-content-md-center">
-            <div class="col">
-               
-            </div>
-            <div class="col-md-auto">
-              </div>
-            <div class="col col-lg-2">
-            </div>
-        </div>
-<div class="jumbotron">
-    <ul>
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <h1 class="display-3">Products</h1>
+      </div>
+      <div class="col-md-auto">
+        <button class="btn btn-dark">
+          <a routerLink="/add-product">
+            Add Product
+          </a>
+        </button>
+      </div>
+    </div>
+
+    <hr class="my-2" />
+    <div class="row justify-content-md-center">
+      <div class="col"></div>
+      <div class="col-md-auto"></div>
+      <div class="col col-lg-2"></div>
+    </div>
+    <div class="jumbotron">
+      <ul>
         <li *ngFor="let product of products">
-            <ul>
-                <li>{{ product.name }}</li>
-            </ul>
-            <!-- <div class="row">
+          <ul>
+            <div class="row">
+              <div class="col"></div>
+              <div class="col"></div>
+            </div>
+            <li>
+              <div class="row">
+                <div class="col-8">
+                  {{ product.name }}
+                </div>
+                <div class="col">
+                  <button class="btn btn-light">
+                    <a routerLink="/product-details/{{ product.id }}">View</a>
+                  </button>
+                </div>
+                <div class="col">
+                  <a
+                    href="#"
+                    [routerLink]="['/products/', product.id, 'edit-product']"
+                    class="btn btn-primary"
+                    >Edit</a
+                  >
+                </div>
+                <div class="col">
+                  <button
+                    type="button"
+                    (click)="deleteProduct(product.id)"
+                    class="btn btn-danger"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            </li>
+          </ul>
+
+          <!-- <div class="row">
                 <div class="col">
                     <button class="btn btn-success" (click)="deleteProduct(product)"> Delete</button>
                 </div>
@@ -38,10 +67,7 @@
                 </div>
             </div> -->
         </li>
-        
-    </ul>
+      </ul>
+    </div>
+  </div>
 </div>
-    
-
-
-

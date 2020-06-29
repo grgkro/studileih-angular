@@ -10,30 +10,35 @@ import { Product } from '../_models/product';
   styleUrls: ['./products.component.scss']
 })
 export class ProductsComponent implements OnInit {
-  products: any;
-  
+  products: Product[] = [];
 
-  
+
+
   constructor(private dataService: DataService,
     private router: Router) { }
 
   ngOnInit() {
     this.dataService.getProducts().subscribe(
-      data => {this.products = data; console.log("data"); console.log(this.products)} 
+      (data: Product[]) => {
+        this.products = data;
+        console.log("data");
+        console.log(this.products)
+      }
     );
   }
 
-  deleteProduct(product: Product): void {
-    this.dataService.deleteUser(product.id)
+  deleteProduct(id:number) {
+    this.dataService.deleteProduct(id)
       .subscribe(data => {
-        this.products = this.products.filter(p => p !== product);
+        this.products = this.products.filter(product => product.id !== id);
+        console.log('Product deleted successfully!');
       })
   };
 
-  editProduct(product: Product): void {
+  editProduct(product: Product) {
     window.localStorage.removeItem("productId");
     window.localStorage.setItem("productId", product.id.toString());
-    this.router.navigate(['edit-product/:'+product.id]);
+    this.router.navigate(['edit-product/:' + product.id]);
   };
 
 }
