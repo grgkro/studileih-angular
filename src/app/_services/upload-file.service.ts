@@ -30,7 +30,7 @@ export class UploadFileService {
   
   // loads profilePic of user -> it's a post request, because we have to post the userId to Spring.
   getUserPic(userId: number): Observable<Blob> {
-    return this.http.post(this.serverPath + '/loadProfilePicByUserId', userId, { responseType: 'blob' } );
+    return this.http.post(this.serverPath + '/loadProfilePic', userId, { responseType: 'blob' } );
   }
 
   /* // loads profilePic of user -> Spring returns a fake userDto with the base64code as groupName
