@@ -4,9 +4,9 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
-import { PostsComponent } from './posts/posts.component';
+import { PostsComponent } from './_components/posts/posts.component';
 import { UsersComponent } from './users/users.component';
-import { DetailsComponent } from './details/details.component';
+import { DetailsComponent } from './_components/details/details.component';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { AgmCoreModule } from '@agm/core'
@@ -19,6 +19,17 @@ import { AddUserComponent } from './add-user/add-user.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddProductComponent } from './add-product/add-product.component';
 import { EditProductComponent } from './edit-product/edit-product.component';
+import { UserLoginComponent } from './user-login/user-login.component';
+import { EditUserComponent } from './edit-user/edit-user.component';
+import { ProductDetailsComponent } from './product-details/product-details.component';
+import { ProductDetailsComponent } from './_components/product-details/product-details.component';
+
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatInputModule} from '@angular/material/input';
+import { MatNativeDateModule } from '@angular/material/core';
+
+import { DeferLoadModule } from '@trademe/ng-defer-load';
+
 
 
 HttpClientModule
@@ -35,6 +46,9 @@ HttpClientModule
     AddUserComponent,
     AddProductComponent,
     EditProductComponent,
+    UserLoginComponent,
+    EditUserComponent,
+    ProductDetailsComponent,
     
   ],
   imports: [
@@ -44,12 +58,20 @@ HttpClientModule
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
+
+    MatDatepickerModule,
+    MatInputModule,
+    MatNativeDateModule,
+
+    DeferLoadModule,
+  
     AgmCoreModule.forRoot({
       apiKey: gmaps_environment.GMAPS_API_KEY // The API KEY belongs to Georg and can't be exposed on GITHUB (Hackers are crazy) 
       //-> Therefore it's loaded as a variable from the file gmaps_environment.ts in folder environments. gmaps_environment.ts is in .gitignore, so it won't get pushed to git
     })
   ],
   providers: [UploadFileService ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  
 })
 export class AppModule { }

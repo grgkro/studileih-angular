@@ -14,10 +14,18 @@
 
 <ul [@listStagger]="users$">  <!--listStagger ist eine spezielle Animation, bei der die Liste nicht auf einmal dargestellt wird, sondern zeitlich verzögert auftaucht-->
     <li *ngFor="let user of users$"> <!-- for Schleife über alle geladenen User -->
-        <a routerLink="/details/{{ user.id }}">{{user.name}}</a>
+        <a routerLink="/details/{{ user.id }}">{{user.name}}</a>  <!-- wenn der username angeklickt wird, wird man weitergeleitet per routerLink zur details component.-->
         <ul>
             <li>{{ user.email }}</li>
             <li><a href="http://{{ user.website }}"></a>{{ user.website }}</li>
         </ul>
+        <!-- <div class="row">
+            <div class="col">
+                <button class="btn btn-danger">Click Me</button>
+            </div>
+            <div class="col">
+                <button class="btn btn-info">Click Me</button>
+            </div>
+        </div> -->
     </li>
 </ul>
