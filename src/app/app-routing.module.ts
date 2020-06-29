@@ -10,6 +10,10 @@ import { ProductDetailsComponent } from './_components/product-details/product-d
 import { UserLoginComponent } from './user-login/user-login.component';
 import { EditProductComponent } from './edit-product/edit-product.component';
 import { AddProductComponent } from './add-product/add-product.component';
+import { EditProductComponent } from './edit-product/edit-product.component';
+import { UserLoginComponent } from './user-login/user-login.component';
+import { EditUserComponent } from './edit-user/edit-user.component';
+import { ProductDetailsComponent } from './product-details/product-details.component';
 
 const routes: Routes = [
   {
@@ -33,6 +37,23 @@ const routes: Routes = [
     component: DetailsComponent
   },
   
+  {
+<<<<<<< HEAD
+    path: 'product-details/:id',
+    component: ProductDetailsComponent
+  },
+  {
+    path: 'edit-product/:id',
+    component: EditProductComponent
+=======
+    path: 'edit-user/:id',
+    component: EditUserComponent
+  },
+  {
+    path: 'products',
+    component: ProductsComponent
+>>>>>>> 73b855903b69d45879e627630e87981c95e4c0db
+  },
   {
     path: 'product-details/:id',
     component: ProductDetailsComponent
