@@ -54,11 +54,7 @@ export class ProductsComponent implements OnInit {
               // after loading the product, load one product pic (the first photo from the product.picPaths arraylist)
               this._data.loadProductPicByFilename(product.picPaths[0], product.id).subscribe(
                 image => {   // we only load the first poduct pic 
-                  console.log(image)
                   this.createImageFromBlob(image);          // transorfms the blob into an image
-                  console.log("heee: " + this.photos[0])
-                  this.imageToShow = this.photos[0]
-                  console.log("what? " + this.imageToShow)
                   // saveAs(val, "test.png")                // uncomment this to download the image in the browser (you also need to uncomment the import file-saver)
                 },
                 (err: HttpErrorResponse) => this.processError(err)    // if the image could not be loaded, this part will be executed instead 
@@ -94,12 +90,8 @@ export class ProductsComponent implements OnInit {
       // Somebody could create an image and hide javascript code inside of it (an image is just a very long text formatted in base64) 
       // -> this script would get executed, if the image get's transferred to our HTML page in the next line. Therefore it gets blocked by default, unless we bypass it.
       // the image is read by the FileReader and is returned as an "any". But this needs to be sanitized first, before it can be shown in the HTML. Therefore we pass it into the sanitzation, but there we need a String, therefore we use: reader.result + ""   
-      // this.productPicToShow is the 
-      sanitizedImage = this.sanitizer.bypassSecurityTrustResourceUrl(reader.result + "");
-      this.photos.push(this.sanitizer.bypassSecurityTrustResourceUrl(reader.result + ""));
-      console.log("photo" + this.photos[0])
-      this.imageToShow = this.photos[0]
-      // this.photos.push(sanitizedImage);
+      // this.photos are the photos we want to display stored in an array 
+      this.photos.push(this.sanitizer.bypassSecurityTrustResourceUrl(reader.result + ""));  
     }, false);
 
     if (image) {

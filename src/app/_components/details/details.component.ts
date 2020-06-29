@@ -30,6 +30,7 @@ export class DetailsComponent implements OnInit {
   user: any;
   imageToShow: any;
   errorMessage: string;
+  showUploadComponent: boolean = false;
 
   constructor(private route: ActivatedRoute, private data: DataService, private _update: UpdateService, private _helper: HelperService, private uploadFileService: UploadFileService, private sanitization: DomSanitizer) { }
 
@@ -41,7 +42,7 @@ export class DetailsComponent implements OnInit {
           user => {
             this.user = user;                             // user is the user that was just loaded from the database. this.user is the variable, that we store the user in, so that we can access it outside of the scope of the Observable.
             this._update.changeUser(this.user);           // change the user in all components that are subscribed to dataService.currentUser
-            this._update.changeImgType("userPic");
+            this._update.changeImgType("userPic");   // ohne die Zeile, würde bei "upload new Photo" das Photo als PRODUCT pic behandelt werden. Wir wollen es aber als USER profile pic speichern. (Ist etwas ungeschickt gelöst...) 
             this.uploadFileService.getUserPic(this.user.id).subscribe(       // load user image
               image => {
                 console.log(image)
@@ -52,6 +53,10 @@ export class DetailsComponent implements OnInit {
             );
           }
         );
+  }
+
+  toggleUploadComponent() {
+    this.showUploadComponent = !this.showUploadComponent;             // if showUploadComponent was false, it's now true.
   }
 
   // This image upload code is basically taken from here: https://stackoverflow.com/questions/45530752/getting-image-from-api-in-angular-4-5  (first answer) or see the code directly: https://stackblitz.com/edit/angular-1yr75s

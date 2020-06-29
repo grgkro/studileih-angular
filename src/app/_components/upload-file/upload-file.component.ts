@@ -17,16 +17,18 @@ export class UploadFileComponent implements OnInit {
   currentFileUpload: File;
   userId: number;
   response: string;
-  user: User;
-  imgType: string;
-  product: Product;
+  user: User = { id: 1 };
+  imgType: string = "userPic";
+  product: Product = { id: 1 };  // we need a default value, otherwise you can't upload a user profile pic before clicking on a product (unclean solution, better solution would be nice)
 
   constructor(private router: Router, private uploadFileService: UploadFileService, private _update: UpdateService) { }
 
   ngOnInit(): void {
+    console.log(this.product.id)
     this._update.currentUser.subscribe(user => this.user = user)  //  if the user changes, this will get updated
-    this._update.currentProduct.subscribe(product => this.product = product)  //  if the product changes, this will get updated
+    this._update.currentProduct.subscribe(product => { if (product) this.product = product })  //  if the product is undefined (which will happen if you upload a user before clicking on one of the products), this would cause an error even if you dont need a product id to upload a user profile pic. So we catch that with the if command. If the product later changes and someone wants to upload a product pic, this line will get the product updated so that we know which product belongs to that product pic
     this._update.currentImgType.subscribe(imgType => this.imgType = imgType)  // if the imgType changes, this will get updated (for example, if you upload a product pic from the product-details componente, the component just needs to set the imageType to productPic before uploading the photo.)
+
   }
 
   // this function checks if the selected file is an image filetype (.jpg, .png, ...)
@@ -44,16 +46,12 @@ export class UploadFileComponent implements OnInit {
     if (this.checkBeforeUpload()) {
       // we only allow one file to be uploaded -> item(0) - without the 0 in item(0), you could upload many files at once (which would break the backend code).
       this.currentFileUpload = this.selectedFiles.item(0);
-      // This uploadfunction is responsible for handling uploads of user profile images and product pics,
-      // therefore we only send the userId with the photo -> after saving the photo to the local storage 
-      // we also need to update the user in the DB and assign the new photoId to him.  
-      // The parameters for productId and postId are set to 0 in pushFileToStorage().
+      // This uploadfunction is responsible for handling uploads of user profile images and product pics. (Unecessary complicated, splitting it in two functions would be better for seperation of concerns)
       this.uploadFileService.pushFileToStorage(this.currentFileUpload, this.user.id, this.product.id, this.imgType).subscribe((response: any) => {
         if (response == "Dein Foto wurde gespeichert.")
           this.response = response;
-        setTimeout(() => { this.router.navigate(['']); }, 700);  // after uploading a photo we go back to the main page immediatly -> could be changed, maybe better show a success message and stay on the current page...
         if (this.imgType == "productPic") this._update.changeShowUploadComponent(false);  // if the user uploaded a product photo, we want do not show the upload component anymore in the productdetails component. But therefore we need the information in the productdetails component. -> If a user successfully uploads a product photo (status 200), the upload component changes showUploadComponent to false here. The _update service then updates this value for all subscribes.
-
+        setTimeout(() => { this.router.navigate(['']); }, 700);  // after uploading a photo we go back to the main page immediatly -> could be changed, maybe better show a success message and stay on the current page...
       },
         (err: HttpErrorResponse) => this.processError(err)    // if the image could not be loaded, this part will be executed instead
       );
@@ -62,7 +60,7 @@ export class UploadFileComponent implements OnInit {
 
   // checks, if at least one file was selected for upload and if a user is logged in
   checkBeforeUpload(): boolean {
-    if (this.selectedFiles == undefined || this.user.id == 0) {  // is that necessary?
+    if (this.selectedFiles == undefined || this.user.id == 0) {
       if (this.selectedFiles == undefined) {
         this.response = "Please select an image.";
         return false;

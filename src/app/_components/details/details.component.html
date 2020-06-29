@@ -27,6 +27,7 @@
     </li>
   </ul>
 
+  <div>
   <!-- loads the user image. If no image is available, a default pic gets shown -->
   <img [src]="imageToShow"
      alt="User Profile Picture"
@@ -35,8 +36,16 @@
      <img src="https://cdn-0.askleo.com/wp-content/uploads/2013/07/image_not_found.png" alt="Fallbackimage"> <!-- <= default picture --> 
 </ng-template>
 <br>
-<br>
-<br/>
+
+ <!-- "upload new Photo" button -->
+  <div *ngIf="showUploadComponent">
+       <app-upload-file></app-upload-file>
+  </div>
+  <button *ngIf="!showUploadComponent" (click)="toggleUploadComponent()" class="btn btn-success">Upload new Photo</button>
+  <br>
+  <br>
+  <br>
 <strong>{{ errorMessage }}</strong>
+</div>
 
 </div>
