@@ -80,7 +80,7 @@ export class UploadFileComponent implements OnInit {
       console.log('An client-side or network error occurred:', err.error.message);
     } else if (err.status == 304) {
       this.response = "Foto mit selbem Namen wurde vom gleichen User schonmal hochgeladen.";
-    } else if (err.status == 304) {
+    } else if (err.status == 400) {
       this.response = "Foto mit selbem Namen wurde schonmal hochgeladen.";
     } else if (err.status == 0) {
       this.response = "Foto abgelehnt, Foto muss kleiner 500KB sein.";

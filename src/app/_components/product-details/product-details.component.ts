@@ -47,15 +47,7 @@ export class ProductDetailsComponent implements OnInit {
           this.isCurrentUserOwner = true;
           this._update.changeImgType("productPic");   // ohne die Zeile, würde bei "upload new Photo" das Photo als USER profile pic behandelt werden. Wir wollen es aber als PRODUCT pic speichern. (Ist etwas ungeschickt gelöst...) 
         }
-        // after loading the product, load one product pic (the first photo from the product.picPaths arraylist)
-        this._data.loadProductPicByFilename(this.product.picPaths[0], this.product.id).subscribe(image => {   // we only load the first poduct pic (testing)
-          this.createImageFromBlob(image);          // transorfms the blob into an image
-          // saveAs(val, "test.png")                // uncomment this to download the image in the browser (you also need to uncomment the import file-saver)
-        },
-          (err: HttpErrorResponse) => {                 // if the image could not be loaded, this part will be executed instead 
-            this.errorMessage = this._helper.createErrorMessage(err, "User oder Profilfoto konnte nicht gefunden werden");
-          }
-        );
+        this.loadProductPic();  // after loading the product, load one product pic (the first photo from the product.picPaths arraylist)  
       },
         (err: HttpErrorResponse) => {                 // if the product could not be loaded, this part will be executed instead 
           this.errorMessage = this._helper.createErrorMessage(err, "Produkt konnte nicht gefunden werden.");
@@ -63,6 +55,17 @@ export class ProductDetailsComponent implements OnInit {
       );
     this._update.currentUser.subscribe(user => this.user = user)  // always get the latest logged in user -> if the user changes, this will get updated
   }
+
+  loadProductPic() {
+    this._data.loadProductPicByFilename(this.product.picPaths[0], this.product.id).subscribe(image => {   // we only load the first poduct pic (testing)
+      this.createImageFromBlob(image);          // transorfms the blob into an image
+      // saveAs(val, "test.png")                // uncomment this to download the image in the browser (you also need to uncomment the import file-saver)
+    },
+      (err: HttpErrorResponse) => {                 // if the image could not be loaded, this part will be executed instead 
+        this.errorMessage = this._helper.createErrorMessage(err, "User oder Profilfoto konnte nicht gefunden werden");
+      }
+    );
+    }
 
   toggleUploadComponent() {
     this.showUploadComponent = !this.showUploadComponent;             // if showUploadComponent was false, it's now true.

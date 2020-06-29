@@ -13,7 +13,7 @@ export class HelperService {
   createErrorMessage(err: HttpErrorResponse, userMessage: string): string {
     if (err.error instanceof Error) {
       console.log('An client-side or network error occurred:', err.error);
-    } else if (err.status == 500 || err.status == 404) {
+    } else if (err.status == 500 || err.status == 404 || err.status == 400) {
       return userMessage;
     } else {
       //Backend returns unsuccessful response codes such as 400, 500 etc.

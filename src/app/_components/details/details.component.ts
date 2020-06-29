@@ -43,16 +43,19 @@ export class DetailsComponent implements OnInit {
             this.user = user;                             // user is the user that was just loaded from the database. this.user is the variable, that we store the user in, so that we can access it outside of the scope of the Observable.
             this._update.changeUser(this.user);           // change the user in all components that are subscribed to dataService.currentUser
             this._update.changeImgType("userPic");   // ohne die Zeile, würde bei "upload new Photo" das Photo als PRODUCT pic behandelt werden. Wir wollen es aber als USER profile pic speichern. (Ist etwas ungeschickt gelöst...) 
-            this.uploadFileService.getUserPic(this.user.id).subscribe(       // load user image
-              image => {
-                console.log(image)
-                this.createImageFromBlob(image);
-                // saveAs(val, "test.png")                // uncomment this to download the image in the browser (you also need to uncomment the import file-saver)
-              },
+            this.loadUserProfilePic();
+          },
               (err: HttpErrorResponse) => this.processError(err)    // if the image could not be loaded, this part will be executed instead
-            );
-          }
-        );
+            );    
+  }
+
+  loadUserProfilePic() {
+    this.uploadFileService.getUserPic(this.user.id).subscribe(       // load user image
+      image => {
+        console.log(image)
+        this.createImageFromBlob(image);
+        // saveAs(val, "test.png")                // uncomment this to download the image in the browser (you also need to uncomment the import file-saver)
+      })
   }
 
   toggleUploadComponent() {
