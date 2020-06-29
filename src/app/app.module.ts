@@ -17,6 +17,14 @@ import { GoogleMapsComponent } from './_components/google-maps/google-maps.compo
 import { gmaps_environment } from '../environments/gmaps_environment';
 import { AddUserComponent } from './add-user/add-user.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ProductDetailsComponent } from './_components/product-details/product-details.component';
+
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatInputModule} from '@angular/material/input';
+import { MatNativeDateModule } from '@angular/material/core';
+
+import { DeferLoadModule } from '@trademe/ng-defer-load';
+
 
 
 HttpClientModule
@@ -31,6 +39,7 @@ HttpClientModule
     UploadFileComponent,
     GoogleMapsComponent,
     AddUserComponent,
+    ProductDetailsComponent,
     
   ],
   imports: [
@@ -40,12 +49,20 @@ HttpClientModule
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
+
+    MatDatepickerModule,
+    MatInputModule,
+    MatNativeDateModule,
+
+    DeferLoadModule,
+  
     AgmCoreModule.forRoot({
       apiKey: gmaps_environment.GMAPS_API_KEY // The API KEY belongs to Georg and can't be exposed on GITHUB (Hackers are crazy) 
       //-> Therefore it's loaded as a variable from the file gmaps_environment.ts in folder environments. gmaps_environment.ts is in .gitignore, so it won't get pushed to git
     })
   ],
   providers: [UploadFileService ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  
 })
 export class AppModule { }

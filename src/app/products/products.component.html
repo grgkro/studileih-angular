@@ -1,23 +1,33 @@
+<div>
+    <app-google-maps></app-google-maps>
+</div>
+<br>
+<br>
 
-    <div class="row justify-content-md-center">
-        <div class="col">
-            <h1>Products</h1>
-        </div>
-        <div class="col-md-auto">
-          </div>
-        <div class="col col-lg-2">
-            <a routerLink="" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}">
-                <i class="material-icons">add</i>
-              </a> 
-        </div>
+<div class="row justify-content-md-center">
+    <div class="col">
+        <h1>Products</h1>
     </div>
+    <div class="col-md-auto">
+    </div>
+    <div class="col col-lg-2">
+        <a routerLink="" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}">
+            <i class="material-icons">add</i>
+        </a>
+    </div>
+</div>
 
-
-<ul>
+<ul [@listStagger]="products">
+    <!--listStagger ist eine spezielle Animation, bei der die Liste nicht auf einmal dargestellt wird, sondern zeitlich verzögert auftaucht-->
     <li *ngFor="let product of products">
+        <a routerLink="/product-details/{{ product.id }}">{{ product.title }}</a>
+        <!-- wenn der username angeklickt wird, wird man weitergeleitet per routerLink zur details component.-->
         <ul>
-            <li>{{ product.name }}</li>
+            <li>name: {{ product.name }}</li>
+            <li>price: {{ product.price }}</li>
+            <li>id: {{ product.id }}</li>
         </ul>
     </li>
 </ul>
 
+ 
