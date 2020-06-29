@@ -36,13 +36,13 @@ export class DataService {
     return this.http.put(this.productsPath + '/' + product.id, product)
   }
 
-  // loadProductPics() {
-  //   return this.http.get(this.imagesPath + '/productPics');
-  // }
-
-  loadProductPics(): Observable<Blob> {
-    return this.http.get(this.imagesPath + '/productPics', { responseType: 'blob' });
+  loadProductPicByFilename(filename: string, productId: number): Observable<Blob> {
+    const formdata: FormData = new FormData();
+    formdata.append('filename', filename);
+    formdata.append('productId', productId.toString());
+    return this.http.post(this.imagesPath + '/loadProductPicByFilename', formdata, { responseType: 'blob' });
   }
+
 
 
 
