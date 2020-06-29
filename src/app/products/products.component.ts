@@ -61,23 +61,26 @@ export class ProductsComponent implements OnInit {
                   console.log("what? " + this.imageToShow)
                   // saveAs(val, "test.png")                // uncomment this to download the image in the browser (you also need to uncomment the import file-saver)
                 },
-                (err: HttpErrorResponse) => {                 // if the image could not be loaded, this part will be executed instead 
-                  if (err.error instanceof Error) {
-                    console.log('An client-side or network error occurred:', err.error);
-                  } else if (err.status == 404) {
-                    console.log("User or ProfilePic not found");
-                  } else {
-                    //Backend returns unsuccessful response codes such as 400, 500 etc.
-                    console.log('Backend returned status code: ', err.status);
-                    console.log('Response body:', err.error);
-                  }
-                }
+                (err: HttpErrorResponse) => this.processError(err)    // if the image could not be loaded, this part will be executed instead 
               );
             }
 
           })
 
       });
+  }
+
+  // takes the error and then displays a response to the user or only logs the error on the console (depending on if the error is useful for the user)
+  processError(err: HttpErrorResponse) {
+    if (err.error instanceof Error) {
+      console.log('An client-side or network error occurred:', err.error);
+    } else if (err.status == 404) {
+      console.log("User or ProfilePic not found");
+    } else {
+      //Backend returns unsuccessful response codes such as 400, 500 etc.
+      console.log('Backend returned status code: ', err.status);
+      console.log('Response body:', err.error);
+    }
   }
 
 

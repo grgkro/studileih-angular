@@ -51,13 +51,11 @@ export class UploadFileComponent implements OnInit {
       this.uploadFileService.pushFileToStorage(this.currentFileUpload, this.user.id, this.product.id, this.imgType).subscribe((response: any) => {
         if (response == "Dein Foto wurde gespeichert.")
           this.response = response;
-          setTimeout(() => { this.router.navigate(['']); }, 700);  // after uploading a photo we go back to the main page immediatly -> could be changed, maybe better show a success message and stay on the current page...
-          if (this.imgType == "productPic") this._update.changeShowUploadComponent(false);  // if the user uploaded a product photo, we want do not show the upload component anymore in the productdetails component. But therefore we need the information in the productdetails component. -> If a user successfully uploads a product photo (status 200), the upload component changes showUploadComponent to false here. The _update service then updates this value for all subscribes.
-           
+        setTimeout(() => { this.router.navigate(['']); }, 700);  // after uploading a photo we go back to the main page immediatly -> could be changed, maybe better show a success message and stay on the current page...
+        if (this.imgType == "productPic") this._update.changeShowUploadComponent(false);  // if the user uploaded a product photo, we want do not show the upload component anymore in the productdetails component. But therefore we need the information in the productdetails component. -> If a user successfully uploads a product photo (status 200), the upload component changes showUploadComponent to false here. The _update service then updates this value for all subscribes.
+
       },
-        (err: HttpErrorResponse) => {
-          this.processError(err);
-        }
+        (err: HttpErrorResponse) => this.processError(err)    // if the image could not be loaded, this part will be executed instead
       );
     }
   }

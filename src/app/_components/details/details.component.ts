@@ -43,14 +43,12 @@ export class DetailsComponent implements OnInit {
             this._update.changeUser(this.user);           // change the user in all components that are subscribed to dataService.currentUser
             this._update.changeImgType("userPic");
             this.uploadFileService.getUserPic(this.user.id).subscribe(       // load user image
-              image => { 
+              image => {
                 console.log(image)
                 this.createImageFromBlob(image);
                 // saveAs(val, "test.png")                // uncomment this to download the image in the browser (you also need to uncomment the import file-saver)
               },
-              (err: HttpErrorResponse) => {                 // if the image could not be loaded, this part will be executed instead 
-                this.errorMessage = this._helper.createErrorMessage(err, "User oder Profilfoto konnte nicht gefunden werden");
-                }
+              (err: HttpErrorResponse) => this.processError(err)    // if the image could not be loaded, this part will be executed instead
             );
           }
         );
@@ -68,6 +66,19 @@ export class DetailsComponent implements OnInit {
 
     if (image) {
       reader.readAsDataURL(image); //this triggers the reader EventListener
+    }
+  }
+
+  // takes the error and then displays a response to the user or only logs the error on the console (depending on if the error is useful for the user)
+  processError(err: HttpErrorResponse) {
+    if (err.error instanceof Error) {
+      console.log('An client-side or network error occurred:', err.error);
+    } else if (err.status == 404) {
+      console.log("User or ProfilePic not found");
+    } else {
+      //Backend returns unsuccessful response codes such as 400, 500 etc.
+      console.log('Backend returned status code: ', err.status);
+      console.log('Response body:', err.error);
     }
   }
 }
