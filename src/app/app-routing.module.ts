@@ -5,7 +5,15 @@ import { UsersComponent } from './users/users.component';
 import { ProductsComponent } from './products/products.component';
 import { GoogleMapsComponent } from './_components/google-maps/google-maps.component';
 import { AddUserComponent } from './add-user/add-user.component';
+
+import { AddProductComponent } from './add-product/add-product.component';
+
 import { ProductDetailsComponent } from './_components/product-details/product-details.component';
+import { UploadFileComponent } from './_components/upload-file/upload-file.component';
+
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+
 
 const routes: Routes = [
   {
@@ -25,6 +33,14 @@ const routes: Routes = [
     component: DetailsComponent
   },
   {
+    path: 'add-product',
+    component: AddProductComponent
+  },
+  {
+    path: 'upload-userPic',
+    component: UploadFileComponent
+  },
+  {
     path: 'add-user',
     component: AddUserComponent
   },
@@ -35,7 +51,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes), FormsModule, ReactiveFormsModule],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

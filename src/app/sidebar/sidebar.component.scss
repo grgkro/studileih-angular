@@ -1,24 +1,27 @@
 nav {
-    background: #2D2E2E;
-    height: 100%;
+  background: #2d2e2e;
+  height: 100%;
 
-    ul {
-        list-style-type: none;
-        padding: 0;
-        margin: 0;
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
 
-        li {
+    li {
+      a {
+        color: #fff;
+        padding: 20px;
+        display: block;
+      }
 
-            a {
-                color: #fff;
-                padding: 20px;
-                display: block;
-            }
-
-            .activated {
-                background-color: #00a8ff;
-            }
-        }
+      .activated {
+        background-color: #00a8ff;
+      }
     }
-    
+
+   /*  li:hover {
+      background-color: #00a8ff;
+      color: white;
+    } */
+  }
 }

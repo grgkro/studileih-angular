@@ -1,3 +1,42 @@
+
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1 class="display-3">Products</h1>
+            </div>
+            <div class="col-md-auto">
+                <button class="btn btn-dark">
+                    <a routerLink="/add-product">
+                        Add Product
+                      </a>
+                </button>
+            </div>
+        </div>
+        
+        <hr class="my-2">
+        <div class="row justify-content-md-center">
+            <div class="col">
+               
+            </div>
+            <div class="col-md-auto">
+              </div>
+            <div class="col col-lg-2">
+            </div>
+        </div>
+<div class="jumbotron">
+    <ul>
+        <li *ngFor="let product of products">
+            <ul>
+                <li>{{ product.name }}</li>
+            </ul>
+        </li>
+    </ul>
+</div>
+    
+
+
+
 <div>
     <app-google-maps></app-google-maps>
 </div>
@@ -14,6 +53,7 @@
     </ng-template>
 </div> -->
 
+
 <div class="row justify-content-md-center">
     <div class="col">
         <h1>Products</h1>
@@ -26,6 +66,7 @@
         </a>
     </div>
 </div>
+
 
 <ul [@listStagger]="products">
     <!--listStagger ist eine spezielle Animation, bei der die Liste nicht auf einmal dargestellt wird, sondern zeitlich verzögert auftaucht-->
@@ -50,4 +91,4 @@
     </li>
 </ul>
 
- 
+
