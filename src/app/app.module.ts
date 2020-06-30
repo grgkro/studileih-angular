@@ -21,7 +21,6 @@ import { AddProductComponent } from './add-product/add-product.component';
 import { EditProductComponent } from './edit-product/edit-product.component';
 import { UserLoginComponent } from './user-login/user-login.component';
 import { EditUserComponent } from './edit-user/edit-user.component';
-<<<<<<< HEAD
 
 
 import {MatDatepickerModule} from '@angular/material/datepicker';
@@ -31,9 +30,6 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { DeferLoadModule } from '@trademe/ng-defer-load';
 import { ProductDetailsComponent } from './_components/product-details/product-details.component';
 
-=======
-import { ProductDetailsComponent } from './product-details/product-details.component';
->>>>>>> 73b855903b69d45879e627630e87981c95e4c0db
 
 
 HttpClientModule

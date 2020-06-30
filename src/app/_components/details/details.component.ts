@@ -76,4 +76,8 @@ export class DetailsComponent implements OnInit {
       reader.readAsDataURL(image); //this triggers the reader EventListener
     }
   }
+
+  editUser(user){
+
+  }
 }
