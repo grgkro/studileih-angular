@@ -17,10 +17,6 @@ import { GoogleMapsComponent } from './_components/google-maps/google-maps.compo
 import { gmaps_environment } from '../environments/gmaps_environment';
 import { AddUserComponent } from './add-user/add-user.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-<<<<<<< HEAD
-import { AddProductComponent } from './add-product/add-product.component';
-import { EditProductComponent } from './edit-product/edit-product.component';
-=======
 import { ProductDetailsComponent } from './_components/product-details/product-details.component';
 
 import {MatDatepickerModule} from '@angular/material/datepicker';
@@ -29,7 +25,6 @@ import { MatNativeDateModule } from '@angular/material/core';
 
 import { DeferLoadModule } from '@trademe/ng-defer-load';
 
->>>>>>> d6e9be9ea4719f0ac8ca6cbc8b1531827fac2d38
 
 
 HttpClientModule
@@ -44,12 +39,7 @@ HttpClientModule
     UploadFileComponent,
     GoogleMapsComponent,
     AddUserComponent,
-<<<<<<< HEAD
-    AddProductComponent,
-    EditProductComponent,
-=======
     ProductDetailsComponent,
->>>>>>> d6e9be9ea4719f0ac8ca6cbc8b1531827fac2d38
     
   ],
   imports: [
