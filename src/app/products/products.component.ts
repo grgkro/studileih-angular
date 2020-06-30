@@ -44,9 +44,7 @@ export class ProductsComponent implements OnInit {
   constructor(private _data: DataService, private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
-    //load all products from the database
-    this.loadProducts();
-     
+    this.loadProducts();  //load all products from the database
   }
 
 
@@ -54,7 +52,6 @@ export class ProductsComponent implements OnInit {
     this._data.getProducts().subscribe(
       products => {
         this.products = products; 
-        console.log(this.products)
         products.forEach(product => {
             this.loadMainProductPicture(product);
           })
@@ -79,7 +76,6 @@ export class ProductsComponent implements OnInit {
   // But I had to add the sanitization part, otherwise Firefox and Chrome always blocked the image/blob. https://angular.io/guide/security#xss -> Potential security risk... 
   createImageFromBlob(image: Blob): any {
     let reader = new FileReader();
-    let sanitizedImage: any
     reader.addEventListener("load", () => {
       // Somebody could create an image and hide javascript code inside of it (an image is just a very long text formatted in base64) 
       // -> this script would get executed, if the image get's transferred to our HTML page in the next line. Therefore it gets blocked by default, unless we bypass it.

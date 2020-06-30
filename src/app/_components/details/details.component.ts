@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Params } from "@angular/router";
 
 import { switchMap } from 'rxjs/operators';
 
@@ -32,12 +32,16 @@ export class DetailsComponent implements OnInit {
   errorMessage: string;
   showUploadComponent: boolean = false;
 
-  constructor(private route: ActivatedRoute, private data: DataService, private _update: UpdateService, private _helper: HelperService, private uploadFileService: UploadFileService, private sanitization: DomSanitizer) { }
+  constructor(private route: ActivatedRoute, private data: DataService, private _update: UpdateService, private _helper: HelperService, private uploadFileService: UploadFileService, private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
+    this.loadUserWithUserPic();
+  }
+
+  loadUserWithUserPic() {
     // here we create 3 Observables, one gets the parameters/userId from the url "http://localhost:4200/details/{userId}. The next load the user, and the last loads the profile pic of that user.
     this.route.params.pipe(switchMap(                   // pipe & switchMap take care, that if the userId changes for some reason, the following process gets stopped: https://www.concretepage.com/angular/angular-switchmap-example (not necessary yet, because the user profile image loads pretty fast, but if that takes longer and the user switches to another site, it's better to stop the process)
-      params =>                                         // params is the return value of the switchMap and in our case it simple contains the id taken from the url. 
+      params =>                                           // params is the return value of the switchMap and in our case it simple contains the id taken from the url.                       
         this.data.getUser(params['id']))).subscribe(      // this calls the getUser function with the id from the url, which returns an Observable, to which we subscribe. When the Observable is ready it will give us the user.
           user => {
             this.user = user;                             // user is the user that was just loaded from the database. this.user is the variable, that we store the user in, so that we can access it outside of the scope of the Observable.
@@ -45,8 +49,8 @@ export class DetailsComponent implements OnInit {
             this._update.changeImgType("userPic");   // ohne die Zeile, würde bei "upload new Photo" das Photo als PRODUCT pic behandelt werden. Wir wollen es aber als USER profile pic speichern. (Ist etwas ungeschickt gelöst...) 
             this.loadUserProfilePic();
           },
-              (err: HttpErrorResponse) => this.processError(err)    // if the image could not be loaded, this part will be executed instead
-            );    
+          (err: HttpErrorResponse) => this.processError(err)    // if the image could not be loaded, this part will be executed instead
+        );
   }
 
   loadUserProfilePic() {
@@ -58,6 +62,7 @@ export class DetailsComponent implements OnInit {
       })
   }
 
+  // Hide or Show the Upload function (the "Durchsuchen" Button)
   toggleUploadComponent() {
     this.showUploadComponent = !this.showUploadComponent;             // if showUploadComponent was false, it's now true.
   }
@@ -69,7 +74,7 @@ export class DetailsComponent implements OnInit {
     reader.addEventListener("load", () => {
       // Somebody could create an image and hide javascript code inside of it (an image is just a very long text formatted in base64) 
       // -> this script would get executed, if the image get's transferred to our HTML page in the next line. Therefore it gets blocked by default, unless we bypass it.
-      this.imageToShow = this.sanitization.bypassSecurityTrustResourceUrl(reader.result + "");  // the image is read by the FileReader and is returned as an "any". But this needs to be sanitized first, before it can be shown in the HTML. Therefore we pass it into the sanitzation, but there we need a String, therefore we use: reader.result + ""   
+      this.imageToShow = this.sanitizer.bypassSecurityTrustResourceUrl(reader.result + "");  // the image is read by the FileReader and is returned as an "any". But this needs to be sanitized first, before it can be shown in the HTML. Therefore we pass it into the sanitzation, but there we need a String, therefore we use: reader.result + ""   
     }, false);
 
     if (image) {

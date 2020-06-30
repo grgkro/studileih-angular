@@ -5,6 +5,7 @@ import { UpdateService } from 'src/app/_services/update.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { User } from 'src/app/_models/user';
 import { Product } from 'src/app/_models/product';
+import { HelperService } from 'src/app/_services/helper.service';
 
 
 @Component({
@@ -21,14 +22,24 @@ export class UploadFileComponent implements OnInit {
   imgType: string = "userPic";
   product: Product = { id: 1 };  // we need a default value, otherwise you can't upload a user profile pic before clicking on a product (unclean solution, better solution would be nice)
 
-  constructor(private router: Router, private uploadFileService: UploadFileService, private _update: UpdateService) { }
+  constructor(private router: Router, private uploadFileService: UploadFileService, private _update: UpdateService, private _helper: HelperService) { }
 
   ngOnInit(): void {
-    console.log(this.product.id)
-    this._update.currentUser.subscribe(user => this.user = user)  //  if the user changes, this will get updated
-    this._update.currentProduct.subscribe(product => { if (product) this.product = product })  //  if the product is undefined (which will happen if you upload a user before clicking on one of the products), this would cause an error even if you dont need a product id to upload a user profile pic. So we catch that with the if command. If the product later changes and someone wants to upload a product pic, this line will get the product updated so that we know which product belongs to that product pic
-    this._update.currentImgType.subscribe(imgType => this.imgType = imgType)  // if the imgType changes, this will get updated (for example, if you upload a product pic from the product-details componente, the component just needs to set the imageType to productPic before uploading the photo.)
+    this.updateUser();   //  if the user changes, this will get updated
+    this.updateProduct();  //  if the product is undefined (which will happen if you upload a user before clicking on one of the products), this would cause an error even if you dont need a product id to upload a user profile pic. So we catch that with the if command. If the product later changes and someone wants to upload a product pic, this line will get the product updated so that we know which product belongs to that product pic
+    this.updateImgType(); // if the imgType changes, this will get updated (for example, if you upload a product pic from the product-details componente, the component just needs to set the imageType to productPic before uploading the photo.)
+  }
 
+  updateUser(): void {
+    this._update.currentUser.subscribe(user => this.user = user)  
+  }
+
+  updateProduct(): void {
+    this._update.currentProduct.subscribe(product => { if (product) this.product = product })  
+  }
+
+  updateImgType(): void {
+    this._update.currentImgType.subscribe(imgType => this.imgType = imgType) 
   }
 
   // this function checks if the selected file is an image filetype (.jpg, .png, ...)
@@ -48,7 +59,7 @@ export class UploadFileComponent implements OnInit {
       this.currentFileUpload = this.selectedFiles.item(0);
       // This uploadfunction is responsible for handling uploads of user profile images and product pics. (Unecessary complicated, splitting it in two functions would be better for seperation of concerns)
       this.uploadFileService.pushFileToStorage(this.currentFileUpload, this.user.id, this.product.id, this.imgType).subscribe((response: any) => {
-        if (response == "Dein Foto wurde gespeichert.")
+        if (response == "Dein Foto wurde gespeichert.")   //it would be better to check the response status == 200, but I dont know how
           this.response = response;
         if (this.imgType == "productPic") this._update.changeShowUploadComponent(false);  // if the user uploaded a product photo, we want do not show the upload component anymore in the productdetails component. But therefore we need the information in the productdetails component. -> If a user successfully uploads a product photo (status 200), the upload component changes showUploadComponent to false here. The _update service then updates this value for all subscribes.
         setTimeout(() => { this.router.navigate(['']); }, 700);  // after uploading a photo we go back to the main page immediatly -> could be changed, maybe better show a success message and stay on the current page...
