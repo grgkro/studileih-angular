@@ -17,25 +17,18 @@ import { GoogleMapsComponent } from './_components/google-maps/google-maps.compo
 import { gmaps_environment } from '../environments/gmaps_environment';
 import { AddUserComponent } from './add-user/add-user.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-<<<<<<< HEAD
 import { AddProductComponent } from './add-product/add-product.component';
 import { EditProductComponent } from './edit-product/edit-product.component';
 import { UserLoginComponent } from './user-login/user-login.component';
 import { EditUserComponent } from './edit-user/edit-user.component';
 
-=======
-import { ProductDetailsComponent } from './_components/product-details/product-details.component';
->>>>>>> 8c1619e7ce86e1cb663b70ffba98ad79ace1450f
 
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatInputModule} from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 
 import { DeferLoadModule } from '@trademe/ng-defer-load';
-<<<<<<< HEAD
 import { ProductDetailsComponent } from './_components/product-details/product-details.component';
-=======
->>>>>>> 8c1619e7ce86e1cb663b70ffba98ad79ace1450f
 
 
 
@@ -51,13 +44,10 @@ HttpClientModule
     UploadFileComponent,
     GoogleMapsComponent,
     AddUserComponent,
-<<<<<<< HEAD
     AddProductComponent,
     EditProductComponent,
     UserLoginComponent,
     EditUserComponent,
-=======
->>>>>>> 8c1619e7ce86e1cb663b70ffba98ad79ace1450f
     ProductDetailsComponent,
     
   ],

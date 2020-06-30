@@ -39,12 +39,10 @@
                   </button>
                 </div>
                 <div class="col">
-                  <a
-                    href="#"
-                    [routerLink]="['/products/', product.id, 'edit-product']"
-                    class="btn btn-primary"
-                    >Edit</a
-                  >
+                  <button type="button" class="btn btn-info">
+                    <a routerLink="/edit-product/{{ product.id }}">Edit</a>
+                  </button>
+                  
                 </div>
                 <div class="col">
                   <button

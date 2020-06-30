@@ -49,87 +49,16 @@
             </div>
             </div>
         
-            <div class="form-group">
-              <label for="views">Views:</label>
-              <input
-                type="number"
-                formControlName="views"
-                placeholder="Views"
-                name="views"
-                class="form-control"
-                id="views"
-              />
-              <div *ngIf="f.body.touched && f.body.invalid" class="alert alert-danger">
-                <div *ngIf="f.body.errors.required">Views is required.</div>
-            </div>
-            </div>
-        
-            <div class="form-group">
-              <label for="available">Available:</label>
-              <input
-                type="boolean"
-                formControlName="available"
-                placeholder="Available"
-                name="available"
-                class="form-control"
-                id="available"
-              />
-              <div *ngIf="f.body.touched && f.body.invalid" class="alert alert-danger">
-                <div *ngIf="f.body.errors.required">Available is required.</div>
-            </div>
-            </div>
-        
-            <div class="form-group">
-              <label for="createdAt">Created at:</label>
-              <input
-                type="text"
-                formControlName="createdAt"
-                placeholder="Created at"
-                name="createdAt"
-                class="form-control"
-                id="createdAt"
-              />
-              <div *ngIf="f.body.touched && f.body.invalid" class="alert alert-danger">
-                <div *ngIf="f.body.errors.required">Create date is required.</div>
-            </div>
-            </div>
-        
-            <div class="form-group">
-              <label for="updatedAt">Updated at:</label>
-              <input
-                type="text"
-                formControlName="updatedAt"
-                placeholder="Updated at"
-                name="updatedAt"
-                class="form-control"
-                id="updatedAt"
-              />
-              <div *ngIf="f.body.touched && f.body.invalid" class="alert alert-danger">
-                <div *ngIf="f.body.errors.required">Update date is required.</div>
-            </div>
-            </div>
-        
-            <div class="form-group">
-              <label for="picPaths">Pic paths:</label>
-              <input
-                type="text"
-                formControlName="picPaths"
-                placeholder="Pic paths"
-                name="picPaths"
-                class="form-control"
-                id="picPaths"
-              />
-              <div *ngIf="f.body.touched && f.body.invalid" class="alert alert-danger">
-                <div *ngIf="f.body.errors.required">Pic paths are required.</div>
-            </div>
-            </div>
-        
             <div class="row">
               <div class="col-4">
-                <button type="submit" class="btn btn-success" type="submit">Add</button>
+                <button type="submit" class="btn btn-success" type="submit">Save</button>
               </div>
               <div class="col-4">
-                <a href="#" routerLink="roducts" class="btn btn-primary">Cancel</a>
+                <button type="button" class="btn btn-primary">
+                  <a routerLink="">
+                    Cancel
+                  </a>
+                </button>
               </div>
             </div>
           </form>

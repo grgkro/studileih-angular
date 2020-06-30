@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 
 import { switchMap } from 'rxjs/operators';
 
@@ -17,6 +17,7 @@ import { UpdateService } from '../../_services/update.service';
 
 import { DomSanitizer } from '@angular/platform-browser';
 import { HttpErrorResponse } from '@angular/common/http';
+import { User } from 'src/app/_models/user';
 
 
 @Component({
@@ -28,8 +29,12 @@ export class DetailsComponent implements OnInit {
 
   user: any;
   imageToShow: any;
-
-  constructor(private route: ActivatedRoute, private data: DataService, private _update: UpdateService, private uploadFileService: UploadFileService, private sanitization: DomSanitizer) { }
+  id: any;
+  userDetails: User;
+  constructor(private route: ActivatedRoute, 
+    private data: DataService, private _update: UpdateService, 
+    private uploadFileService: UploadFileService, private sanitization: DomSanitizer,
+    private router: Router) { }
 
   ngOnInit() {
     // here we create 3 Observables, one gets the parameters/userId from the url "http://localhost:4200/details/{userId}. The next load the user, and the last loads the profile pic of that user.
@@ -77,7 +82,16 @@ export class DetailsComponent implements OnInit {
     }
   }
 
-  editUser(user){
+ 
 
-  }
-}
+  editUser(user: User ): void {
+    this. id = this.route.snapshot.params['id'];
+  this.loadUserDetails(this.id);
+   this.router.navigate(['edit-user/'+this.id]);
+ };
+
+ loadUserDetails(id){
+  this.data.getUser(id).subscribe(user => {
+    this.userDetails = user;
+  });
+}}

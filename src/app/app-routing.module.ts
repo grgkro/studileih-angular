@@ -19,6 +19,18 @@ const routes: Routes = [
     component: ProductsComponent
   },
   {
+    path: 'add-product',
+    component: AddProductComponent
+  },
+  {
+    path: 'product-details/:id',
+    component: ProductDetailsComponent
+  },
+  {
+    path: 'edit-product/:id',
+    component: EditProductComponent
+  },
+  {
     path: 'product-details/:id',
     component: ProductDetailsComponent
   },
@@ -27,45 +39,33 @@ const routes: Routes = [
     component: UsersComponent
   },
   {
-    path: 'user-login',
-    component: UserLoginComponent
+    path: 'add-user',
+    component: AddUserComponent
+  },
+  {
+    path: 'edit-user/:id',
+    component: EditUserComponent
   },
   {
     path: 'details/:id',
     component: DetailsComponent
   },
-  
   {
-    path: 'product-details/:id',
-    component: ProductDetailsComponent
-  },
-  {
-    path: 'edit-product/:id',
-    component: EditProductComponent
+    path: 'user-login',
+    component: UserLoginComponent
   },
   {
     path: 'products',
     component: ProductsComponent
   },
   {
-    path: 'product-details/:id',
-    component: ProductDetailsComponent
-  },
-  {
-    path: 'edit-product/:id',
-    component: EditProductComponent
-  },
-  {
     path: 'add-product',
     component: AddProductComponent
   },
+  
   {
     path: 'upload-userPic',
     component: UploadFileComponent
-  },
-  {
-    path: 'add-user',
-    component: AddUserComponent
   },
   {
     path: 'google-maps',
