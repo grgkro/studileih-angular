@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UploadFileService } from 'src/app/_services/upload-file.service';
 import { UpdateService } from 'src/app/_services/update.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -22,7 +22,7 @@ export class UploadFileComponent implements OnInit {
   imgType: string = "userPic";
   product: Product = { id: 1 };  // we need a default value, otherwise you can't upload a user profile pic before clicking on a product (unclean solution, better solution would be nice)
 
-  constructor(private router: Router, private uploadFileService: UploadFileService, private _update: UpdateService, private _helper: HelperService) { }
+  constructor(private route: ActivatedRoute, private router: Router, private uploadFileService: UploadFileService, private _update: UpdateService, private _helper: HelperService) { }
 
   ngOnInit(): void {
     this.updateUser();   //  if the user changes, this will get updated

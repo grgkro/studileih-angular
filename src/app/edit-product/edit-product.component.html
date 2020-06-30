@@ -1,1 +1,68 @@
-<p>edit-product works!</p>
+
+<div class="col user-container">
+    <div class="jumbotron">
+        <h1 class="display-4">Edit Product</h1>
+       
+        <hr class="my-2">
+        <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
+            
+            <div class="form-group">
+              <label for="name">Product name:</label>
+              <input
+                type="text"
+                formControlName="name"
+                placeholder="name"
+                name="Name"
+                class="form-control"
+                id="name"
+              />
+              <div *ngIf="f.body.touched && f.body.invalid" class="alert alert-danger">
+                <div *ngIf="f.body.errors.required">Product name is required.</div>
+            </div>
+            </div>
+        
+            <div class="form-group">
+              <label for="email">Title:</label>
+              <input
+                formControlName="title"
+                placeholder="Title"
+                name="title"
+                class="form-control"
+                id="title"
+              />
+              <div *ngIf="f.body.touched && f.body.invalid" class="alert alert-danger">
+                <div *ngIf="f.body.errors.required">Title is required.</div>
+            </div>
+            </div>
+            <div class="form-group">
+              <label for="price">Price:</label>
+              <input
+                type="number"
+                formControlName="price"
+                placeholder="Price"
+                name="price"
+                class="form-control"
+                id="price"
+              />
+              <div *ngIf="f.body.touched && f.body.invalid" class="alert alert-danger">
+                <div *ngIf="f.body.errors.required">Price is required.</div>
+            </div>
+            </div>
+        
+            <div class="row">
+              <div class="col-4">
+                <button type="submit" class="btn btn-success" type="submit">Save</button>
+              </div>
+              <div class="col-4">
+                <button type="button" class="btn btn-primary">
+                  <a routerLink="">
+                    Cancel
+                  </a>
+                </button>
+              </div>
+            </div>
+          </form>
+    </div>
+
+</div>
+

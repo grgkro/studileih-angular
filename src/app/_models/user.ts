@@ -3,6 +3,9 @@
 import { Product } from './product';
 
 export interface User {
+    result?: any;
+    message?(message: any);
+    status?: number;
     id?: number; 
     name?: number;
     email?: string;

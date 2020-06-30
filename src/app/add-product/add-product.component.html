@@ -52,54 +52,6 @@
             </div>
         
             <div class="form-group">
-              <label for="views">Views:</label>
-              <input
-                type="number"
-                formControlName="views"
-                placeholder="Views"
-                name="views"
-                class="form-control"
-                id="views"
-              />
-            </div>
-        
-            <div class="form-group">
-              <label for="available">Available:</label>
-              <input
-                type="boolean"
-                formControlName="available"
-                placeholder="Available"
-                name="available"
-                class="form-control"
-                id="available"
-              />
-            </div>
-        
-            <div class="form-group">
-              <label for="createdAt">Created at:</label>
-              <input
-                type="text"
-                formControlName="createdAt"
-                placeholder="Created at"
-                name="createdAt"
-                class="form-control"
-                id="createdAt"
-              />
-            </div>
-        
-            <div class="form-group">
-              <label for="updatedAt">Updated at:</label>
-              <input
-                type="text"
-                formControlName="updatedAt"
-                placeholder="Updated at"
-                name="updatedAt"
-                class="form-control"
-                id="updatedAt"
-              />
-            </div>
-        
-            <div class="form-group">
               <label for="picPaths">Pic paths:</label>
               <input
                 type="text"
@@ -113,10 +65,14 @@
         
             <div class="row">
               <div class="col-4">
-                <button class="btn btn-success">Add</button>
+                <button type="submit" class="btn btn-success">Add</button>
               </div>
               <div class="col-4">
-                <button class="btn btn-danger">Cancel</button>
+                <button type="button" class="btn btn-danger">
+                  <a routerLink="">
+                    Cancel
+                  </a>
+                </button>
               </div>
             </div>
           </form>

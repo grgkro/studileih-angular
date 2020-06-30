@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ActivatedRoute, Params } from "@angular/router";
+import { ActivatedRoute, Params, Router } from "@angular/router";
 
 import { switchMap } from 'rxjs/operators';
 
@@ -18,6 +18,7 @@ import { UpdateService } from '../../_services/update.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { HttpErrorResponse } from '@angular/common/http';
 import { HelperService } from 'src/app/_services/helper.service';
+import { User } from 'src/app/_models/user';
 
 
 @Component({
@@ -32,7 +33,10 @@ export class DetailsComponent implements OnInit {
   errorMessage: string;
   showUploadComponent: boolean = false;
 
-  constructor(private route: ActivatedRoute, private data: DataService, private _update: UpdateService, private _helper: HelperService, private uploadFileService: UploadFileService, private sanitizer: DomSanitizer) { }
+  constructor(private route: ActivatedRoute, private data: DataService, private _update: UpdateService, private _helper: HelperService, private uploadFileService: UploadFileService, private sanitizer: DomSanitizer, private router: Router) { }
+  id: any;
+  userDetails: User;
+
 
   ngOnInit() {
     this.loadUserWithUserPic();
@@ -93,5 +97,19 @@ export class DetailsComponent implements OnInit {
       console.log('Backend returned status code: ', err.status);
       console.log('Response body:', err.error);
     }
+  }
+
+
+
+  editUser(user: User): void {
+    this.id = this.route.snapshot.params['id'];
+    this.loadUserDetails(this.id);
+    this.router.navigate(['edit-user/' + this.id]);
+  };
+
+  loadUserDetails(id) {
+    this.data.getUser(id).subscribe(user => {
+      this.userDetails = user;
+    });
   }
 }

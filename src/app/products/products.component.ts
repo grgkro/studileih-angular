@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../data.service';
+import { Router } from '@angular/router';
+import { Product } from '../_models/product';
 import { trigger, style, transition, animate, query, stagger } from '@angular/animations';
-import { Product } from 'src/app/_models/product';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DomSanitizer } from '@angular/platform-browser';
-import { fromEvent } from 'rxjs';
+
 
 
 @Component({
@@ -41,7 +42,7 @@ export class ProductsComponent implements OnInit {
   photos: Array<Object> = [];
   
 
-  constructor(private _data: DataService, private sanitizer: DomSanitizer) { }
+  constructor(private _data: DataService, private sanitizer: DomSanitizer, private router: Router) { }
 
   ngOnInit() {
     this.loadProducts();  //load all products from the database
@@ -102,5 +103,19 @@ export class ProductsComponent implements OnInit {
       console.log('Response body:', err.error);
     }
   }
+  
+  deleteProduct(id:number) {
+    this._data.deleteProduct(id)
+      .subscribe(data => {
+        this.products = this.products.filter(product => product.id !== id);
+        console.log('Product deleted successfully!');
+      })
+  };
+
+  editProduct(product: Product) {
+    window.localStorage.removeItem("productId");
+    window.localStorage.setItem("productId", product.id.toString());
+    this.router.navigate(['edit-product/:' + product.id]);
+  };
 
 }

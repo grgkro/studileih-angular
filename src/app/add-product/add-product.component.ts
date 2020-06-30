@@ -1,5 +1,5 @@
-import { Component, OnInit} from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DataService } from '../data.service';
 
@@ -19,24 +19,38 @@ export class AddProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.addForm = this.formBuilder.group({
-      userId: [''],
-      name: ['' ],
-      title: [''],
-      price: [''],
-      views: [''],
-      available: [''],
-      createdAt: [''],
-      updatedAt: [''],
-      picPaths: ['']
+      userId: ['', Validators.required],
+      name: ['', Validators.required],
+      title: ['', Validators.required],
+      price: ['', Validators.required],
+      views: ['', Validators.required],
+      available: ['', Validators.required],
+      createdAt: ['', Validators.required],
+      updatedAt: ['', Validators.required],
+      picPaths: ['', Validators.required]
 
     });
   }
 
   onSubmit() {
-    this.dataService.addUser(this.addForm.value)
-      .subscribe( data => {
-        this.router.navigate(['product']);
-      });
+     console.log(this.addForm.value);
+     this.dataService.addProduct(this.addForm.value)
+       .subscribe(data => {
+         console.log('Product created successfully!')
+         this.router.navigate(['products']);
+       });
+     /*   console.log(this.addForm.value);
+    this.dataService.addProduct(this.addForm.value)
+      .subscribe((res: any) => {
+        this.router.navigate(['products']);
+      }, (err: any) => {
+        console.log(err);
+      }
+      ); */
+  }
+
+  cancel(){
+    this.router.navigate(['products']);
   }
 
 }
