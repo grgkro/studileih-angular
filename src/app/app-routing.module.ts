@@ -6,11 +6,12 @@ import { ProductsComponent } from './products/products.component';
 import { UploadFileComponent } from './_components/upload-file/upload-file.component';
 import { GoogleMapsComponent } from './_components/google-maps/google-maps.component';
 import { AddUserComponent } from './add-user/add-user.component';
-<<<<<<< HEAD
+
 import { AddProductComponent } from './add-product/add-product.component';
-=======
+
 import { ProductDetailsComponent } from './_components/product-details/product-details.component';
->>>>>>> d6e9be9ea4719f0ac8ca6cbc8b1531827fac2d38
+
+
 
 const routes: Routes = [
   {
