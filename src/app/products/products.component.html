@@ -112,10 +112,10 @@
             <li>name: {{ product.name }}</li>
             <li>price: {{ product.price }}</li>
             <li>id: {{ product.id }}</li>
-            <li *ngIf="photos[i]">
+            <li *ngIf="map.has(i)">
                 <div >
                     <!-- loads the product image. If no image is available, a default pic gets shown -->
-                    <img [src]="photos[i]" class="fixImageSize" alt="Product Picture" *ngIf="photos[i]; else noImageFound">
+                    <img [src]="map.get(i)" class="fixImageSize" alt="Product Picture" *ngIf="map.get(i); else noImageFound">
                     <ng-template #noImageFound>
                          <img src="https://cdn-0.askleo.com/wp-content/uploads/2013/07/image_not_found.png" alt="Fallbackimage">
                          <!-- <= default picture -->
