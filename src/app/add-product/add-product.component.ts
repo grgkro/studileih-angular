@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DataService } from '../data.service';
+import { Product } from '../_models/product';
 
 @Component({
   selector: 'app-add-product',
@@ -15,6 +16,7 @@ export class AddProductComponent implements OnInit {
     private dataService: DataService) { }
 
   addForm: FormGroup;
+  data: Product;
 
   ngOnInit(): void {
     this.addForm = this.formBuilder.group({
@@ -32,20 +34,21 @@ export class AddProductComponent implements OnInit {
   }
 
   onSubmit() {
-     console.log(this.addForm.value);
+    /*  console.log(this.addForm.value);
      this.dataService.addProduct(this.addForm.value)
        .subscribe(data => {
          console.log('Product created successfully!')
          this.router.navigate(['products']);
-       });
-     /*   console.log(this.addForm.value);
+       }); */
+       console.log(this.addForm.value);
     this.dataService.addProduct(this.addForm.value)
       .subscribe((res: any) => {
+        this.data = res;
         this.router.navigate(['products']);
       }, (err: any) => {
         console.log(err);
       }
-      ); */
+      );
   }
 
   cancel(){
