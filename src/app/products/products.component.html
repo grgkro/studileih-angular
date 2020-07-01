@@ -66,49 +66,88 @@
   </div>
 </div>
 
-
-<div>
-  <app-google-maps></app-google-maps>
-</div>
-<br>
-<br>
-
-
-<div class="row justify-content-md-center">
-  <div class="col">
-    <h1>Products</h1>
+<div class="container ">
+  <div class="row">
+    <div class="col-12" >
+    <!-- <div class="col-12" align="center"> -->
+      <div>
+        <app-google-maps></app-google-maps>
+      </div>
+      <br>
+      <br>
+    </div>
   </div>
-  <div class="col-md-auto">
+  <div class="row justify-content-md-center">
+    <div class="col" >
+      <h1>Products</h1>
+    </div>
+    <div class="col-md-auto">
+    </div>
+    <div class="col col-lg-2">
+      <a routerLink="/add-product" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}">
+        <i class="material-icons">add</i>
+      </a>
+    </div>
   </div>
-  <div class="col col-lg-2">
-    <a routerLink="/add-product" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}">
-      <i class="material-icons">add</i>
-    </a>
-  </div>
-</div>
-
-<div>
-  <ul [@listStagger]="products">   <!--listStagger ist eine spezielle Animation, bei der die Liste nicht auf einmal dargestellt wird, sondern zeitlich verzögert auftaucht-->
+  <ul [@listStagger]="products">
+    <!--listStagger ist eine spezielle Animation, bei der die Liste nicht auf einmal dargestellt wird, sondern zeitlich verzögert auftaucht-->
     <li *ngFor="let product of products; let i = index">
-      <a routerLink="/product-details/{{ product.id }}">{{ product.title }}</a>
-      <!-- wenn der username angeklickt wird, wird man weitergeleitet per routerLink zur details component.-->
-      <ul>
-        <li>name: {{ product.name }}</li>
-        <li>price: {{ product.price }}</li>
-        <li>id: {{ product.id }}</li>
-        <li *ngIf="imagesLoaded | async">  <!-- https://malcoded.com/posts/angular-async-pipe/ --> 
-          <div>
-            <!-- loads the product image. If no image is available, a default pic gets shown *ngIf="map.get(i+1); else noImageFound"-->
-            <img [src]="map.get(i+1)" class="fixImageSize" alt="Product Picture"
-              *ngIf="map.get(i+1); else noImageFound">
-            <ng-template #noImageFound>
-              <img src="https://cdn-0.askleo.com/wp-content/uploads/2013/07/image_not_found.png" alt="Fallbackimage">
-              <!-- <= default picture -->
-            </ng-template>
-          </div>
-        </li>
-      </ul>
+
+      <div class="row">
+        <div class="col-3">
+          <a routerLink="/product-details/{{ product.id }}"><p class="blocktext">{{ product.title }}</p></a>
+          <!-- wenn der username angeklickt wird, wird man weitergeleitet per routerLink zur details component.-->
+          <ul>
+            <li><p class="blocktext">name: {{ product.name }}</p></li>
+            <li><p class="blocktext">price: {{ product.price }}</p></li>
+            <li><p class="blocktext">id: {{ product.id }}</p></li>
+          </ul>
+        </div>
+        <div class="col-6" align="center">
+          <ul>
+            <li *ngIf="imagesLoaded | async">
+              <!-- https://malcoded.com/posts/angular-async-pipe/ -->
+              <div>
+                <!-- loads the product image. If no image is available, a default pic gets shown *ngIf="map.get(i+1); else noImageFound"-->
+                <img [src]="map.get(i+1)" class="fixImageSize img-thumbnail" alt="Product Picture"
+                  *ngIf="map.get(i+1); else noImageFound">
+                <ng-template #noImageFound>
+                  <img src="https://cdn-0.askleo.com/wp-content/uploads/2013/07/image_not_found.png"
+                    alt="Fallbackimage">
+                  <!-- <= default picture -->
+                </ng-template>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="col-3" align="center">
+
+
+
+          <ul>
+            <li>
+              <button class="btn btn-light">
+                <a routerLink="/product-details/{{ product.id }}">View</a>
+              </button>
+            </li>
+            <li>
+              <button type="button" class="btn btn-info">
+                <a routerLink="/edit-product/{{ product.id }}">Edit</a>
+              </button>
+            </li>
+            <li>
+              <button type="button" (click)="deleteProduct(product.id)" class="btn btn-danger">
+                Delete
+              </button>
+            </li>
+          </ul>
+
+        </div>
+
+      </div>
+
     </li>
   </ul>
-
 </div>
+

@@ -48,10 +48,11 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.updateUser();   //  if the user changes, this will get updated
+    
     this.updateShowUploadComponent();
     this.routeParam$ = this.route.params.pipe(switchMap(params => this._data.getProduct(params['id'])))  // get the productId from the URL parameter /{id}. pipe & switchMap take care that if the userId changes for some reason, the following process gets stopped: https://www.concretepage.com/angular/angular-switchmap-example (not necessary yet, because the user profile image loads pretty fast, but if that takes longer and the user switches to another site, it's better to stop the process)
     this.loadProductWithProductPicture(); // load the product with the main product picture - get the productId from the URL parameter /{id}
+    this.updateUser();   //  if the user changes, this will get updated
   }
 
    ngOnDestroy() {            // Angular takes care of unsubscribing from many observable subscriptions like those returned from the Http service or when using the async pipe. But the routeParam$ and the _update.currentShowUploadComponent needs to be unsubscribed by hand on ngDestroy. Otherwise, we risk a memory leak when the component is destroyed. https://malcoded.com/posts/angular-async-pipe/   https://www.digitalocean.com/community/tutorials/angular-takeuntil-rxjs-unsubscribe
@@ -77,7 +78,7 @@ export class ProductDetailsComponent implements OnInit {
       this.product = product;
       this._update.changeProduct(this.product);    // we change the product in the data service so that if a picture for this product get's uploaded with the upload-file component, the upload-component knows witch is the current product and the image can be stored under the right productId.
       // is the user who looks at the details of this product also the owner of the product? if he is the owner -> show "delete", "update" and "Upload new Photo" button
-      if (this.product.userId == this.user.id) {
+      if (this.user != undefined && this.product.userId == this.user.id) {
         this.isCurrentUserOwner = true;
         this._update.changeImgType("productPic");   // ohne die Zeile, würde bei "upload new Photo" das Photo als USER profile pic behandelt werden. Wir wollen es aber als PRODUCT pic speichern. (Ist etwas ungeschickt gelöst...) 
       }
@@ -124,7 +125,9 @@ export class ProductDetailsComponent implements OnInit {
     if (image) {
       reader.readAsDataURL(image); //this triggers the reader EventListener
     }
-  }
 
 
+
+
+}
 }

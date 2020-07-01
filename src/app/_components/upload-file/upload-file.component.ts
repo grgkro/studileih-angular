@@ -103,11 +103,11 @@ export class UploadFileComponent implements OnInit {
       alert("Image could't be uploaded. Client-side error.")
       console.log('An client-side or network error occurred:', err.error.message);
     } else if (err.status == 304) {
-      this.response = "Foto mit selbem Namen wurde vom gleichen User schonmal hochgeladen.";
+      this.response = "Foto mit selbem Namen wurde vom gleichen User schonmal hochgeladen. 😄";
     } else if (err.status == 400) {
-      this.response = "Foto mit selbem Namen wurde schonmal hochgeladen.";
+      this.response = "Foto mit selbem Namen wurde schonmal hochgeladen. 😢";
     } else if (err.status == 0) {
-      this.response = "Foto abgelehnt, Foto muss kleiner 500KB sein.";
+      this.response = "Foto abgelehnt, Foto muss kleiner 500KB sein. 😢";
     } else {
       //Backend returns unsuccessful response codes such as 404, 500 etc.
       console.log('Backend returned status code: ', err.status);
