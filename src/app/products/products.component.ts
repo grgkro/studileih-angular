@@ -5,6 +5,9 @@ import { Product } from '../_models/product';
 import { trigger, style, transition, animate, query, stagger } from '@angular/animations';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DomSanitizer } from '@angular/platform-browser';
+import { User } from '../_models/user';
+import { UpdateService } from '../_services/update.service';
+import { Observable } from 'rxjs';
 
 
 
@@ -41,9 +44,7 @@ export class ProductsComponent implements OnInit {
   map = new Map();
   imagesLoaded: Promise<boolean>;  // this boolean gets to set to true when all images are loaded
 
-
-
-  constructor(private activatedRoute: ActivatedRoute, private _data: DataService, private sanitizer: DomSanitizer, private router: Router) { }
+  constructor(private activatedRoute: ActivatedRoute, private _data: DataService, private _update: UpdateService,private sanitizer: DomSanitizer, private router: Router) { }
 
   ngOnInit() {
 
@@ -52,8 +53,11 @@ export class ProductsComponent implements OnInit {
       this.loadMainProductPicture(product);
     })
     this.imagesLoaded = Promise.resolve(true);   // now that all images are loaded, we display them by setting the boolean to true -> *ngIf="imagesLoaded | async" in HTML is now true
-
+    this.uploadUsers(); // we preload the users from the database here on the startpage, so that we have them ready later
   }
+
+
+  
 
   //loads only the first picture of the pictures of a product (= the main picture)
   loadMainProductPicture(product: Product) {
@@ -86,6 +90,16 @@ export class ProductsComponent implements OnInit {
     if (image) {
       reader.readAsDataURL(image); //this triggers the reader EventListener
     }
+  }
+
+  uploadUsers(): void {
+    this._update.currentUsers$.subscribe(
+      users =>
+      { console.log(users)
+        
+      }
+    ) 
+    
   }
 
 

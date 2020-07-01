@@ -15,11 +15,15 @@ import { Product } from '../_models/product';
 export class UpdateService {
 
   user: User;
-  private userSource = new BehaviorSubject(this.user);  // userId = 0 is the default value. The id in the DB always starts at 1, so this will result in an error (you have to insert a value there, so we need any default value)
+  private userSource = new BehaviorSubject(this.user);  
   currentUser = this.userSource.asObservable();
 
+  users: User[];
+  private usersSource$ = new BehaviorSubject(this.users);   
+  currentUsers$ = this.usersSource$.asObservable();
+
   product: Product;
-  private productSource = new BehaviorSubject(this.product);  // userId = 0 is the default value. The id in the DB always starts at 1, so this will result in an error (you have to insert a value there, so we need any default value)
+  private productSource = new BehaviorSubject(this.product);  
   currentProduct = this.productSource.asObservable();
 
   imgType: string = "userPic";  // the default imgType is userPic, so if you directly upload a photo from the upload-file component after starting the app, it will treat the upload as a user profile pic. But if you upload a photo from the product-details component, the product-component will change the imgType to productPic.
@@ -34,6 +38,10 @@ export class UpdateService {
 
   changeUser(user: User) {
     this.userSource.next(user);
+  }
+
+  changeUsers(users: User[]) {
+    this.usersSource$.next(users);
   }
 
   changeProduct(product: Product) {

@@ -66,11 +66,8 @@ export class DataService {
     return this.http.post(this.imagesPath + '/loadProductPicByFilename', formdata, { responseType: 'blob' });
   }
 
-
-
-
-  getUsers(): Observable<User> {
-    return this.http.get<User>(this.usersPath).pipe(
+  getUsers(): Observable<User[]> {
+    return this.http.get<User[]>(this.serverPath + "/users").pipe(
       catchError(this.errorHandler)
     )
   }
