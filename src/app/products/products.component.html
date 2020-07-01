@@ -96,7 +96,7 @@
         <li>name: {{ product.name }}</li>
         <li>price: {{ product.price }}</li>
         <li>id: {{ product.id }}</li>
-        <li *ngIf="imagesLoaded | async">  <!-- https://malcoded.com/posts/angular-async-pipe/ -->
+        <li *ngIf="imagesLoaded | async">  <!-- https://malcoded.com/posts/angular-async-pipe/ --> 
           <div>
             <!-- loads the product image. If no image is available, a default pic gets shown *ngIf="map.get(i+1); else noImageFound"-->
             <img [src]="map.get(i+1)" class="fixImageSize" alt="Product Picture"

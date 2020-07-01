@@ -5,9 +5,8 @@ import { Product } from '../_models/product';
 import { trigger, style, transition, animate, query, stagger } from '@angular/animations';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DomSanitizer } from '@angular/platform-browser';
-import { User } from '../_models/user';
 import { UpdateService } from '../_services/update.service';
-import { Observable } from 'rxjs';
+
 
 
 

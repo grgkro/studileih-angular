@@ -34,27 +34,32 @@
                </div>
           </li>
      </ul>
-
-     <div>
-          <!-- loads the product image. If no image is available, a default pic gets shown -->
-          <img [src]="imageToShow" alt="Product Picture" *ngIf="imageToShow; else noImageFound">
-          <ng-template #noImageFound>
-               <img src="https://cdn-0.askleo.com/wp-content/uploads/2013/07/image_not_found.png" alt="Fallbackimage">
-               <!-- <= default picture -->
-          </ng-template>
-     </div>
+     <div *ngIf="imagesLoaded | async">  <!-- https://malcoded.com/posts/angular-async-pipe/ -->
+          <div *ngFor="let image of imagesToShow; let i = index" (deferLoad)="image.show = true">  <!-- deferload ist für das lazy loading zuständig, bin aber nicht sicher ob es überhaupt funktioniert.-->
+               <!-- loads the product image. If no image is available, a default pic gets shown -->
+               <ng-container *ngIf="image.show">
+                    <img [src]="image" alt="Product Picture" *ngIf="image; else noImageFound">
+               </ng-container>
+               <ng-template #noImageFound>
+                    <img src="https://cdn-0.askleo.com/wp-content/uploads/2013/07/image_not_found.png"
+                         alt="Fallbackimage">
+                    <!-- <= default picture -->
+               </ng-template>
+          </div>
           <!-- if the current user is the owner, he will see the "upload new Photo" button -->
           <div *ngIf="isCurrentUserOwner">
                <div *ngIf="showUploadComponent">
                     <app-upload-file></app-upload-file>
                </div>
-               <button *ngIf="!showUploadComponent" (click)="toggleUploadComponent()" class="btn btn-success">Upload new Photo</button>
+               <button *ngIf="!showUploadComponent" (click)="toggleUploadComponent()" class="btn btn-success">Upload new
+                    Photo</button>
           </div>
           <br>
           <br>
-          <br/>
-<strong>{{ errorMessage }}</strong>
-</div>
+          <br />
+          <strong>{{ errorMessage }}</strong>
+     </div>
+
 
 
 <!-- Date picker: das ist eine UI Komponente von Angular Material.
