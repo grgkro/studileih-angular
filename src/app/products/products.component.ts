@@ -53,7 +53,6 @@ export class ProductsComponent implements OnInit {
       this.loadMainProductPicture(product);
     })
     this.imagesLoaded = Promise.resolve(true);   // now that all images are loaded, we display them by setting the boolean to true -> *ngIf="imagesLoaded | async" in HTML is now true
-    this.uploadUsers(); // we preload the users from the database here on the startpage, so that we have them ready later
   }
 
 
@@ -91,17 +90,6 @@ export class ProductsComponent implements OnInit {
       reader.readAsDataURL(image); //this triggers the reader EventListener
     }
   }
-
-  uploadUsers(): void {
-    this._update.currentUsers$.subscribe(
-      users =>
-      { console.log(users)
-        
-      }
-    ) 
-    
-  }
-
 
   // takes the error and then displays a response to the user or only logs the error on the console (depending on if the error is useful for the user)
   processError(err: HttpErrorResponse) {

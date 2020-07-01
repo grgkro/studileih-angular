@@ -6,6 +6,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { User } from 'src/app/_models/user';
 import { Product } from 'src/app/_models/product';
 import { HelperService } from 'src/app/_services/helper.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 
 @Component({
@@ -22,12 +24,21 @@ export class UploadFileComponent implements OnInit {
   imgType: string = "userPic";
   product: Product = { id: 1 };  // we need a default value, otherwise you can't upload a user profile pic before clicking on a product (unclean solution, better solution would be nice)
 
+ // Angular takes care of unsubscribing from many observable subscriptions like those returned from the Http service or when using the async pipe. But the routeParam$ and the _update.currentShowUploadComponent needs to be unsubscribed by hand on ngDestroy. Otherwise, we risk a memory leak when the component is destroyed. https://malcoded.com/posts/angular-async-pipe/   https://www.digitalocean.com/community/tutorials/angular-takeuntil-rxjs-unsubscribe
+ destroy$: Subject<boolean> = new Subject<boolean>();
+
   constructor(private route: ActivatedRoute, private router: Router, private uploadFileService: UploadFileService, private _update: UpdateService, private _helper: HelperService) { }
 
   ngOnInit(): void {
     this.updateUser();   //  if the user changes, this will get updated
     this.updateProduct();  //  if the product is undefined (which will happen if you upload a user before clicking on one of the products), this would cause an error even if you dont need a product id to upload a user profile pic. So we catch that with the if command. If the product later changes and someone wants to upload a product pic, this line will get the product updated so that we know which product belongs to that product pic
     this.updateImgType(); // if the imgType changes, this will get updated (for example, if you upload a product pic from the product-details componente, the component just needs to set the imageType to productPic before uploading the photo.)
+  }
+
+  ngOnDestroy() {            // Angular takes care of unsubscribing from many observable subscriptions like those returned from the Http service or when using the async pipe. But the routeParam$ and the _update.currentShowUploadComponent needs to be unsubscribed by hand on ngDestroy. Otherwise, we risk a memory leak when the component is destroyed. https://malcoded.com/posts/angular-async-pipe/   https://www.digitalocean.com/community/tutorials/angular-takeuntil-rxjs-unsubscribe
+    this.destroy$.next(true);
+    // Now let's also unsubscribe from the subject itself:
+    this.destroy$.unsubscribe();
   }
 
   updateUser(): void {
@@ -39,7 +50,9 @@ export class UploadFileComponent implements OnInit {
   }
 
   updateImgType(): void {
-    this._update.currentImgType.subscribe(imgType => this.imgType = imgType) 
+    this._update.currentImgType
+    .pipe(takeUntil(this.destroy$))  
+    .subscribe(imgType => this.imgType = imgType) 
   }
 
   // this function checks if the selected file is an image filetype (.jpg, .png, ...)

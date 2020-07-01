@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DataService } from '../../data.service';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, takeUntil } from 'rxjs/operators';
 import { Product } from 'src/app/_models/product';
 import { UpdateService } from 'src/app/_services/update.service';
 import { HelperService } from 'src/app/_services/helper.service';
 import { User } from 'src/app/_models/user';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-product-details',
@@ -26,6 +26,10 @@ export class ProductDetailsComponent implements OnInit {
   errorMessage: string;
   imagesList = [];
   routeParam$: Observable<Product>;
+
+  // Angular takes care of unsubscribing from many observable subscriptions like those returned from the Http service or when using the async pipe. But the routeParam$ and the _update.currentShowUploadComponent needs to be unsubscribed by hand on ngDestroy. Otherwise, we risk a memory leak when the component is destroyed. https://malcoded.com/posts/angular-async-pipe/   https://www.digitalocean.com/community/tutorials/angular-takeuntil-rxjs-unsubscribe
+  destroy$: Subject<boolean> = new Subject<boolean>();
+ 
 
   constructor(private route: ActivatedRoute, private _data: DataService, private _update: UpdateService, private _helper: HelperService, private sanitizer: DomSanitizer) {
     // creates a list of cat images for testing the lazy loading function (lazy loading = loading pictures only when they are in the viewport. Georg will delete this later!-->
@@ -45,16 +49,26 @@ export class ProductDetailsComponent implements OnInit {
     this.loadProductWithProductPicture(); // load the product with the main product picture - get the productId from the URL parameter /{id}
   }
 
+   ngOnDestroy() {            // Angular takes care of unsubscribing from many observable subscriptions like those returned from the Http service or when using the async pipe. But the routeParam$ and the _update.currentShowUploadComponent needs to be unsubscribed by hand on ngDestroy. Otherwise, we risk a memory leak when the component is destroyed. https://malcoded.com/posts/angular-async-pipe/   https://www.digitalocean.com/community/tutorials/angular-takeuntil-rxjs-unsubscribe
+    this.destroy$.next(true);
+    // Now let's also unsubscribe from the subject itself:
+    this.destroy$.unsubscribe();
+  }
+
   updateUser(): void {
     this._update.currentUser.subscribe(user => this.user = user)  
   }
 
   updateShowUploadComponent(): void {
-    this._update.currentShowUploadComponent.subscribe(showUploadComponent => this.showUploadComponent = showUploadComponent)  // when the user uploaded a product photo, we want do not show the upload component anymore. But therefore we need the information, if a photo was uploaded from the upload component. -> If a user successfully uploads a product photo (status 200), the upload component will change showUploadComponent to false. The _update service then updates this value for all subscribes. Therefore we need to subscribe here, to get that change.
+    this._update.currentShowUploadComponent
+    .pipe(takeUntil(this.destroy$))             // We need to unsubscribe from this Observable by hand
+    .subscribe(showUploadComponent => this.showUploadComponent = showUploadComponent)  // when the user uploaded a product photo, we want do not show the upload component anymore. But therefore we need the information, if a photo was uploaded from the upload component. -> If a user successfully uploads a product photo (status 200), the upload component will change showUploadComponent to false. The _update service then updates this value for all subscribes. Therefore we need to subscribe here, to get that change.
   }
 
   loadProductWithProductPicture() {             // load the product with the main product picture:
-    this.routeParam$.subscribe(product => {
+    this.routeParam$
+    .pipe(takeUntil(this.destroy$))           // We need to unsubscribe from this Observable by hand
+    .subscribe(product => {
       this.product = product;
       this._update.changeProduct(this.product);    // we change the product in the data service so that if a picture for this product get's uploaded with the upload-file component, the image can be stored under the right productId.
       // is the user who looks at the details of this product also the owner of the product? if he is the owner -> show "delete", "update" and "Upload new Photo" button
