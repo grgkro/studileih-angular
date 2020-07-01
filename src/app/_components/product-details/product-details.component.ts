@@ -4,6 +4,7 @@ import { DataService } from '../../data.service';
 import { switchMap } from 'rxjs/operators';
 import { Product } from 'src/app/_models/product';
 import { UpdateService } from 'src/app/_services/update.service';
+import { HelperService } from 'src/app/_services/helper.service';
 import { User } from 'src/app/_models/user';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -23,7 +24,7 @@ export class ProductDetailsComponent implements OnInit {
   errorMessage: string;
   imagesList = [];
 
-  constructor(private route: ActivatedRoute, private _data: DataService, private _update: UpdateService, private sanitization: DomSanitizer) {
+  constructor(private route: ActivatedRoute, private _data: DataService, private _update: UpdateService, private _helper: HelperService, private sanitizer: DomSanitizer) {
     // creates a list of cat images for testing the lazy loading function (lazy loading = loading pictures only when they are in the viewport. Georg will delete this later!-->
     for (let i = 0; i < 50; i++) {
       const url = 'https://loremflickr.com/640/480?random=' + (i + 1);
@@ -35,9 +36,21 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.updateUser();   //  if the user changes, this will get updated
+    this.updateShowUploadComponent();
+    this.loadProductWithProductPicture(); // load the product with the main product picture - get the productId from the URL parameter /{id}
+  }
+
+  updateUser(): void {
+    this._update.currentUser.subscribe(user => this.user = user)  
+  }
+
+  updateShowUploadComponent(): void {
     this._update.currentShowUploadComponent.subscribe(showUploadComponent => this.showUploadComponent = showUploadComponent)  // when the user uploaded a product photo, we want do not show the upload component anymore. But therefore we need the information, if a photo was uploaded from the upload component. -> If a user successfully uploads a product photo (status 200), the upload component will change showUploadComponent to false. The _update service then updates this value for all subscribes. Therefore we need to subscribe here, to get that change.
-    // load the product:
-    this.route.params.pipe(switchMap(params => this._data.getProduct(params['id'])))  // pipe & switchMap take care, that if the userId changes for some reason, the following process gets stopped: https://www.concretepage.com/angular/angular-switchmap-example (not necessary yet, because the user profile image loads pretty fast, but if that takes longer and the user switches to another site, it's better to stop the process)
+  }
+
+  loadProductWithProductPicture() {             // load the product with the main product picture:
+    this.route.params.pipe(switchMap(params => this._data.getProduct(params['id'])))  // get the productId from the URL parameter /{id}. pipe & switchMap take care that if the userId changes for some reason, the following process gets stopped: https://www.concretepage.com/angular/angular-switchmap-example (not necessary yet, because the user profile image loads pretty fast, but if that takes longer and the user switches to another site, it's better to stop the process)
       .subscribe(product => {
         this.product = product;
         this._update.changeProduct(this.product);    // we change the product in the data service so that if a picture for this product get's uploaded with the upload-file component, the image can be stored under the right productId.
@@ -46,40 +59,26 @@ export class ProductDetailsComponent implements OnInit {
           this.isCurrentUserOwner = true;
           this._update.changeImgType("productPic");   // ohne die Zeile, würde bei "upload new Photo" das Photo als USER profile pic behandelt werden. Wir wollen es aber als PRODUCT pic speichern. (Ist etwas ungeschickt gelöst...) 
         }
-        // after loading the product, load one product pic (the first photo from the product.picPaths arraylist)
-        this._data.loadProductPicByFilename(this.product.picPaths[0], this.product.id).subscribe(image => {   // we only load the first poduct pic (testing)
-          this.createImageFromBlob(image);          // transorfms the blob into an image
-          // saveAs(val, "test.png")                // uncomment this to download the image in the browser (you also need to uncomment the import file-saver)
-        },
-          (err: HttpErrorResponse) => {                 // if the image could not be loaded, this part will be executed instead 
-            if (err.error instanceof Error) {
-              console.log('An client-side or network error occurred:', err.error);
-            } else if (err.status == 404) {
-              console.log("User or ProfilePic not found");
-            } else {
-              //Backend returns unsuccessful response codes such as 400, 500 etc.
-              console.log('Backend returned status code: ', err.status);
-              console.log('Response body:', err.error);
-            }
-          }
-        );
+        this.loadProductPic();  // after loading the product, load one product pic (the first photo from the product.picPaths arraylist)  
       },
         (err: HttpErrorResponse) => {                 // if the product could not be loaded, this part will be executed instead 
-          if (err.error instanceof Error) {
-            console.log('An client-side or network error occurred:', err.error);
-          } else if (err.status == 500 || err.status == 404) {
-            this.errorMessage = "Produkt konnte nicht gefunden werden.";
-          } else {
-            //Backend returns unsuccessful response codes such as 400, 500 etc.
-            console.log('Backend returned status code: ', err.status);
-            console.log('Response body:', err.error);
-
-          }
+          this.errorMessage = this._helper.createErrorMessage(err, "Produkt konnte nicht gefunden werden.");
         }
       );
-    this._update.currentUser.subscribe(user => this.user = user)  // always get the latest logged in user -> if the user changes, this will get updated
   }
 
+  // we only load the first poduct pic (testing)
+  loadProductPic() {
+    this._data.loadProductPicByFilename(this.product.picPaths[0], this.product.id).subscribe(image => {
+      this.createImageFromBlob(image);          // transorfms the blob into an image
+    },
+      (err: HttpErrorResponse) => {                 // if the image could not be loaded, this part will be executed instead 
+        this.errorMessage = this._helper.createErrorMessage(err, "User oder Profilfoto konnte nicht gefunden werden");
+      }
+    );
+  }
+
+  // Hide or Show the Upload function (the "Durchsuchen" Button)
   toggleUploadComponent() {
     this.showUploadComponent = !this.showUploadComponent;             // if showUploadComponent was false, it's now true.
   }
@@ -93,11 +92,13 @@ export class ProductDetailsComponent implements OnInit {
       // -> this script would get executed, if the image get's transferred to our HTML page in the next line. Therefore it gets blocked by default, unless we bypass it.
       // the image is read by the FileReader and is returned as an "any". But this needs to be sanitized first, before it can be shown in the HTML. Therefore we pass it into the sanitzation, but there we need a String, therefore we use: reader.result + ""   
       // this.productPicToShow is the 
-      this.imageToShow = this.sanitization.bypassSecurityTrustResourceUrl(reader.result + "");
+      this.imageToShow = this.sanitizer.bypassSecurityTrustResourceUrl(reader.result + "");
     }, false);
 
     if (image) {
       reader.readAsDataURL(image); //this triggers the reader EventListener
     }
   }
+
+
 }

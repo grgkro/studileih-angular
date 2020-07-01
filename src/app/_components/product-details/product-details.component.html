@@ -48,14 +48,12 @@
                <div *ngIf="showUploadComponent">
                     <app-upload-file></app-upload-file>
                </div>
-               <button *ngIf="!showUploadComponent" (click)="toggleUploadComponent()" class="btn btn-success">Upload new
-                    Photo</button>
+               <button *ngIf="!showUploadComponent" (click)="toggleUploadComponent()" class="btn btn-success">Upload new Photo</button>
           </div>
           <br>
           <br>
-     
-
-
+          <br/>
+<strong>{{ errorMessage }}</strong>
 </div>
 
 
