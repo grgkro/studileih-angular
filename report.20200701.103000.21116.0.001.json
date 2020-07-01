@@ -4,12 +4,12 @@
     "reportVersion": 2,
     "event": "Allocation failed - JavaScript heap out of memory",
     "trigger": "FatalError",
-    "filename": "report.20200629.220918.5824.0.001.json",
-    "dumpEventTime": "2020-06-29T22:09:18Z",
-    "dumpEventTimeStamp": "1593461358666",
-    "processId": 5824,
+    "filename": "report.20200701.103000.21116.0.001.json",
+    "dumpEventTime": "2020-07-01T10:30:00Z",
+    "dumpEventTimeStamp": "1593592200138",
+    "processId": 21116,
     "threadId": null,
-    "cwd": "C:\\Users\\Boommeister69\\workspace\\StudileihGergelyUsh\\studileih-angular-cicd-aws-master\\src\\app\\_services",
+    "cwd": "C:\\Users\\Boommeister69\\workspace\\StudileihGergelyUsh\\studileih-angular-cicd-aws-master",
     "commandLine": [
       "C:\\Program Files\\nodejs\\node.exe",
       "C:\\Users\\Boommeister69\\workspace\\StudileihGergelyUsh\\studileih-angular-cicd-aws-master\\node_modules\\@ngtools\\webpack\\src\\type_checker_worker.js",
@@ -52,74 +52,74 @@
       {
         "model": "Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz",
         "speed": 2808,
-        "user": 4452687,
+        "user": 9227296,
         "nice": 0,
-        "sys": 7309953,
-        "idle": 59111859,
-        "irq": 3435015
+        "sys": 13378390,
+        "idle": 116186046,
+        "irq": 5807406
       },
       {
         "model": "Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz",
         "speed": 2808,
-        "user": 4143046,
+        "user": 7702546,
         "nice": 0,
-        "sys": 2131484,
-        "idle": 64599750,
-        "irq": 473296
+        "sys": 4836140,
+        "idle": 126252828,
+        "irq": 1379265
       },
       {
         "model": "Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz",
         "speed": 2808,
-        "user": 8619812,
+        "user": 16179156,
         "nice": 0,
-        "sys": 3384703,
-        "idle": 58869765,
-        "irq": 211093
+        "sys": 7548890,
+        "idle": 115063468,
+        "irq": 1012734
       },
       {
         "model": "Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz",
         "speed": 2808,
-        "user": 5846328,
+        "user": 10189203,
         "nice": 0,
-        "sys": 1820968,
-        "idle": 63206984,
-        "irq": 113000
+        "sys": 3761281,
+        "idle": 124841031,
+        "irq": 270218
       },
       {
         "model": "Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz",
         "speed": 2808,
-        "user": 6763875,
+        "user": 12374250,
         "nice": 0,
-        "sys": 3197406,
-        "idle": 60913000,
-        "irq": 125375
+        "sys": 6070375,
+        "idle": 120346890,
+        "irq": 288593
       },
       {
         "model": "Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz",
         "speed": 2808,
-        "user": 4502968,
+        "user": 8921000,
         "nice": 0,
-        "sys": 2234296,
-        "idle": 64137015,
-        "irq": 68437
+        "sys": 4692234,
+        "idle": 125178281,
+        "irq": 168031
       },
       {
         "model": "Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz",
         "speed": 2808,
-        "user": 6531062,
+        "user": 11909390,
         "nice": 0,
-        "sys": 2646156,
-        "idle": 61697046,
-        "irq": 73453
+        "sys": 5535234,
+        "idle": 121346875,
+        "irq": 147843
       },
       {
         "model": "Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz",
         "speed": 2808,
-        "user": 5137437,
+        "user": 10106218,
         "nice": 0,
-        "sys": 1849734,
-        "idle": 63887093,
-        "irq": 39218
+        "sys": 4058640,
+        "idle": 124626640,
+        "irq": 137718
       }
     ],
     "networkInterfaces": [
@@ -161,7 +161,7 @@
         "name": "WLAN",
         "internal": false,
         "mac": "00:e1:8c:89:0b:07",
-        "address": "2a01:c22:cc6f:8e00:45a7:36e0:6403:89d8",
+        "address": "2a01:c23:7c0d:0:45a7:36e0:6403:89d8",
         "netmask": "ffff:ffff:ffff:ffff::",
         "family": "IPv6",
         "scopeid": 0
@@ -170,7 +170,7 @@
         "name": "WLAN",
         "internal": false,
         "mac": "00:e1:8c:89:0b:07",
-        "address": "2a01:c22:cc6f:8e00:d10e:ce53:f743:bcc7",
+        "address": "2a01:c23:7c0d:0:e59c:d14d:ae67:4ac8",
         "netmask": "ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
         "family": "IPv6",
         "scopeid": 0
@@ -220,75 +220,71 @@
   },
   "nativeStack": [
     {
-      "pc": "0x00007ff777db2309",
+      "pc": "0x00007ff772912309",
       "symbol": "std::basic_ostream<char,std::char_traits<char> >::operator<<+11577"
     },
     {
-      "pc": "0x00007ff777db6869",
+      "pc": "0x00007ff772916869",
       "symbol": "std::basic_ostream<char,std::char_traits<char> >::operator<<+29337"
     },
     {
-      "pc": "0x00007ff777db56e8",
+      "pc": "0x00007ff7729156e8",
       "symbol": "std::basic_ostream<char,std::char_traits<char> >::operator<<+24856"
     },
     {
-      "pc": "0x00007ff777eddd82",
+      "pc": "0x00007ff772a3dd82",
       "symbol": "v8::base::CPU::has_sse+59378"
     },
     {
-      "pc": "0x00007ff7786fa27e",
+      "pc": "0x00007ff77325a27e",
       "symbol": "v8::Isolate::ReportExternalAllocationLimitReached+94"
     },
     {
-      "pc": "0x00007ff7786e2351",
+      "pc": "0x00007ff773242351",
       "symbol": "v8::SharedArrayBuffer::Externalize+833"
     },
     {
-      "pc": "0x00007ff7785ae8ac",
+      "pc": "0x00007ff77310e8ac",
       "symbol": "v8::internal::Heap::EphemeronKeyWriteBarrierFromCode+1436"
     },
     {
-      "pc": "0x00007ff7785b9ae0",
+      "pc": "0x00007ff773119ae0",
       "symbol": "v8::internal::Heap::ProtectUnprotectedMemoryChunks+1312"
     },
     {
-      "pc": "0x00007ff7785b6604",
+      "pc": "0x00007ff773116604",
       "symbol": "v8::internal::Heap::PageFlagsAreConsistent+3204"
     },
     {
-      "pc": "0x00007ff7785abe03",
+      "pc": "0x00007ff77310be03",
       "symbol": "v8::internal::Heap::CollectGarbage+1283"
     },
     {
-      "pc": "0x00007ff7785aa474",
+      "pc": "0x00007ff77310a474",
       "symbol": "v8::internal::Heap::AddRetainedMap+2452"
     },
     {
-      "pc": "0x00007ff7785cb67d",
+      "pc": "0x00007ff77312b67d",
       "symbol": "v8::internal::Factory::NewFillerObject+61"
     },
     {
-      "pc": "0x00007ff7783313d1",
+      "pc": "0x00007ff772e913d1",
       "symbol": "v8::internal::interpreter::JumpTableTargetOffsets::iterator::operator=+1665"
     },
     {
-      "pc": "0x00007ff778b4730d",
+      "pc": "0x00007ff7736a730d",
       "symbol": "v8::internal::SetupIsolateDelegate::SetupHeap+546637"
     },
     {
-      "pc": "0x00007ff778acd7b1",
-      "symbol": "v8::internal::SetupIsolateDelegate::SetupHeap+48113"
-    },
-    {
-      "pc": "0x00000187b69ab7c1",
+      "pc": "0x0000026c6794ed8e",
       "symbol": ""
     }
   ],
   "javascriptHeap": {
-    "totalMemory": 2152333312,
-    "totalCommittedMemory": 2152333312,
-    "usedMemory": 2121855216,
-    "availableMemory": 48597360,
+    "totalMemory": 2151002112,
+    "totalCommittedMemory": 2151002112,
+    "usedMemory": 2119022200,
+    "availableMemory": 48806880,
     "memoryLimit": 2197815296,
     "heapSpaces": {
       "read_only_space": {
@@ -302,42 +298,42 @@
         "memorySize": 2097152,
         "committedMemory": 2097152,
         "capacity": 1047456,
-        "used": 36200,
-        "available": 1011256
+        "used": 141520,
+        "available": 905936
       },
       "old_space": {
-        "memorySize": 1969889280,
-        "committedMemory": 1969889280,
-        "capacity": 1957612360,
-        "used": 1956555696,
-        "available": 1056664
+        "memorySize": 1957568512,
+        "committedMemory": 1957568512,
+        "capacity": 1944379376,
+        "used": 1944339072,
+        "available": 40304
       },
       "code_space": {
         "memorySize": 5410816,
         "committedMemory": 5410816,
-        "capacity": 4530528,
-        "used": 4530528,
+        "capacity": 4622560,
+        "used": 4622560,
         "available": 0
       },
       "map_space": {
-        "memorySize": 14422016,
-        "committedMemory": 14422016,
-        "capacity": 1048800,
-        "used": 1048800,
+        "memorySize": 16257024,
+        "committedMemory": 16257024,
+        "capacity": 1074640,
+        "used": 1074640,
         "available": 0
       },
       "large_object_space": {
-        "memorySize": 159854592,
-        "committedMemory": 159854592,
-        "capacity": 159312656,
-        "used": 159312656,
+        "memorySize": 169009152,
+        "committedMemory": 169009152,
+        "capacity": 168473168,
+        "used": 168473168,
         "available": 0
       },
       "code_large_object_space": {
         "memorySize": 397312,
         "committedMemory": 397312,
-        "capacity": 338528,
-        "used": 338528,
+        "capacity": 338432,
+        "used": 338432,
         "available": 0
       },
       "new_large_object_space": {
@@ -350,17 +346,17 @@
     }
   },
   "resourceUsage": {
-    "userCpuSeconds": 281.875,
-    "kernelCpuSeconds": 13.406,
-    "cpuConsumptionPercent": 42.6707,
-    "maxRss": 2566246400,
+    "userCpuSeconds": 308.031,
+    "kernelCpuSeconds": 16.156,
+    "cpuConsumptionPercent": 35.9409,
+    "maxRss": 2762588160,
     "pageFaults": {
-      "IORequired": 1351144,
+      "IORequired": 1560380,
       "IONotRequired": 0
     },
     "fsActivity": {
-      "reads": 16785,
-      "writes": 17
+      "reads": 19793,
+      "writes": 22
     }
   },
   "libuv": [
@@ -444,17 +440,17 @@
     "C:\\WINDOWS\\System32\\KERNELBASE.dll",
     "C:\\WINDOWS\\System32\\WS2_32.dll",
     "C:\\WINDOWS\\System32\\RPCRT4.dll",
-    "C:\\WINDOWS\\SYSTEM32\\dbghelp.dll",
     "C:\\WINDOWS\\System32\\PSAPI.DLL",
-    "C:\\WINDOWS\\System32\\ucrtbase.dll",
+    "C:\\WINDOWS\\SYSTEM32\\dbghelp.dll",
     "C:\\WINDOWS\\System32\\ADVAPI32.dll",
+    "C:\\WINDOWS\\System32\\ucrtbase.dll",
     "C:\\WINDOWS\\System32\\msvcrt.dll",
     "C:\\WINDOWS\\System32\\sechost.dll",
     "C:\\WINDOWS\\SYSTEM32\\IPHLPAPI.DLL",
-    "C:\\WINDOWS\\System32\\USER32.dll",
     "C:\\WINDOWS\\SYSTEM32\\USERENV.dll",
-    "C:\\WINDOWS\\System32\\win32u.dll",
+    "C:\\WINDOWS\\System32\\USER32.dll",
     "C:\\WINDOWS\\System32\\profapi.dll",
+    "C:\\WINDOWS\\System32\\win32u.dll",
     "C:\\WINDOWS\\System32\\GDI32.dll",
     "C:\\WINDOWS\\System32\\gdi32full.dll",
     "C:\\WINDOWS\\System32\\msvcp_win.dll",
