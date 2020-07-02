@@ -5,6 +5,8 @@ import { Product } from '../_models/product';
 import { trigger, style, transition, animate, query, stagger } from '@angular/animations';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DomSanitizer } from '@angular/platform-browser';
+import { UpdateService } from '../_services/update.service';
+
 
 
 
@@ -41,9 +43,7 @@ export class ProductsComponent implements OnInit {
   map = new Map();
   imagesLoaded: Promise<boolean>;  // this boolean gets to set to true when all images are loaded
 
-
-
-  constructor(private activatedRoute: ActivatedRoute, private _data: DataService, private sanitizer: DomSanitizer, private router: Router) { }
+  constructor(private activatedRoute: ActivatedRoute, private _data: DataService, private _update: UpdateService,private sanitizer: DomSanitizer, private router: Router) { }
 
   ngOnInit() {
 
@@ -52,8 +52,10 @@ export class ProductsComponent implements OnInit {
       this.loadMainProductPicture(product);
     })
     this.imagesLoaded = Promise.resolve(true);   // now that all images are loaded, we display them by setting the boolean to true -> *ngIf="imagesLoaded | async" in HTML is now true
-
   }
+
+
+  
 
   //loads only the first picture of the pictures of a product (= the main picture)
   loadMainProductPicture(product: Product) {
@@ -87,7 +89,6 @@ export class ProductsComponent implements OnInit {
       reader.readAsDataURL(image); //this triggers the reader EventListener
     }
   }
-
 
   // takes the error and then displays a response to the user or only logs the error on the console (depending on if the error is useful for the user)
   processError(err: HttpErrorResponse) {

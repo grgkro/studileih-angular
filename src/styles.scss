@@ -6,6 +6,13 @@ body {
     height: 100vh;
 }
 
+.images {
+    height:300px;
+    width: 300px;
+    padding-bottom: 1rem;
+    padding-top: 1rem;
+}
+
 #container {
    display: grid;
    grid-template-columns: 70px auto;

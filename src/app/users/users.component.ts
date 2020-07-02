@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../data.service';
 import { trigger,style,transition,animate,query,stagger } from '@angular/animations';
+import { User } from '../_models/user';
+import { Observable, asyncScheduler } from 'rxjs';
+import { UpdateService } from '../_services/update.service';
 
 @Component({
   selector: 'app-users',
@@ -33,14 +36,16 @@ import { trigger,style,transition,animate,query,stagger } from '@angular/animati
 
 export class UsersComponent implements OnInit {
 
-  users$: Object;
+  users$: Observable<User[]>;
+  users: User[];
 
-  constructor(private data: DataService) { }
+  constructor(private _data: DataService, private _update: UpdateService) { }
 
   ngOnInit(): void {
-    this.data.getUsers().subscribe(
-      data => this.users$ = data
-    )
+    this.users$ = this._data.getUsers()
+    // const task = () => this._update.currentUsers$;
+    // asyncScheduler.schedule(task, 1000);
+    //this.users$ = this._update.currentUsers$
   }
 
 }

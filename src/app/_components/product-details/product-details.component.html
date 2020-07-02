@@ -35,29 +35,47 @@
           </li>
      </ul>
 
-     <div>
-          <!-- loads the product image. If no image is available, a default pic gets shown -->
-          <img [src]="imageToShow" alt="Product Picture" *ngIf="imageToShow; else noImageFound">
-          <ng-template #noImageFound>
-               <img src="https://cdn-0.askleo.com/wp-content/uploads/2013/07/image_not_found.png" alt="Fallbackimage">
-               <!-- <= default picture -->
-          </ng-template>
-     </div>
-          <!-- if the current user is the owner, he will see the "upload new Photo" button -->
-          <div *ngIf="isCurrentUserOwner">
-               <div *ngIf="showUploadComponent">
-                    <app-upload-file></app-upload-file>
+     <div align="center" style="text-align: center">
+          <div class="container" *ngIf="imagesLoaded | async" style="display: inline-block">
+               <!-- https://malcoded.com/posts/angular-async-pipe/ -->
+               <div class="row">
+                    <!-- deferload ist für das lazy loading zuständig, bin aber nicht sicher ob es überhaupt funktioniert.-->
+                    <!-- loads the product image. If no image is available, a default pic gets shown -->
+                    <div *ngFor="let image of imagesToShow; let i = index" (deferLoad)="image.show = true">
+                         <div class="col" align="center">
+                              <ng-container *ngIf="image.show">
+                                   <img [src]="image" class="images" alt="Product Picture"
+                                        *ngIf="image; else noImageFound">
+                              </ng-container>
+                              <ng-template #noImageFound>
+                                   <img src="https://cdn-0.askleo.com/wp-content/uploads/2013/07/image_not_found.png"
+                                        alt="Fallbackimage">
+                                   <!-- <= default picture -->
+                              </ng-template>
+
+                         </div>
+                    </div>
                </div>
-               <button *ngIf="!showUploadComponent" (click)="toggleUploadComponent()" class="btn btn-success">Upload new Photo</button>
-          </div>
-          <br>
-          <br>
-          <br/>
-<strong>{{ errorMessage }}</strong>
-</div>
+               <div class="row">
+                    <div class="col-sm-12">
+                         <div *ngIf="isCurrentUserOwner">
+                              <div *ngIf="showUploadComponent">
+                                   <app-upload-file></app-upload-file>
+                              </div>
+                              <button *ngIf="!showUploadComponent" (click)="toggleUploadComponent()"
+                                   class="btn btn-success">Upload new
+                                   Photo</button>
+                         </div>
+                    </div>
+                    <div class="row">
+                         <div class="col-sm-3">
+                              <strong>{{ errorMessage }}</strong>
+                         </div>
+                    </div>
+               </div>
 
 
-<!-- Date picker: das ist eine UI Komponente von Angular Material.
+               <!-- Date picker: das ist eine UI Komponente von Angular Material.
 Um das zum laufen zu kriegen müsst ihr wahrscheinlich folgende Befehle im Terminal abschicken:
 ng update @angular/cli @angular/core    <- updated auf das neue Angular 10
 npm install @angular/cdk
@@ -72,25 +90,32 @@ https://next.material.angular.io/components/datepicker/overview
 https://stackoverflow.com/questions/62615428/angular-10-date-range-picker-calender-opens-at-wrong-place/62615566#62615566
 https://blog.angular.io/version-10-of-angular-now-available-78960babd41
 -->
-<div *ngIf="!isCurrentUserOwner">
-     <!-- only show the date picker, if the user is not the owner of the product. The owner can't rent his own product, so he doesn't need the date picker to chose when he wants to rent it.-->
-     <h1>Ausleihen:</h1>
+               <div class="row">
+                    <div class="col-sm-3">
+                         <div *ngIf="!isCurrentUserOwner">
+                              <!-- only show the date picker, if the user is not the owner of the product. The owner can't rent his own product, so he doesn't need the date picker to chose when he wants to rent it.-->
+                              <h1>Ausleihen:</h1>
 
-     <mat-form-field appearance="fill">
-          <mat-label>Von wann bis wann?</mat-label>
-          <mat-date-range-input [rangePicker]="picker">
-               <input matStartDate matInput placeholder="Anfangsdatum">
-               <input matEndDate matInput placeholder="Enddatum">
-          </mat-date-range-input>
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-date-range-picker #picker></mat-date-range-picker>
-     </mat-form-field>
-</div>
+                              <mat-form-field appearance="fill">
+                                   <mat-label>Von wann bis wann?</mat-label>
+                                   <mat-date-range-input [rangePicker]="picker">
+                                        <input matStartDate matInput placeholder="Anfangsdatum">
+                                        <input matEndDate matInput placeholder="Enddatum">
+                                   </mat-date-range-input>
+                                   <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                   <mat-date-range-picker #picker></mat-date-range-picker>
+                              </mat-form-field>
+                         </div>
 
-<!-- displayes list of images of cats for testing the lazy loading function (lazy loading = loading pictures only when they are in the viewport. Georg will delete this later!-->
-<div class="images" *ngFor="let image of imagesList" (deferLoad)="image.show = true">
-     <!--https://www.talkingdotnet.com/how-to-lazy-load-images-angular-6/-->
-     <ng-container *ngIf="image.show">
-          <img src={{image.url}}>
-     </ng-container>
+                         <!-- displayes list of images of cats for testing the lazy loading function (lazy loading = loading pictures only when they are in the viewport. Georg will delete this later!-->
+                         <div class="images" *ngFor="let image of imagesList" (deferLoad)="image.show = true">
+                              <!--https://www.talkingdotnet.com/how-to-lazy-load-images-angular-6/-->
+                              <ng-container *ngIf="image.show">
+                                   <img src={{image.url}}>
+                              </ng-container>
+                         </div>
+                    </div>
+               </div>
+          </div>
+     </div>
 </div>
