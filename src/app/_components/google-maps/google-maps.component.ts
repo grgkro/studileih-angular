@@ -98,14 +98,21 @@ export class GoogleMapsComponent implements OnInit {
         name: "Stuttgart-Mitte",
         dorm: []
       };
+      let vaihingen: DormGroup = {
+        name: "Stuttgart-Vaihingen",
+        dorm: []
+      };
       // console.log(dorms)
       for(let dorm of dorms){
           this.markers.push(dorm )
           if (dorm.district == "StuttgartMitte") {
             mitte.dorm.push(dorm);
+          } else if (dorm.district == "StuttgartVaihingen") {
+            vaihingen.dorm.push(dorm);
           }
       }
       this.dormGroups.push(mitte)
+      this.dormGroups.push(vaihingen)
   })
   }
 
