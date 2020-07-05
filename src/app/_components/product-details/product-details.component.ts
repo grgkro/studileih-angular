@@ -38,18 +38,17 @@ export class ProductDetailsComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private _data: DataService, private _update: UpdateService, private _helper: HelperService, private sanitizer: DomSanitizer) {
     // creates a list of cat images for testing the lazy loading function (lazy loading = loading pictures only when they are in the viewport. Georg will delete this later!-->
-    for (let i = 0; i < 50; i++) {
-      const url = 'https://loremflickr.com/640/480?random=' + (i + 1);
+    // for (let i = 0; i < 50; i++) {
+    //   const url = 'https://loremflickr.com/640/480?random=' + (i + 1);
       // this.imagesList[i] = {
       //   url: url,
       //   show: false
       // };
-    }
+    // }
   }
 
   ngOnInit(): void {
-    
-    this.updateShowUploadComponent();
+    this.subscribeShowUploadObservable();
     this.routeParam$ = this.route.params.pipe(switchMap(params => this._data.getProduct(params['id'])))  // get the productId from the URL parameter /{id}. pipe & switchMap take care that if the userId changes for some reason, the following process gets stopped: https://www.concretepage.com/angular/angular-switchmap-example (not necessary yet, because the user profile image loads pretty fast, but if that takes longer and the user switches to another site, it's better to stop the process)
     this.loadProductWithProductPicture(); // load the product with the main product picture - get the productId from the URL parameter /{id}
     this.updateUser();   //  if the user changes, this will get updated
@@ -65,7 +64,7 @@ export class ProductDetailsComponent implements OnInit {
     this._update.currentUser.subscribe(user => this.user = user)  
   }
 
-  updateShowUploadComponent(): void {
+  subscribeShowUploadObservable(): void {
     this._update.currentShowUploadComponent
     .pipe(takeUntil(this.destroy$))             // We need to unsubscribe from this Observable by hand
     .subscribe(showUploadComponent => this.showUploadComponent = showUploadComponent)  // when the user uploaded a product photo, we want do not show the upload component anymore. But therefore we need the information, if a photo was uploaded from the upload component. -> If a user successfully uploads a product photo (status 200), the upload component will change showUploadComponent to false. The _update service then updates this value for all subscribes. Therefore we need to subscribe here, to get that change.
@@ -82,7 +81,7 @@ export class ProductDetailsComponent implements OnInit {
         this.isCurrentUserOwner = true;
         this._update.changeImgType("productPic");   // ohne die Zeile, würde bei "upload new Photo" das Photo als USER profile pic behandelt werden. Wir wollen es aber als PRODUCT pic speichern. (Ist etwas ungeschickt gelöst...) 
       }
-      this.loadProductPics();  // after loading the product, load one product pic (the first photo from the product.picPaths arraylist)  
+      if (product.picPaths != undefined || product.picPaths != null) this.loadProductPics();  // after loading the product, load one product pic (the first photo from the product.picPaths arraylist)  
     },
       (err: HttpErrorResponse) => {                 // if the product could not be loaded, this part will be executed instead 
         this.errorMessage = this._helper.createErrorMessage(err, "Produkt konnte nicht gefunden werden.");
