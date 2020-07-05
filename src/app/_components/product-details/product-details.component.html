@@ -44,8 +44,11 @@
                     <div *ngFor="let image of imagesToShow; let i = index" (deferLoad)="image.show = true">
                          <div class="col" align="center">
                               <ng-container *ngIf="image.show">
-                                   <img [src]="image" class="images" alt="Product Picture"
-                                        *ngIf="image; else noImageFound">
+                                   <div class="container" >
+                                        <img [src]="image" class="images" alt="Product Picture"
+                                             *ngIf="image; else noImageFound">
+                                        <button class="delete-btn btn" *ngIf="isCurrentUserOwner" (click)="deleteProductImage(i)">x</button>   <!-- if the currect user is the owner, we show a delete button in the top right corner of the image-->
+                                   </div>
                               </ng-container>
                               <ng-template #noImageFound>
                                    <img src="https://cdn-0.askleo.com/wp-content/uploads/2013/07/image_not_found.png"
@@ -56,7 +59,7 @@
                          </div>
                     </div>
                </div>
-               <div class="row" >
+               <div class="row">
                     <div class="col-sm-12">
                          <div *ngIf="isCurrentUserOwner">
                               <div *ngIf="showUploadComponent">
@@ -107,13 +110,7 @@ https://blog.angular.io/version-10-of-angular-now-available-78960babd41
                               </mat-form-field>
                          </div>
 
-                         <!-- displayes list of images of cats for testing the lazy loading function (lazy loading = loading pictures only when they are in the viewport. Georg will delete this later!-->
-                         <div class="images" *ngFor="let image of imagesList" (deferLoad)="image.show = true">
-                              <!--https://www.talkingdotnet.com/how-to-lazy-load-images-angular-6/-->
-                              <ng-container *ngIf="image.show">
-                                   <img src={{image.url}}>
-                              </ng-container>
-                         </div>
+
                     </div>
                </div>
           </div>

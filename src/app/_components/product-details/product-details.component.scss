@@ -1,4 +1,24 @@
 
+  
+  /* Style the button and place it in the middle of the container/image */
+  .container .delete-btn {
+    position: absolute;
+    top: 9%;
+    left: 88.5%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    background-color: rgb(252, 5, 5);
+    color: white;
+    font-size: 8px;
+    padding: 2px 6px;
+    border: none;
+    cursor: pointer;
+    border-radius: 32px;
+  }
+  
+  .container .delete-btn:hover {
+    background-color: rgb(131, 2, 2);
+  } 
 
 
 @media (min-width: 768px) {

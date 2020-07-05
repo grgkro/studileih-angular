@@ -66,6 +66,13 @@ export class DataService {
     return this.http.post(this.imagesPath + '/loadProductPicByFilename', formdata, { responseType: 'blob' });
   }
 
+  deleteProductPicByFilename(filename: string, productId: number) {
+    const formdata: FormData = new FormData();
+    formdata.append('filename', filename);
+    formdata.append('productId', productId.toString());
+    return this.http.post(this.imagesPath + '/deleteProductPicByFilename', formdata, {responseType: 'text' });
+  }
+
   getUsers(): Observable<User[]> {
     return this.http.get<User[]>(this.serverPath + "/users").pipe(
       catchError(this.errorHandler)
