@@ -3,7 +3,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { User } from './_models/user';
 import { Product } from './_models/product';
+
 import { catchError } from 'rxjs/operators';
+import { Dorm } from './_models/dorm';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +25,11 @@ export class DataService {
   }
 
   constructor(private http: HttpClient) { }
+
+  getDormLocations(): Observable<Dorm[]> {
+    return this.http.get<Dorm[]>(this.serverPath +'/dorms');
+  }
+
 
   login(loginPayload): Observable<User> {
     return this.http.post<User>(this.serverPath + '/token/generate-token', loginPayload);

@@ -10,6 +10,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Observable } from 'rxjs/internal/Observable';  // Don't make general imports like this: import { Observable, Subject } from 'rxjs'; -> You have now all of rxjs imported and that will slow down your app.
 import { Subject } from 'rxjs/internal/Subject';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 
 
 @Component({
@@ -29,6 +31,8 @@ export class ProductDetailsComponent implements OnInit {
   imagesList = [];
   routeParam$: Observable<Product>;
   i: number = 0;
+  //snackBar variables
+  successMessage = "Foto gelöscht! 😄"
 
   // Angular takes care of unsubscribing from many observable subscriptions like those returned from the Http service or when using the async pipe. But the routeParam$ and the _update.currentShowUploadComponent needs to be unsubscribed by hand on ngDestroy. Otherwise, we risk a memory leak when the component is destroyed. https://malcoded.com/posts/angular-async-pipe/   https://www.digitalocean.com/community/tutorials/angular-takeuntil-rxjs-unsubscribe
   destroy$: Subject<boolean> = new Subject<boolean>();
@@ -36,7 +40,7 @@ export class ProductDetailsComponent implements OnInit {
   imagesLoaded: Promise<boolean>;  // this boolean gets to set to true when all images are loaded
 
 
-  constructor(private route: ActivatedRoute, private _data: DataService, private _update: UpdateService, private _helper: HelperService, private sanitizer: DomSanitizer) { }
+  constructor(private route: ActivatedRoute, private _data: DataService, private _update: UpdateService, private _helper: HelperService, private sanitizer: DomSanitizer, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.subscribeShowUploadObservable();
@@ -49,6 +53,7 @@ export class ProductDetailsComponent implements OnInit {
     this.destroy$.next(true);
     // Now let's also unsubscribe from the subject itself:
     this.destroy$.unsubscribe();
+
   }
 
   updateUser(): void {
@@ -120,29 +125,36 @@ export class ProductDetailsComponent implements OnInit {
   deleteProductImage(imageId: number) {
     console.log(this.product.picPaths[imageId]);
     console.log(this.product.id);
-    this._data.deleteProductPicByFilename(this.product.picPaths[imageId], this.product.id).subscribe(res => 
-      {console.log(res)
-        if (res) {
-          this.deleteImageFromProductArray(this.product.picPaths[imageId]);
+    this._data.deleteProductPicByFilename(this.product.picPaths[imageId], this.product.id).subscribe(res => {
+      console.log(res)
+      if (res) {
+        this.deleteImageFromProductArray(this.product.picPaths[imageId]);
         this.deleteImageFromImagesToShow(imageId);
-        } else {
-          this.errorMessage = "Foto konnte nicht gelöscht werden."
-        }
-        
-      });
+        //show SnackBar
+        let snackBarRef = this._snackBar.open(this.successMessage, "Rückgängig", {duration: 5000});
+        snackBarRef.onAction()
+          .pipe(takeUntil(this.destroy$))
+          .subscribe(() => {
+            console.log('The snack-bar action was triggered!');
+          });
+      } else {
+        this._snackBar.open("Foto konnte nicht gelöscht werden.","",{duration: 2000});
+      }
+
+    });
 
   }
 
   deleteImageFromProductArray(filename: string) {
     const index: number = this.product.picPaths.indexOf(filename);
     if (index !== -1) {
-        this.product.picPaths.splice(index, 1);
-    }        
+      this.product.picPaths.splice(index, 1);
+    }
   }
 
   deleteImageFromImagesToShow(index: number) {
     if (index !== -1) {
-      this.imagesToShow.splice(index, 1) 
-    }        
+      this.imagesToShow.splice(index, 1)
+    }
   }
 }

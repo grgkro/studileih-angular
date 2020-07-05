@@ -30,6 +30,10 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { DeferLoadModule } from '@trademe/ng-defer-load';
 import { ProductDetailsComponent } from './_components/product-details/product-details.component';
 
+import { MatSliderModule } from '@angular/material/slider';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatSelectModule} from '@angular/material/select';
+
 
 
 HttpClientModule
@@ -63,6 +67,9 @@ HttpClientModule
     MatNativeDateModule,
 
     DeferLoadModule,
+    MatSliderModule,
+    MatSnackBarModule,
+    MatSelectModule,
   
     AgmCoreModule.forRoot({
       apiKey: gmaps_environment.GMAPS_API_KEY // The API KEY belongs to Georg and can't be exposed on GITHUB (Hackers are crazy) 
