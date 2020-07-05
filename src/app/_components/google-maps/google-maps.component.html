@@ -22,8 +22,8 @@
                         <mat-option>-- None --</mat-option>
                         <mat-optgroup *ngFor="let group of dormGroups" [label]="group.name"
                             [disabled]="group.disabled">
-                            <mat-option *ngFor="let dorm of group.dorm" [value]="dorm.value">
-                                {{dorm.viewValue}}
+                            <mat-option *ngFor="let dorm of group.dorm" [value]="dorm.name">
+                                {{dorm.name}}
                             </mat-option>
                         </mat-optgroup>
                     </mat-select>
@@ -36,7 +36,16 @@
                 <agm-map [latitude]="48.78232" [longitude]="9.17702" [zoom]="currZoom">
                     <agm-marker *ngFor="let m of markers;"
                     [latitude]="m.lat"
-                    [longitude]="m.lng">></agm-marker>
+                    [longitude]="m.lng"
+                    (markerClick)="markerClicked(m)">
+                    <agm-snazzy-info-window *ngFor="let m of markers;" [closeWhenOthersOpen]="true" [closeOnMapClick]="true" [isOpen]="isSnazzyInfoWindowOpened" [latitude]="m.lat" [longitude]="m.lng" [maxWidth]="100" [shadow]="true" padding="12px" backgroundColor="#fff"  fontSize="12px"  fontColor="#757575"  wrapperClass="customClass"  [showCloseButton]="false" [panOnOpen]="false">
+                        <ng-template>
+                        <div>{{m.name}}</div>
+                        </ng-template>
+                        </agm-snazzy-info-window>
+                </agm-marker>
+                   
+                    
                 </agm-map>
             </div>
         </div>

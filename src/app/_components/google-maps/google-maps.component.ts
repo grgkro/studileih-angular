@@ -19,6 +19,7 @@ interface DormGroup {
 export class GoogleMapsComponent implements OnInit {
 
   currZoom: number = 10;
+  isSnazzyInfoWindowOpened: boolean = true;
 
   dormControl = new FormControl();
   dormGroups: DormGroup[] = [   // https://www.studierendenwerk-stuttgart.de/wohnen/wohnanlagen/ 
@@ -92,24 +93,18 @@ export class GoogleMapsComponent implements OnInit {
 
   ngOnInit(): void {
     this._data.getDormLocations().subscribe(dorms => {
-      // let mitte: DormGroup;
-      console.log(dorms)
+      let mitte: DormGroup = {
+        name: "Stuttgart-Mitte",
+        dorm: []
+      };
+      // console.log(dorms)
       for(let dorm of dorms){
           this.markers.push(dorm )
           if (dorm.district == "StuttgartMitte") {
-            // mitte.name = "Stuttgart-Mitte";
-            // mitte.dorm.push(dorm);
-            // console.log(mitte)
+            mitte.dorm.push(dorm);
           }
-            // {
-            //   name: 'Stuttgart-Mitte', 
-            //   dorm: [
-            //     {value: 'Alexanderstraße', viewValue: 'Alexanderstraße'},
-            //     {value: 'Anna-Herrigel-Haus', viewValue: 'Anna-Herrigel-Haus'},
       }
-      // this.dormGroups.push(mitte)
-      // console.log(mitte)
-      // console.log(this.dormGroups)
+      this.dormGroups.push(mitte)
   })
   }
 
@@ -118,5 +113,15 @@ export class GoogleMapsComponent implements OnInit {
     console.log("This is emitted as the thumb slides");
     console.log(event.value);
     this.currZoom = event.value;
+  }
+
+  markerClicked(marker) {
+    console.log(marker)
+    this.isSnazzyInfoWindowOpened = true;
+    this.toggleSnazzyInfoWindow()
+  }
+
+  toggleSnazzyInfoWindow() {
+    this.isSnazzyInfoWindowOpened = !this.isSnazzyInfoWindowOpened;
   }
 }

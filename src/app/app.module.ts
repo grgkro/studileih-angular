@@ -34,6 +34,8 @@ import { MatSliderModule } from '@angular/material/slider';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatSelectModule} from '@angular/material/select';
 
+import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
+
 
 
 HttpClientModule
@@ -70,7 +72,8 @@ HttpClientModule
     MatSliderModule,
     MatSnackBarModule,
     MatSelectModule,
-  
+
+    AgmSnazzyInfoWindowModule,
     AgmCoreModule.forRoot({
       apiKey: gmaps_environment.GMAPS_API_KEY // The API KEY belongs to Georg and can't be exposed on GITHUB (Hackers are crazy) 
       //-> Therefore it's loaded as a variable from the file gmaps_environment.ts in folder environments. gmaps_environment.ts is in .gitignore, so it won't get pushed to git
