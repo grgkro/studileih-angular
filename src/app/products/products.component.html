@@ -91,7 +91,7 @@
   </div>
   <ul [@listStagger]="products">
     <!--listStagger ist eine spezielle Animation, bei der die Liste nicht auf einmal dargestellt wird, sondern zeitlich verzögert auftaucht-->
-    <li *ngFor="let product of products; let i = index">
+    <li *ngFor="let product of products">
 
       <div class="row">
         <div class="col-3">
@@ -109,8 +109,8 @@
               <!-- https://malcoded.com/posts/angular-async-pipe/ -->
               <div>
                 <!-- loads the product image. If no image is available, a default pic gets shown *ngIf="map.get(i+1); else noImageFound"-->
-                <img [src]="map.get(i+1)" class="fixImageSize img-thumbnail" alt="Product Picture"
-                  *ngIf="map.get(i+1); else noImageFound">
+                <img [src]="map.get(product.id)" class="fixImageSize img-thumbnail" alt="Product Picture"
+                  *ngIf="map.get(product.id); else noImageFound">
                 <ng-template #noImageFound>
                   <img src="https://cdn-0.askleo.com/wp-content/uploads/2013/07/image_not_found.png"
                     alt="Fallbackimage">
