@@ -20,6 +20,7 @@ export class GoogleMapsComponent implements OnInit {
 
   currZoom: number = 10;
   isSnazzyInfoWindowOpened: boolean = true;
+  clickedMarker: string;
 
   dormControl = new FormControl();
   dormGroups: DormGroup[] = [   // https://www.studierendenwerk-stuttgart.de/wohnen/wohnanlagen/ 
@@ -115,9 +116,10 @@ export class GoogleMapsComponent implements OnInit {
     this.currZoom = event.value;
   }
 
-  markerClicked(marker) {
+  markerClicked(marker: Dorm) {
     console.log(marker)
     this.isSnazzyInfoWindowOpened = true;
+    this.clickedMarker = marker.name;
     this.toggleSnazzyInfoWindow()
   }
 

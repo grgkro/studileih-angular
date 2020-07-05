@@ -40,7 +40,7 @@
                     (markerClick)="markerClicked(m)">
                     <agm-snazzy-info-window *ngFor="let m of markers;" [closeWhenOthersOpen]="true" [closeOnMapClick]="true" [isOpen]="isSnazzyInfoWindowOpened" [latitude]="m.lat" [longitude]="m.lng" [maxWidth]="100" [shadow]="true" padding="12px" backgroundColor="#fff"  fontSize="12px"  fontColor="#757575"  wrapperClass="customClass"  [showCloseButton]="false" [panOnOpen]="false">
                         <ng-template>
-                        <div>{{m.name}}</div>
+                        <div>{{clickedMarker}}</div>
                         </ng-template>
                         </agm-snazzy-info-window>
                 </agm-marker>
