@@ -36,9 +36,9 @@
      </ul>
 
      <div align="center" style="text-align: center">
-          <div class="container" *ngIf="imagesLoaded | async" style="display: inline-block">
+          <div class="container" style="display: inline-block">
                <!-- https://malcoded.com/posts/angular-async-pipe/ -->
-               <div class="row">
+               <div class="row" *ngIf="imagesLoaded | async">
                     <!-- deferload ist für das lazy loading zuständig, bin aber nicht sicher ob es überhaupt funktioniert.-->
                     <!-- loads the product image. If no image is available, a default pic gets shown -->
                     <div *ngFor="let image of imagesToShow; let i = index" (deferLoad)="image.show = true">
@@ -56,7 +56,7 @@
                          </div>
                     </div>
                </div>
-               <div class="row">
+               <div class="row" >
                     <div class="col-sm-12">
                          <div *ngIf="isCurrentUserOwner">
                               <div *ngIf="showUploadComponent">

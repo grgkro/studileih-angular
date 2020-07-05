@@ -43,19 +43,24 @@ export class ProductsComponent implements OnInit {
   map = new Map();
   imagesLoaded: Promise<boolean>;  // this boolean gets to set to true when all images are loaded
 
-  constructor(private activatedRoute: ActivatedRoute, private _data: DataService, private _update: UpdateService,private sanitizer: DomSanitizer, private router: Router) { }
+  constructor(private activatedRoute: ActivatedRoute, private _data: DataService, private _update: UpdateService, private sanitizer: DomSanitizer, private router: Router) { }
 
   ngOnInit() {
 
     this.products = this.activatedRoute.snapshot.data['products'];  //load all products from the product resolver service (the resolver pre-loads them from the database, before this component gets rendered) 
-    this.products.forEach(product => {         //load the main image for each product
-      this.loadMainProductPicture(product);
-    })
-    this.imagesLoaded = Promise.resolve(true);   // now that all images are loaded, we display them by setting the boolean to true -> *ngIf="imagesLoaded | async" in HTML is now true
+    this.loadProductImages();
+
   }
 
+  //load the main image for each product
+  loadProductImages() {
+    this.products.forEach(product => {
+      if (product.picPaths != undefined || product.picPaths != null) this.loadMainProductPicture(product);
+    })
+    this.imagesLoaded = Promise.resolve(true);   // now that all images are loaded, we display them by setting the boolean to true -> *ngIf="imagesLoaded | async" in HTML is now true
 
-  
+  }
+
 
   //loads only the first picture of the pictures of a product (= the main picture)
   loadMainProductPicture(product: Product) {
@@ -108,6 +113,7 @@ export class ProductsComponent implements OnInit {
       .subscribe(data => {
         this.products = this.products.filter(product => product.id !== id);
         console.log('Product deleted successfully!');
+        this.loadProductImages();
       })
   };
 
