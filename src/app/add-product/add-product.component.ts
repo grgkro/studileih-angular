@@ -41,10 +41,9 @@ export class AddProductComponent implements OnInit {
          console.log('Product created successfully!')
          this.router.navigate(['products']);
        }); */
-       console.log(this.addForm.value);
+    console.log(this.addForm.value);
     this.dataService.addProduct(this.addForm.value)
       .subscribe((res: any) => {
-        this.data = res;
         this.router.navigate(['products']);
       }, (err: any) => {
         console.log(err);
@@ -52,7 +51,7 @@ export class AddProductComponent implements OnInit {
       );
   }
 
-  cancel(){
+  cancel() {
     this.router.navigate(['products']);
   }
 

@@ -32,10 +32,14 @@ export class AddUserComponent implements OnInit {
   }
 
   onSubmit() {
-    this.dataService.addUser(this.addForm.value)
-      .subscribe( data => {
-        this.router.navigate(['']);
-      });
+      console.log(this.addForm.value);
+      this.dataService.addUser(this.addForm.value)
+        .subscribe((res: any) => {
+          this.router.navigate(['users']);
+        }, (err: any) => {
+          console.log(err);
+        }
+        );
   }
 
 }

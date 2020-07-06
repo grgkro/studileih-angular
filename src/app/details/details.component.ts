@@ -42,7 +42,8 @@ export class DetailsComponent implements OnInit {
   editUser(user: User): void {
      window.localStorage.removeItem("id");
     window.localStorage.setItem("id", user.id.toString()); 
-    this.router.navigate(['edit-user']);
+    const id = user.id;
+    this.router.navigate(['edit-user/:'+id]);
   };
 
 

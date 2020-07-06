@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { User } from '../_models/user';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../data.service';
@@ -12,6 +12,8 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 })
 export class EditUserComponent implements OnInit {
   user: User;
+
+  @Input()
   editForm: FormGroup;
 
   constructor(private formBuilder: FormBuilder
