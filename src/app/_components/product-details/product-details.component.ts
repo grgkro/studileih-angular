@@ -38,6 +38,7 @@ export class ProductDetailsComponent implements OnInit {
   destroy$: Subject<boolean> = new Subject<boolean>();
 
   imagesLoaded: Promise<boolean>;  // this boolean gets to set to true when all images are loaded
+  deletedImages = new Map();
 
 
   constructor(private route: ActivatedRoute, private _data: DataService, private _update: UpdateService, private _helper: HelperService, private sanitizer: DomSanitizer, private _snackBar: MatSnackBar) { }
@@ -88,16 +89,18 @@ export class ProductDetailsComponent implements OnInit {
   // we only load the first poduct pic (testing)
   loadProductPics() {
     this.product.picPaths.forEach(picPath => {
-      this._data.loadProductPicByFilename(picPath, this.product.id).subscribe(image => {  //loads the file as a blob from backend
-        this.createImageFromBlob(picPath, image);          // transorfms the blob into an image
-      },
-        (err: HttpErrorResponse) => {                 // if the image could not be loaded, this part will be executed instead 
-          this.errorMessage = this._helper.createErrorMessage(err, "User oder Profilfoto konnte nicht gefunden werden");
-        }
-      );
-    });
+      this.loadProductPic(picPath, this.product.id)});
     this.imagesLoaded = Promise.resolve(true);   // now that all images are loaded, we display them by setting the boolean to true -> *ngIf="imagesLoaded | async" in HTML is now true
+  }
 
+  loadProductPic(picPath: string, productId: number) {
+    this._data.loadProductPicByFilename(picPath, productId).subscribe(image => {  //loads the file as a blob from backend
+      this.createImageFromBlob(picPath, image);          // transorfms the blob into an image
+    },
+      (err: HttpErrorResponse) => {                 // if the image could not be loaded, this part will be executed instead 
+        this.errorMessage = this._helper.createErrorMessage(err, "User oder Profilfoto konnte nicht gefunden werden");
+      }
+    );
   }
 
   // Hide or Show the Upload function (the "Durchsuchen" Button)
@@ -125,24 +128,46 @@ export class ProductDetailsComponent implements OnInit {
   deleteProductImage(imageId: number) {
     console.log(this.product.picPaths[imageId]);
     console.log(this.product.id);
-    this._data.deleteProductPicByFilename(this.product.picPaths[imageId], this.product.id).subscribe(res => {
-      console.log(res)
-      if (res) {
-        this.deleteImageFromProductArray(this.product.picPaths[imageId]);
-        this.deleteImageFromImagesToShow(imageId);
-        //show SnackBar
-        let snackBarRef = this._snackBar.open(this.successMessage, "Rückgängig", {duration: 5000});
-        snackBarRef.onAction()
-          .pipe(takeUntil(this.destroy$))
-          .subscribe(() => {
-            console.log('The snack-bar action was triggered!');
+    
+    let imageArchived$ = this.archiveImage(this.product.picPaths[imageId], "product", this.product.id);
+        imageArchived$.subscribe(res => {
+          this._data.deleteProductPicByFilename(this.product.picPaths[imageId], this.product.id).subscribe(res => {
+            console.log(res)
+            if (res) {
+              this.deletedImages.set(this.product.id, this.product.picPaths[imageId]);  // we add the image to the deleted images variable (the variable stores all in one session by one user deleted images. If he logs out, the var will be destroyed and he can't restore the images anymore)
+              
+                this.deleteImageFromProductArray(this.product.picPaths[imageId]);
+                this.deleteImageFromImagesToShow(imageId);
+      
+                //show SnackBar
+              let snackBarRef = this._snackBar.open(this.successMessage, "Rückgängig", {duration: 5000});
+              snackBarRef.onAction()
+                .pipe(takeUntil(this.destroy$))
+                .subscribe(() => {
+                  console.log('The snack-bar action was triggered!');
+                  this.restoreLastImage();
+                });
+              
+            } else {
+              this._snackBar.open("Foto konnte nicht gelöscht werden.","",{duration: 2000});
+            }
+      
           });
-      } else {
-        this._snackBar.open("Foto konnte nicht gelöscht werden.","",{duration: 2000});
-      }
+        })
 
-    });
+  }
 
+  archiveImage(picPath: string, imgType: string, productId: number): Observable<any> {
+    console.log("going to archive");
+    return this._data.archivePicByFilename(picPath, imgType, productId);
+
+  }
+
+  restoreLastImage() {
+    var picPath = Array.from(this.deletedImages.values()).pop();
+    var productId = Array.from(this.deletedImages.keys()).pop();
+    console.log(picPath + "productId: " + productId)
+    this.loadProductPic(picPath, productId);
   }
 
   deleteImageFromProductArray(filename: string) {

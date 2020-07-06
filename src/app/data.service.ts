@@ -12,6 +12,7 @@ import { Dorm } from './_models/dorm';
 })
 
 export class DataService {
+  
 
   serverPath = 'http://localhost:8090';
   productsPath = 'http://localhost:8090/products';
@@ -71,6 +72,23 @@ export class DataService {
     formdata.append('filename', filename);
     formdata.append('productId', productId.toString());
     return this.http.post(this.imagesPath + '/loadProductPicByFilename', formdata, { responseType: 'blob' });
+  }
+
+  archivePicByFilename(filename: string, imgType: string, productId: number) {
+    console.log("_data archive")
+    const formdata: FormData = new FormData();
+    formdata.append('filename', filename);
+    formdata.append('imgType', imgType);
+    formdata.append('productId', productId.toString());
+    return this.http.post(this.imagesPath + '/archivePicByFilename', formdata, { responseType: 'text' });
+  }
+
+  restorePicByFilename(filename: string, imgType: string, productId: number) {
+    const formdata: FormData = new FormData();
+    formdata.append('filename', filename);
+    formdata.append('imgType', imgType);
+    formdata.append('productId', productId.toString());
+    return this.http.post(this.imagesPath + '/restoreProductPicByFilename', formdata, { responseType: 'text' });
   }
 
   deleteProductPicByFilename(filename: string, productId: number) {

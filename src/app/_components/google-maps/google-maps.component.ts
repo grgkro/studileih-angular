@@ -116,10 +116,8 @@ export class GoogleMapsComponent implements OnInit {
   })
   }
 
-
+ // wenn der mat-slider (zoom regelschieber über der wohnheimliste) verschoben wird verändert sich der zoom der google maps:
   onInputChange(event) {
-    console.log("This is emitted as the thumb slides");
-    console.log(event.value);
     this.currZoom = event.value;
   }
 
