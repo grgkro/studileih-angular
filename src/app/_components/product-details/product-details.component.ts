@@ -7,7 +7,7 @@ import { UpdateService } from 'src/app/_services/update.service';
 import { HelperService } from 'src/app/_services/helper.service';
 import { User } from 'src/app/_models/user';
 import { HttpErrorResponse } from '@angular/common/http';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Observable } from 'rxjs/internal/Observable';  // Don't make general imports like this: import { Observable, Subject } from 'rxjs'; -> You have now all of rxjs imported and that will slow down your app.
 import { Subject } from 'rxjs/internal/Subject';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -23,7 +23,7 @@ export class ProductDetailsComponent implements OnInit {
 
   product: Product;
 
-  imagesToShow: any[] = [];
+  imagesToShow: SafeResourceUrl[] = [];
   user: User;   // In the beginning (before a user logged in) the user is undefined
   isCurrentUserOwner: boolean = false;
   showUploadComponent: boolean = false;
@@ -39,6 +39,7 @@ export class ProductDetailsComponent implements OnInit {
 
   imagesLoaded: Promise<boolean>;  // this boolean gets to set to true when all images are loaded
   deletedImages = new Map();
+  deletedPics: SafeResourceUrl[] = [];
 
 
   constructor(private route: ActivatedRoute, private _data: DataService, private _update: UpdateService, private _helper: HelperService, private sanitizer: DomSanitizer, private _snackBar: MatSnackBar) { }
@@ -95,7 +96,7 @@ export class ProductDetailsComponent implements OnInit {
 
   loadProductPic(picPath: string, productId: number) {
     this._data.loadProductPicByFilename(picPath, productId).subscribe(image => {  //loads the file as a blob from backend
-      this.createImageFromBlob(picPath, image);          // transorfms the blob into an image
+      this.createImageFromBlob(image);          // transforms the blob into an image
     },
       (err: HttpErrorResponse) => {                 // if the image could not be loaded, this part will be executed instead 
         this.errorMessage = this._helper.createErrorMessage(err, "User oder Profilfoto konnte nicht gefunden werden");
@@ -110,7 +111,7 @@ export class ProductDetailsComponent implements OnInit {
 
   // This image upload code is basically taken from here: https://stackoverflow.com/questions/45530752/getting-image-from-api-in-angular-4-5  (first answer) or see the code directly: https://stackblitz.com/edit/angular-1yr75s
   // But I had to add the sanitization part, otherwise Firefox and Chrome always blocked the image/blob. https://angular.io/guide/security#xss -> Potential security risk... 
-  createImageFromBlob(picPath: string, image: Blob) {
+  createImageFromBlob(image: Blob) {
     let reader = new FileReader();
     reader.addEventListener("load", () => {
       // Somebody could create an image and hide javascript code inside of it (an image is just a very long text formatted in base64) 
@@ -130,7 +131,7 @@ export class ProductDetailsComponent implements OnInit {
     console.log(this.product.id);
     
     let imageArchived$ = this.archiveImage(this.product.picPaths[imageId], "product", this.product.id);
-        imageArchived$.subscribe(res => {
+        imageArchived$.subscribe( () => {
           this._data.deleteProductPicByFilename(this.product.picPaths[imageId], this.product.id).subscribe(res => {
             console.log(res)
             if (res) {
@@ -168,6 +169,11 @@ export class ProductDetailsComponent implements OnInit {
     var productId = Array.from(this.deletedImages.keys()).pop();
     console.log(picPath + "productId: " + productId)
     this.loadProductPic(picPath, productId);
+    console.log(this.deletedPics)
+    // this.imagesToShow.push(this.deletedPics.splice((this.deletedPics.length), 1));
+    this.imagesToShow.push(this.deletedPics.pop()[0]);
+    console.log(typeof(this.deletedPics.splice((this.deletedPics.length), 1)));
+    console.log(this.imagesToShow)
   }
 
   deleteImageFromProductArray(filename: string) {
@@ -179,7 +185,9 @@ export class ProductDetailsComponent implements OnInit {
 
   deleteImageFromImagesToShow(index: number) {
     if (index !== -1) {
-      this.imagesToShow.splice(index, 1)
+      this.deletedPics.push(this.imagesToShow.splice(index, 1));
+      console.log(this.deletedPics);
+      console.log(this.imagesToShow);
     }
   }
 }
