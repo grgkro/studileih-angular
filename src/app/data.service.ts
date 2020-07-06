@@ -75,7 +75,7 @@ export class DataService {
   }
 
   archivePicByFilename(filename: string, imgType: string, productId: number) {
-    console.log("_data archive")
+    
     const formdata: FormData = new FormData();
     formdata.append('filename', filename);
     formdata.append('imgType', imgType);
@@ -88,7 +88,8 @@ export class DataService {
     formdata.append('filename', filename);
     formdata.append('imgType', imgType);
     formdata.append('productId', productId.toString());
-    return this.http.post(this.imagesPath + '/restoreProductPicByFilename', formdata, { responseType: 'text' });
+    console.log("_data restore " + filename)
+    return this.http.post(this.imagesPath + '/restorePicByFilename', formdata, { responseType: 'text' });
   }
 
   deleteProductPicByFilename(filename: string, productId: number) {

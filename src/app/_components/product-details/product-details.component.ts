@@ -167,13 +167,15 @@ export class ProductDetailsComponent implements OnInit {
   restoreLastImage() {
     var picPath = Array.from(this.deletedImages.values()).pop();
     var productId = Array.from(this.deletedImages.keys()).pop();
-    console.log(picPath + "productId: " + productId)
-    this.loadProductPic(picPath, productId);
-    console.log(this.deletedPics)
-    // this.imagesToShow.push(this.deletedPics.splice((this.deletedPics.length), 1));
-    this.imagesToShow.push(this.deletedPics.pop()[0]);
+    console.log("picPath: " + picPath + " + productId: " + productId)
+    
+    this.imagesToShow.push(this.deletedPics.pop()[0]);  // .pop() removes the last element of an array and returns it. But somehow here .pop() always returned an array with one element instead of only the element. So I had to do: .pop()[0] to get that element from the pop array.
     console.log(typeof(this.deletedPics.splice((this.deletedPics.length), 1)));
     console.log(this.imagesToShow)
+    console.log(typeof(picPath))
+    console.log(typeof(productId))
+    this._data.restorePicByFilename(picPath, "product", productId).subscribe( () => console.log("YISS"));
+    this.product.picPaths.push(picPath)
   }
 
   deleteImageFromProductArray(filename: string) {
