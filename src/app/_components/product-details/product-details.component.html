@@ -39,14 +39,14 @@
      <div align="center" style="text-align: center">
           <div class="container" style="display: inline-block">
                <!-- https://malcoded.com/posts/angular-async-pipe/ -->
-               <div class="row" *ngIf="imagesLoaded | async">
+               <div class="row" style="margin-top: 1.5rem; margin-bottom: 1.5rem;" *ngIf="imagesLoaded | async">
                     <!-- deferload ist für das lazy loading zuständig, bin aber nicht sicher ob es überhaupt funktioniert.-->
                     <!-- loads the product image. If no image is available, a default pic gets shown -->
                     <div *ngFor="let image of imagesToShow; let i = index" (deferLoad)="image.show = true">
-                         <div class="col" align="center">
+                         <div class="col" style="margin: 1.5rem 0rem 1.5rem 0rem" align="center">
                               <ng-container *ngIf="image.show">
                                    <div class="container" >
-                                        <img [src]="image" class="images" alt="Product Picture"
+                                        <img [src]="image" class="images img-thumbnail" alt="Product Picture"
                                              *ngIf="image; else noImageFound">
                                         <button class="delete-btn btn" *ngIf="isCurrentUserOwner" (click)="deleteProductImage(i)">x</button>   <!-- if the currect user is the owner, we show a delete button in the top right corner of the image-->
                                    </div>

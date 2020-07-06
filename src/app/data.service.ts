@@ -13,6 +13,7 @@ import { Dorm } from './_models/dorm';
 
 export class DataService {
   
+  
 
   serverPath = 'http://localhost:8090';
   productsPath = 'http://localhost:8090/products';
@@ -81,6 +82,13 @@ export class DataService {
     formdata.append('imgType', imgType);
     formdata.append('productId', productId.toString());
     return this.http.post(this.imagesPath + '/archivePicByFilename', formdata, { responseType: 'text' });
+  }
+
+  deleteArchive(archiveType: string, id: number): Observable<string> {
+    const formdata: FormData = new FormData();
+    formdata.append('archiveType', archiveType);
+    formdata.append('id', id.toString());
+    return this.http.post(this.imagesPath + '/deleteArchive', formdata, { responseType: 'text' });
   }
 
   restorePicByFilename(filename: string, imgType: string, productId: number) {

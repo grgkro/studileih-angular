@@ -55,6 +55,7 @@ export class ProductDetailsComponent implements OnInit {
     this.destroy$.next(true);
     // Now let's also unsubscribe from the subject itself:
     this.destroy$.unsubscribe();
+    this._data.deleteArchive("product", this.product.id).subscribe(()=> console.log("archive destroyed"));
 
   }
 
@@ -141,7 +142,7 @@ export class ProductDetailsComponent implements OnInit {
                 this.deleteImageFromImagesToShow(imageId);
       
                 //show SnackBar
-              let snackBarRef = this._snackBar.open(this.successMessage, "Rückgängig", {duration: 5000});
+              let snackBarRef = this._snackBar.open(this.successMessage, "Rückgängig", {duration: 2000});
               snackBarRef.onAction()
                 .pipe(takeUntil(this.destroy$))
                 .subscribe(() => {
