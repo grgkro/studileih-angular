@@ -28,7 +28,7 @@ export class ProductDetailsComponent implements OnInit {
   isCurrentUserOwner: boolean = false;
   showUploadComponent: boolean = false;
   errorMessage: string;
-  imagesList = [];
+  imagesList = []; //var array = new Array();   is similar to:    var array = [];
   routeParam$: Observable<Product>;
   i: number = 0;
   //snackBar variables
@@ -38,8 +38,10 @@ export class ProductDetailsComponent implements OnInit {
   destroy$: Subject<boolean> = new Subject<boolean>();
 
   imagesLoaded: Promise<boolean>;  // this boolean gets to set to true when all images are loaded
-  deletedImages = new Map();
+  deletedImages = [];
   deletedPics: SafeResourceUrl[] = [];
+
+  helpArray2 = [] ;
 
 
   constructor(private route: ActivatedRoute, private _data: DataService, private _update: UpdateService, private _helper: HelperService, private sanitizer: DomSanitizer, private _snackBar: MatSnackBar) { }
@@ -120,6 +122,7 @@ export class ProductDetailsComponent implements OnInit {
       // the image is read by the FileReader and is returned as an "any". But this needs to be sanitized first, before it can be shown in the HTML. Therefore we pass it into the sanitzation, but there we need a String, therefore we use: reader.result + ""   
       // this.productPicToShow is the 
       this.imagesToShow.push(this.sanitizer.bypassSecurityTrustResourceUrl(reader.result + ""));   // fügt das überprüfte (sichere) Bild dem Array imagesToShow hinzu -> Das array wird auf der html seite durchgeaechet
+    
     }, false);
 
     if (image) {
@@ -132,13 +135,13 @@ export class ProductDetailsComponent implements OnInit {
         imageArchived$.subscribe( () => {                                                               // da das Observable imageArchived$ von HTTP erzeugt wird, muss man hier nicht per Hand unsubscriben
           this._data.deleteProductPicByFilename(this.product.picPaths[imageId], this.product.id).subscribe(res => {    //löscht das Foto (nachdem es archiviert wurde) im Backend (lokal und DB) und returned "true", wenn es geklappt hat.
             if (res) {
-              this.deletedImages.set(this.product.id, this.product.picPaths[imageId]);  // we add the image to the deleted images variable (the variable stores all in one session by one user deleted images. If he logs out, the var will be destroyed and he can't restore the images anymore)
-              
+              this.deletedImages.push(this.product.picPaths[imageId]);  // we add the image to the deleted images variable (the variable stores all in one session by one user deleted images. If he logs out, the var will be destroyed and he can't restore the images anymore)
+          
                 this.deleteImageFromProductArray(this.product.picPaths[imageId]);  // löschen des Fotos im Frontend (vom Product.picPaths array)
                 this.deleteImageFromImagesToShow(imageId);                          // löschen des Fotos im Frontend (vom imagesToShow array -> erst mit der Aktion wird das Foto nicht mehr angezeigt)
       
                 //show SnackBar (snackBar ist dieses kleine Infofenster, das nach Löschen 2 Sekunden lang auftaucht.)
-              let snackBarRef = this._snackBar.open(this.successMessage, "Rückgängig", {duration: 2000});
+              let snackBarRef = this._snackBar.open(this.successMessage, "Rückgängig", {duration: 2000});   // die snackbar ist 2 Sek geöffnet
               snackBarRef.onAction()                                               
                 .pipe(takeUntil(this.destroy$))                                   // We need to unsubscribe from this Observable by hand
                 .subscribe(() => {                                                // Wenn der User in der Snackbar auf "Rückgängig" klickt wird das ausgeführt
@@ -156,20 +159,22 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   restoreLastImage() {
-    var picPath = Array.from(this.deletedImages.values()).pop();    // erstellt zuerst einen 1:1 gleichen neuen Array von deletedImages.values (values sind die Bildernamen als strings also zb "test.png") und nimmt dann (pop) den letzten Eintrag von diesem neu erzeugten Array. Dadurch wird der deletedImages array nicht verändert. Pop() nimmt immer den letzten Eintrag eines Arrays UND löscht ihn gleichzeitig vom Array -> wir wollen hier den Eintrag aber nicht löschen. 
-    var productId = Array.from(this.deletedImages.keys()).pop();
-    console.log("picPath: " + picPath + " + productId: " + productId)
-    // fügt das Foto im Frontend wieder hinzu (zum imagesToShow array -> nach der Aktion wird das Foto wieder angezeigt)
-    this.imagesToShow.push(this.deletedPics.pop()[0]);  // .pop() removes the last element of an array and returns it. But somehow here .pop() always returned an array with one element instead of only the element. So I had to do: .pop()[0] to get that element from the pop array.
-    this._data.restorePicByFilename(picPath, "product", productId)   //fügt das Foto im Backend wieder hinzu -> im Backend (lokal und DB) + löschen ausm Archiv. 
+    var picPath = this.deletedImages.pop();    // nimmt den letzten Eintrag von deletedImages array zb "test.png" UND löscht ihn gleichzeitig vom Array  
+    console.log("Foto wird wiederhergestellt: " + picPath + " + productId: " + this.product.id)
+    // fügt das Foto im Frontend wieder hinzu (zum imagesToShow array -> nach der Aktion wird das Foto wieder angezeigt) 
+    // ACHTUNG!!! deletedPics & deletedImages ist nicht das selbe. deletedPics enthält die sanitized image blobs/URLs. deletedImages enthält die Namen der dazugehörigen Images, also z.b. test.png 
+    this.imagesToShow.push(this.deletedPics.pop()[0]);  // .pop() removes the last element of an array! (not a map) and returns it. deletedImages is a map(), so .pop() always returns an array with one element instead of only the element. So I had to do: .pop()[0] to get the value of that element from the pop array.
+    
+    this._data.restorePicByFilename(picPath, "product", this.product.id)   //fügt das Foto im Backend wieder hinzu -> im Backend (lokal und DB) + löschen ausm Archiv. 
     .subscribe( () => console.log("YISS"));             // da das Observable von HTTP erzeugt wird, muss man hier nicht per Hand unsubscriben
     this.product.picPaths.push(picPath)                 // fügt das Foto im Frontend wieder hinzu (zum Product.picPaths array)
+    
   }
 
   deleteImageFromProductArray(filename: string) {
-    const index: number = this.product.picPaths.indexOf(filename);  //findet die Position des elements im Array
+    const index: number = this.product.picPaths.indexOf(filename);  //findet die Position des images/elements im Array
     if (index !== -1) {                                              // wenn index = -1 hat das element nicht im array existiert
-      this.product.picPaths.splice(index, 1);                        
+      this.product.picPaths.splice(index, 1);                        // löscht 1 element an der Stelle index vom Array product.picPaths
     }
   }
 

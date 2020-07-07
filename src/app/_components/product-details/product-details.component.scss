@@ -24,6 +24,12 @@
     margin-right: 12px;
   }
 
+  .divider{
+    width:1rem;
+    height:auto;
+    display:inline-block;
+}
+
 @media (min-width: 768px) {
     .carousel-multi-item-2 .col-md-3 {
     float: left;

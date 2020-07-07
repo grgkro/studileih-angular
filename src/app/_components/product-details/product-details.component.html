@@ -45,10 +45,12 @@
                     <div *ngFor="let image of imagesToShow; let i = index" (deferLoad)="image.show = true">
                          <div class="col" style="margin: 1.5rem 0rem 1.5rem 0rem" align="center">
                               <ng-container *ngIf="image.show">
-                                   <div class="container" >
+                                   <div class="container">
                                         <img [src]="image" class="images img-thumbnail" alt="Product Picture"
                                              *ngIf="image; else noImageFound">
-                                        <button class="delete-btn btn" *ngIf="isCurrentUserOwner" (click)="deleteProductImage(i)">x</button>   <!-- if the currect user is the owner, we show a delete button in the top right corner of the image-->
+                                        <button class="delete-btn btn" *ngIf="isCurrentUserOwner"
+                                             (click)="deleteProductImage(i)">x</button>
+                                        <!-- if the currect user is the owner, we show a delete button in the top right corner of the image-->
                                    </div>
                               </ng-container>
                               <ng-template #noImageFound>
@@ -67,8 +69,10 @@
                                    <app-upload-file></app-upload-file>
                               </div>
                               <button *ngIf="!showUploadComponent" (click)="toggleUploadComponent()"
-                                   class="btn btn-success">Upload new
-                                   Photo</button>
+                                   class="btn btn-success">Foto hochladen</button>
+                              <div class="divider"></div>
+                              <button *ngIf="deletedImages.length != 0" (click)="restoreLastImage()"
+                                   class="btn btn-info">Letztes Foto zurückholen</button>
                          </div>
                     </div>
                     <div class="row">
