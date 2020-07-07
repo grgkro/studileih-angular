@@ -69,6 +69,7 @@ HttpClientModule
     MatNativeDateModule,
 
     DeferLoadModule,
+    //Angular Material inputs (spezielle UI Elemente)
     MatSliderModule,
     MatSnackBarModule,
     MatSelectModule,
