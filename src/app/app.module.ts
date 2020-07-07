@@ -29,6 +29,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 
 import { DeferLoadModule } from '@trademe/ng-defer-load';
 import { ProductDetailsComponent } from './_components/product-details/product-details.component';
+import {TableModule} from 'primeng/table';
 
 
 
@@ -61,6 +62,7 @@ HttpClientModule
     MatDatepickerModule,
     MatInputModule,
     MatNativeDateModule,
+    TableModule,
 
     DeferLoadModule,
   
