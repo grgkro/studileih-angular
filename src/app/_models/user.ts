@@ -10,7 +10,7 @@ export interface User {
     name?: number;
     email?: string;
     password?: string;
-    dorm?: string; 
+    dormId?: number; 
     room?: number;
     profilePic?: string;
     products?: Product[];

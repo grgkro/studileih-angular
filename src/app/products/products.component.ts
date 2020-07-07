@@ -6,6 +6,11 @@ import { trigger, style, transition, animate, query, stagger } from '@angular/an
 import { HttpErrorResponse } from '@angular/common/http';
 import { DomSanitizer } from '@angular/platform-browser';
 import { UpdateService } from '../_services/update.service';
+import { Dorm } from '../_models/dorm';
+import { Subject } from 'rxjs/internal/Subject';
+import { takeUntil } from 'rxjs/internal/operators/takeUntil';
+import { Observable } from 'rxjs';
+import { User } from '../_models/user';
 
 
 
@@ -40,17 +45,95 @@ import { UpdateService } from '../_services/update.service';
 })
 export class ProductsComponent implements OnInit {
   products: Product[];
+
+  dormProducts: Product[] = [];   // will contain all products of the dorm that is currently selected (selectedDorm) 
+  dormImages = new Map();
+  users$: Observable<User[]>;
+  users: User[] = [];
+  usersFromSelectedDorm: User[] = [];
+
   map = new Map();
   imagesLoaded: Promise<boolean>;  // this boolean gets to set to true when all images are loaded
+  selectedDorm: Dorm = { id: 0, name: "Max-Kade", lat: 48.780427, lng: 9.169875, city: "Stuttgart" }; // irgendwie müssen werte in JS immer am Anfang schon initialisiert werde, das regt richtig auf, wir überschreiben das im onInit sowieso gleich wieder, gibt's da ne andere Möglichkeit?
+
+  // Angular takes care of unsubscribing from many observable subscriptions like those returned from the Http service or when using the async pipe. But the routeParam$ and the _update.currentShowUploadComponent needs to be unsubscribed by hand on ngDestroy. Otherwise, we risk a memory leak when the component is destroyed. https://malcoded.com/posts/angular-async-pipe/   https://www.digitalocean.com/community/tutorials/angular-takeuntil-rxjs-unsubscribe
+  destroy$: Subject<boolean> = new Subject<boolean>();
 
   constructor(private activatedRoute: ActivatedRoute, private _data: DataService, private _update: UpdateService, private sanitizer: DomSanitizer, private router: Router) { }
 
   ngOnInit() {
-
     this.products = this.activatedRoute.snapshot.data['products'];  //load all products from the product resolver service (the resolver pre-loads them from the database, before this component gets rendered) 
+    // TODO: if the current dorm has products -> show those products first. Underneath that list show all products of that city. Underneath that show a list of all products.
+    this.subscribeSelectedDormObservable();  // get the currently selected dorm
+
     this.loadProductImages();
 
+
   }
+
+  ngOnDestroy() {            // Angular takes care of unsubscribing from many observable subscriptions like those returned from the Http service or when using the async pipe. But the routeParam$ and the _update.currentShowUploadComponent needs to be unsubscribed by hand on ngDestroy. Otherwise, we risk a memory leak when the component is destroyed. https://malcoded.com/posts/angular-async-pipe/   https://www.digitalocean.com/community/tutorials/angular-takeuntil-rxjs-unsubscribe
+    this.destroy$.next(true);
+    // Now let's also unsubscribe from the subject itself:
+    this.destroy$.unsubscribe();
+  }
+
+  subscribeSelectedDormObservable(): void {
+    this._update.currentSelectedDorm
+      .pipe(takeUntil(this.destroy$))             // We need to unsubscribe from this Observable by hand (because its not a http observable, or other angular managed observable)
+      .subscribe(selectedDorm => {
+        // clear the lists dormProducts und usersFromSelectedDorm -> without this, you would get the products from the previously selected dorms too.
+        this.dormProducts = [];
+        this.usersFromSelectedDorm = [];
+        // get the selected dorm
+        this.selectedDorm = selectedDorm  // when the user choses a dorm in the dropdown select menu above the google maps
+        // get all users and all products from selected dorm.
+        this.getAllUsersAndProductsFromSelectedDorm();
+        
+      })
+  }
+
+  getAllUsersAndProductsFromSelectedDorm() {
+    // first get all users that live in the selected Dorm
+    // at the first time, we have to get the users from the backend
+  //  if (this.users == []) {  
+      this._data.getUsers().subscribe(users => {
+        this.users = users; 
+        // this.usersFromSelectedDorm = this.users.filter(user => user.dormId == this.selectedDorm.id)
+        users.forEach(user => {
+          if (user.dormId == this.selectedDorm.id) {
+            this.usersFromSelectedDorm.push(user);
+          }
+        });
+        // get all products from the users that live in that dorm
+        this.getAllProductsFromSelectedDorm();
+      })
+    } 
+    // if we already loaded the users from the backend, we dont need to call the backend again!
+  //  else {   
+     // this.usersFromSelectedDorm = this.users.filter(user => { return user.dormId = this.selectedDorm.id})
+  //     this.users.forEach(user => {
+  //       if (user.dormId == this.selectedDorm.id) {
+  //         this.usersFromSelectedDorm.push(user);
+  //       }
+  //     });
+  //     // get all products from the users that live in that dorm
+  //     this.getAllProductsFromSelectedDorm();
+  //   }
+   
+  // }
+
+  getAllProductsFromSelectedDorm() {
+    this.products.forEach(product => {
+      this.usersFromSelectedDorm.forEach(user => {
+        if (product.userId == user.id) {
+          this.dormProducts.push(product)
+        }
+      });
+    });
+
+
+  }
+
 
   //load the main image for each product
   loadProductImages() {

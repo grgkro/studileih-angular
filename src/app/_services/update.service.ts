@@ -8,6 +8,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { User } from '../_models/user';
 import { Product } from '../_models/product';
+import { Dorm } from '../_models/dorm';
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +35,11 @@ export class UpdateService {
   private showUploadComponentSource = new BehaviorSubject(this.showUploadComponent);  //false is the default value
   currentShowUploadComponent = this.showUploadComponentSource.asObservable();
   
+  selectedDorm: Dorm = { id: 0, name: "Max-Kade", lat: 48.780427, lng: 9.169875, city: "Stuttgart" };  // am Anfang wird als default Wohnheim das Max-Kade in Stuggi Mitte gezeigt (bekanntestes Wohnheim in Stg) - alle Wohnheime am Anfang zu zeigen braucht ewig lang zum Laden
+  private selectedDormSource = new BehaviorSubject(this.selectedDorm);  //false is the default value
+  currentSelectedDorm = this.selectedDormSource.asObservable();
+
+
   constructor() { }
 
   changeUser(user: User) {
@@ -54,6 +60,10 @@ export class UpdateService {
 
   changeShowUploadComponent(showUploadComponent: boolean) {
     this.showUploadComponentSource.next(showUploadComponent);
+  }
+  
+  changeSelectedDorm(selectedDorm: Dorm) {
+    this.selectedDormSource.next(selectedDorm);
   }
 
  
