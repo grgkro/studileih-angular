@@ -32,13 +32,15 @@ export class GoogleMapsComponent implements OnInit {
 
   ngOnInit(): void {
     this._data.getDormLocations().subscribe(dorms => {
-      for (let dorm of dorms) this.markers.push(dorm);    // fügt das Dorm auf der Karte hinzu
-      this.sortDormsIntoDormGroups(dorms);    // abgefuckt komplizierter Sortieralgorithmus, nur anschauen wenn man wissen will, wie dormGroups befüllt wird!!
+      for (let dorm of dorms) {
+        this.markers.push(dorm);    // fügt das dorm auf der Karte hinzu
+        this.sortDormIntoDormGroups(dorm);   // fügt das Dorm der richtigen Gruppe hinzu (z.B. Stuttgart Mitte, München Nord)
+      } 
     })
   }
 
-  sortDormsIntoDormGroups(dorms) {
-    for (let dorm of dorms) {
+  // abgefuckt komplizierter Sortieralgorithmus, nur anschauen wenn man wissen will, wie das array dormGroups befüllt wird!! -> wenn man bei "Wähle dein Wohnheim aus" auf das dropdown select menü geht, sieht man das Ergebnis von dieser Sortierung
+  sortDormIntoDormGroups(dorm) {
       if (!this.cities.includes(dorm.city) && dorm.district == null) {   // zB das wohnheim Göppingen hat nur eine Stadt (Göppingen) aber keinen District (in Göppingen gibt's nur 1 Wohnheim, Göppingen ist auch ziemlich klein, "Göppingen Mitte" oder so macht hier keinen Sinn)
         this.cities.push(dorm.city)
         this.dormGroups.push({name: dorm.city, dorm: [dorm]})            // erstellt eine neue dormGroup mit dem dorm und added sie direkt zu den dormGroups. der name der neuen dormGroup wird gleich der Stadt gesetzt (wenn kein district angegeben ist, gitb es je Stadt nur eine dormGroup)
@@ -50,22 +52,16 @@ export class GoogleMapsComponent implements OnInit {
       } else if (this.districts.includes(dorm.district)) {                                    // added das Wohnheim, das einen district angegeben hat und bei dem der district bereits eine dormGroup in der dormGroups hat      
         this.addDormToExistingDormGroup(dorm, dorm.district);
       }
-    }
   }
 
+  // geh durch alle dormGroups und hol die dormGroup, die zu der Stadt oder zu dem Stadtviertel gehört, das im compareString mitgegeben wurde dann adde das Wohnheim zu der dromGroup
   addDormToExistingDormGroup(dorm: Dorm, compareString:string) {
-    for (var i = 0; i < this.dormGroups.length; i++) {              // geh durch alle dormGroups und hol die dormGroup, die zu der Stadt gehört, dann adde das Wohnheim zu der dromGroup
-      if (this.dormGroups[i].name == compareString) {
+    for (var i = 0; i < this.dormGroups.length; i++) {              
+      if (this.dormGroups[i].name == compareString) {               
         this.dormGroups[i].dorm.push(dorm)  // 
       }
     }
   }
-
-
-
-checkName(name: string, dormDistrict: string) {
-  return name === dormDistrict;
-}
 
 // wenn der mat-slider (zoom regelschieber über der wohnheimliste) verschoben wird verändert sich der zoom der google maps:
 onInputChange(event) {
