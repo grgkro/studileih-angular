@@ -55,7 +55,7 @@ export class ProductDetailsComponent implements OnInit {
     this.destroy$.next(true);
     // Now let's also unsubscribe from the subject itself:
     this.destroy$.unsubscribe();
-    this._data.deleteArchive("product", this.product.id).subscribe(()=> console.log("archive destroyed"));
+    this._data.deleteArchive("product", this.product.id).subscribe(()=> console.log("archive destroyed"));  // wenn der user die seite wechselt (z.b. wieder zur Produktübersicht), wird das Archiv im Backend gelöscht. Damit lassen sich die Fotos nicht mehr wiederherstellen danach. Wenn das Archiv nicht gelöscht wird, könnte man Probleme bekommen, wenn der User das gleiche Bild nochmal hochlädt und dann wieder löscht, da es dann schon im Archiv liegt... am besten wäre es das Archiv erst zu löschen, wenn der User die Seite ganz verlässt. Oder das Archiv nur alle 2 Wochen zu löschen und dafür die Fehlermeldung bei doppelter Löschung abzufangen...
 
   }
 
@@ -128,24 +128,20 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   deleteProductImage(imageId: number) {
-    console.log(this.product.picPaths[imageId]);
-    console.log(this.product.id);
-    
-    let imageArchived$ = this.archiveImage(this.product.picPaths[imageId], "product", this.product.id);
-        imageArchived$.subscribe( () => {
-          this._data.deleteProductPicByFilename(this.product.picPaths[imageId], this.product.id).subscribe(res => {
-            console.log(res)
+    let imageArchived$ = this._data.archivePicByFilename(this.product.picPaths[imageId], "product", this.product.id);  //archiviert das Foto bevor es gelöscht wird
+        imageArchived$.subscribe( () => {                                                               // da das Observable imageArchived$ von HTTP erzeugt wird, muss man hier nicht per Hand unsubscriben
+          this._data.deleteProductPicByFilename(this.product.picPaths[imageId], this.product.id).subscribe(res => {    //löscht das Foto (nachdem es archiviert wurde) im Backend (lokal und DB) und returned "true", wenn es geklappt hat.
             if (res) {
               this.deletedImages.set(this.product.id, this.product.picPaths[imageId]);  // we add the image to the deleted images variable (the variable stores all in one session by one user deleted images. If he logs out, the var will be destroyed and he can't restore the images anymore)
               
-                this.deleteImageFromProductArray(this.product.picPaths[imageId]);
-                this.deleteImageFromImagesToShow(imageId);
+                this.deleteImageFromProductArray(this.product.picPaths[imageId]);  // löschen des Fotos im Frontend (vom Product.picPaths array)
+                this.deleteImageFromImagesToShow(imageId);                          // löschen des Fotos im Frontend (vom imagesToShow array -> erst mit der Aktion wird das Foto nicht mehr angezeigt)
       
-                //show SnackBar
+                //show SnackBar (snackBar ist dieses kleine Infofenster, das nach Löschen 2 Sekunden lang auftaucht.)
               let snackBarRef = this._snackBar.open(this.successMessage, "Rückgängig", {duration: 2000});
-              snackBarRef.onAction()
-                .pipe(takeUntil(this.destroy$))
-                .subscribe(() => {
+              snackBarRef.onAction()                                               
+                .pipe(takeUntil(this.destroy$))                                   // We need to unsubscribe from this Observable by hand
+                .subscribe(() => {                                                // Wenn der User in der Snackbar auf "Rückgängig" klickt wird das ausgeführt
                   console.log('The snack-bar action was triggered!');
                   this.restoreLastImage();
                 });
@@ -159,38 +155,27 @@ export class ProductDetailsComponent implements OnInit {
 
   }
 
-  archiveImage(picPath: string, imgType: string, productId: number): Observable<any> {
-    console.log("going to archive");
-    return this._data.archivePicByFilename(picPath, imgType, productId);
-
-  }
-
   restoreLastImage() {
-    var picPath = Array.from(this.deletedImages.values()).pop();
+    var picPath = Array.from(this.deletedImages.values()).pop();    // erstellt zuerst einen 1:1 gleichen neuen Array von deletedImages.values (values sind die Bildernamen als strings also zb "test.png") und nimmt dann (pop) den letzten Eintrag von diesem neu erzeugten Array. Dadurch wird der deletedImages array nicht verändert. Pop() nimmt immer den letzten Eintrag eines Arrays UND löscht ihn gleichzeitig vom Array -> wir wollen hier den Eintrag aber nicht löschen. 
     var productId = Array.from(this.deletedImages.keys()).pop();
     console.log("picPath: " + picPath + " + productId: " + productId)
-    
+    // fügt das Foto im Frontend wieder hinzu (zum imagesToShow array -> nach der Aktion wird das Foto wieder angezeigt)
     this.imagesToShow.push(this.deletedPics.pop()[0]);  // .pop() removes the last element of an array and returns it. But somehow here .pop() always returned an array with one element instead of only the element. So I had to do: .pop()[0] to get that element from the pop array.
-    console.log(typeof(this.deletedPics.splice((this.deletedPics.length), 1)));
-    console.log(this.imagesToShow)
-    console.log(typeof(picPath))
-    console.log(typeof(productId))
-    this._data.restorePicByFilename(picPath, "product", productId).subscribe( () => console.log("YISS"));
-    this.product.picPaths.push(picPath)
+    this._data.restorePicByFilename(picPath, "product", productId)   //fügt das Foto im Backend wieder hinzu -> im Backend (lokal und DB) + löschen ausm Archiv. 
+    .subscribe( () => console.log("YISS"));             // da das Observable von HTTP erzeugt wird, muss man hier nicht per Hand unsubscriben
+    this.product.picPaths.push(picPath)                 // fügt das Foto im Frontend wieder hinzu (zum Product.picPaths array)
   }
 
   deleteImageFromProductArray(filename: string) {
-    const index: number = this.product.picPaths.indexOf(filename);
-    if (index !== -1) {
-      this.product.picPaths.splice(index, 1);
+    const index: number = this.product.picPaths.indexOf(filename);  //findet die Position des elements im Array
+    if (index !== -1) {                                              // wenn index = -1 hat das element nicht im array existiert
+      this.product.picPaths.splice(index, 1);                        
     }
   }
 
   deleteImageFromImagesToShow(index: number) {
-    if (index !== -1) {
-      this.deletedPics.push(this.imagesToShow.splice(index, 1));
-      console.log(this.deletedPics);
-      console.log(this.imagesToShow);
+    if (index >= 0) {                                               // negative Werte machen hier keinen Sinn
+      this.deletedPics.push(this.imagesToShow.splice(index, 1));    // löscht 1 element an der Stelle index vom Array imagesToShow und fügt es gleich dem Array deletedPics hinzu.
     }
   }
 }

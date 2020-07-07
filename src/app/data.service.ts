@@ -75,8 +75,7 @@ export class DataService {
     return this.http.post(this.imagesPath + '/loadProductPicByFilename', formdata, { responseType: 'blob' });
   }
 
-  archivePicByFilename(filename: string, imgType: string, productId: number) {
-    
+  archivePicByFilename(filename: string, imgType: string, productId: number): Observable<any> {
     const formdata: FormData = new FormData();
     formdata.append('filename', filename);
     formdata.append('imgType', imgType);
