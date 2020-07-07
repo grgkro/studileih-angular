@@ -5,17 +5,15 @@
     <div class="col-md-auto">
       </div>
     <div class="col col-lg-2">
-        <button class="btn btn-dark">
-            <a routerLink="/add-user">
-              Add User
-            </a>
-          </button>
+        <a routerLink="/add-user" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}">
+            <i class="material-icons">add</i>
+          </a> 
     </div>
 </div>
 
 
 <ul [@listStagger]="users$">  <!--listStagger ist eine spezielle Animation, bei der die Liste nicht auf einmal dargestellt wird, sondern zeitlich verzögert auftaucht-->
-    <li *ngFor="let user of users$"> <!-- for Schleife über alle geladenen User -->
+    <li *ngFor="let user of users$ | async"> <!-- for Schleife über alle geladenen User - startet erst, wenn alle user geladen sind: async: https://malcoded.com/posts/angular-async-pipe/ -->
         <a routerLink="/details/{{ user.id }}">{{user.name}}</a>  <!-- wenn der username angeklickt wird, wird man weitergeleitet per routerLink zur details component.-->
         <ul>
             <li>{{ user.email }}</li>

@@ -1,7 +1,53 @@
-<h1>Location</h1>
-<br>
-
-<!-- loads the google maps and centers it at Stuttgart (lat = 48, lng = 9) -->
-<agm-map [latitude]= "48.78232" [longitude]="9.17702">
-    <agm-marker [latitude]= "48.78232" [longitude]="9.17702"></agm-marker>
-</agm-map>
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1 class="display-3">Standort</h1>
+            </div>
+            <div class="col-md-auto">
+                <label>
+                    <mat-slider min="1" max="22" step="1" [value]="currZoom" thumbLabel tickInterval="1"
+                        (input)="onInputChange($event)"></mat-slider>
+                </label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <h2>Bitte wähle dein Wohnheim aus:</h2>
+            </div>
+            <div class="col-md-auto">
+                <mat-form-field appearance="fill">
+                    <mat-label>Wohnheim</mat-label>
+                    <mat-select [formControl]="dormControl">
+                        <mat-option>-- None --</mat-option>
+                        <mat-optgroup *ngFor="let group of dormGroups" [label]="group.name"
+                            [disabled]="group.disabled">
+                            <mat-option *ngFor="let dorm of group.dorm" [value]="dorm.name">
+                                {{dorm.name}}
+                            </mat-option>
+                        </mat-optgroup>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <!-- loads the google maps and centers it at Stuttgart (lat = 48, lng = 9) -->
+                <agm-map [latitude]="48.78232" [longitude]="9.17702" [zoom]="currZoom">
+                    <agm-marker *ngFor="let m of markers;"
+                    [latitude]="m.lat"
+                    [longitude]="m.lng"
+                    (markerClick)="markerClicked(m)">
+                    <agm-snazzy-info-window *ngFor="let m of markers;" [closeWhenOthersOpen]="true" [closeOnMapClick]="true" [isOpen]="isSnazzyInfoWindowOpened" [latitude]="m.lat" [longitude]="m.lng" [maxWidth]="100" [shadow]="true" padding="12px" backgroundColor="#fff"  fontSize="12px"  fontColor="#757575"  wrapperClass="customClass"  [showCloseButton]="false" [panOnOpen]="false">
+                        <ng-template>
+                        <div>{{clickedMarker}}</div>
+                        </ng-template>
+                        </agm-snazzy-info-window>
+                </agm-marker>
+                   
+                    
+                </agm-map>
+            </div>
+        </div>
+    </div>
+</div>

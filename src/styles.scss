@@ -6,6 +6,12 @@ body {
     height: 100vh;
 }
 
+.images {
+    height:200px;
+    width: 200px;
+    
+}
+
 #container {
    display: grid;
    grid-template-columns: 70px auto;

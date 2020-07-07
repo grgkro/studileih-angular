@@ -3,13 +3,17 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { User } from './_models/user';
 import { Product } from './_models/product';
+
 import { catchError } from 'rxjs/operators';
+import { Dorm } from './_models/dorm';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class DataService {
+  
+  
 
   serverPath = 'http://localhost:8090';
   productsPath = 'http://localhost:8090/products';
@@ -23,6 +27,11 @@ export class DataService {
   }
 
   constructor(private http: HttpClient) { }
+
+  getDormLocations(): Observable<Dorm[]> {
+    return this.http.get<Dorm[]>(this.serverPath +'/dorms');
+  }
+
 
   login(loginPayload): Observable<User> {
     return this.http.post<User>(this.serverPath + '/token/generate-token', loginPayload);
@@ -66,11 +75,39 @@ export class DataService {
     return this.http.post(this.imagesPath + '/loadProductPicByFilename', formdata, { responseType: 'blob' });
   }
 
+  archivePicByFilename(filename: string, imgType: string, productId: number): Observable<any> {
+    const formdata: FormData = new FormData();
+    formdata.append('filename', filename);
+    formdata.append('imgType', imgType);
+    formdata.append('productId', productId.toString());
+    return this.http.post(this.imagesPath + '/archivePicByFilename', formdata, { responseType: 'text' });
+  }
 
+  deleteArchive(archiveType: string, id: number): Observable<string> {
+    const formdata: FormData = new FormData();
+    formdata.append('archiveType', archiveType);
+    formdata.append('id', id.toString());
+    return this.http.post(this.imagesPath + '/deleteArchive', formdata, { responseType: 'text' });
+  }
 
+  restorePicByFilename(filename: string, imgType: string, productId: number) {
+    const formdata: FormData = new FormData();
+    formdata.append('filename', filename);
+    formdata.append('imgType', imgType);
+    formdata.append('productId', productId.toString());
+    console.log("_data restore " + filename)
+    return this.http.post(this.imagesPath + '/restorePicByFilename', formdata, { responseType: 'text' });
+  }
 
-  getUsers(): Observable<User> {
-    return this.http.get<User>(this.usersPath).pipe(
+  deleteProductPicByFilename(filename: string, productId: number) {
+    const formdata: FormData = new FormData();
+    formdata.append('filename', filename);
+    formdata.append('productId', productId.toString());
+    return this.http.post(this.imagesPath + '/deleteProductPicByFilename', formdata, {responseType: 'text' });
+  }
+
+  getUsers(): Observable<User[]> {
+    return this.http.get<User[]>(this.serverPath + "/users").pipe(
       catchError(this.errorHandler)
     )
   }
