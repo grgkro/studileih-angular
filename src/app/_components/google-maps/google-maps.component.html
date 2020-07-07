@@ -11,9 +11,28 @@
                 </label>
             </div>
         </div>
+        <!-- <div class="row">
+            <div class="col">
+                <h2>Bitte wähl deine City aus:</h2>
+            </div>
+            <div class="col-md-auto">
+                <mat-form-field appearance="fill">
+                    <mat-label>Stadt</mat-label>
+                    <mat-select [formControl]="cityControl">
+                        <mat-option>-- None --</mat-option>
+                        <mat-optgroup *ngFor="let group of cityGroups" [label]="group.name"
+                            [disabled]="group.disabled">
+                            <mat-option *ngFor="let city of group.city" [value]="city.name">
+                                {{city.name}}
+                            </mat-option>
+                        </mat-optgroup>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div> -->
         <div class="row">
             <div class="col">
-                <h2>Bitte wähle dein Wohnheim aus:</h2>
+                <h2>Bitte wähl dein Wohnheim aus:</h2>
             </div>
             <div class="col-md-auto">
                 <mat-form-field appearance="fill">
