@@ -3,7 +3,7 @@
     <input type="file" id="fileName" accept="image/*" (change)="selectFile($event)" class="input-left" >  <!-- accept="image/*" makes the file chose menu pre select "Grafik-Dateien", instead of "Alle Dateien" and shows an alert message ("invalid filetype"), if a filetype that is not an image is uploaded (eg. pdf). But user can still accept the alert and then upload a pdf anyway, so we also need to check the uploaded filetype on the server side.-->
 </label>
 <br />
-<button class="btn btn-success" (click)="uploadUserPic()">Foto hochladen</button>
+<button class="btn btn-success" (click)="uploadPic()">Foto hochladen</button>
 <br/>
 <br/>
 <strong>{{ response }}</strong>

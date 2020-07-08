@@ -39,9 +39,7 @@ export class UpdateService {
   private selectedDormSource = new BehaviorSubject(this.selectedDorm);  
   currentSelectedDorm = this.selectedDormSource.asObservable();
 
-  newPhotoWasUploaded: boolean = false;  // am Anfang wird als default Wohnheim das Max-Kade in Stuggi Mitte gezeigt (bekanntestes Wohnheim in Stg) - alle Wohnheime am Anfang zu zeigen braucht ewig lang zum Laden
-  private newPhotoWasUploadedSource = new BehaviorSubject(this.newPhotoWasUploaded);  
-  currentNewPhotoWasUploaded = this.newPhotoWasUploadedSource.asObservable();
+// this observable is getting triggered, when a new file was uploaded in the upload file component -> in the product details component we then reload the images, so that the newly image gets immediatly displayed (otherwise we would first need to refresh the page)
   triggeringObservable = new Subject<void>();
 
   constructor() { }

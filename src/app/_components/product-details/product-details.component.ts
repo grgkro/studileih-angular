@@ -41,9 +41,6 @@ export class ProductDetailsComponent implements OnInit {
   deletedImages = [];
   deletedPics: SafeResourceUrl[] = [];
 
-  helpArray2 = [];
-
-
   constructor(private route: ActivatedRoute, private _data: DataService, private _update: UpdateService, private _helper: HelperService, private sanitizer: DomSanitizer, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
@@ -76,8 +73,15 @@ export class ProductDetailsComponent implements OnInit {
   // when a new photo gets uploaded, the triggeringObservable will be triggered and the following code will be excecuted (to refresh the photots, so that it immediately shows the newly uploaded photo.)
   subscribeTriggeringObservable() {
     this._update.triggeringObservable.subscribe(() => {
-      alert("triggered"); this._data.getProduct(this.product.id).subscribe(product => {   //the triggeringObservable is of type Observable<void>, so it returns always undefined as value, so we do just .subscribe( () => ...)
+       this._data.getProduct(this.product.id).subscribe(product => {   //the triggeringObservable is of type Observable<void>, so it returns always undefined as value, so we do just .subscribe( () => ...)
         this.product = product;   // we reloaded the product, so that we have the actualised product.picPaths with the new photo.
+        // now we need to check, if the new uploaded photo was maybe deleted earlier -> then it would be in the archive and the user could click "Foto zurückholen", which would cause a fileAlreadyExists Exception, because we would copy the image from the archive to the product image folder, but it already exists in the image folder (because it was uploaded again by the user before restoring it). We dont delete it from the backend here, because the backend handeles it itself and deletes it if the image is in archive directly at the image upload. 
+        const reuploadedButStillArchivedImages = product.picPaths.filter(element => this.deletedImages.includes(element));  
+        if (reuploadedButStillArchivedImages.length != 0) { alert("image aus Archiv gelöscht"); reuploadedButStillArchivedImages.forEach(image => {
+          this.deletedPics.splice(this.deletedImages.indexOf(image), 1)   // deletes the image blob in the frontend so that we can't restore the image anymore
+          this.deletedImages.splice(this.deletedImages.indexOf(image), 1)  // deletes the image name in the frontend so that we can't restore the image anymore
+        });   } 
+
         this.imagesToShow = [];   // we clear the imagesToShow and refill it in the next step (if you dont clear it first, the old photos will appear twice in the array)
         this.loadProductWithProductPicture();  // we load all photos again. (maybe in the future find a way to only load the new photo and not clear the array before)
       })
@@ -182,7 +186,7 @@ export class ProductDetailsComponent implements OnInit {
     this._data.restorePicByFilename(picPath, "product", this.product.id)   //fügt das Foto im Backend wieder hinzu -> im Backend (lokal und DB) + löschen ausm Archiv. 
       .subscribe(() => console.log("YISS"));             // da das Observable von HTTP erzeugt wird, muss man hier nicht per Hand unsubscriben
     this.product.picPaths.push(picPath)                 // fügt das Foto im Frontend wieder hinzu (zum Product.picPaths array)
-
+    
   }
 
   deleteImageFromProductArray(filename: string) {

@@ -27,7 +27,7 @@ export class UploadFileComponent implements OnInit {
  // Angular takes care of unsubscribing from many observable subscriptions like those returned from the Http service or when using the async pipe. But the routeParam$ and the _update.currentShowUploadComponent needs to be unsubscribed by hand on ngDestroy. Otherwise, we risk a memory leak when the component is destroyed. https://malcoded.com/posts/angular-async-pipe/   https://www.digitalocean.com/community/tutorials/angular-takeuntil-rxjs-unsubscribe
  destroy$: Subject<boolean> = new Subject<boolean>();
 
-  constructor(private route: ActivatedRoute, private uploadFileService: UploadFileService, private _update: UpdateService) { }
+  constructor(private uploadFileService: UploadFileService, private _update: UpdateService) { }
 
   ngOnInit(): void {
     this.updateUser();   //  if the user changes, this will get updated
@@ -66,7 +66,7 @@ export class UploadFileComponent implements OnInit {
     }
   }
 
-  uploadUserPic() {
+  uploadPic() {
     if (this.checkBeforeUpload()) {
       // we only allow one file to be uploaded -> item(0) - without the 0 in item(0), you could upload many files at once (which would break the backend code).
       this.currentFileUpload = this.selectedFiles.item(0);
