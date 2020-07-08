@@ -77,7 +77,7 @@ export class ProductDetailsComponent implements OnInit {
         this.product = product;   // we reloaded the product, so that we have the actualised product.picPaths with the new photo.
         // now we need to check, if the new uploaded photo was maybe deleted earlier -> then it would be in the archive and the user could click "Foto zurückholen", which would cause a fileAlreadyExists Exception, because we would copy the image from the archive to the product image folder, but it already exists in the image folder (because it was uploaded again by the user before restoring it). We dont delete it from the backend here, because the backend handeles it itself and deletes it if the image is in archive directly at the image upload. 
         const reuploadedButStillArchivedImages = product.picPaths.filter(element => this.deletedImages.includes(element));  
-        if (reuploadedButStillArchivedImages.length != 0) { alert("image aus Archiv gelöscht"); reuploadedButStillArchivedImages.forEach(image => {
+        if (reuploadedButStillArchivedImages.length != 0) { reuploadedButStillArchivedImages.forEach(image => {
           this.deletedPics.splice(this.deletedImages.indexOf(image), 1)   // deletes the image blob in the frontend so that we can't restore the image anymore
           this.deletedImages.splice(this.deletedImages.indexOf(image), 1)  // deletes the image name in the frontend so that we can't restore the image anymore
         });   } 
