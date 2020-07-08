@@ -16,3 +16,24 @@ a{
   margin-right: 4rem;
   width: 14em;
 }
+
+.example-card {
+  max-width: 13rem;
+  max-height: 35rem;
+}
+
+.example-header-image {
+  
+  background-size: cover;
+}
+
+.divider{
+  width:1rem;
+  height:auto;
+  display:inline-block;
+}
+
+.btn {
+  height: 4rem;
+  font-size: medium;
+}

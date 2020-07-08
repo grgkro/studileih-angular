@@ -7,7 +7,7 @@ export interface User {
     message?(message: any);
     status?: number;
     id?: number; 
-    name?: number;
+    name?: string;
     email?: string;
     password?: string;
     dormId?: number; 

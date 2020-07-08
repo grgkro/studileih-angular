@@ -51,10 +51,12 @@ export class ProductsComponent implements OnInit {
   users$: Observable<User[]>;
   users: User[] = [];
   usersFromSelectedDorm: User[] = [];
+  user: User; // if the currently logged in user changes, this will be updated (we need the info to show the edit and delete button only for the products where the user is the owner)
+  isUserOwner: boolean = false;
 
   map = new Map();
   imagesLoaded: Promise<boolean>;  // this boolean gets to set to true when all images are loaded
-  selectedDorm: Dorm = { id: 0, name: "Max-Kade", lat: 48.780427, lng: 9.169875, city: "Stuttgart" }; // irgendwie müssen werte in JS immer am Anfang schon initialisiert werde, das regt richtig auf, wir überschreiben das im onInit sowieso gleich wieder, gibt's da ne andere Möglichkeit?
+  selectedDorm: Dorm = { id: 1, name: "Alexanderstraße", lat: 48.767485, lng: 9.179693, city: "Stuttgart", district: "StuttgartMitte" }; // irgendwie müssen werte in JS immer am Anfang schon initialisiert werde, das regt richtig auf, wir überschreiben das im onInit sowieso gleich wieder, gibt's da ne andere Möglichkeit?
 
   // Angular takes care of unsubscribing from many observable subscriptions like those returned from the Http service or when using the async pipe. But the routeParam$ and the _update.currentShowUploadComponent needs to be unsubscribed by hand on ngDestroy. Otherwise, we risk a memory leak when the component is destroyed. https://malcoded.com/posts/angular-async-pipe/   https://www.digitalocean.com/community/tutorials/angular-takeuntil-rxjs-unsubscribe
   destroy$: Subject<boolean> = new Subject<boolean>();
@@ -67,7 +69,7 @@ export class ProductsComponent implements OnInit {
     this.subscribeSelectedDormObservable();  // get the currently selected dorm
 
     this.loadProductImages();
-
+    this.updateUser();   //  if the user changes, this will get updated
 
   }
 
@@ -77,15 +79,25 @@ export class ProductsComponent implements OnInit {
     this.destroy$.unsubscribe();
   }
 
+  updateUser(): void {
+    this._update.currentUser.subscribe(user => this.user = user)
+  }
+
+  checkIsUserOwner(productUserId: number) {
+if (productUserId == this.user.id) {
+  return true;
+  } else return false;
+}
+
   subscribeSelectedDormObservable(): void {
     this._update.currentSelectedDorm
       .pipe(takeUntil(this.destroy$))             // We need to unsubscribe from this Observable by hand (because its not a http observable, or other angular managed observable)
       .subscribe(selectedDorm => {
+        // get the selected dorm
+        this.selectedDorm = selectedDorm  // when the user choses a dorm in the dropdown select menu above the google maps
         // clear the lists dormProducts und usersFromSelectedDorm -> without this, you would get the products from the previously selected dorms too.
         this.dormProducts = [];
         this.usersFromSelectedDorm = [];
-        // get the selected dorm
-        this.selectedDorm = selectedDorm  // when the user choses a dorm in the dropdown select menu above the google maps
         // get all users and all products from selected dorm.
         this.getAllUsersAndProductsFromSelectedDorm();
         
@@ -95,33 +107,31 @@ export class ProductsComponent implements OnInit {
   getAllUsersAndProductsFromSelectedDorm() {
     // first get all users that live in the selected Dorm
     // at the first time, we have to get the users from the backend
-  //  if (this.users == []) {  
-      this._data.getUsers().subscribe(users => {
+    if (this.users.length === 0) {  
+      this._data.getUsers().subscribe(users => {      // HTTP Observable (no unsubscribe needed)
         this.users = users; 
-        // this.usersFromSelectedDorm = this.users.filter(user => user.dormId == this.selectedDorm.id)
-        users.forEach(user => {
-          if (user.dormId == this.selectedDorm.id) {
-            this.usersFromSelectedDorm.push(user);
-          }
-        });
-        // get all products from the users that live in that dorm
+        
+        // we filter the users array for the users that live in that dorm:
+        this.usersFromSelectedDorm = this.users.filter(user => user.dormId === this.selectedDorm.id)
+        // -> the filter function above is the same as this for-each loop:
+        // users.forEach(user => {
+        //   if (user.dormId == this.selectedDorm.id) {
+        //     this.usersFromSelectedDorm.push(user);
+        //   }
+        // });
+
         this.getAllProductsFromSelectedDorm();
       })
     } 
     // if we already loaded the users from the backend, we dont need to call the backend again!
-  //  else {   
-     // this.usersFromSelectedDorm = this.users.filter(user => { return user.dormId = this.selectedDorm.id})
-  //     this.users.forEach(user => {
-  //       if (user.dormId == this.selectedDorm.id) {
-  //         this.usersFromSelectedDorm.push(user);
-  //       }
-  //     });
-  //     // get all products from the users that live in that dorm
-  //     this.getAllProductsFromSelectedDorm();
-  //   }
+   else {   
+    this.usersFromSelectedDorm = this.users.filter(user => user.dormId === this.selectedDorm.id)
+      this.getAllProductsFromSelectedDorm();
+    }
    
-  // }
-
+  }
+  
+  // get all products from the users that live in that dorm
   getAllProductsFromSelectedDorm() {
     this.products.forEach(product => {
       this.usersFromSelectedDorm.forEach(user => {
@@ -130,8 +140,6 @@ export class ProductsComponent implements OnInit {
         }
       });
     });
-
-
   }
 
 

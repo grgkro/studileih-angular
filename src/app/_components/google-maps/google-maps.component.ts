@@ -30,9 +30,8 @@ export class GoogleMapsComponent implements OnInit {
   dormGroups: DormGroup[] = [];  // die Liste kommt vom Backend und wird im onInit befüllt
   cities: string[] = [];        // die Liste hilft zu merken, welche Städte schon in dormGroups auftauchen, erspart mehrere for each schleifen
   districts: string[] = [];     // die Liste hilft zu merken, welche Stadtviertel schon in dormGroups auftauchen, erspart mehrere for each schleifen
-  // selectedDorm = "Max-Kade";            // will contain the dorm /wohnheim that was selected by the user from the dropdown menu
   dorms: Array<Dorm> = [];    // liste aller Wohnheime 
-  selectedDorm: Dorm = { id: 0, name: "Max-Kade", lat: 48.780427, lng: 9.169875, city: "Stuttgart" }; // irgendwie müssen werte in JS immer am Anfang schon initialisiert werde, das regt richtig auf, wir überschreiben das im onInit sowieso gleich wieder, gibt's da ne andere Möglichkeit?
+  selectedDorm: Dorm = { id: 1, name: "Alexanderstraße", lat: 48.767485, lng: 9.179693, city: "Stuttgart", district: "StuttgartMitte" }; // irgendwie müssen werte in JS immer am Anfang schon initialisiert werde, das regt richtig auf, wir überschreiben das im onInit sowieso gleich wieder, gibt's da ne andere Möglichkeit?
 
 
 
@@ -42,7 +41,7 @@ export class GoogleMapsComponent implements OnInit {
     this._data.getDormLocations().subscribe(dorms => {   //load all dorms from backend database
       for (let dorm of dorms) {
         this.dorms.push(dorm);    // fügt alle dorms einem Array hinzu (brauchen wir später)
-        if (dorm.name == "Max-Kade") {   
+        if (dorm.name == "Alexanderstraße") {   
           this.selectedDorm = dorm;   // am Anfang wird als default Wohnheim das Max-Kade in Stuggi Mitte gezeigt (bekanntestes Wohnheim in Stg) - alle Wohnheime am Anfang zu zeigen braucht ewig lang zum Laden
           this._update.changeSelectedDorm(this.selectedDorm);    // we change the dorm in the update service so that the other components can know, which dorm is selected
         }

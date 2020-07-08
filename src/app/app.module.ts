@@ -33,6 +33,7 @@ import { ProductDetailsComponent } from './_components/product-details/product-d
 import { MatSliderModule } from '@angular/material/slider';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatSelectModule} from '@angular/material/select';
+import {MatCardModule} from '@angular/material/card';
 
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 
@@ -64,15 +65,17 @@ HttpClientModule
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-    MatDatepickerModule,
-    MatInputModule,
-    MatNativeDateModule,
+   
 
     DeferLoadModule,
     //Angular Material inputs (spezielle UI Elemente)
+    MatDatepickerModule,
+    MatInputModule,
+    MatNativeDateModule,
     MatSliderModule,
     MatSnackBarModule,
     MatSelectModule,
+    MatCardModule,
 
     AgmSnazzyInfoWindowModule,
     AgmCoreModule.forRoot({

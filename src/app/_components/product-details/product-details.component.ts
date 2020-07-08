@@ -60,7 +60,7 @@ export class ProductDetailsComponent implements OnInit {
     this._data.deleteArchive("product", this.product.id).subscribe(()=> console.log("archive destroyed"));  // wenn der user die seite wechselt (z.b. wieder zur Produktübersicht), wird das Archiv im Backend gelöscht. Damit lassen sich die Fotos nicht mehr wiederherstellen danach. Wenn das Archiv nicht gelöscht wird, könnte man Probleme bekommen, wenn der User das gleiche Bild nochmal hochlädt und dann wieder löscht, da es dann schon im Archiv liegt... am besten wäre es das Archiv erst zu löschen, wenn der User die Seite ganz verlässt. Oder das Archiv nur alle 2 Wochen zu löschen und dafür die Fehlermeldung bei doppelter Löschung abzufangen...
 
   }
-
+ 
   updateUser(): void {
     this._update.currentUser.subscribe(user => this.user = user)
   }

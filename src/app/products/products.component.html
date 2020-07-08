@@ -68,8 +68,8 @@
 
 <div class="container ">
   <div class="row">
-    <div class="col-12" >
-    <!-- <div class="col-12" align="center"> -->
+    <div class="col-12">
+      <!-- <div class="col-12" align="center"> -->
       <div>
         <app-google-maps></app-google-maps>
       </div>
@@ -77,11 +77,11 @@
       <br>
     </div>
   </div>
-  
-  <div >
+
+  <div>
     <div class="row justify-content-md-center">
-      <div class="col" >
-        <h1>In deinem Wohnheim wird folgendes zum Ausleihen angeboten:</h1>
+      <div class="col">
+        <h1>Im Wohnheim {{ selectedDorm.name }} wird folgendes zum Ausleihen angeboten:</h1>
       </div>
       <div class="col-md-auto">
       </div>
@@ -91,72 +91,66 @@
         </a>
       </div>
     </div>
-    <ul [@listStagger]="dormProducts">
+
+    <ul [@listStagger]="dormProducts" class="list-inline">
       <!--listStagger ist eine spezielle Animation, bei der die Liste nicht auf einmal dargestellt wird, sondern zeitlich verzögert auftaucht-->
-      <li *ngFor="let product of dormProducts">
-  
-        <div class="row">
-          <div class="col-3">
-            <a routerLink="/product-details/{{ product.id }}"><p class="blocktext">{{ product.title }}</p></a>
-            <!-- wenn der username angeklickt wird, wird man weitergeleitet per routerLink zur details component.-->
-            <ul>
-              <li><p class="blocktext">name: {{ product.name }}</p></li>
-              <li><p class="blocktext">price: {{ product.price }}</p></li>
-              <li><p class="blocktext">id: {{ product.id }}</p></li>
-            </ul>
-          </div>
-          <div class="col-6" align="center">
-            <ul>
-              <li *ngIf="imagesLoaded | async">
-                <!-- https://malcoded.com/posts/angular-async-pipe/ -->
-                <div>
-                  <!-- loads the product image. If no image is available, a default pic gets shown *ngIf="map.get(i+1); else noImageFound"-->
-                  <img [src]="map.get(product.id)" class="fixImageSize img-thumbnail" alt="Product Picture"
-                    *ngIf="map.get(product.id); else noImageFound">
-                  <ng-template #noImageFound>
-                    <img src="https://cdn-0.askleo.com/wp-content/uploads/2013/07/image_not_found.png"
-                      alt="Fallbackimage">
-                    <!-- <= default picture -->
-                  </ng-template>
-                </div>
-              </li>
-            </ul>
-          </div>
-  
-          <div class="col-3" align="center">
-  
-  
-  
-            <ul>
-              <li>
-                <button class="btn btn-light">
-                  <a routerLink="/product-details/{{ product.id }}">View</a>
-                </button>
-              </li>
-              <li>
-                <button type="button" class="btn btn-info">
+      <li *ngFor="let product of dormProducts" class="list-inline-item">
+        <a routerLink="/product-details/{{ product.id }}">
+          <!-- wenn die produktcard irgendwo angeklickt wird, wird man weitergeleitet per routerLink zur details component.-->
+          <mat-card class="example-card">
+            <mat-card-header>
+              <mat-card-title>{{ product.title }}</mat-card-title>
+              <mat-card-subtitle>{{ product.name }}</mat-card-subtitle>
+            </mat-card-header>
+            <div *ngIf="imagesLoaded | async">
+              <!-- https://malcoded.com/posts/angular-async-pipe/ -->
+              <div>
+                <!-- loads the product image. If no image is available, a default pic gets shown *ngIf="map.get(i+1); else noImageFound"-->
+                <img mat-card-image [src]="map.get(product.id)" alt="Product Picture"
+                  *ngIf="map.get(product.id); else noImageFound">
+                <ng-template #noImageFound>
+                  <img src="https://cdn-0.askleo.com/wp-content/uploads/2013/07/image_not_found.png"
+                    alt="Fallbackimage">
+                  <!-- <= default picture -->
+                </ng-template>
+              </div>
+            </div>
+
+
+            <mat-card-content>
+              <p>
+                Beschreibung: LOOOOOOOOOOOOOOOOOOOOOOOOOOOREMM IIIIIIIIIIIIIPSSUUUUUUUUUUUUUUUM
+                <br>
+                Preis: {{ product.price }}
+
+              </p>
+            </mat-card-content>
+            <div *ngIf="checkIsUserOwner(product.userId)">
+              <mat-card-actions>
+
+                <button mat-button class="btn btn-light">
                   <a routerLink="/edit-product/{{ product.id }}">Edit</a>
                 </button>
-              </li>
-              <li>
-                <button type="button" (click)="deleteProduct(product.id)" class="btn btn-danger">
+                <div class="divider"></div>
+                <button mat-button (click)="deleteProduct(product.id)" class="btn btn-danger">
                   Delete
                 </button>
-              </li>
-            </ul>
-  
-          </div>
-  
-        </div>
-  
+
+              </mat-card-actions>
+            </div>
+          </mat-card>
+
+
+        </a>
       </li>
     </ul>
   </div>
-  
+
+
 
   <div class="row justify-content-md-center">
-    <div class="col" >
-      <h1>Alle Produkte:</h1>
+    <div class="col">
+      <h1>Alle Produkte auf Studileih:</h1>
     </div>
     <div class="col-md-auto">
     </div>
@@ -172,12 +166,20 @@
 
       <div class="row">
         <div class="col-3">
-          <a routerLink="/product-details/{{ product.id }}"><p class="blocktext">{{ product.title }}</p></a>
+          <a routerLink="/product-details/{{ product.id }}">
+            <p class="blocktext">{{ product.title }}</p>
+          </a>
           <!-- wenn der username angeklickt wird, wird man weitergeleitet per routerLink zur details component.-->
           <ul>
-            <li><p class="blocktext">name: {{ product.name }}</p></li>
-            <li><p class="blocktext">price: {{ product.price }}</p></li>
-            <li><p class="blocktext">id: {{ product.id }}</p></li>
+            <li>
+              <p class="blocktext">name: {{ product.name }}</p>
+            </li>
+            <li>
+              <p class="blocktext">price: {{ product.price }}</p>
+            </li>
+            <li>
+              <p class="blocktext">id: {{ product.id }}</p>
+            </li>
           </ul>
         </div>
         <div class="col-6" align="center">
@@ -227,6 +229,5 @@
     </li>
   </ul>
 
-  
-</div>
 
+</div>
