@@ -5,7 +5,7 @@
 // -> Was passiert, wenn zwei User gleichzeitig auf den Service zugreifen? 
 
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { User } from '../_models/user';
 import { Product } from '../_models/product';
 import { Dorm } from '../_models/dorm';
@@ -39,6 +39,10 @@ export class UpdateService {
   private selectedDormSource = new BehaviorSubject(this.selectedDorm);  
   currentSelectedDorm = this.selectedDormSource.asObservable();
 
+  newPhotoWasUploaded: boolean = false;  // am Anfang wird als default Wohnheim das Max-Kade in Stuggi Mitte gezeigt (bekanntestes Wohnheim in Stg) - alle Wohnheime am Anfang zu zeigen braucht ewig lang zum Laden
+  private newPhotoWasUploadedSource = new BehaviorSubject(this.newPhotoWasUploaded);  
+  currentNewPhotoWasUploaded = this.newPhotoWasUploadedSource.asObservable();
+  triggeringObservable = new Subject<void>();
 
   constructor() { }
 
@@ -64,6 +68,10 @@ export class UpdateService {
   
   changeSelectedDorm(selectedDorm: Dorm) {
     this.selectedDormSource.next(selectedDorm);
+  }
+  
+  changeNewPhotoWasUploaded() {
+    this.triggeringObservable.next(void 0);
   }
 
  

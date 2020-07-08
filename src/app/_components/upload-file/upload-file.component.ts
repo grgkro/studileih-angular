@@ -27,7 +27,7 @@ export class UploadFileComponent implements OnInit {
  // Angular takes care of unsubscribing from many observable subscriptions like those returned from the Http service or when using the async pipe. But the routeParam$ and the _update.currentShowUploadComponent needs to be unsubscribed by hand on ngDestroy. Otherwise, we risk a memory leak when the component is destroyed. https://malcoded.com/posts/angular-async-pipe/   https://www.digitalocean.com/community/tutorials/angular-takeuntil-rxjs-unsubscribe
  destroy$: Subject<boolean> = new Subject<boolean>();
 
-  constructor(private route: ActivatedRoute, private router: Router, private uploadFileService: UploadFileService, private _update: UpdateService, private _helper: HelperService) { }
+  constructor(private route: ActivatedRoute, private uploadFileService: UploadFileService, private _update: UpdateService) { }
 
   ngOnInit(): void {
     this.updateUser();   //  if the user changes, this will get updated
@@ -75,7 +75,8 @@ export class UploadFileComponent implements OnInit {
         if (response == "Dein Foto wurde gespeichert.")   //it would be better to check the response status == 200, but I dont know how
           this.response = response;
         if (this.imgType == "productPic") this._update.changeShowUploadComponent(false);  // if the user uploaded a product photo, we want do not show the upload component anymore in the productdetails component. But therefore we need the information in the productdetails component. -> If a user successfully uploads a product photo (status 200), the upload component changes showUploadComponent to false here. The _update service then updates this value for all subscribes.
-        setTimeout(() => { this.router.navigate(['']); }, 700);  // after uploading a photo we go back to the main page immediatly -> could be changed, maybe better show a success message and stay on the current page...
+        // setTimeout(() => { this.router.navigate(['']); }, 700);  // after uploading a photo we go back to the main page immediatly -> could be changed, maybe better show a success message and stay on the current page...
+        this._update.changeNewPhotoWasUploaded();   // ohne die Zeile, würde bei "upload new Photo" das Photo als USER profile pic behandelt werden. Wir wollen es aber als PRODUCT pic speichern. (Ist etwas ungeschickt gelöst...)
       },
         (err: HttpErrorResponse) => this.processError(err)    // if the image could not be loaded, this part will be executed instead
       );
