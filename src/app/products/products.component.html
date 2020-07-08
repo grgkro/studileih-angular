@@ -138,6 +138,15 @@
 
               </mat-card-actions>
             </div>
+            <div *ngIf="!checkIsUserOwner(product.userId)">
+              <mat-card-actions>
+
+                <button mat-button class="btn btn-light">
+                  <a routerLink="/">Ausleihen</a>
+                </button>
+                
+              </mat-card-actions>
+            </div>
           </mat-card>
 
 
