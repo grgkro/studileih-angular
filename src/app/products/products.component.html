@@ -92,67 +92,70 @@
       </div>
     </div>
 
-    <ul [@listStagger]="dormProducts" class="list-inline">
+    
+    <div [@listStagger]="dormProducts" class="list-inline row justify-content-md-left">
       <!--listStagger ist eine spezielle Animation, bei der die Liste nicht auf einmal dargestellt wird, sondern zeitlich verzögert auftaucht-->
-      <li *ngFor="let product of dormProducts" class="list-inline-item">
-        <a routerLink="/product-details/{{ product.id }}">
-          <!-- wenn die produktcard irgendwo angeklickt wird, wird man weitergeleitet per routerLink zur details component.-->
-          <mat-card class="example-card">
-            <mat-card-header>
-              <mat-card-title>{{ product.title }}</mat-card-title>
-              <mat-card-subtitle>{{ product.name }}</mat-card-subtitle>
-            </mat-card-header>
-            <div *ngIf="imagesLoaded | async">
-              <!-- https://malcoded.com/posts/angular-async-pipe/ -->
-              <div>
-                <!-- loads the product image. If no image is available, a default pic gets shown *ngIf="map.get(i+1); else noImageFound"-->
-                <img mat-card-image [src]="map.get(product.id)" alt="Product Picture"
-                  *ngIf="map.get(product.id); else noImageFound">
-                <ng-template #noImageFound>
-                  <img mat-card-image src="https://cdn-0.askleo.com/wp-content/uploads/2013/07/image_not_found.png"
-                    alt="Fallbackimage">
-                  <!-- <= default picture -->
-                </ng-template>
+      <div class="col-md-3" *ngFor="let product of dormProducts" class="list-inline-item tab1cards">
+        <div>
+          <a routerLink="/product-details/{{ product.id }}">
+            <!-- wenn die produktcard irgendwo angeklickt wird, wird man weitergeleitet per routerLink zur details component.-->
+            <mat-card class="example-card card">
+              <mat-card-header>
+                <mat-card-title class="cardTitle">{{ product.title }}</mat-card-title>
+                <mat-card-subtitle class="cardSubTitle">{{ product.name }}</mat-card-subtitle>
+              </mat-card-header>
+              <div *ngIf="imagesLoaded | async">
+                <!-- https://malcoded.com/posts/angular-async-pipe/ -->
+                <div>
+                  <!-- loads the product image. If no image is available, a default pic gets shown *ngIf="map.get(i+1); else noImageFound"-->
+                  <img mat-card-image class="cardImage" [src]="map.get(product.id)" alt="Product Picture"
+                    *ngIf="map.get(product.id); else noImageFound">
+                  <ng-template #noImageFound>
+                    <img mat-card-image class="cardImage" src="https://cdn-0.askleo.com/wp-content/uploads/2013/07/image_not_found.png"
+                      alt="Fallbackimage">
+                    <!-- <= default picture -->
+                  </ng-template>
+                </div>
               </div>
-            </div>
 
 
-            <mat-card-content>
-              <p>
-                Beschreibung: LOOOOOOOOOOOOOOOOOOOOOOOOOOOREMM IIIIIIIIIIIIIPSSUUUUUUUUUUUUUUUM
-                <br>
-                Preis: {{ product.price }}
+              <mat-card-content class="cardContent">
+                <p>
+                  Beschreibung: LOOOOOOOOOOOOOOOOOOOOOOOOOOOREMM IIIIIIIIIIIIIPSSUUUUUUUUUUUUUUUM
+                  <br>
+                  Preis: {{ product.price }}
 
-              </p>
-            </mat-card-content>
-            <div *ngIf="checkIsUserOwner(product.userId)">
-              <mat-card-actions>
+                </p>
+              </mat-card-content>
+              <div *ngIf="checkIsUserOwner(product.userId)">
+                <mat-card-actions class="cardActions">
 
-                <button mat-button class="btn btn-light">
-                  <a routerLink="/edit-product/{{ product.id }}">Edit</a>
-                </button>
-                <div class="divider"></div>
-                <button mat-button (click)="deleteProduct(product.id)" class="btn btn-danger">
-                  Delete
-                </button>
+                  <button mat-button class="btn btn-success">
+                    <a routerLink="/edit-product/{{ product.id }}">Edit</a>
+                  </button>
+                  <div class="divider"></div>
+                  <button mat-button (click)="deleteProduct(product.id)" class="btn btn-danger">
+                    Delete
+                  </button>
 
-              </mat-card-actions>
-            </div>
-            <div *ngIf="!checkIsUserOwner(product.userId)">
-              <mat-card-actions>
+                </mat-card-actions>
+              </div>
+              <div *ngIf="!checkIsUserOwner(product.userId)">
+                <mat-card-actions class="cardActions">
 
-                <button mat-button class="btn btn-light">
-                  <a routerLink="/">Ausleihen</a>
-                </button>
-                
-              </mat-card-actions>
-            </div>
-          </mat-card>
+                  <button mat-button class="btn btn-success">
+                    <a routerLink="/">Ausleihen</a>
+                  </button>
+
+                </mat-card-actions>
+              </div>
+            </mat-card>
 
 
-        </a>
-      </li>
-    </ul>
+          </a>
+        </div>
+      </div>
+    </div>
   </div>
 
 

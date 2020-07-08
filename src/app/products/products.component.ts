@@ -79,6 +79,8 @@ export class ProductsComponent implements OnInit {
     this.destroy$.unsubscribe();
   }
 
+
+
   updateUser(): void {
     this._update.currentUser.subscribe(user => this.user = user)
   }
