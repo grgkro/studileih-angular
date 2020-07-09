@@ -11,6 +11,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Observable } from 'rxjs/internal/Observable';  // Don't make general imports like this: import { Observable, Subject } from 'rxjs'; -> You have now all of rxjs imported and that will slow down your app.
 import { Subject } from 'rxjs/internal/Subject';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import {FormControl} from '@angular/forms';
 
 
 
@@ -42,6 +43,10 @@ export class ProductDetailsComponent implements OnInit {
   imagesLoaded: Promise<boolean>;  // this boolean gets to set to true when all images are loaded
   deletedImages = [];
   deletedPics: SafeResourceUrl[] = [];
+
+  endDate = new Date();
+  startDate = new Date();
+  // serializedDate = new FormControl((new Date()).toISOString());
 
   constructor(private route: ActivatedRoute, private _data: DataService, private _update: UpdateService, private _helper: HelperService, private sanitizer: DomSanitizer, private _snackBar: MatSnackBar) { }
 
@@ -232,5 +237,17 @@ export class ProductDetailsComponent implements OnInit {
     if (index >= 0) {                                               // negative Werte machen hier keinen Sinn
       this.deletedPics.push(this.imagesToShow.splice(index, 1));    // löscht 1 element an der Stelle index vom Array imagesToShow und fügt es gleich dem Array deletedPics hinzu.
     }
+  }
+
+  
+  onAnfrageSubmit() {
+    console.warn('Anfangsdatum: ', this.startDate);
+    console.warn('Enddatum: ', this.endDate);
+    this.sendEmailToOwner(this.startDate, this.endDate, this.product.id, this.user.id, this.owner.id);
+  }
+
+  sendEmailToOwner(startDate: Date, endDate: Date, productId: number, userId: number, ownerId: number) {
+    console.log("HelloWorld")
+    this._data.sendEmailToOwner(startDate, endDate, productId, userId, ownerId).subscribe(data => console.log(data));
   }
 }

@@ -112,17 +112,19 @@ https://next.material.angular.io/components/datepicker/overview
 https://stackoverflow.com/questions/62615428/angular-10-date-range-picker-calender-opens-at-wrong-place/62615566#62615566
 https://blog.angular.io/version-10-of-angular-now-available-78960babd41
 -->
-                                   <div class="row">
+                                   <div class="row" *ngIf="!isCurrentUserOwner">
+                                        
                                         <div class="col-sm-3">
-                                             <div *ngIf="!isCurrentUserOwner">
+                                             <div >
                                                   <!-- only show the date picker, if the user is not the owner of the product. The owner can't rent his own product, so he doesn't need the date picker to chose when he wants to rent it.-->
                                                   <h1>Ausleihen:</h1>
 
                                                   <mat-form-field appearance="fill">
                                                        <mat-label>Von wann bis wann?</mat-label>
+                                              
                                                        <mat-date-range-input [rangePicker]="picker">
-                                                            <input matStartDate matInput placeholder="Anfangsdatum">
-                                                            <input matEndDate matInput placeholder="Enddatum">
+                                                            <input matStartDate matInput placeholder="Anfangsdatum" [(ngModel)]="startDate">
+                                                            <input matEndDate matInput placeholder="Enddatum" [(ngModel)]="endDate">
                                                        </mat-date-range-input>
                                                        <mat-datepicker-toggle matSuffix [for]="picker">
                                                        </mat-datepicker-toggle>
@@ -131,6 +133,9 @@ https://blog.angular.io/version-10-of-angular-now-available-78960babd41
                                              </div>
 
 
+                                        </div>
+                                        <div class="col-sm-3">
+                                             <button class="button" type="submit" (click)="onAnfrageSubmit()">Anfragen</button>
                                         </div>
                                    </div>
                               </div>
