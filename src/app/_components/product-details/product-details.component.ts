@@ -48,7 +48,7 @@ export class ProductDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.subscribeShowUploadObservable();
     this.routeParam$ = this.route.params.pipe(switchMap(params => this._data.getProduct(params['id'])))  // get the productId from the URL parameter /{id}. pipe & switchMap take care that if the userId changes for some reason, the following process gets stopped: https://www.concretepage.com/angular/angular-switchmap-example (not necessary yet, because the user profile image loads pretty fast, but if that takes longer and the user switches to another site, it's better to stop the process)
-   this.loadProductWithProductPicture(); // load the product with the main product picture - get the productId from the URL parameter /{id}
+    this.loadProductWithProductPictures(); // load the product with the main product picture - get the productId from the URL parameter /{id}
     this.updateUser();   //  if the user changes, this will get updated
     this.subscribeTriggeringObservable();
     this.loadOwner(); 
@@ -98,12 +98,12 @@ export class ProductDetailsComponent implements OnInit {
         }
 
         this.imagesToShow = [];   // we clear the imagesToShow and refill it in the next step (if you dont clear it first, the old photos will appear twice in the array)
-        this.loadProductWithProductPicture();  // we load all photos again. (maybe in the future find a way to only load the new photo and not clear the array before)
+        this.loadProductWithProductPictures();  // we load all photos again. (maybe in the future find a way to only load the new photo and not clear the array before)
       })
     });
   }
 
-  loadProductWithProductPicture() {             // load the product with the main product picture:
+  loadProductWithProductPictures() {             // load the product with the main product picture:
     this.routeParam$
       .pipe(takeUntil(this.destroy$))           // We need to unsubscribe from this Observable by hand, because its not an observable returned by a http request
       .subscribe(product => {
@@ -125,10 +125,10 @@ export class ProductDetailsComponent implements OnInit {
       );
   }
      
-// I didn't want to nest the loadOwner() inside the loadProductWithProductPicture() -> It's best to load the owner onInit, and make it await loading the users AND the product, because the problem is that only when we have the productId, we can load the owner. But right now, the code is already a bit to much grown to make it await loadproduct 
+// I didn't want to nest the loadOwner() inside the loadProductWithProductPictures() -> It's best to load the owner onInit, and make it await loading the users AND the product, because the problem is that only when we have the productId, we can load the owner. But right now, the code is already a bit to much grown to make it await loadproduct 
   async loadOwner() {
     await this.loadUsers()  
-   // await this.loadProductWithProductPicture()   // <- this would load the product again!
+   // await this.loadProductWithProductPictures()   // <- this would load the product again!
     // do something else here after firstFunctions complete
     this.owner = this.users.filter(user => user.id === this.product.userId)[0]  // das filtern gibt ein neues array zurück. Da es aber immer nur einen user mit der passenden id geben kann, wird das array immer max. 1 element enthalten. daher nehmen wir uns element [0] direkt aus dem gefilterten array.
   }

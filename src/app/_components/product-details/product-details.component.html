@@ -1,90 +1,103 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons&display=block" rel="stylesheet">
 
-<h1>{{errorMessage}}</h1>
-<div *ngIf="product">
-     <!-- Falls das Product schon geladen ist, dann führe das Folgende aus-->
-     <h1>{{ product?.title }}</h1>
-     <ul>
-          <li><strong>Name:</strong> {{ product?.name }}</li>
-          <li><strong>Besitzer:</strong> {{ owner?.name }}</li>
-          <li><strong>Price:</strong> {{ product?.price }} €</li>
-          <li><strong>Product Id:</strong> {{ product?.id }}</li>
-          <li><strong>product.UserId:</strong> {{ product?.userId }}</li>
-          <li *ngIf="user"><strong>user.id (id des gerade aktiven users):</strong> {{ user?.id }}</li>
-          <li *ngIf="isCurrentUserOwner">
-               <!-- if the current user is the owner, he will see the delete and update button -->
+<div class="jumbotron jumbotron-fluid">
+     <div class="container">
+          <h1>{{errorMessage}}</h1>
+          <div *ngIf="product">
+               <!-- Falls das Product schon geladen ist, dann führe das Folgende aus-->
                <div class="row">
-                    <div class="col-4">
-                         <div class="row">
-                              <div class="col">
-                                   <button class="btn btn-danger">
-                                        <svg class="bi bi-trash" width="1.5em" height="1.5em" viewBox="0 0 16 16"
-                                             fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                             <path
-                                                  d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
-                                             <path fill-rule="evenodd"
-                                                  d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
-                                        </svg>
-                                   </button>
-                              </div>
-                              <div class="col">
-                                   <button class="btn btn-primary">update</button>
-                              </div>
-                         </div>
+                    <div class="col">
+                         <h1 class="display-3">{{ product?.title }}</h1>
                     </div>
-                    <div class="col-8"></div>
                </div>
-          </li>
-     </ul>
-
-     <div align="center" style="text-align: center">
-          <div class="container" style="display: inline-block">
-               <!-- https://malcoded.com/posts/angular-async-pipe/ -->
-               <div class="row" style="margin-top: 1.5rem; margin-bottom: 1.5rem;" *ngIf="imagesLoaded | async">
-                    <!-- deferload ist für das lazy loading zuständig, bin aber nicht sicher ob es überhaupt funktioniert.-->
-                    <!-- loads the product image. If no image is available, a default pic gets shown -->
-                    <div *ngFor="let image of imagesToShow; let i = index" (deferLoad)="image.show = true">
-                         <div class="col" style="margin: 1.5rem 0rem 1.5rem 0rem" align="center">
-                              <ng-container *ngIf="image.show">
-                                   <div class="container">
-                                        <img [src]="image" class="images img-thumbnail" alt="Product Picture"
-                                             *ngIf="image; else noImageFound">
-                                        <button class="delete-btn btn" *ngIf="isCurrentUserOwner"
-                                             (click)="deleteProductImage(i)">x</button>
-                                        <!-- if the currect user is the owner, we show a delete button in the top right corner of the image-->
+               <hr class="my-2" />
+               <div class="row">
+                    <div class="col">
+                         <ul>
+                              <li><strong>Name:</strong> {{ product?.name }}</li>
+                              <li><strong>Besitzer:</strong> {{ owner?.name }}</li>
+                              <li><strong>Price:</strong> {{ product?.price }} €</li>
+                              <li><strong>Product Id:</strong> {{ product?.id }}</li>
+                              <li><strong>product.UserId:</strong> {{ product?.userId }}</li>
+                              <li *ngIf="user"><strong>user.id (id des gerade aktiven users):</strong> {{ user?.id }}
+                              </li>
+                              <li *ngIf="isCurrentUserOwner">
+                                   <!-- if the current user is the owner, he will see the delete and update button -->
+                                   <div class="row">
+                                        <div class="col-4">
+                                             <div class="row">
+                                                  <div class="col">
+                                                       <button class="btn btn-danger">
+                                                            <svg class="bi bi-trash" width="1.5em" height="1.5em"
+                                                                 viewBox="0 0 16 16" fill="currentColor"
+                                                                 xmlns="http://www.w3.org/2000/svg">
+                                                                 <path
+                                                                      d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                                                 <path fill-rule="evenodd"
+                                                                      d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                                                            </svg>
+                                                       </button>
+                                                  </div>
+                                                  <div class="col">
+                                                       <button class="btn btn-primary">update</button>
+                                                  </div>
+                                             </div>
+                                        </div>
+                                        <div class="col-8"></div>
                                    </div>
-                              </ng-container>
-                              <ng-template #noImageFound>
-                                   <img src="https://cdn-0.askleo.com/wp-content/uploads/2013/07/image_not_found.png"
-                                        alt="Fallbackimage">
-                                   <!-- <= default picture -->
-                              </ng-template>
+                              </li>
+                         </ul>
 
-                         </div>
-                    </div>
-               </div>
-               <div class="row">
-                    <div class="col-sm-12">
-                         <div *ngIf="isCurrentUserOwner">
-                              <div *ngIf="showUploadComponent">
-                                   <app-upload-file></app-upload-file>
-                              </div>
-                              <button *ngIf="!showUploadComponent" (click)="toggleUploadComponent()"
-                                   class="btn btn-success">Foto hochladen</button>
-                              <div class="divider"></div>
-                              <button *ngIf="deletedImages.length != 0" (click)="restoreLastImage()"
-                                   class="btn btn-info">Letztes Foto zurückholen</button>
-                         </div>
-                    </div>
-                    <div class="row">
-                         <div class="col-sm-3">
-                              <strong>{{ errorMessage }}</strong>
-                         </div>
-                    </div>
-               </div>
+                         <div align="center" style="text-align: center">
+                              <div class="container" style="display: inline-block">
+                                   <!-- https://malcoded.com/posts/angular-async-pipe/ -->
+                                   <div class="row" style="margin-top: 1.5rem; margin-bottom: 1.5rem;"
+                                        *ngIf="imagesLoaded | async">
+                                        <!-- deferload ist für das lazy loading zuständig, bin aber nicht sicher ob es überhaupt funktioniert.-->
+                                        <!-- loads the product image. If no image is available, a default pic gets shown -->
+                                        <div *ngFor="let image of imagesToShow; let i = index"
+                                             (deferLoad)="image.show = true">
+                                             <div class="col" style="margin: 1.5rem 0rem 1.5rem 0rem" align="center">
+                                                  <ng-container *ngIf="image.show">
+                                                       <div class="container">
+                                                            <img [src]="image" class="images img-thumbnail"
+                                                                 alt="Product Picture" *ngIf="image; else noImageFound">
+                                                            <button class="delete-btn btn" *ngIf="isCurrentUserOwner"
+                                                                 (click)="deleteProductImage(i)">x</button>
+                                                            <!-- if the currect user is the owner, we show a delete button in the top right corner of the image-->
+                                                       </div>
+                                                  </ng-container>
+                                                  <ng-template #noImageFound>
+                                                       <img src="https://cdn-0.askleo.com/wp-content/uploads/2013/07/image_not_found.png"
+                                                            alt="Fallbackimage">
+                                                       <!-- <= default picture -->
+                                                  </ng-template>
+
+                                             </div>
+                                        </div>
+                                   </div>
+                                   <div class="row">
+                                        <div class="col-sm-12">
+                                             <div *ngIf="isCurrentUserOwner">
+                                                  <div *ngIf="showUploadComponent">
+                                                       <app-upload-file></app-upload-file>
+                                                  </div>
+                                                  <button *ngIf="!showUploadComponent" (click)="toggleUploadComponent()"
+                                                       class="btn btn-success">Foto hochladen</button>
+                                                  <div class="divider"></div>
+                                                  <button *ngIf="deletedImages.length != 0" (click)="restoreLastImage()"
+                                                       class="btn btn-info">Letztes Foto zurückholen</button>
+                                             </div>
+                                        </div>
+                                        <div class="row">
+                                             <div class="col-sm-3">
+                                                  <strong>{{ errorMessage }}</strong>
+                                             </div>
+                                        </div>
+                                   </div>
 
 
-               <!-- Date picker: das ist eine UI Komponente von Angular Material.
+                                   <!-- Date picker: das ist eine UI Komponente von Angular Material.
 Um das zum laufen zu kriegen müsst ihr wahrscheinlich folgende Befehle im Terminal abschicken:
 ng update @angular/cli @angular/core    <- updated auf das neue Angular 10
 npm install @angular/cdk
@@ -99,24 +112,29 @@ https://next.material.angular.io/components/datepicker/overview
 https://stackoverflow.com/questions/62615428/angular-10-date-range-picker-calender-opens-at-wrong-place/62615566#62615566
 https://blog.angular.io/version-10-of-angular-now-available-78960babd41
 -->
-               <div class="row">
-                    <div class="col-sm-3">
-                         <div *ngIf="!isCurrentUserOwner">
-                              <!-- only show the date picker, if the user is not the owner of the product. The owner can't rent his own product, so he doesn't need the date picker to chose when he wants to rent it.-->
-                              <h1>Ausleihen:</h1>
+                                   <div class="row">
+                                        <div class="col-sm-3">
+                                             <div *ngIf="!isCurrentUserOwner">
+                                                  <!-- only show the date picker, if the user is not the owner of the product. The owner can't rent his own product, so he doesn't need the date picker to chose when he wants to rent it.-->
+                                                  <h1>Ausleihen:</h1>
 
-                              <mat-form-field appearance="fill">
-                                   <mat-label>Von wann bis wann?</mat-label>
-                                   <mat-date-range-input [rangePicker]="picker">
-                                        <input matStartDate matInput placeholder="Anfangsdatum">
-                                        <input matEndDate matInput placeholder="Enddatum">
-                                   </mat-date-range-input>
-                                   <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                   <mat-date-range-picker #picker></mat-date-range-picker>
-                              </mat-form-field>
+                                                  <mat-form-field appearance="fill">
+                                                       <mat-label>Von wann bis wann?</mat-label>
+                                                       <mat-date-range-input [rangePicker]="picker">
+                                                            <input matStartDate matInput placeholder="Anfangsdatum">
+                                                            <input matEndDate matInput placeholder="Enddatum">
+                                                       </mat-date-range-input>
+                                                       <mat-datepicker-toggle matSuffix [for]="picker">
+                                                       </mat-datepicker-toggle>
+                                                       <mat-date-range-picker #picker></mat-date-range-picker>
+                                                  </mat-form-field>
+                                             </div>
+
+
+                                        </div>
+                                   </div>
+                              </div>
                          </div>
-
-
                     </div>
                </div>
           </div>
