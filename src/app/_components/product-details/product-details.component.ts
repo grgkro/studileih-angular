@@ -24,7 +24,9 @@ export class ProductDetailsComponent implements OnInit {
   product: Product;
 
   imagesToShow: SafeResourceUrl[] = [];
-  user: User;   // In the beginning (before a user logged in) the user is undefined
+  user: User;   // the logged in user
+  owner: User = {};   // the user who is the owner of the product
+  users: User[] = []; // list of all users, from which we take the owner and user variable. 
   isCurrentUserOwner: boolean = false;
   showUploadComponent: boolean = false;
   errorMessage: string;
@@ -46,10 +48,11 @@ export class ProductDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.subscribeShowUploadObservable();
     this.routeParam$ = this.route.params.pipe(switchMap(params => this._data.getProduct(params['id'])))  // get the productId from the URL parameter /{id}. pipe & switchMap take care that if the userId changes for some reason, the following process gets stopped: https://www.concretepage.com/angular/angular-switchmap-example (not necessary yet, because the user profile image loads pretty fast, but if that takes longer and the user switches to another site, it's better to stop the process)
-    this.loadProductWithProductPicture(); // load the product with the main product picture - get the productId from the URL parameter /{id}
+   this.loadProductWithProductPicture(); // load the product with the main product picture - get the productId from the URL parameter /{id}
     this.updateUser();   //  if the user changes, this will get updated
     this.subscribeTriggeringObservable();
-
+    this.loadOwner(); 
+    
   }
 
   ngOnDestroy() {            // Angular takes care of unsubscribing from many observable subscriptions like those returned from the Http service or when using the async pipe. But the routeParam$ and the _update.currentShowUploadComponent needs to be unsubscribed by hand on ngDestroy. Otherwise, we risk a memory leak when the component is destroyed. https://malcoded.com/posts/angular-async-pipe/   https://www.digitalocean.com/community/tutorials/angular-takeuntil-rxjs-unsubscribe
@@ -64,6 +67,16 @@ export class ProductDetailsComponent implements OnInit {
     this._update.currentUser.subscribe(user => this.user = user)
   }
 
+
+
+  loadUsersFromBackend() {
+    this._data.getUsers().subscribe(users => {      // HTTP Observable (no unsubscribe needed)
+      this.users = users;
+      this._update.changeUsers(this.users);   // we update the users in all components, so that we dont need to load them again from the backend.
+    })
+  }
+
+
   subscribeShowUploadObservable(): void {
     this._update.currentShowUploadComponent
       .pipe(takeUntil(this.destroy$))             // We need to unsubscribe from this Observable by hand
@@ -73,14 +86,16 @@ export class ProductDetailsComponent implements OnInit {
   // when a new photo gets uploaded, the triggeringObservable will be triggered and the following code will be excecuted (to refresh the photots, so that it immediately shows the newly uploaded photo.)
   subscribeTriggeringObservable() {
     this._update.triggeringObservable.subscribe(() => {
-       this._data.getProduct(this.product.id).subscribe(product => {   //the triggeringObservable is of type Observable<void>, so it returns always undefined as value, so we do just .subscribe( () => ...)
+      this._data.getProduct(this.product.id).subscribe(product => {   //the triggeringObservable is of type Observable<void>, so it returns always undefined as value, so we do just .subscribe( () => ...)
         this.product = product;   // we reloaded the product, so that we have the actualised product.picPaths with the new photo.
         // now we need to check, if the new uploaded photo was maybe deleted earlier -> then it would be in the archive and the user could click "Foto zurückholen", which would cause a fileAlreadyExists Exception, because we would copy the image from the archive to the product image folder, but it already exists in the image folder (because it was uploaded again by the user before restoring it). We dont delete it from the backend here, because the backend handeles it itself and deletes it if the image is in archive directly at the image upload. 
-        const reuploadedButStillArchivedImages = product.picPaths.filter(element => this.deletedImages.includes(element));  
-        if (reuploadedButStillArchivedImages.length != 0) { reuploadedButStillArchivedImages.forEach(image => {
-          this.deletedPics.splice(this.deletedImages.indexOf(image), 1)   // deletes the image blob in the frontend so that we can't restore the image anymore
-          this.deletedImages.splice(this.deletedImages.indexOf(image), 1)  // deletes the image name in the frontend so that we can't restore the image anymore
-        });   } 
+        const reuploadedButStillArchivedImages = product.picPaths.filter(element => this.deletedImages.includes(element));
+        if (reuploadedButStillArchivedImages.length != 0) {
+          reuploadedButStillArchivedImages.forEach(image => {
+            this.deletedPics.splice(this.deletedImages.indexOf(image), 1)   // deletes the image blob in the frontend so that we can't restore the image anymore
+            this.deletedImages.splice(this.deletedImages.indexOf(image), 1)  // deletes the image name in the frontend so that we can't restore the image anymore
+          });
+        }
 
         this.imagesToShow = [];   // we clear the imagesToShow and refill it in the next step (if you dont clear it first, the old photos will appear twice in the array)
         this.loadProductWithProductPicture();  // we load all photos again. (maybe in the future find a way to only load the new photo and not clear the array before)
@@ -93,6 +108,9 @@ export class ProductDetailsComponent implements OnInit {
       .pipe(takeUntil(this.destroy$))           // We need to unsubscribe from this Observable by hand, because its not an observable returned by a http request
       .subscribe(product => {
         this.product = product;
+
+        // this.loadOwner();                      
+        
         this._update.changeProduct(this.product);    // we change the product in the data service so that if a picture for this product get's uploaded with the upload-file component, the upload-component knows witch is the current product and the image can be stored under the right productId.
         // is the user who looks at the details of this product also the owner of the product? if he is the owner -> show "delete", "update" and "Upload new Photo" button
         if (this.user != undefined && this.product.userId == this.user.id) {
@@ -105,6 +123,20 @@ export class ProductDetailsComponent implements OnInit {
           this.errorMessage = this._helper.createErrorMessage(err, "Produkt konnte nicht gefunden werden.");
         }
       );
+  }
+     
+// I didn't want to nest the loadOwner() inside the loadProductWithProductPicture() -> It's best to load the owner onInit, and make it await loading the users AND the product, because the problem is that only when we have the productId, we can load the owner. But right now, the code is already a bit to much grown to make it await loadproduct 
+  async loadOwner() {
+    await this.loadUsers()  
+   // await this.loadProductWithProductPicture()   // <- this would load the product again!
+    // do something else here after firstFunctions complete
+    this.owner = this.users.filter(user => user.id === this.product.userId)[0]  // das filtern gibt ein neues array zurück. Da es aber immer nur einen user mit der passenden id geben kann, wird das array immer max. 1 element enthalten. daher nehmen wir uns element [0] direkt aus dem gefilterten array.
+  }
+
+  // https://stackoverflow.com/questions/62819495/js-async-await-second-function-doesnt-wait-for-first-function-to-complete/62819532#62819532
+  async loadUsers(): Promise<any> {
+    this.users = await this._data.getUsers().toPromise();
+    return Promise.resolve();
   }
 
   // we only load the first poduct pic (testing)
@@ -186,7 +218,7 @@ export class ProductDetailsComponent implements OnInit {
     this._data.restorePicByFilename(picPath, "product", this.product.id)   //fügt das Foto im Backend wieder hinzu -> im Backend (lokal und DB) + löschen ausm Archiv. 
       .subscribe(() => console.log("YISS"));             // da das Observable von HTTP erzeugt wird, muss man hier nicht per Hand unsubscriben
     this.product.picPaths.push(picPath)                 // fügt das Foto im Frontend wieder hinzu (zum Product.picPaths array)
-    
+
   }
 
   deleteImageFromProductArray(filename: string) {

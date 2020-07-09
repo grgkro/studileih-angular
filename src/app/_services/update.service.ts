@@ -19,7 +19,7 @@ export class UpdateService {
   private userSource = new BehaviorSubject(this.user);  // BehaviorSubject = Subject / Observable, das immer noch den letzten Wert bei Subscription ausgibt. Ein Subject sendet bei Subscription direkt noch keinen Wert, sondern erst, wenn nach der Subscription ein neuer Wert vorliegt. Ein Observable gibt bei Subscription alle vorherigen Werte an den neuen Subscribor aus, die seit der Erzeugung des Observables genexted / erzeugt wurden. D.h. nur ein BehaviorSubject gibt bei Subscription direkt den letzten, aktuellen Wert aus.Deshalb braucht BehaviorSubject auch einen Wert direkt beim Erzeugen -> new BehaviorSubject(Anfangswert)
   currentUser = this.userSource.asObservable();
 
-  users: User[];
+  users: User[] = [];
   private usersSource$ = new BehaviorSubject(this.users);   
   currentUsers$ = this.usersSource$.asObservable();
 

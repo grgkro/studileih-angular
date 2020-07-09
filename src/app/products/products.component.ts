@@ -112,6 +112,7 @@ if (productUserId == this.user.id) {
     if (this.users.length === 0) {  
       this._data.getUsers().subscribe(users => {      // HTTP Observable (no unsubscribe needed)
         this.users = users; 
+        this._update.changeUsers(this.users);   // we update the users in all components, so that we dont need to load them again from the backend.
         
         // we filter the users array for the users that live in that dorm:
         this.usersFromSelectedDorm = this.users.filter(user => user.dormId === this.selectedDorm.id)
