@@ -1,4 +1,4 @@
-<div class="jumbotron jumbotron-fluid">
+<div class="jumbotron" style="background-color: rgb(250, 241, 241);">
   <div class="container">
     <div class="row">
       <div class="col">
@@ -19,7 +19,7 @@
       <div class="col-md-auto"></div>
       <div class="col col-lg-2"></div>
     </div>
-    <div class="jumbotron">
+    <div >
       <ul [@listStagger]="products">
         <li *ngFor="let product of products; let i = index">
           <ul>
@@ -81,6 +81,7 @@
       <div class="row justify-content-md-center">
         <div class="col">
           <h1>Im Wohnheim {{ selectedDorm.name }} wird folgendes zum Ausleihen angeboten:</h1>
+          <hr class="my-2" />
         </div>
         <div class="col-md-auto">
         </div>
@@ -163,6 +164,7 @@
     <div class="row justify-content-md-center">
       <div class="col">
         <h1>Alle Produkte auf Studileih:</h1>
+        <hr class="my-2" />
       </div>
       <div class="col-md-auto">
       </div>
