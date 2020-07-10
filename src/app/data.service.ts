@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { User } from './_models/user';
 import { Product } from './_models/product';
+import { ResponseEntity } from './_models/responseEntity';
 
 import { catchError } from 'rxjs/operators';
 import { Dorm } from './_models/dorm';
@@ -54,11 +55,10 @@ export class DataService {
       )
   }
 
-  deleteProduct(id: number): Observable<Product> {
-    return this.http.delete<Product>(this.productsPath + '/' + id, this.httpOptions)
-      .pipe(
-        catchError(this.errorHandler)
-      )
+  deleteProduct(id: number): Observable<any> {
+    const formdata: FormData = new FormData();
+    formdata.append('id', id.toString());
+    return this.http.post(this.productsPath + '/delete/' + id, formdata, { responseType: 'text' });
   }
 
   updateProduct(product: Product): Observable<Product> {
@@ -88,6 +88,13 @@ export class DataService {
     formdata.append('archiveType', archiveType);
     formdata.append('id', id.toString());
     return this.http.post(this.imagesPath + '/deleteArchive', formdata, { responseType: 'text' });
+  }
+
+  deleteImageFolder(folderType: string, id: number): Observable<string> {
+    const formdata: FormData = new FormData();
+    formdata.append('folderType', folderType);
+    formdata.append('id', id.toString());
+    return this.http.post(this.imagesPath + '/deleteImageFolder', formdata, { responseType: 'text' });
   }
 
   restorePicByFilename(filename: string, imgType: string, productId: number) {

@@ -67,7 +67,7 @@ export class ProductsComponent implements OnInit {
     this.products = this.activatedRoute.snapshot.data['products'];  //load all products from the product resolver service (the resolver pre-loads them from the database, before this component gets rendered) 
     // TODO: if the current dorm has products -> show those products first. Underneath that list show all products of that city. Underneath that show a list of all products.
     this.getSelectedDorm();  // get the currently selected dorm by subscribing to the currentSelectedDorm Observable
-   this.loadProductImages();
+    this.loadProductImages();
     this.updateUser();   //  we need to know which user is currently logged in, because if he's the owner of a product, he will not see the "Ausleih" button, and instead he will see the "Edit" and "Delete" buttons. 
 
   }
@@ -102,9 +102,9 @@ export class ProductsComponent implements OnInit {
       .subscribe(selectedDorm => {
         // get the selected dorm
         this.selectedDorm = selectedDorm  // when the user choses a dorm in the dropdown select menu above the google maps
-        
+
         // get all users and all products from selected dorm.
-       
+
         this.getAllProductsFromSelectedDorm();
 
       })
@@ -118,12 +118,12 @@ export class ProductsComponent implements OnInit {
       this.users = await this._data.getUsers().toPromise();
       // now that we loaded them, we update the users list in all other components too, so that we dont need to load them again and again.
       this._update.changeUsers(this.users);
-     } 
-     // Then we filter the users list for the ones that actually live in that dorm.
-     this.usersFromSelectedDorm = this.users.filter(user => user.dormId === this.selectedDorm.id)
-     // and then we filter all products for the ones that are owned by one of the users from that dorm (product.userId = user.id)
-     this.dormProducts = this.filterProductsByUsers(this.products, this.usersFromSelectedDorm);
     }
+    // Then we filter the users list for the ones that actually live in that dorm.
+    this.usersFromSelectedDorm = this.users.filter(user => user.dormId === this.selectedDorm.id)
+    // and then we filter all products for the ones that are owned by one of the users from that dorm (product.userId = user.id)
+    this.dormProducts = this.filterProductsByUsers(this.products, this.usersFromSelectedDorm);
+  }
 
   // filter all products for the products of the users that live in that dorm
   filterProductsByUsers(products: Product[], users: User[]): Product[] {
@@ -172,7 +172,7 @@ export class ProductsComponent implements OnInit {
       //this.photos.push(this.sanitizer.bypassSecurityTrustResourceUrl(reader.result + ""));  
       this.map.set(productId, this.sanitizer.bypassSecurityTrustResourceUrl(reader.result + ""));
     }, false);
-    
+
     if (image) {
       reader.readAsDataURL(image); //this triggers the reader EventListener
     }
@@ -191,13 +191,32 @@ export class ProductsComponent implements OnInit {
     }
   }
 
+  // deleteProduct(id: number) {
+  //   this._data.deleteProduct(id)
+  //     .subscribe(data => {
+  //       console.log(data);
+  //       this.products = this.products.filter(product => product.id !== id);
+  //       console.log('Product deleted successfully!');
+  //       // we have to reload the product images, because we dont store the productId with the images, so if the order of products changes, the images would get mixed up.
+  //       this.loadProductImages();
+  //     })
+  // };
+
   deleteProduct(id: number) {
-    this._data.deleteProduct(id)
-      .subscribe(data => {
-        this.products = this.products.filter(product => product.id !== id);
-        console.log('Product deleted successfully!');
-        this.loadProductImages();
-      })
+    // first we delete the product from the database (optimally we would do something with the response instead of just logging it from backend)    
+    this._data.deleteProduct(id).subscribe(response => console.log(response));
+    if (this.products.filter(product => product.id === id)[0].picPaths !== null) {   // filter the product from the products list and then check if that product has any pictures. If yes -> delete the images in the backend.
+      this._data.deleteImageFolder("product", id).subscribe(response => console.log(response));
+    }
+    
+    // then we delete the product from the frontend lists, so that they dont get displayed anymore.
+    this.products = this.products.filter(product => product.id !== id);
+    this.dormProducts = this.dormProducts.filter(product => product.id !== id);
+
+    // finally, we have to reload the product images, because we dont store the productId with the images, so if the order of products changes, the images would get mixed up.
+    this.loadProductImages();
+
+
   };
 
   editProduct(product: Product) {
