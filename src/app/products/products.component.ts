@@ -66,7 +66,7 @@ export class ProductsComponent implements OnInit {
   ngOnInit() {
     this.products = this.activatedRoute.snapshot.data['products'];  //load all products from the product resolver service (the resolver pre-loads them from the database, before this component gets rendered) 
     // TODO: if the current dorm has products -> show those products first. Underneath that list show all products of that city. Underneath that show a list of all products.
-    this.subscribeSelectedDormObservable();  // get the currently selected dorm
+    this.getSelectedDorm();  // get the currently selected dorm by subscribing to the currentSelectedDorm Observable
 
     this.loadProductImages();
     this.updateUser();   //  if the user changes, this will get updated
@@ -86,64 +86,72 @@ export class ProductsComponent implements OnInit {
   }
 
   checkIsUserOwner(productUserId: number) {
-if (productUserId == this.user.id) {
-  return true;
-  } else return false;
-}
+    if (productUserId == this.user.id) {
+      return true;
+    } else return false;
+  }
 
-  subscribeSelectedDormObservable(): void {
+  getSelectedDorm(): void {
+    // clear the lists dormProducts und usersFromSelectedDorm -> without this, you would get the products from the previously selected dorms too.
+    this.dormProducts = [];
+    this.usersFromSelectedDorm = [];
+    // then get the selected dorm
     this._update.currentSelectedDorm
       .pipe(takeUntil(this.destroy$))             // We need to unsubscribe from this Observable by hand (because its not a http observable, or other angular managed observable)
       .subscribe(selectedDorm => {
         // get the selected dorm
         this.selectedDorm = selectedDorm  // when the user choses a dorm in the dropdown select menu above the google maps
-        // clear the lists dormProducts und usersFromSelectedDorm -> without this, you would get the products from the previously selected dorms too.
-        this.dormProducts = [];
-        this.usersFromSelectedDorm = [];
+        
         // get all users and all products from selected dorm.
-        this.getAllUsersAndProductsFromSelectedDorm();
-        
-      })
-  }
-
-  getAllUsersAndProductsFromSelectedDorm() {
-    // first get all users that live in the selected Dorm
-    // at the first time, we have to get the users from the backend
-    if (this.users.length === 0) {  
-      this._data.getUsers().subscribe(users => {      // HTTP Observable (no unsubscribe needed)
-        this.users = users; 
-        this._update.changeUsers(this.users);   // we update the users in all components, so that we dont need to load them again from the backend.
-        
-        // we filter the users array for the users that live in that dorm:
-        this.usersFromSelectedDorm = this.users.filter(user => user.dormId === this.selectedDorm.id)
-        // -> the filter function above is the same as this for-each loop:
-        // users.forEach(user => {
-        //   if (user.dormId == this.selectedDorm.id) {
-        //     this.usersFromSelectedDorm.push(user);
-        //   }
-        // });
-
+       
         this.getAllProductsFromSelectedDorm();
+
       })
-    } 
-    // if we already loaded the users from the backend, we dont need to call the backend again!
-   else {   
-    this.usersFromSelectedDorm = this.users.filter(user => user.dormId === this.selectedDorm.id)
-      this.getAllProductsFromSelectedDorm();
-    }
-   
   }
-  
+
+  // when the user selects one dorm, we only want to show him the products from that dorm.
+  async getAllProductsFromSelectedDorm() {
+    // if the users were not previously loaded, we have to load them now.
+    if (this.users.length === 0) {
+      // we load the users from the backend and AWAIT until they are loaded. Because to contnue, we need the users list.
+      this.users = await this._data.getUsers().toPromise();
+      // now that we loaded them, we update the users list in all other components too, so that we dont need to load them again and again.
+      this._update.changeUsers(this.users);
+     } 
+     // Then we filter the users list for the ones that actually live in that dorm.
+     this.usersFromSelectedDorm = this.users.filter(user => user.dormId === this.selectedDorm.id)
+     // and then we filter all products for the ones that are owned by one of the users from that dorm (product.userId = user.id)
+     this.dormProducts = this.filterProductsByUsers(this.products, this.usersFromSelectedDorm);
+    }
+
   // get all products from the users that live in that dorm
-  getAllProductsFromSelectedDorm() {
-    this.products.forEach(product => {
-      this.usersFromSelectedDorm.forEach(user => {
+  filterProductsByUsers(products: Product[], users: User[]): Product[] {
+    let dormProducts: Product[] = [];
+    products.forEach(product => {
+      users.forEach(user => {
         if (product.userId == user.id) {
-          this.dormProducts.push(product)
+          dormProducts.push(product)
         }
       });
     });
+    return dormProducts;
   }
+
+ 
+
+// // I didn't want to nest the loadOwner() inside the loadProductWithProductPictures() -> It's best to load the owner onInit, and make it await loading the users AND the product, because the problem is that only when we have the productId, we can load the owner. But right now, the code is already a bit to much grown to make it await loadproduct 
+// async loadOwner() {
+//   await this.loadUsers()  
+//  // await this.loadProductWithProductPictures()   // <- this would load the product again!
+//   // do something else here after firstFunctions complete
+//   this.owner = this.users.filter(user => user.id === this.product.userId)[0]  // das filtern gibt ein neues array zurück. Da es aber immer nur einen user mit der passenden id geben kann, wird das array immer max. 1 element enthalten. daher nehmen wir uns element [0] direkt aus dem gefilterten array.
+// }
+
+// // https://stackoverflow.com/questions/62819495/js-async-await-second-function-doesnt-wait-for-first-function-to-complete/62819532#62819532
+// async loadUsers(): Promise<any> {
+//   this.users = await this._data.getUsers().toPromise();
+//   return Promise.resolve();
+// }
 
 
   //load the main image for each product
