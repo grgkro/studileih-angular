@@ -67,9 +67,8 @@ export class ProductsComponent implements OnInit {
     this.products = this.activatedRoute.snapshot.data['products'];  //load all products from the product resolver service (the resolver pre-loads them from the database, before this component gets rendered) 
     // TODO: if the current dorm has products -> show those products first. Underneath that list show all products of that city. Underneath that show a list of all products.
     this.getSelectedDorm();  // get the currently selected dorm by subscribing to the currentSelectedDorm Observable
-
-    this.loadProductImages();
-    this.updateUser();   //  if the user changes, this will get updated
+   this.loadProductImages();
+    this.updateUser();   //  we need to know which user is currently logged in, because if he's the owner of a product, he will not see the "Ausleih" button, and instead he will see the "Edit" and "Delete" buttons. 
 
   }
 
@@ -82,7 +81,7 @@ export class ProductsComponent implements OnInit {
 
 
   updateUser(): void {
-    this._update.currentUser.subscribe(user => this.user = user)
+    this._update.currentUser.subscribe(user => this.user = user)   //If the user changes, this will get updated
   }
 
   checkIsUserOwner(productUserId: number) {
@@ -91,8 +90,10 @@ export class ProductsComponent implements OnInit {
     } else return false;
   }
 
+
+
   getSelectedDorm(): void {
-    // clear the lists dormProducts und usersFromSelectedDorm -> without this, you would get the products from the previously selected dorms too.
+    // clear the lists dormProducts und usersFromSelectedDorm -> without this, you would get the products from the previously selected dorm(s) too.
     this.dormProducts = [];
     this.usersFromSelectedDorm = [];
     // then get the selected dorm
@@ -124,7 +125,7 @@ export class ProductsComponent implements OnInit {
      this.dormProducts = this.filterProductsByUsers(this.products, this.usersFromSelectedDorm);
     }
 
-  // get all products from the users that live in that dorm
+  // filter all products for the products of the users that live in that dorm
   filterProductsByUsers(products: Product[], users: User[]): Product[] {
     let dormProducts: Product[] = [];
     products.forEach(product => {
@@ -137,23 +138,6 @@ export class ProductsComponent implements OnInit {
     return dormProducts;
   }
 
- 
-
-// // I didn't want to nest the loadOwner() inside the loadProductWithProductPictures() -> It's best to load the owner onInit, and make it await loading the users AND the product, because the problem is that only when we have the productId, we can load the owner. But right now, the code is already a bit to much grown to make it await loadproduct 
-// async loadOwner() {
-//   await this.loadUsers()  
-//  // await this.loadProductWithProductPictures()   // <- this would load the product again!
-//   // do something else here after firstFunctions complete
-//   this.owner = this.users.filter(user => user.id === this.product.userId)[0]  // das filtern gibt ein neues array zurück. Da es aber immer nur einen user mit der passenden id geben kann, wird das array immer max. 1 element enthalten. daher nehmen wir uns element [0] direkt aus dem gefilterten array.
-// }
-
-// // https://stackoverflow.com/questions/62819495/js-async-await-second-function-doesnt-wait-for-first-function-to-complete/62819532#62819532
-// async loadUsers(): Promise<any> {
-//   this.users = await this._data.getUsers().toPromise();
-//   return Promise.resolve();
-// }
-
-
   //load the main image for each product
   loadProductImages() {
     this.products.forEach(product => {
@@ -162,7 +146,6 @@ export class ProductsComponent implements OnInit {
     this.imagesLoaded = Promise.resolve(true);   // now that all images are loaded, we display them by setting the boolean to true -> *ngIf="imagesLoaded | async" in HTML is now true
 
   }
-
 
   //loads only the first picture of the pictures of a product (= the main picture)
   loadMainProductPicture(product: Product) {
@@ -188,10 +171,8 @@ export class ProductsComponent implements OnInit {
       // this.photos are the photos we want to display stored in an array 
       //this.photos.push(this.sanitizer.bypassSecurityTrustResourceUrl(reader.result + ""));  
       this.map.set(productId, this.sanitizer.bypassSecurityTrustResourceUrl(reader.result + ""));
-
-
     }, false);
-
+    
     if (image) {
       reader.readAsDataURL(image); //this triggers the reader EventListener
     }
