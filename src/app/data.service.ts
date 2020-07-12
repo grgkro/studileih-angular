@@ -156,8 +156,17 @@ export class DataService {
     formdata.append('productId', productId.toString());
     formdata.append('userId', userId.toString());
     formdata.append('ownerId', ownerId.toString());
-    console.log("HelloWorld")
-    return this.http.post(this.serverPath + '/emails/sendEmail', formdata, {responseType: 'text' });
+    return this.http.post(this.serverPath + '/users/sendEmail', formdata, {responseType: 'text' });
+  }
+
+  sendMessageToOwner(startDate: Date, endDate: Date, productId: number, userId: number, ownerId: number) {
+    const formdata: FormData = new FormData();
+    formdata.append('startDate', startDate.toISOString());
+    formdata.append('endDate', endDate.toISOString());
+    formdata.append('productId', productId.toString());
+    formdata.append('userId', userId.toString());
+    formdata.append('ownerId', ownerId.toString());
+    return this.http.post(this.serverPath + '/users/sendMessage', formdata, {responseType: 'text' });
   }
 
   errorHandler(error) {

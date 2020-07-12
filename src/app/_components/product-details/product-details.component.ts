@@ -244,10 +244,14 @@ export class ProductDetailsComponent implements OnInit {
     console.warn('Anfangsdatum: ', this.startDate);
     console.warn('Enddatum: ', this.endDate);
     this.sendEmailToOwner(this.startDate, this.endDate, this.product.id, this.user.id, this.owner.id);
+    this.sendMessageToOwner(this.startDate, this.endDate, this.product.id, this.user.id, this.owner.id);
   }
 
   sendEmailToOwner(startDate: Date, endDate: Date, productId: number, userId: number, ownerId: number) {
-    console.log("HelloWorld")
     this._data.sendEmailToOwner(startDate, endDate, productId, userId, ownerId).subscribe(data => console.log(data));
+  }
+
+  sendMessageToOwner(startDate: Date, endDate: Date, productId: number, userId: number, ownerId: number) {
+    this._data.sendMessageToOwner(startDate, endDate, productId, userId, ownerId).subscribe(data => console.log(data));
   }
 }
