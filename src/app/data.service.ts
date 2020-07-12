@@ -7,7 +7,7 @@ import { ResponseEntity } from './_models/responseEntity';
 
 import { catchError } from 'rxjs/operators';
 import { Dorm } from './_models/dorm';
-import { Message } from '@angular/compiler/src/i18n/i18n_ast';
+import { Message } from './_models/message';
 
 @Injectable({
   providedIn: 'root'
