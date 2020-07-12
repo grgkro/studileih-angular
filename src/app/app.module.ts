@@ -34,8 +34,10 @@ import { MatSliderModule } from '@angular/material/slider';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatSelectModule} from '@angular/material/select';
 import {MatCardModule} from '@angular/material/card';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
+import { MessagesComponent } from './_components/messages/messages.component';
 
 
 
@@ -56,6 +58,7 @@ HttpClientModule
     UserLoginComponent,
     EditUserComponent,
     ProductDetailsComponent,
+    MessagesComponent,
     
   ],
   imports: [
@@ -76,6 +79,7 @@ HttpClientModule
     MatSnackBarModule,
     MatSelectModule,
     MatCardModule,
+    MatTooltipModule,
 
     AgmSnazzyInfoWindowModule,
     AgmCoreModule.forRoot({
