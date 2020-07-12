@@ -21,26 +21,26 @@
                 <div class="col"></div>
                 <div class="col"></div>
               </div>
+              
               <li>
                 <div class="row">
+                 
                   <div class="col-2" >
-                    <a routerLink="/message-details/{{ message.id }}"
-                    matTooltip="Von {{ message.sender.name }} an {{ message.receiver.name }}" matTooltipPosition="above" matTooltipClass="custom-tooltip">
-                      <div >
+                    <a routerLink="/message-details/{{ message.id }}">
+                      <div matTooltip="Von {{ message.sender.name }} an {{ message.receiver.name }}" matTooltipPosition="above" matTooltipClass="custom-tooltip">
                         {{ message.subject }}
                       </div>
                     </a>
-                    
                   </div>
 
                   <div class="col-4" >
+                    <a routerLink="/message-details/{{ message.id }}">
                       <div >
                         {{ message.text }}
                       </div>
-                    
-                    
+                    </a>
                   </div>
-                 
+                
                   <div class="col">
                     <button type="button" (click)="deleteMessage(message.id)" class="btn btn-danger">
                       Delete
@@ -48,6 +48,7 @@
                   </div>
                 </div>
               </li>
+            
             </ul>
   
           
