@@ -29,8 +29,12 @@ export class MessagesComponent implements OnInit {
     this._update.currentUser.subscribe(user => this.user = user)
   }
 
-  loadAllMessages(): Message[] {
+  loadAllMessages(): void {
     this._data.loadAllMessages().subscribe(messages => {console.log(messages); this.messages = messages})
+  }
+
+  deleteMessage(messageId: number) {
+    console.log("Nachricht mit id: " + messageId + " gelöscht... (Just kidding. lol");
   }
 
 }

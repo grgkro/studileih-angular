@@ -1,3 +1,42 @@
-<p>messages works!</p>
-
-
+<div class="jumbotron" style="background-color: rgb(250, 241, 241);">
+    <div class="container">
+       <div class="row">
+        <div class="col">
+          <h1 class="display-3">Nachrichten</h1>
+        </div>
+        
+      </div>
+  
+      <hr class="my-2" />
+      <div class="row justify-content-md-center">
+        <div class="col"></div>
+        <div class="col-md-auto"></div>
+        <div class="col col-lg-2"></div>
+      </div>
+      <div >
+        <ul [@listStagger]="messages">
+          <li *ngFor="let message of messages; let i = index">
+            <ul>
+              <div class="row">
+                <div class="col"></div>
+                <div class="col"></div>
+              </div>
+              <li>
+                <div class="row">
+                  <div class="col-8">
+                    {{ message.subject }}
+                  </div>
+                 
+                  <div class="col">
+                    <button type="button" (click)="deleteMessage(message.id)" class="btn btn-danger">
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </li>
+            </ul>
+  
+          
+          </li>
+        </ul>
+      </div> 
