@@ -17,6 +17,7 @@ import { EditUserComponent } from './edit-user/edit-user.component';
 
 import { ProductResolverService } from 'src/app/_services/product-resolver.service';
 import { MessagesComponent } from './_components/messages/messages.component';
+import { MessageDetailsComponent } from './_components/message-details/message-details.component';
 
 const routes: Routes = [
   {
@@ -58,6 +59,10 @@ const routes: Routes = [
   {
     path: 'messages',
     component: MessagesComponent
+  },
+  {
+    path: 'message-details/:id',
+    component: MessageDetailsComponent
   },
   {
     path: 'add-product',

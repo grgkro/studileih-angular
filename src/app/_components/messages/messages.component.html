@@ -23,8 +23,22 @@
               </div>
               <li>
                 <div class="row">
-                  <div class="col-8">
-                    {{ message.subject }}
+                  <div class="col-2" >
+                    <a routerLink="/message-details/{{ message.id }}"
+                    matTooltip="Von {{ message.sender.name }} an {{ message.receiver.name }}" matTooltipPosition="above" matTooltipClass="custom-tooltip">
+                      <div >
+                        {{ message.subject }}
+                      </div>
+                    </a>
+                    
+                  </div>
+
+                  <div class="col-4" >
+                      <div >
+                        {{ message.text }}
+                      </div>
+                    
+                    
                   </div>
                  
                   <div class="col">
