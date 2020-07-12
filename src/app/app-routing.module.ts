@@ -16,6 +16,7 @@ import { AddProductComponent } from './add-product/add-product.component';
 import { EditUserComponent } from './edit-user/edit-user.component';
 
 import { ProductResolverService } from 'src/app/_services/product-resolver.service';
+import { MessagesComponent } from './_components/messages/messages.component';
 
 const routes: Routes = [
   {
@@ -54,8 +55,9 @@ const routes: Routes = [
     path: 'user-login',
     component: UserLoginComponent
   },
-  { 
-     path: '', component: ProductsComponent, resolve: { products: ProductResolverService } 
+  {
+    path: 'messages',
+    component: MessagesComponent
   },
   {
     path: 'add-product',
@@ -70,6 +72,9 @@ const routes: Routes = [
     path: 'google-maps',
     component: GoogleMapsComponent
   }, 
+  { 
+    path: '', component: ProductsComponent, resolve: { products: ProductResolverService } 
+ },
   { path: '**', redirectTo: '', pathMatch: 'full' } // = wildcard route: A well-functioning application should gracefully handle when users attempt to navigate to a part of your application that does not exist. To add this functionality to your application, you set up a wildcard route. The Angular router selects this route any time the requested URL doesn't match any router paths. Common choices include an application-specific PageNotFoundComponent, which you can define to display a 404 page to your users; or a redirect to your application's main component. A wildcard route is the last route because it matches any URL.
 ];
 

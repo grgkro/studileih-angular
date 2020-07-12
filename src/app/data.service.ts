@@ -7,6 +7,7 @@ import { ResponseEntity } from './_models/responseEntity';
 
 import { catchError } from 'rxjs/operators';
 import { Dorm } from './_models/dorm';
+import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +21,7 @@ export class DataService {
   productsPath = 'http://localhost:8090/products';
   imagesPath = 'http://localhost:8090/images';
   usersPath = 'https://jsonplaceholder.typicode.com/users'
+  
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -156,8 +158,24 @@ export class DataService {
     formdata.append('productId', productId.toString());
     formdata.append('userId', userId.toString());
     formdata.append('ownerId', ownerId.toString());
-    console.log("HelloWorld")
     return this.http.post(this.serverPath + '/emails/sendEmail', formdata, {responseType: 'text' });
+  }
+
+  sendMessageToOwner(startDate: Date, endDate: Date, productId: number, userId: number, ownerId: number) {
+    const formdata: FormData = new FormData();
+    formdata.append('startDate', startDate.toISOString());
+    formdata.append('endDate', endDate.toISOString());
+    formdata.append('productId', productId.toString());
+    formdata.append('userId', userId.toString());
+    formdata.append('ownerId', ownerId.toString());
+    return this.http.post(this.serverPath + '/messages/sendMessage', formdata, {responseType: 'text' });
+  }
+
+  loadAllMessages(): Observable<Message[]> {
+    return this.http.get<Message[]>(this.serverPath + '/messages/messages').pipe(
+      catchError(this.errorHandler)
+    )
+
   }
 
   errorHandler(error) {
