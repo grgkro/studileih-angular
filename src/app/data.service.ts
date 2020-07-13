@@ -8,6 +8,7 @@ import { ResponseEntity } from './_models/responseEntity';
 import { catchError } from 'rxjs/operators';
 import { Dorm } from './_models/dorm';
 import { Message } from './_models/message';
+import { Chat } from './_models/chat';
 
 @Injectable({
   providedIn: 'root'
@@ -175,7 +176,18 @@ export class DataService {
     return this.http.get<Message[]>(this.serverPath + '/messages/messages').pipe(
       catchError(this.errorHandler)
     )
+  }
 
+  loadAllChats(): Observable<Chat[]> {
+    return this.http.get<Chat[]>(this.serverPath + '/chats/chats').pipe(
+      catchError(this.errorHandler)
+    )
+  }
+
+  getChatsByUser(chatId: number): Observable<Chat[]> {
+    return this.http.get<Chat[]>(this.serverPath + "/chats/chatsByUser/" + chatId).pipe(
+      catchError(this.errorHandler)
+    )
   }
 
   errorHandler(error) {
