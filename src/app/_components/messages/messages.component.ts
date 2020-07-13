@@ -6,6 +6,7 @@ import { UpdateService } from 'src/app/_services/update.service';
 import { User } from 'src/app/_models/user';
 import { Message } from 'src/app/_models/message';
 import { trigger, style, transition, animate, query, stagger } from '@angular/animations';
+import { Chat } from 'src/app/_models/chat';
 
 @Component({
   selector: 'app-messages',
@@ -40,7 +41,8 @@ export class MessagesComponent implements OnInit {
   user: User;   // the logged in user
   message: Message;
   messages: Message[] = [];
-
+  chats: Chat[] = [];
+  chat: Chat;
 
   constructor(private _data: DataService, private _update: UpdateService,) { }
 
@@ -50,7 +52,13 @@ export class MessagesComponent implements OnInit {
   }
 
   updateUser(): void {
-    this._update.currentUser.subscribe(user => this.user = user)
+    this._update.currentUser.subscribe(user => {
+      this.user = user;
+      this.getChatsByUser(user.id); })
+  }
+
+  getChatsByUser(id: number) {
+    this._data.getChatsByUser(id).subscribe(chats => {this.chats = chats; console.log(chats);});
   }
 
   loadAllMessages(): void {
