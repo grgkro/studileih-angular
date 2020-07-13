@@ -42,10 +42,10 @@ export class UsersComponent implements OnInit {
   constructor(private _data: DataService, private _update: UpdateService) { }
 
   ngOnInit(): void {
-    this.users$ = this._data.getUsers()
+    this.users$ = this._data.getUsers()   // we dont need to subscribe here, we only get the result of the Observable users$ in the HTML
     // const task = () => this._update.currentUsers$;
     // asyncScheduler.schedule(task, 1000);
-    //this.users$ = this._update.currentUsers$
+    // this.users$ = this._update.currentUsers$
   }
 
 }

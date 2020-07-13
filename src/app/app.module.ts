@@ -29,13 +29,16 @@ import { MatNativeDateModule } from '@angular/material/core';
 
 import { DeferLoadModule } from '@trademe/ng-defer-load';
 import { ProductDetailsComponent } from './_components/product-details/product-details.component';
-import {TableModule} from 'primeng/table';
 
 import { MatSliderModule } from '@angular/material/slider';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatSelectModule} from '@angular/material/select';
+import {MatCardModule} from '@angular/material/card';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
+import { MessagesComponent } from './_components/messages/messages.component';
+import { MessageDetailsComponent } from './_components/message-details/message-details.component';
 
 
 
@@ -56,6 +59,8 @@ HttpClientModule
     UserLoginComponent,
     EditUserComponent,
     ProductDetailsComponent,
+    MessagesComponent,
+    MessageDetailsComponent,
     
   ],
   imports: [
@@ -65,15 +70,18 @@ HttpClientModule
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
+   
+
+    DeferLoadModule,
+    //Angular Material inputs (spezielle UI Elemente)
     MatDatepickerModule,
     MatInputModule,
     MatNativeDateModule,
-    TableModule,
-
-    DeferLoadModule,
     MatSliderModule,
     MatSnackBarModule,
     MatSelectModule,
+    MatCardModule,
+    MatTooltipModule,
 
     AgmSnazzyInfoWindowModule,
     AgmCoreModule.forRoot({

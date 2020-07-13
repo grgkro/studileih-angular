@@ -7,10 +7,10 @@ export interface User {
     message?(message: any);
     status?: number;
     id?: number; 
-    name?: number;
+    name?: string;
     email?: string;
     password?: string;
-    dorm?: string; 
+    dormId?: number; 
     room?: number;
     profilePic?: string;
     products?: Product[];

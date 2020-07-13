@@ -1,8 +1,9 @@
 
 export interface Dorm {
-    id?: number;
-    name?: string;
+    id: number;
+    name: string;
     district?: string;
+    city: string;
     lat: number;
     lng: number;
     zoom?: number;

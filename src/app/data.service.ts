@@ -3,9 +3,11 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { User } from './_models/user';
 import { Product } from './_models/product';
+import { ResponseEntity } from './_models/responseEntity';
 
 import { catchError } from 'rxjs/operators';
 import { Dorm } from './_models/dorm';
+import { Message } from './_models/message';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +21,7 @@ export class DataService {
   productsPath = 'http://localhost:8090/products';
   imagesPath = 'http://localhost:8090/images';
   usersPath = 'https://jsonplaceholder.typicode.com/users'
+  
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -54,11 +57,10 @@ export class DataService {
       )
   }
 
-  deleteProduct(id: number): Observable<Product> {
-    return this.http.delete<Product>(this.productsPath + '/' + id, this.httpOptions)
-      .pipe(
-        catchError(this.errorHandler)
-      )
+  deleteProduct(id: number): Observable<any> {
+    const formdata: FormData = new FormData();
+    formdata.append('id', id.toString());
+    return this.http.post(this.productsPath + '/delete/' + id, formdata, { responseType: 'text' });
   }
 
   updateProduct(product: Product): Observable<Product> {
@@ -88,6 +90,13 @@ export class DataService {
     formdata.append('archiveType', archiveType);
     formdata.append('id', id.toString());
     return this.http.post(this.imagesPath + '/deleteArchive', formdata, { responseType: 'text' });
+  }
+
+  deleteImageFolder(folderType: string, id: number): Observable<string> {
+    const formdata: FormData = new FormData();
+    formdata.append('folderType', folderType);
+    formdata.append('id', id.toString());
+    return this.http.post(this.imagesPath + '/deleteImageFolder', formdata, { responseType: 'text' });
   }
 
   restorePicByFilename(filename: string, imgType: string, productId: number) {
@@ -140,6 +149,33 @@ export class DataService {
     return this.http.get('https://jsonplaceholder.typicode.com/posts').pipe(
       catchError(this.errorHandler)
     )
+  }
+
+  sendEmailToOwner(startDate: Date, endDate: Date, productId: number, userId: number, ownerId: number) {
+    const formdata: FormData = new FormData();
+    formdata.append('startDate', startDate.toISOString());
+    formdata.append('endDate', endDate.toISOString());
+    formdata.append('productId', productId.toString());
+    formdata.append('userId', userId.toString());
+    formdata.append('ownerId', ownerId.toString());
+    return this.http.post(this.serverPath + '/emails/sendEmail', formdata, {responseType: 'text' });
+  }
+
+  sendMessageToOwner(startDate: Date, endDate: Date, productId: number, userId: number, ownerId: number) {
+    const formdata: FormData = new FormData();
+    formdata.append('startDate', startDate.toISOString());
+    formdata.append('endDate', endDate.toISOString());
+    formdata.append('productId', productId.toString());
+    formdata.append('userId', userId.toString());
+    formdata.append('ownerId', ownerId.toString());
+    return this.http.post(this.serverPath + '/messages/sendMessage', formdata, {responseType: 'text' });
+  }
+
+  loadAllMessages(): Observable<Message[]> {
+    return this.http.get<Message[]>(this.serverPath + '/messages/messages').pipe(
+      catchError(this.errorHandler)
+    )
+
   }
 
   errorHandler(error) {
