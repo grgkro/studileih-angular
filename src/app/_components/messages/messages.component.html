@@ -14,8 +14,8 @@
         <div class="col col-lg-2"></div>
       </div>
       <div >
-        <ul [@listStagger]="messages">
-          <li *ngFor="let message of messages; let i = index">
+        <ul [@listStagger]="chats">
+          <li *ngFor="let chat of chats; let i = index">
             <ul>
               <div class="row">
                 <div class="col"></div>
@@ -26,23 +26,23 @@
                 <div class="row">
                  
                   <div class="col-2" >
-                    <a routerLink="/message-details/{{ message.id }}">
-                      <div matTooltip="Von {{ message.sender.name }} an {{ message.receiver.name }}" matTooltipPosition="above" matTooltipClass="custom-tooltip">
-                        {{ message.subject }}
+                    <a routerLink="/message-details/{{ chat.id }}">
+                      <div matTooltip="Von {{ chat.messages[(chat.messages.length - 1)].sender.name }} an {{  chat.messages[(chat.messages.length - 1)].receiver.name }}" matTooltipPosition="above" matTooltipClass="custom-tooltip">
+                        {{  chat.messages[(chat.messages.length - 1)].subject }}
                       </div>
                     </a>
                   </div>
 
                   <div class="col-4" >
-                    <a routerLink="/message-details/{{ message.id }}">
+                    <a routerLink="/message-details/{{ chat.id }}">
                       <div >
-                        {{ message.text }}
+                        {{  chat.messages[(chat.messages.length - 1)].text }}
                       </div>
                     </a>
                   </div>
                 
                   <div class="col">
-                    <button type="button" (click)="deleteMessage(message.id)" class="btn btn-danger">
+                    <button type="button" (click)="deleteChat(chat.id)" class="btn btn-danger">
                       Delete
                     </button>
                   </div>
