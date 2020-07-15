@@ -16,7 +16,7 @@ export class EditProductComponent implements OnInit {
   product: Product;
   editForm: FormGroup;
 
-  id = ''; 
+    id = ''; 
     userId= '';
     name= '';
     title= '';
