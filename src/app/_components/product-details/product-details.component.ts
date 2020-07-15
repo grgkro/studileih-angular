@@ -69,7 +69,9 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   updateUser(): void {
-    this._update.currentUser.subscribe(user => this.user = user)
+    this._update.currentUser
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(user => this.user = user)
   }
 
 

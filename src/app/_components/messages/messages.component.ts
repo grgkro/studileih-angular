@@ -7,6 +7,7 @@ import { User } from 'src/app/_models/user';
 import { Message } from 'src/app/_models/message';
 import { trigger, style, transition, animate, query, stagger } from '@angular/animations';
 import { Chat } from 'src/app/_models/chat';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-messages',
@@ -44,29 +45,48 @@ export class MessagesComponent implements OnInit {
   chats: Chat[] = [];
   chat: Chat;
 
+  // Angular takes care of unsubscribing from many observable subscriptions like those returned from the Http service or when using the async pipe. But the routeParam$ and the _update.currentShowUploadComponent needs to be unsubscribed by hand on ngDestroy. Otherwise, we risk a memory leak when the component is destroyed. https://malcoded.com/posts/angular-async-pipe/   https://www.digitalocean.com/community/tutorials/angular-takeuntil-rxjs-unsubscribe
+  destroy$: Subject<boolean> = new Subject<boolean>();
+
   constructor(private _data: DataService, private _update: UpdateService,) { }
 
   ngOnInit(): void {
-    this.updateUser();   //  if the user changes, this will get updated 
-    this.loadAllMessages();
+    this.getUserChats();   //  first loads the user and then loads his chats. if the user changes, this will get updated 
   }
 
-  updateUser(): void {
-    this._update.currentUser.subscribe(user => {
+  
+  ngOnDestroy() {            // Angular takes care of unsubscribing from many observable subscriptions like those returned from the Http service or when using the async pipe. But the routeParam$, _update.currentUser and the _update.currentShowUploadComponent Observables needs to be unsubscribed by hand on ngDestroy. Otherwise, we risk a memory leak when the component is destroyed. https://malcoded.com/posts/angular-async-pipe/   https://www.digitalocean.com/community/tutorials/angular-takeuntil-rxjs-unsubscribe
+    this.destroy$.next(true);
+    // Now let's also unsubscribe from the subject itself:
+    this.destroy$.unsubscribe();
+  }
+
+  getUserChats(): void {
+    this._update.currentUser
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(user => {
       this.user = user;
       this.getChatsByUser(user.id); })
   }
 
+  // loads all Chats of one user with also the messages of that chat.
   getChatsByUser(id: number) {
-    this._data.getChatsByUser(id).subscribe(chats => {this.chats = chats; console.log(chats);});
+    this._data.getChatsByUser(id)
+    .subscribe(chats => {
+      this.chats = chats; 
+      });
   }
 
-  loadAllMessages(): void {
-    this._data.loadAllMessages().subscribe(messages => {console.log(messages); this.messages = messages})
-  }
-
-  deleteMessage(messageId: number) {
+  deleteChat(messageId: number) {
     console.log("Nachricht mit id: " + messageId + " gelöscht... (Just kidding. lol");
   }
 
 }
+
+
+
+
+
+// loadAllMessages(): void {
+  //   this._data.loadAllMessages().subscribe(messages => {console.log(messages); this.messages = messages})
+  // }
