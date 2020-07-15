@@ -2,7 +2,7 @@
   "name": "studileih",
   "version": "0.0.0",
   "scripts": {
-    "ng": "ng",
+    "build-serve": "node --max_old_space_size=8048 ./node_modules/@angular/cli/bin/ng serve -o",
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
@@ -12,6 +12,7 @@
   "private": true,
   "dependencies": {
     "@agm/core": "^1.1.0",
+    "@agm/snazzy-info-window": "^1.1.0",
     "@angular/animations": "^10.0.1",
     "@angular/cdk": "^10.0.1",
     "@angular/common": "^10.0.1",
@@ -23,8 +24,10 @@
     "@angular/platform-browser-dynamic": "^10.0.1",
     "@angular/router": "^10.0.1",
     "@trademe/ng-defer-load": "^8.2.1",
+    "@types/jquery": "^3.5.0",
     "file-saver": "^2.0.2",
     "rxjs": "~6.5.4",
+    "snazzy-info-window": "^1.1.1",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
   },

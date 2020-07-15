@@ -1,5 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { ActivatedRoute, Params, Router } from "@angular/router";
+import { Component, OnInit,} from '@angular/core';
+import { ActivatedRoute, Router } from "@angular/router";
 
 import { switchMap } from 'rxjs/operators';
 
@@ -21,6 +21,9 @@ import { HelperService } from 'src/app/_services/helper.service';
 import { User } from 'src/app/_models/user';
 
 
+
+
+
 @Component({
   selector: 'app-details',
   templateUrl: './details.component.html',
@@ -32,10 +35,12 @@ export class DetailsComponent implements OnInit {
   imageToShow: any;
   errorMessage: string;
   showUploadComponent: boolean = false;
-
-  constructor(private route: ActivatedRoute, private data: DataService, private _update: UpdateService, private _helper: HelperService, private uploadFileService: UploadFileService, private sanitizer: DomSanitizer, private router: Router) { }
   id: any;
   userDetails: User;
+  
+  
+  constructor(private route: ActivatedRoute, private data: DataService, private _update: UpdateService, private _helper: HelperService, private uploadFileService: UploadFileService, private sanitizer: DomSanitizer, private router: Router) { }
+  
 
 
   ngOnInit() {

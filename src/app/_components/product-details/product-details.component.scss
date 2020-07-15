@@ -1,4 +1,40 @@
-.images {
-    height:480px;
-    padding-top: 10px;
+
+  
+  /* Style the button and place it in the middle of the container/image */
+  .container .delete-btn {
+    position: absolute;
+    top: 7%;
+    left: 82.5%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    background-color: rgb(252, 5, 5);
+    color: white;
+    font-size: 8px;
+    padding: 2px 6px;
+    border: none;
+    cursor: pointer;
+    border-radius: 32px;
+  }
+  
+  .container .delete-btn:hover {
+    background-color: rgb(131, 2, 2);
+  } 
+
+  mat-form-field {
+    margin-right: 12px;
+  }
+  
+  .divider{
+    width:1rem;
+    height:auto;
+    display:inline-block;
 }
+
+@media (min-width: 768px) {
+    .carousel-multi-item-2 .col-md-3 {
+    float: left;
+    width: 25%;
+    max-width: 100%; } }
+    
+    .carousel-multi-item-2 .card img {
+    border-radius: 2px; }

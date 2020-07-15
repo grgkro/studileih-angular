@@ -1,24 +1,28 @@
 <!-- erstellt die Sidebar (ähnlich zur Navbar)-->
 <nav>
     <ul>
-      <li>
-        <a routerLink="user-login" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}">
+      <li >
+        <a routerLink="user-login" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}"
+        matTooltip="Login" matTooltipPosition="right" matTooltipClass="custom-tooltip">
           <i class="material-icons">lock_open</i>
         </a>
       </li>
       <li>
-        <a routerLink="" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}">
-          <i class="material-icons">message</i>
+        <a routerLink="" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}"
+        matTooltip="Home" matTooltipPosition="right" matTooltipClass="custom-tooltip">
+          <i class="material-icons">house</i>
         </a>
       </li>
       <li>
-        <a routerLink="users" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}">
+        <a routerLink="users" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}"
+        matTooltip="Benutzer in deinem Wohnheim" matTooltipPosition="right" matTooltipClass="custom-tooltip">
           <i class="material-icons">supervised_user_circle</i>
         </a>
       </li>
       <li>
-        <a routerLink="google-maps" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}">
-          <i class="material-icons">room</i>
+        <a routerLink="messages" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}"
+        matTooltip="Nachrichten" matTooltipPosition="right" matTooltipClass="custom-tooltip">
+          <i class="material-icons">chat</i>
         </a>
       </li>
     </ul>

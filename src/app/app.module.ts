@@ -30,6 +30,16 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { DeferLoadModule } from '@trademe/ng-defer-load';
 import { ProductDetailsComponent } from './_components/product-details/product-details.component';
 
+import { MatSliderModule } from '@angular/material/slider';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatSelectModule} from '@angular/material/select';
+import {MatCardModule} from '@angular/material/card';
+import {MatTooltipModule} from '@angular/material/tooltip';
+
+import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
+import { MessagesComponent } from './_components/messages/messages.component';
+import { MessageDetailsComponent } from './_components/message-details/message-details.component';
+
 
 
 HttpClientModule
@@ -49,6 +59,8 @@ HttpClientModule
     UserLoginComponent,
     EditUserComponent,
     ProductDetailsComponent,
+    MessagesComponent,
+    MessageDetailsComponent,
     
   ],
   imports: [
@@ -58,12 +70,20 @@ HttpClientModule
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
+   
+
+    DeferLoadModule,
+    //Angular Material inputs (spezielle UI Elemente)
     MatDatepickerModule,
     MatInputModule,
     MatNativeDateModule,
+    MatSliderModule,
+    MatSnackBarModule,
+    MatSelectModule,
+    MatCardModule,
+    MatTooltipModule,
 
-    DeferLoadModule,
-  
+    AgmSnazzyInfoWindowModule,
     AgmCoreModule.forRoot({
       apiKey: gmaps_environment.GMAPS_API_KEY // The API KEY belongs to Georg and can't be exposed on GITHUB (Hackers are crazy) 
       //-> Therefore it's loaded as a variable from the file gmaps_environment.ts in folder environments. gmaps_environment.ts is in .gitignore, so it won't get pushed to git
