@@ -23,7 +23,7 @@ export class ChatComponent implements OnInit {
  chatId: number;
 
  replyMessage = new FormGroup({
-  subject: new FormControl('', Validators.required),
+  subject: new FormControl(''),
   text: new FormControl('', Validators.required)
 })
 
@@ -64,6 +64,7 @@ export class ChatComponent implements OnInit {
 }
 
   reply() {
+    console.log(this.replyMessage.controls['subject'].errors); // {required: true}
     console.log(this.replyMessage.controls['subject'].value)
     console.log(this.replyMessage.controls['text'].value)
     this._data.sendReply( this.replyMessage.controls['subject'].value, this.replyMessage.controls['text'].value, new Date().toISOString(), this.chatId, this.user.id).subscribe(reply => console.log(reply)); 
