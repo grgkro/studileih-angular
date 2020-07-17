@@ -20,7 +20,7 @@ interface DormGroup {
 export class GoogleMapsComponent implements OnInit {
 
   currZoom: number = 13;
-  isSnazzyInfoWindowOpened: boolean = true;
+  isSnazzyInfoWindowOpened: boolean = false;
   clickedMarker: string;  // auf welchen Marker wurde geklickt?
 
   dormControl = new FormControl();
@@ -30,7 +30,8 @@ export class GoogleMapsComponent implements OnInit {
   districts: string[] = [];     // die Liste hilft zu merken, welche Stadtviertel schon in dormGroups auftauchen, erspart mehrere for each schleifen
   dorms: Array<Dorm> = [];    // liste aller Wohnheime 
   selectedDorm: Dorm = { id: 1, name: "Alexanderstraße", lat: 48.767485, lng: 9.179693, city: "Stuttgart", district: "StuttgartMitte" }; // irgendwie müssen werte in JS immer am Anfang schon initialisiert werde, das regt richtig auf, wir überschreiben das im onInit sowieso gleich wieder, gibt's da ne andere Möglichkeit?
-
+  selectedCity: string;
+  dormsToShow: Dorm[] = [];
 
 
   constructor(private _data: DataService, private _update: UpdateService) { }
@@ -43,13 +44,28 @@ export class GoogleMapsComponent implements OnInit {
           this.selectedDorm = dorm;   // am Anfang wird als default Wohnheim das Max-Kade in Stuggi Mitte gezeigt (bekanntestes Wohnheim in Stg) - alle Wohnheime am Anfang zu zeigen braucht ewig lang zum Laden
           this._update.changeSelectedDorm(this.selectedDorm);    // we change the dorm in the update service so that the other components can know, which dorm is selected
         }
+        if (!this.cities.includes(dorm.city)) this.cities.push(dorm.city)  // erstellt eine Liste aller Städte
         this.sortDormIntoDormGroups(dorm);   // fügt jedes Dorm der richtigen Gruppe hinzu (z.B. Stuttgart Mitte, München Nord) -> die Gruppen sind wichtig für das DropDown Select Menü
       }
     })
   }
 
+  // this function gets called when the user choses a city in the dropdown select menu above the google maps
+  changeSelectedCity(event) {     
+    this.dormsToShow = [];  
+    this.selectedDorm = null;         
+    this.selectedCity = event.value;
+    console.log(this.selectedCity)
+    this.dorms.forEach(dorm => {
+      if (dorm.city == this.selectedCity) {
+        this.dormsToShow.push(dorm);
+      }
+    }); 
+    console.log(this.dormsToShow)
+  }
+
   // this function gets called when the user choses a dorm in the dropdown select menu above the google maps -> event.value is the name of the selected dorm. But we need the dorm itself, not just the name, so we go through all dorms and take the one that has the same name.
-  changeSelectedDorm2(event) {                      
+  changeSelectedDorm(event) {                      
     this.dorms.forEach(element => {
       if (element.name == event.value) {
         this.selectedDorm = element;
@@ -60,9 +76,8 @@ export class GoogleMapsComponent implements OnInit {
   }
 
   // abgefuckt komplizierter Sortieralgorithmus, nur anschauen wenn man wissen will, wie das array dormGroups befüllt wird!! -> wenn man bei "Wähle dein Wohnheim aus" auf das dropdown select menü geht, sieht man das Ergebnis von dieser Sortierung
-  sortDormIntoDormGroups(dorm) {
+  sortDormIntoDormGroups(dorm: Dorm) {
     if (!this.cities.includes(dorm.city) && dorm.district == null) {   // zB das wohnheim Göppingen hat nur eine Stadt (Göppingen) aber keinen District (in Göppingen gibt's nur 1 Wohnheim, Göppingen ist auch ziemlich klein, "Göppingen Mitte" oder so macht hier keinen Sinn)
-      this.cities.push(dorm.city)
       this.dormGroups.push({ name: dorm.city, dorm: [dorm] })            // erstellt eine neue dormGroup mit dem dorm und added sie direkt zu den dormGroups. der name der neuen dormGroup wird gleich der Stadt gesetzt (wenn kein district angegeben ist, gitb es je Stadt nur eine dormGroup)
     } else if (this.cities.includes(dorm.city) && dorm.district == null) {    // zb stadt Ludwigsburg hat mehrere Wohnheime, aber keine districte (Ludwigsburg ist auch relativ klein) -> damit nicht bei jedem Wohnheim eine neue DormGroup erstellt wird, wird eine cities Liste geführt. Ist schon ein Wohnheim für eine city (zb Ludwigsburg) in der Liste cities, dann gibt es auch schon eine dormGroup dafür in der Liste dormGroups. Wir müssen also diese dormGroup aus dormGroups holen und das neue Wohnheim hinzufügen
       this.addDormToExistingDormGroup(dorm, dorm.city);
