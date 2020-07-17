@@ -31,10 +31,10 @@ export class MessageDetailsComponent implements OnInit {
   isOwnMessage: boolean = true;
   ownEmail: string;
 
-  
 
 
-  constructor( private _data: DataService, private _update: UpdateService) { }
+
+  constructor(private _data: DataService, private _update: UpdateService) { }
 
   ngOnInit(chatMessage = this.chatMessage, chatId = this.chatId) {
     this.updateUser();
@@ -43,7 +43,7 @@ export class MessageDetailsComponent implements OnInit {
     this.userName = chatMessage.sender.name;
     this.userEmail = chatMessage.sender.email;
     // if the user is the receiver (not the sender) of the message and he did't open this message before, we will now add the receivedAt timestamp to it.
-   
+
     if (chatMessage.receiver.id == this.user.id && chatMessage.receivedAt == null) {
       this.receivedAt = new Date();
       this._data.updateMessage(chatId, chatMessage.id, this.receivedAt.toISOString()).subscribe(response => console.log(response));
@@ -71,5 +71,5 @@ export class MessageDetailsComponent implements OnInit {
         this.isOwnMessage = this.user.id === this.chatMessage.sender.id;
         console.log(this.isOwnMessage)
       });
-}
+  }
 }

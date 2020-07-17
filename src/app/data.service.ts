@@ -15,6 +15,7 @@ import { Chat } from './_models/chat';
 })
 
 export class DataService {
+ 
   
   
 
@@ -179,6 +180,16 @@ export class DataService {
     formdata.append('messageId', messageId.toString());
     formdata.append('receivedAt', receivedAt);
     return this.http.post(this.serverPath + '/messages/updateMessage', formdata, {responseType: 'text' });
+  }
+
+  sendReply(subject: string, messageText: string, sendetAt: string, chatId: number, userId: number) {
+    const formdata: FormData = new FormData();
+    formdata.append('subject', subject);
+    formdata.append('messageText', messageText);
+    formdata.append('sendetAt', sendetAt);
+    formdata.append('chatId', chatId.toString());
+    formdata.append('userId', userId.toString());
+    return this.http.post(this.serverPath + '/messages/sendReply', formdata, {responseType: 'text' });
   }
 
   // works, but is not needed anymore

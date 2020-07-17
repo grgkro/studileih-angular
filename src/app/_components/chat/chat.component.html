@@ -2,4 +2,20 @@
   <div *ngFor="let message of chat.messages" class="message">
     <app-message-details [chatMessage]=message [chatId]="chatId"></app-message-details>
   </div>
+  <div>
+    <form class="ui form" [formGroup]="replyMessage" (ngSubmit)="reply()">
+      <input class="ta-main-input"
+       type="text"
+       id="replySubject"
+       placeholder="Betreff"
+       formControlName="subject"/>
+       <input class="ta-main-input"
+       type="text"
+       id="replyText"
+       placeholder="Nachricht"
+       formControlName="text"/>
+       <button class="btn btn-success" >Senden</button>
+    </form>
+    
+  </div>
 </div>
