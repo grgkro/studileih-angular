@@ -1,7 +1,10 @@
+
+
+
 /* You can add global styles to this file, and also import other style files */
 body {
     margin: 0;
-    font-family: 'Montserrat', sans-serif;
+    // font-family:'Montserrat' !important;  //this doesnt work, it seems like it gets overwritten by bootstrap
     height: 100vh;
     background-image: linear-gradient(45deg, rgb(246, 250, 227), #fcf6ec, #f5e1e1);
     background-size: 800%;
@@ -65,4 +68,6 @@ body {
    }
 }
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; 
+    //font-family: Roboto, "Helvetica Neue", sans-serif; 
+}
