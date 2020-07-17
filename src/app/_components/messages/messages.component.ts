@@ -7,7 +7,7 @@ import { User } from 'src/app/_models/user';
 import { Message } from 'src/app/_models/message';
 import { trigger, style, transition, animate, query, stagger } from '@angular/animations';
 import { Chat } from 'src/app/_models/chat';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-messages',
@@ -44,6 +44,9 @@ export class MessagesComponent implements OnInit {
   messages: Message[] = [];
   chats: Chat[] = [];
   chat: Chat;
+  noChatsYet: string = "Du hast noch keine Nachrichten. Stell eine Ausleihanfrage an einen anderen User, um hier deine Anfragen und Nachrichten zu sehen."
+  userHasChats: Promise<boolean>;  // this boolean gets to set to true when all chats are loaded
+  userHasNoChats: Promise<boolean>;  // this boolean gets to set to true if the backend returns null 
 
   // Angular takes care of unsubscribing from many observable subscriptions like those returned from the Http service or when using the async pipe. But the routeParam$ and the _update.currentShowUploadComponent needs to be unsubscribed by hand on ngDestroy. Otherwise, we risk a memory leak when the component is destroyed. https://malcoded.com/posts/angular-async-pipe/   https://www.digitalocean.com/community/tutorials/angular-takeuntil-rxjs-unsubscribe
   destroy$: Subject<boolean> = new Subject<boolean>();
@@ -73,8 +76,16 @@ export class MessagesComponent implements OnInit {
   getChatsByUser(id: number) {
     this._data.getChatsByUser(id)
     .subscribe(chats => {
-      this.chats = chats; 
-      });
+      if (chats == null || chats.length === 0) {
+        this.userHasNoChats = Promise.resolve(true);
+      } else {
+        this.chats = chats;
+        this.userHasChats = Promise.resolve(true);  
+      }
+
+      }
+
+      );
   }
 
   deleteChat(messageId: number) {

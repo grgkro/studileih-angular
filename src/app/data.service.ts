@@ -172,11 +172,12 @@ export class DataService {
     return this.http.post(this.serverPath + '/messages/sendMessage', formdata, {responseType: 'text' });
   }
 
-  loadAllMessages(): Observable<Message[]> {
-    return this.http.get<Message[]>(this.serverPath + '/messages/messages').pipe(
-      catchError(this.errorHandler)
-    )
-  }
+  // works, but is not needed anymore
+  // loadAllMessages(): Observable<Message[]> {
+  //   return this.http.get<Message[]>(this.serverPath + '/messages/messages').pipe(
+  //     catchError(this.errorHandler)
+  //   )
+  // }
 
   loadAllChats(): Observable<Chat[]> {
     return this.http.get<Chat[]>(this.serverPath + '/chats/chats').pipe(
