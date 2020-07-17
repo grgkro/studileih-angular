@@ -172,6 +172,15 @@ export class DataService {
     return this.http.post(this.serverPath + '/messages/sendMessage', formdata, {responseType: 'text' });
   }
 
+  // when a message was received, we have to update the receivedAt timestamp of that message
+  updateMessage(chatId: number, messageId: number, receivedAt: string) {
+    const formdata: FormData = new FormData();
+    formdata.append('chatId', chatId.toString());
+    formdata.append('messageId', messageId.toString());
+    formdata.append('receivedAt', receivedAt);
+    return this.http.post(this.serverPath + '/messages/updateMessage', formdata, {responseType: 'text' });
+  }
+
   // works, but is not needed anymore
   // loadAllMessages(): Observable<Message[]> {
   //   return this.http.get<Message[]>(this.serverPath + '/messages/messages').pipe(

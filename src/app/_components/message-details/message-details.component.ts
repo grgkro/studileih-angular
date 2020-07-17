@@ -5,6 +5,7 @@ import { Chat } from 'src/app/_models/chat';
 import { UpdateService } from 'src/app/_services/update.service';
 import { takeUntil } from 'rxjs/operators';
 import { Message } from 'src/app/_models/message';
+import { DataService } from 'src/app/data.service';
 
 @Component({
   selector: 'app-message-details',
@@ -14,6 +15,7 @@ import { Message } from 'src/app/_models/message';
 export class MessageDetailsComponent implements OnInit {
 
   @Input() chatMessage: Message;    // we get the message as an input from the chat component html ->  <app-message-details [chatMessage]=message></app-message-details>
+  @Input() chatId: number;    // we get the chatId as an input from the chat component html ->  <app-message-details [chatId]=chatId></app-message-details>
 
   destroy$: Subject<boolean> = new Subject<boolean>();
 
@@ -24,19 +26,31 @@ export class MessageDetailsComponent implements OnInit {
   userEmail: string;
   userName: string;
   messageContent: string;
-  timeStamp: Date = new Date();
+  sendetAt: Date = new Date();
+  receivedAt: Date = new Date();
   isOwnMessage: boolean = true;
   ownEmail: string;
 
+  
 
-  constructor(private _update: UpdateService) { }
 
-  ngOnInit(chatMessage = this.chatMessage) {
+  constructor( private _data: DataService, private _update: UpdateService) { }
+
+  ngOnInit(chatMessage = this.chatMessage, chatId = this.chatId) {
     this.updateUser();
-    this.timeStamp = new Date(chatMessage.sendetAt);
+    this.sendetAt = new Date(chatMessage.sendetAt);
     this.messageContent = chatMessage.text;
     this.userName = chatMessage.sender.name;
     this.userEmail = chatMessage.sender.email;
+    // if the user is the receiver (not the sender) of the message and he did't open this message before, we will now add the receivedAt timestamp to it.
+   
+    if (chatMessage.receiver.id == this.user.id && chatMessage.receivedAt == null) {
+      this.receivedAt = new Date();
+      this._data.updateMessage(chatId, chatMessage.id, this.receivedAt.toISOString()).subscribe(response => console.log(response));
+    } else {
+      this.receivedAt = new Date(chatMessage.receivedAt);
+    }
+
   }
 
   ngOnChanges() {

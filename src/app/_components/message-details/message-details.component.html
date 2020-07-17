@@ -18,8 +18,14 @@
         </span>
         <span class="timestamp" 
             [ngClass] = "{'isOwnTimestamp':isOwnMessage}">
-            {{ timeStamp | date:'medium' }}
+            gesendet am: {{ sendetAt |  date:'dd/MM/yyyy h:mm' }}
         </span>
+            <span class="timestamp" 
+            [ngClass] = "{'isOwnTimestamp':isOwnMessage}" >
+            empfangen am: {{ receivedAt |  date:'dd/MM/yyyy h:mm' }}
+        </span>
+    
+        
     </div>
     <div class="messageContent"
         [ngClass]="{'isOwnMessageContent':isOwnMessage}">
