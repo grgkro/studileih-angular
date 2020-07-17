@@ -81,6 +81,7 @@ export class MessagesComponent implements OnInit {
       } else {
         this.chats = chats;
         this.userHasChats = Promise.resolve(true);  
+        this._update.changeChats(chats);
       }
 
       }

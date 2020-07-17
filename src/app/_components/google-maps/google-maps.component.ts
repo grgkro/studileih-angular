@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MouseEvent } from '@agm/core';
 import { FormControl } from '@angular/forms';
 import { DataService } from '../../data.service';
 import { Dorm } from 'src/app/_models/dorm';
@@ -8,6 +9,14 @@ interface DormGroup {
   disabled?: boolean;
   name?: string;
   dorms?: Dorm[];
+}
+
+// just an interface for type safety.
+interface Marker {
+	lat: number;
+	lng: number;
+	label?: string;
+	draggable: boolean;
 }
 
 
@@ -31,8 +40,8 @@ export class GoogleMapsComponent implements OnInit {
   districts: string[] = [];     // die Liste hilft zu merken, welche Stadtviertel schon in dormGroups auftauchen, erspart mehrere for each schleifen
   dorms: Array<Dorm> = [];    // liste aller Wohnheime 
   selectedDorm: Dorm = { id: 1, name: "Alexanderstraße", lat: 48.767485, lng: 9.179693, city: "Stuttgart", district: "StuttgartMitte" }; // irgendwie müssen werte in JS immer am Anfang schon initialisiert werde, das regt richtig auf, wir überschreiben das im onInit sowieso gleich wieder, gibt's da ne andere Möglichkeit?
-  selectedCity: string;
   dormsToShow: Dorm[] = [];
+  markers: Marker[] = [];
 
 
   constructor(private _data: DataService, private _update: UpdateService) { }
@@ -60,15 +69,19 @@ export class GoogleMapsComponent implements OnInit {
     this.cities = [];
     this.districts = [];
     // now we can refill the arrays by going through all dorms. If the city of that dorm == the selected city, then add the dorm again
-    this.selectedCity = event.value;
+    this.collectDormsByCity(event.value);
+  }
+
+  // filter all dorms for the ones that are in one specific city and then sort them into the dormGroups array according to their districts
+  collectDormsByCity(city: string) {
     this.dorms.forEach(dorm => {
-      if (dorm.city == this.selectedCity) {
+      if (dorm.city == city) {
         this.dormsToShow.push(dorm);
         this.sortDormIntoDormGroups(dorm);
       }
-    }); 
+    });
   }
-
+   
   // this function gets called when the user choses a dorm in the dropdown select menu above the google maps -> event.value is the name of the selected dorm. But we need the dorm itself, not just the name, so we go through all dorms and take the one that has the same name.
   changeSelectedDorm(event) {                      
     this.dorms.forEach(element => {
@@ -117,5 +130,14 @@ export class GoogleMapsComponent implements OnInit {
 
   toggleSnazzyInfoWindow() {
     this.isSnazzyInfoWindowOpened = !this.isSnazzyInfoWindowOpened;
+  }
+
+  mapClicked($event: MouseEvent) {
+    this.markers.push({
+      lat: $event.coords.lat,
+      lng: $event.coords.lng,
+      draggable: true
+    });
+    console.log("maps clicked at: " + $event.coords.lat + " " + $event.coords.lng)
   }
 }
