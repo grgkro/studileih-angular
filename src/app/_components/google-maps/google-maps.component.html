@@ -1,4 +1,4 @@
-<div >
+<div>
     <div class="container">
         <div class="row">
             <div class="col">
@@ -37,11 +37,20 @@
             </div>
             <div class="col-md-auto">
                 <mat-form-field appearance="fill">
+                    <mat-label>Stadt</mat-label>
+                    <mat-select [formControl]="cityControl" (selectionChange)="changeSelectedCity($event)">
+                        <mat-option *ngFor="let city of cities" [value]="city">
+                            {{city}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-md-auto">
+                <mat-form-field appearance="fill">
                     <mat-label>Wohnheim</mat-label>
-                    <mat-select [formControl]="dormControl" (selectionChange)="changeSelectedDorm2($event)">
-                        <mat-optgroup *ngFor="let group of dormGroups" [label]="group.name"
-                            [disabled]="group.disabled">
-                            <mat-option *ngFor="let dorm of group.dorm" [value]="dorm.name" >
+                    <mat-select [formControl]="dormControl" (selectionChange)="changeSelectedDorm($event)">
+                        <mat-optgroup *ngFor="let group of dormGroups" [label]="group.name" [disabled]="group.disabled">
+                            <mat-option *ngFor="let dorm of group.dorm" [value]="dorm.name">
                                 {{dorm.name}}
                             </mat-option>
                         </mat-optgroup>
@@ -52,20 +61,41 @@
         <div class="row">
             <div class="col">
                 <!-- loads the google maps and centers it at Stuttgart (lat = 48, lng = 9) -->
-                <agm-map [latitude]=selectedDorm.lat [longitude]=selectedDorm.lng [zoom]="currZoom">
-                    <agm-marker 
-                    [latitude]="selectedDorm.lat"
-                    [longitude]="selectedDorm.lng"
-                    (markerClick)="markerClicked(selectedDorm)">
-                    <agm-snazzy-info-window [closeWhenOthersOpen]="true" [closeOnMapClick]="true" [isOpen]="isSnazzyInfoWindowOpened" [latitude]="selectedDorm.lat" [longitude]="selectedDorm.lng" [maxWidth]="100" [shadow]="true" padding="12px" backgroundColor="#fff"  fontSize="12px"  fontColor="#757575"  wrapperClass="customClass"  [showCloseButton]="false" [panOnOpen]="false">
-                        <ng-template>
-                        <div>{{selectedDorm.name}}</div>
-                        </ng-template>
-                        </agm-snazzy-info-window>
-                </agm-marker>
-                   
-                    
-                </agm-map>
+                <div *ngIf="selectedDorm == null">
+                    <agm-map [latitude]=dormsToShow[0].lat [longitude]=dormsToShow[0].lng [fitBounds]="true">
+                        <div *ngFor="let dorm of dormsToShow">
+                            <agm-marker [latitude]="dorm.lat" [longitude]="dorm.lng"
+                            (markerClick)="markerClicked(dorm)" [agmFitBounds]="true">
+                            <agm-snazzy-info-window [closeWhenOthersOpen]="true" [closeOnMapClick]="true"
+                                [isOpen]="isSnazzyInfoWindowOpened" [latitude]="dorm.lat"
+                                [longitude]="dorm.lng" [maxWidth]="100" [shadow]="true" padding="12px"
+                                backgroundColor="#fff" fontSize="12px" fontColor="#757575" wrapperClass="customClass"
+                                [showCloseButton]="false" [panOnOpen]="false">
+                                <ng-template>
+                                    <div>{{dorm.name}}</div>
+                                </ng-template>
+                            </agm-snazzy-info-window>
+                        </agm-marker>
+                        </div>
+                        
+                    </agm-map>
+                </div>
+                <div *ngIf="selectedDorm != null">
+                    <agm-map [latitude]=selectedDorm.lat [longitude]=selectedDorm.lng [zoom]="currZoom">
+                        <agm-marker [latitude]="selectedDorm.lat" [longitude]="selectedDorm.lng"
+                            (markerClick)="markerClicked(selectedDorm)">
+                            <agm-snazzy-info-window [closeWhenOthersOpen]="true" [closeOnMapClick]="true"
+                                [isOpen]="isSnazzyInfoWindowOpened" [latitude]="selectedDorm.lat"
+                                [longitude]="selectedDorm.lng" [maxWidth]="100" [shadow]="true" padding="12px"
+                                backgroundColor="#fff" fontSize="12px" fontColor="#757575" wrapperClass="customClass"
+                                [showCloseButton]="false" [panOnOpen]="false">
+                                <ng-template>
+                                    <div>{{selectedDorm.name}}</div>
+                                </ng-template>
+                            </agm-snazzy-info-window>
+                        </agm-marker>
+                    </agm-map>
+                </div>
             </div>
         </div>
     </div>
