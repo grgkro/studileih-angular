@@ -15,10 +15,7 @@ import { Chat } from './_models/chat';
 })
 
 export class DataService {
- 
   
-  
-
   serverPath = 'http://localhost:8090';
   productsPath = 'http://localhost:8090/products';
   imagesPath = 'http://localhost:8090/images';
@@ -190,6 +187,16 @@ export class DataService {
     formdata.append('chatId', chatId.toString());
     formdata.append('userId', userId.toString());
     return this.http.post(this.serverPath + '/messages/sendReply', formdata, {responseType: 'text' });
+  }
+
+  sendEmailReply(subject: string, messageText: string, sendetAt: string, chatId: number, userId: number) {
+    const formdata: FormData = new FormData();
+    formdata.append('subject', subject);
+    formdata.append('messageText', messageText);
+    formdata.append('sendetAt', sendetAt);
+    formdata.append('chatId', chatId.toString());
+    formdata.append('userId', userId.toString());
+    return this.http.post(this.serverPath + '/messages/sendEmailReply', formdata, {responseType: 'text' });
   }
 
   // works, but is not needed anymore
