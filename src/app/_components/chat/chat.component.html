@@ -9,18 +9,25 @@
        id="replySubject"
        placeholder="Betreff"
        formControlName="subject"/>
-       
+       <div class="divider"></div>
        <input class="ta-main-input"
        type="text"
        id="replyText"
        placeholder="Nachricht"
        formControlName="text"/>
-       <!-- <div *ngIf="replyMessage.controls['text'].invalid)" class="alert alert-danger">
+       <div class="divider"></div>
+       <input type="checkbox" id="emailCheckbox" checked="checked" formControlName="isEmailChecked" >
+       <label for="emailCheckbox">Diese Nachricht auch als Email an {{ otherUser.name }} versenden.</label><br>
+
+       <div class="divider" style="display: table;"></div>
+       
+       <div *ngIf="replyMessage.controls['text'].invalid && !replyMessage.controls['text'].pristine" class="alert alert-danger" style="display: table !important;"
+       >  <!-- pristine: The field has not been modified yet || invalid: The field content is not valid-->
         <div *ngIf="replyMessage.controls['text'].errors.required">
-          Nachricht kann nicht leer sein.
+          <p>Das Feld Nachricht darf nicht leer sein.</p>
         </div>
-    </div> -->
-       <button class="btn btn-success" [disabled]="replyMessage.pristine || replyMessage.invalid" >Senden</button>  <!-- pristine: The field has not been modified yet || invalid: The field content is not valid-->
+    </div>
+       <button class="btn btn-success" [disabled]="replyMessage.pristine || replyMessage.invalid" >Senden</button>  
     </form>
     
   </div>

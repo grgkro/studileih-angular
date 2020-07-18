@@ -25,6 +25,12 @@ body {
     
 }
 
+.divider{
+    width:1rem;
+    height:auto;
+    display:inline-block;
+}
+
 #container {
    display: grid;
    grid-template-columns: 70px auto;
