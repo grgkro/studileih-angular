@@ -66,9 +66,12 @@
                         <div *ngFor="let dorm of dormsToShow">
                             <agm-marker [latitude]="dorm.lat" [longitude]="dorm.lng"
                             (markerClick)="markerClicked(dorm)" [agmFitBounds]="true">
+                            <agm-info-window #infowindow [maxWidth]="480" >
+                                <app-info-window-product-overview [selectedDorm]=selectedDorm [usersFromSelectedDorm]=usersFromSelectedDorm></app-info-window-product-overview>
+                              </agm-info-window>
+                            
                             <agm-snazzy-info-window [closeWhenOthersOpen]="true" [closeOnMapClick]="true"
-                                [isOpen]="isSnazzyInfoWindowOpened" [latitude]="dorm.lat"
-                                [longitude]="dorm.lng" [maxWidth]="100" [shadow]="true" padding="12px"
+                                [isOpen]="isSnazzyInfoWindowOpened" [maxWidth]="100" [shadow]="true" padding="12px"
                                 backgroundColor="#fff" fontSize="12px" fontColor="#757575" wrapperClass="customClass"
                                 [showCloseButton]="false" [panOnOpen]="false">
                                 <ng-template>
@@ -84,6 +87,10 @@
                     <agm-map [latitude]=selectedDorm.lat [longitude]=selectedDorm.lng [zoom]="currZoom">
                         <agm-marker [latitude]="selectedDorm.lat" [longitude]="selectedDorm.lng"
                             (markerClick)="markerClicked(selectedDorm)">
+                            <agm-info-window #infowindow [maxWidth]="480" >
+                                <app-info-window-product-overview [selectedDorm]=selectedDorm [usersFromSelectedDorm]=usersFromSelectedDorm></app-info-window-product-overview>
+                              </agm-info-window>
+                              
                             <agm-snazzy-info-window [closeWhenOthersOpen]="true" [closeOnMapClick]="true"
                                 [isOpen]="isSnazzyInfoWindowOpened" [latitude]="selectedDorm.lat"
                                 [longitude]="selectedDorm.lng" [maxWidth]="100" [shadow]="true" padding="12px"

@@ -1,0 +1,5 @@
+<p>Bewohner im Wohnheim {{ selectedDorm.name }}</p>
+<div *ngFor="let user of usersFromSelectedDorm">
+    <a routerLink="/details/{{ user.id }}">{{user.name}}</a>
+
+</div>

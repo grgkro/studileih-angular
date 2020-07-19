@@ -41,6 +41,7 @@ import { MessagesComponent } from './_components/messages/messages.component';
 import { MessageDetailsComponent } from './_components/message-details/message-details.component';
 import { ChatComponent } from './_components/chat/chat.component';
 import { UploadMultipleFilesComponent } from './_components/upload-multiple-files/upload-multiple-files.component';
+import { InfoWindowProductOverviewComponent } from './_components/info-window-product-overview/info-window-product-overview.component';
 
 
 
@@ -65,6 +66,7 @@ HttpClientModule
     MessageDetailsComponent,
     ChatComponent,
     UploadMultipleFilesComponent,
+    InfoWindowProductOverviewComponent,
     
   ],
   imports: [
