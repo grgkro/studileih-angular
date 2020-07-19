@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { MouseEvent } from '@agm/core';
 import { FormControl } from '@angular/forms';
 import { DataService } from '../../data.service';
 import { Dorm } from 'src/app/_models/dorm';
 import { UpdateService } from 'src/app/_services/update.service';
+import { User } from 'src/app/_models/user';
 
 interface DormGroup {
   disabled?: boolean;
@@ -27,6 +28,7 @@ interface Marker {
   styleUrls: ['./google-maps.component.scss']
 })
 export class GoogleMapsComponent implements OnInit {
+  @Input() usersFromSelectedDorm: User[];    // we only need to import this users list from the products overview to pass it on to the child component <app-info-window-product-overview> (which is actually now a user-overview)
 
   currZoom: number = 13;
   isSnazzyInfoWindowOpened: boolean = false;

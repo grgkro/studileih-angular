@@ -80,7 +80,10 @@
                                         <div class="col-sm-12">
                                              <div *ngIf="isCurrentUserOwner">
                                                   <div *ngIf="showUploadComponent">
-                                                       <app-upload-file></app-upload-file>
+                                                       <app-upload-file (selectedFile)="onFileSelected($event)">
+                                                       </app-upload-file>
+                                                       <!-- when a file gets selected in the upload-file component, we will get that as an output emitted into the product-details component-->
+
                                                   </div>
                                                   <button *ngIf="!showUploadComponent" (click)="toggleUploadComponent()"
                                                        class="btn btn-success">Foto hochladen</button>
@@ -91,6 +94,9 @@
                                         </div>
                                         <div class="row">
                                              <div class="col-sm-3">
+                                                  <br />
+                                                  <br />
+                                                  <strong>{{ response }}</strong>
                                                   <strong>{{ errorMessage }}</strong>
                                              </div>
                                         </div>
@@ -113,18 +119,20 @@ https://stackoverflow.com/questions/62615428/angular-10-date-range-picker-calend
 https://blog.angular.io/version-10-of-angular-now-available-78960babd41
 -->
                                    <div class="row" *ngIf="!isCurrentUserOwner">
-                                        
+
                                         <div class="col-sm-3">
-                                             <div >
+                                             <div>
                                                   <!-- only show the date picker, if the user is not the owner of the product. The owner can't rent his own product, so he doesn't need the date picker to chose when he wants to rent it.-->
                                                   <h1>Ausleihen:</h1>
 
                                                   <mat-form-field appearance="fill">
                                                        <mat-label>Von wann bis wann?</mat-label>
-                                              
+
                                                        <mat-date-range-input [rangePicker]="picker">
-                                                            <input matStartDate matInput placeholder="Anfangsdatum" [(ngModel)]="startDate">
-                                                            <input matEndDate matInput placeholder="Enddatum" [(ngModel)]="endDate">
+                                                            <input matStartDate matInput placeholder="Anfangsdatum"
+                                                                 [(ngModel)]="startDate">
+                                                            <input matEndDate matInput placeholder="Enddatum"
+                                                                 [(ngModel)]="endDate">
                                                        </mat-date-range-input>
                                                        <mat-datepicker-toggle matSuffix [for]="picker">
                                                        </mat-datepicker-toggle>
@@ -135,7 +143,8 @@ https://blog.angular.io/version-10-of-angular-now-available-78960babd41
 
                                         </div>
                                         <div class="col-sm-3">
-                                             <button class="button" type="submit" (click)="onAnfrageSubmit()">Anfragen</button>
+                                             <button class="button" type="submit"
+                                                  (click)="onAnfrageSubmit()">Anfragen</button>
                                         </div>
                                    </div>
                               </div>

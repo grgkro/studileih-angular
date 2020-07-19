@@ -54,7 +54,7 @@ export class ProductsComponent implements OnInit {
   user: User; // if the currently logged in user changes, this will be updated (we need the info to show the edit and delete button only for the products where the user is the owner)
   isUserOwner: boolean = false;
 
-  map = new Map();
+  map = new Map();                  //The map stores all product images together with the product id
   imagesLoaded: Promise<boolean>;  // this boolean gets to set to true when all images are loaded
   selectedDorm: Dorm = { id: 1, name: "Alexanderstraße", lat: 48.767485, lng: 9.179693, city: "Stuttgart", district: "StuttgartMitte" }; // irgendwie müssen werte in JS immer am Anfang schon initialisiert werde, das regt richtig auf, wir überschreiben das im onInit sowieso gleich wieder, gibt's da ne andere Möglichkeit?
 

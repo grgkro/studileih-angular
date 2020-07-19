@@ -41,16 +41,20 @@
       <!-- <= default picture -->
     </ng-template>
     <br>
+   <br>
+   
 
     <!-- "upload new Photo" button -->
     <div *ngIf="showUploadComponent">
-      <app-upload-file></app-upload-file>
+      
+      <app-upload-file (selectedFile)="onFileSelected($event)"></app-upload-file>   <!-- when a file gets selected in the upload-file component, we will get that as an output emitted into the user-details component-->
+
     </div>
     <button *ngIf="!showUploadComponent" (click)="toggleUploadComponent()" class="btn btn-success">Upload new
       Photo</button>
-    <br>
-    <br>
-    <br>
+      <div class="divider"></div>
+      <div class="divider"></div>
+    <strong>{{ response }}</strong> 
     <strong>{{ errorMessage }}</strong>
   </div>
 
