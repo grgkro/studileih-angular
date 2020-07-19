@@ -1,4 +1,4 @@
-import { Component, OnInit,} from '@angular/core';
+import { Component, OnInit, } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
 
 import { switchMap } from 'rxjs/operators';
@@ -37,19 +37,21 @@ export class DetailsComponent implements OnInit {
   showUploadComponent: boolean = false;
   id: any;
   userDetails: User;
-  
+
   response: string;
-  
+  userId: number;
+
   constructor(private route: ActivatedRoute, private data: DataService, private _update: UpdateService, private _helper: HelperService, private uploadFileService: UploadFileService, private sanitizer: DomSanitizer, private router: Router) { }
-  
+
 
 
   ngOnInit() {
     this.loadUserWithUserPic();
+    this.subscribeTriggeringObservable();
   }
 
-   // This function gets called when the user clicks on "Foto hochladen": https://angular.io/guide/component-interaction
-   onFileSelected(selectedFile: File) {
+  // This function gets called when the user clicks on "Foto hochladen": https://angular.io/guide/component-interaction
+  onFileSelected(selectedFile: File) {
     // This uploadfunction is responsible for handling uploads of user profile images and product pics. 
     this.saveFile(selectedFile);
   }
@@ -58,6 +60,7 @@ export class DetailsComponent implements OnInit {
     this.uploadFileService.pushFileToStorage(selectedFile, this.user.id, null, "userPic").subscribe((response: any) => {
       if (response == "Dein Foto wurde gespeichert.")   //it would be better to check the response status == 200, but I dont know how
         this.response = response;
+      console.log(response)
       // this._update.changeShowUploadComponent(false);  // if the user uploaded a product photo, we want do not show the upload component anymore in the productdetails component. But therefore we need the information in the productdetails component. -> If a user successfully uploads a product photo (status 200), the upload component changes showUploadComponent to false here. The _update service then updates this value for all subscribes.
       // setTimeout(() => { this.router.navigate(['']); }, 700);  // after uploading a photo we go back to the main page immediatly -> could be changed, maybe better show a success message and stay on the current page...
       // this._update.changeNewPhotoWasUploaded();   // ohne die Zeile, würde bei "upload new Photo" das Photo als USER profile pic behandelt werden. Wir wollen es aber als PRODUCT pic speichern. (Ist etwas ungeschickt gelöst...)
@@ -69,7 +72,7 @@ export class DetailsComponent implements OnInit {
   loadUserWithUserPic() {
     // here we create 3 Observables, one gets the parameters/userId from the url "http://localhost:4200/details/{userId}. The next load the user, and the last loads the profile pic of that user.
     this.route.params.pipe(switchMap(                   // pipe & switchMap take care, that if the userId changes for some reason, the following process gets stopped: https://www.concretepage.com/angular/angular-switchmap-example (not necessary yet, because the user profile image loads pretty fast, but if that takes longer and the user switches to another site, it's better to stop the process)
-      params =>                                           // params is the return value of the switchMap and in our case it simple contains the id taken from the url.                       
+      params =>
         this.data.getUser(params['id']))).subscribe(      // this calls the getUser function with the id from the url, which returns an Observable, to which we subscribe. When the Observable is ready it will give us the user.
           user => {
             this.user = user;                             // user is the user that was just loaded from the database. this.user is the variable, that we store the user in, so that we can access it outside of the scope of the Observable.
@@ -80,6 +83,19 @@ export class DetailsComponent implements OnInit {
           (err: HttpErrorResponse) => this.processError(err)    // if the image could not be loaded, this part will be executed instead
         );
   }
+
+  loadUserWithUserPicById(id: number) {
+    this.data.getUser(id).subscribe(      // this calls the getUser function with the id from the url, which returns an Observable, to which we subscribe. When the Observable is ready it will give us the user.
+      user => {
+        this.user = user;                             // user is the user that was just loaded from the database. this.user is the variable, that we store the user in, so that we can access it outside of the scope of the Observable.
+        this._update.changeUser(this.user);           // change the user in all components that are subscribed to dataService.currentUser
+        this._update.changeImgType("userPic");   // ohne die Zeile, würde bei "upload new Photo" das Photo als PRODUCT pic behandelt werden. Wir wollen es aber als USER profile pic speichern. (Ist etwas ungeschickt gelöst...) 
+        this.loadUserProfilePic();
+      },
+      (err: HttpErrorResponse) => this.processError(err)    // if the image could not be loaded, this part will be executed instead
+    );
+  }
+
 
   loadUserProfilePic() {
     this.uploadFileService.getUserPic(this.user.id).subscribe(       // load user image
@@ -136,4 +152,12 @@ export class DetailsComponent implements OnInit {
       this.userDetails = user;
     });
   }
+
+  // when a new photo gets uploaded, the triggeringObservable will be triggered and the following code will be excecuted (to refresh the photots, so that it immediately shows the newly uploaded photo.)
+  subscribeTriggeringObservable() {
+    this._update.triggeringObservable.subscribe(() => {
+      this.loadUserWithUserPic();   //the triggeringObservable is of type Observable<void>, so it returns always undefined as value, so we do just .subscribe( () => ...)
+    })
+  }
+
 }

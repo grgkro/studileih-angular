@@ -73,6 +73,8 @@ export class UploadFileComponent implements OnInit {
       // we only allow one file to be uploaded -> item(0) - without the 0 in item(0), you could upload many files at once (which would break the backend code).
       this.currentFileUpload = this.selectedFiles.item(0);
       this.selectedFile.emit(this.currentFileUpload);
+      this._update.changeNewPhotoWasUploaded();   // ohne die Zeile, würde bei "upload new Photo" das Photo als USER profile pic behandelt werden. Wir wollen es aber als PRODUCT pic speichern. (Ist etwas ungeschickt gelöst...)
+
       
     }
   }
