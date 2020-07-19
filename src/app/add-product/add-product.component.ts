@@ -17,6 +17,7 @@ export class AddProductComponent implements OnInit {
     private dataService: DataService) { }
 
   addForm: FormGroup;
+
   data: Product;
 
   ngOnInit(): void {
@@ -41,9 +42,17 @@ export class AddProductComponent implements OnInit {
          console.log('Product created successfully!')
          this.router.navigate(['products']);
        }); */
+       
     console.log(this.addForm.value);
-    this.dataService.addProduct(this.addForm.value)
+
+      var formData: any = new FormData();
+      formData.append("name", this.addForm.get('name').value);
+      formData.append("title", this.addForm.get('title').value);
+      formData.append("price", this.addForm.get('price').value);
+    
+    this.dataService.addProduct(formData)
       .subscribe((res: any) => {
+        console.log(res);
         this.router.navigate(['products']);
       }, (err: any) => {
         console.log(err);

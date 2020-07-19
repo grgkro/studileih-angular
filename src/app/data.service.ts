@@ -49,9 +49,9 @@ export class DataService {
     );
   }
 
-  addProduct(product: Product): Observable<Product> {
-    return this.http.post<Product>(this.productsPath,
-       this.httpOptions).pipe(
+  addProduct(formData: any): Observable<Product> {
+    return this.http.post(this.productsPath,
+      formData).pipe(
         catchError(this.errorHandler)
       )
   }
