@@ -7,39 +7,45 @@
         <form [formGroup]="addForm" (ngSubmit)="onSubmit()">
            
             <div class="form-group">
-              <label for="name">Product name:</label>
-              <input
-                type="text"
-                formControlName="name"
-                placeholder="name"
-                name="Name"
-                class="form-control"
-                id="name"
-              />
-            </div>
-        
-            <div class="form-group">
-              <label for="email">Title:</label>
+              <label for="email">Knackiger Titel:</label>
               <input
                 formControlName="title"
-                placeholder="Title"
+                placeholder="Bohrmaschine mit Metall-Bohrerset"
                 name="title"
                 class="form-control"
                 id="title"
               />
             </div>
+
             <div class="form-group">
-              <label for="price">Price:</label>
+              <label for="name">Kurze Beschreibung:</label>
+              <input
+                type="text"
+                formControlName="name"
+                placeholder="Gerne kann meine Bohrmaschine hier für 2-3 Tage ausgeleihen werden."
+                name="Name"
+                class="form-control"
+                id="name"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="price">Preis:</label>
               <input
                 type="number"
                 formControlName="price"
-                placeholder="Price"
+                value="0"
                 name="price"
                 class="form-control"
                 id="price"
+                (input)="inputValidator($event)"
               />
             </div>
-        
+           
+        <div *ngIf="showOnlyNumbersMessage" class="alert alert-danger">
+          {{ onlyNumbersMessage }}
+        </div>
+
             <!-- <div class="form-group">
               <label for="picPaths">Pic paths:</label>
               <input
@@ -54,7 +60,7 @@
         
             <div class="row">
               <div class="col-4">
-                <button class="btn btn-success">Add</button>
+                <button type="submit" class="btn btn-success">Add</button>
               </div>
               <div class="col-4">
                 <button type="button" class="btn btn-danger">
