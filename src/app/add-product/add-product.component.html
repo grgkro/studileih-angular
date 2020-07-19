@@ -1,57 +1,34 @@
-
 <div class="col user-container">
-    <div class="jumbotron">
-        <h1 class="display-4">Add Product</h1>
-       
-        <hr class="my-2">
-        <form [formGroup]="addForm" (ngSubmit)="onSubmit()">
-            <div class="form-group">
-              <label for="userId">User Id:</label>
-              <input
-                type="number"
-                formControlName="userId"
-                placeholder="userId"
-                name="UserId"
-                class="form-control"
-                id="userId"
-              />
-            </div>
-        
-            <div class="form-group">
-              <label for="name">Product name:</label>
-              <input
-                type="text"
-                formControlName="name"
-                placeholder="name"
-                name="Name"
-                class="form-control"
-                id="name"
-              />
-            </div>
-        
-            <div class="form-group">
-              <label for="email">Title:</label>
-              <input
-                formControlName="title"
-                placeholder="Title"
-                name="title"
-                class="form-control"
-                id="title"
-              />
-            </div>
-            <div class="form-group">
-              <label for="price">Price:</label>
-              <input
-                type="number"
-                formControlName="price"
-                placeholder="Price"
-                name="price"
-                class="form-control"
-                id="price"
-              />
-            </div>
-        
-            <div class="form-group">
+  <div class="jumbotron">
+    <h1 class="display-4">Add Product</h1>
+
+    <hr class="my-2">
+    <form [formGroup]="addForm" (ngSubmit)="onSubmit()">
+
+      <div class="form-group">
+        <label for="email">Knackiger Titel:</label>
+        <input formControlName="title" placeholder="Bohrmaschine mit Metall-Bohrerset" name="title" class="form-control"
+          id="title" />
+      </div>
+
+      <div class="form-group">
+        <label for="name">Kurze Beschreibung:</label>
+        <input type="text" formControlName="name"
+          placeholder="Gerne kann meine Bohrmaschine hier für 2-3 Tage ausgeleihen werden." name="Name"
+          class="form-control" id="name" />
+      </div>
+
+      <div class="form-group">
+        <label for="price">Preis:</label>
+        <input type="number" formControlName="price" value="0" name="price" class="form-control" id="price"
+          (input)="inputValidator($event)" />
+      </div>
+
+      <div *ngIf="showOnlyNumbersMessage" class="alert alert-danger">
+        {{ onlyNumbersMessage }}
+      </div>
+
+      <!-- <div class="form-group">
               <label for="picPaths">Pic paths:</label>
               <input
                 type="text"
@@ -61,21 +38,41 @@
                 class="form-control"
                 id="picPaths"
               />
-            </div>
-        
-            <div class="row">
-              <div class="col-4">
-                <button class="btn btn-success">Add</button>
-              </div>
-              <div class="col-4">
-                <button type="button" class="btn btn-danger">
-                  <a routerLink="">
-                    Cancel
-                  </a>
-                </button>
-              </div>
-            </div>
-          </form>
+            </div> -->
+
+      <div class="row">
+        <div class="col-4">
+          <button type="submit" class="btn btn-success">Add</button>
+        </div>
+        <div class="col-4">
+          <button type="button" class="btn btn-danger">
+            <a routerLink="">
+              Cancel
+            </a>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+
+
+      <app-upload-file (selectedFile)="onFileSelected($event)">
+      </app-upload-file>
+
+      <!-- <button *ngIf="deletedImages.length != 0" (click)="restoreLastImage()"
+                     class="btn btn-info">Letztes Foto zurückholen</button> -->
+
     </div>
+    <!-- <div class="row">
+           <div class="col-sm-3">
+                <strong>{{ errorMessage }}</strong>
+           </div>
+      </div> -->
+  </div>
+  <br/>
+<br/>
+<strong>{{ response }}</strong>
 
 </div>

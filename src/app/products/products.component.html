@@ -90,9 +90,10 @@
         <!--listStagger ist eine spezielle Animation, bei der die Liste nicht auf einmal dargestellt wird, sondern zeitlich verzögert auftaucht-->
         <div class="col-md-3" *ngFor="let product of dormProducts" class="list-inline-item tab1cards">
           <div>
-            <a routerLink="/product-details/{{ product.id }}">
+            
               <!-- wenn die produktcard irgendwo angeklickt wird, wird man weitergeleitet per routerLink zur details component.-->
               <mat-card class="example-card card">
+                <a routerLink="/product-details/{{ product.id }}">
                 <mat-card-header>
                   <mat-card-title class="cardTitle">{{ product.title }}</mat-card-title>
                   <mat-card-subtitle class="cardSubTitle">{{ product.name }}</mat-card-subtitle>
@@ -121,6 +122,7 @@
 
                   </p>
                 </mat-card-content>
+              </a>
                 <div *ngIf="checkIsUserOwner(product.userId)">
                   <mat-card-actions class="cardActions">
 
@@ -144,9 +146,6 @@
                   </mat-card-actions>
                 </div>
               </mat-card>
-
-
-            </a>
           </div>
         </div>
       </div>
