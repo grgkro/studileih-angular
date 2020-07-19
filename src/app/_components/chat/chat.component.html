@@ -1,0 +1,34 @@
+<div class="feed">
+  <div *ngFor="let message of chat.messages" class="message">
+    <app-message-details [chatMessage]=message [chatId]="chatId"></app-message-details>
+  </div>
+  <div>
+    <form class="ui form" [formGroup]="replyMessage" (ngSubmit)="reply()">   <!-- https://medium.com/aviabird/complete-angular2-guide-reactive-forms-in-depth-part-1-21a8e2428904-->
+      <input class="ta-main-input"
+       type="text"
+       id="replySubject"
+       placeholder="Betreff"
+       formControlName="subject"/>
+       <div class="divider"></div>
+       <input class="ta-main-input"
+       type="text"
+       id="replyText"
+       placeholder="Nachricht"
+       formControlName="text"/>
+       <div class="divider"></div>
+       <input type="checkbox" id="emailCheckbox" checked="checked" formControlName="isEmailChecked" >
+       <label for="emailCheckbox">Diese Nachricht auch als Email an {{ otherUser.name }} versenden.</label><br>
+
+       <div class="divider" style="display: table;"></div>
+       
+       <div *ngIf="replyMessage.controls['text'].invalid && !replyMessage.controls['text'].pristine" class="alert alert-danger" style="display: table !important;"
+       >  <!-- pristine: The field has not been modified yet || invalid: The field content is not valid-->
+        <div *ngIf="replyMessage.controls['text'].errors.required">
+          <p>Das Feld Nachricht darf nicht leer sein.</p>
+        </div>
+    </div>
+       <button class="btn btn-success" [disabled]="replyMessage.pristine || replyMessage.invalid" >Senden</button>  
+    </form>
+    
+  </div>
+</div>

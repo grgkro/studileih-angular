@@ -39,6 +39,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 import { MessagesComponent } from './_components/messages/messages.component';
 import { MessageDetailsComponent } from './_components/message-details/message-details.component';
+import { ChatComponent } from './_components/chat/chat.component';
 
 
 
@@ -61,6 +62,7 @@ HttpClientModule
     ProductDetailsComponent,
     MessagesComponent,
     MessageDetailsComponent,
+    ChatComponent,
     
   ],
   imports: [

@@ -18,6 +18,7 @@ import { EditUserComponent } from './edit-user/edit-user.component';
 import { ProductResolverService } from 'src/app/_services/product-resolver.service';
 import { MessagesComponent } from './_components/messages/messages.component';
 import { MessageDetailsComponent } from './_components/message-details/message-details.component';
+import { ChatComponent } from './_components/chat/chat.component';
 
 const routes: Routes = [
   {
@@ -61,8 +62,8 @@ const routes: Routes = [
     component: MessagesComponent
   },
   {
-    path: 'message-details/:id',
-    component: MessageDetailsComponent
+    path: 'chat/:id',
+    component: ChatComponent
   },
   {
     path: 'add-product',

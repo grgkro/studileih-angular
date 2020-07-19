@@ -16,8 +16,6 @@ import { Chat } from './_models/chat';
 
 export class DataService {
   
-  
-
   serverPath = 'http://localhost:8090';
   productsPath = 'http://localhost:8090/products';
   imagesPath = 'http://localhost:8090/images';
@@ -172,11 +170,41 @@ export class DataService {
     return this.http.post(this.serverPath + '/messages/sendMessage', formdata, {responseType: 'text' });
   }
 
-  loadAllMessages(): Observable<Message[]> {
-    return this.http.get<Message[]>(this.serverPath + '/messages/messages').pipe(
-      catchError(this.errorHandler)
-    )
+  // when a message was received, we have to update the receivedAt timestamp of that message
+  updateMessage(chatId: number, messageId: number, receivedAt: string) {
+    const formdata: FormData = new FormData();
+    formdata.append('chatId', chatId.toString());
+    formdata.append('messageId', messageId.toString());
+    formdata.append('receivedAt', receivedAt);
+    return this.http.post(this.serverPath + '/messages/updateMessage', formdata, {responseType: 'text' });
   }
+
+  sendReply(subject: string, messageText: string, sendetAt: string, chatId: number, userId: number) {
+    const formdata: FormData = new FormData();
+    formdata.append('subject', subject);
+    formdata.append('messageText', messageText);
+    formdata.append('sendetAt', sendetAt);
+    formdata.append('chatId', chatId.toString());
+    formdata.append('userId', userId.toString());
+    return this.http.post(this.serverPath + '/messages/sendReply', formdata, {responseType: 'text' });
+  }
+
+  sendEmailReply(subject: string, messageText: string, sendetAt: string, chatId: number, userId: number) {
+    const formdata: FormData = new FormData();
+    formdata.append('subject', subject);
+    formdata.append('messageText', messageText);
+    formdata.append('sendetAt', sendetAt);
+    formdata.append('chatId', chatId.toString());
+    formdata.append('userId', userId.toString());
+    return this.http.post(this.serverPath + '/messages/sendEmailReply', formdata, {responseType: 'text' });
+  }
+
+  // works, but is not needed anymore
+  // loadAllMessages(): Observable<Message[]> {
+  //   return this.http.get<Message[]>(this.serverPath + '/messages/messages').pipe(
+  //     catchError(this.errorHandler)
+  //   )
+  // }
 
   loadAllChats(): Observable<Chat[]> {
     return this.http.get<Chat[]>(this.serverPath + '/chats/chats').pipe(
