@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UploadFileService } from 'src/app/_services/upload-file.service';
 import { UpdateService } from 'src/app/_services/update.service';
@@ -16,6 +16,8 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./upload-file.component.scss']
 })
 export class UploadFileComponent implements OnInit {
+  @Output() selectedFile = new EventEmitter<File>();
+  
   selectedFiles: FileList;
   currentFileUpload: File;
   userId: number;
@@ -70,6 +72,7 @@ export class UploadFileComponent implements OnInit {
     if (this.checkBeforeUpload()) {
       // we only allow one file to be uploaded -> item(0) - without the 0 in item(0), you could upload many files at once (which would break the backend code).
       this.currentFileUpload = this.selectedFiles.item(0);
+      this.selectedFile.emit(this.currentFileUpload);
       // This uploadfunction is responsible for handling uploads of user profile images and product pics. (Unecessary complicated, splitting it in two functions would be better for seperation of concerns)
       this.uploadFileService.pushFileToStorage(this.currentFileUpload, this.user.id, this.product.id, this.imgType).subscribe((response: any) => {
         if (response == "Dein Foto wurde gespeichert.")   //it would be better to check the response status == 200, but I dont know how
