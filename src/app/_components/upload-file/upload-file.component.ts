@@ -73,16 +73,7 @@ export class UploadFileComponent implements OnInit {
       // we only allow one file to be uploaded -> item(0) - without the 0 in item(0), you could upload many files at once (which would break the backend code).
       this.currentFileUpload = this.selectedFiles.item(0);
       this.selectedFile.emit(this.currentFileUpload);
-      // This uploadfunction is responsible for handling uploads of user profile images and product pics. (Unecessary complicated, splitting it in two functions would be better for seperation of concerns)
-      this.uploadFileService.pushFileToStorage(this.currentFileUpload, this.user.id, this.product.id, this.imgType).subscribe((response: any) => {
-        if (response == "Dein Foto wurde gespeichert.")   //it would be better to check the response status == 200, but I dont know how
-          this.response = response;
-        if (this.imgType == "productPic") this._update.changeShowUploadComponent(false);  // if the user uploaded a product photo, we want do not show the upload component anymore in the productdetails component. But therefore we need the information in the productdetails component. -> If a user successfully uploads a product photo (status 200), the upload component changes showUploadComponent to false here. The _update service then updates this value for all subscribes.
-        // setTimeout(() => { this.router.navigate(['']); }, 700);  // after uploading a photo we go back to the main page immediatly -> could be changed, maybe better show a success message and stay on the current page...
-        this._update.changeNewPhotoWasUploaded();   // ohne die Zeile, würde bei "upload new Photo" das Photo als USER profile pic behandelt werden. Wir wollen es aber als PRODUCT pic speichern. (Ist etwas ungeschickt gelöst...)
-      },
-        (err: HttpErrorResponse) => this.processError(err)    // if the image could not be loaded, this part will be executed instead
-      );
+      
     }
   }
 

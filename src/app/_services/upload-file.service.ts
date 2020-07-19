@@ -22,7 +22,10 @@ export class UploadFileService {
     const formdata: FormData = new FormData();
     formdata.append('file', file);
     formdata.append('userId', userId.toString());
-    formdata.append('productId', productId.toString());
+    // if the file is a userPic, the productId will be null. if (productId ) is true, when productId != null (i dont know why, but if (productId != null) didnt work...)
+    if (productId ) {
+      formdata.append('productId', productId.toString());
+    }
     formdata.append('imgType', imgType);
     
     return this.http.post(this.serverPath + '/postImage', formdata, {responseType: 'text' });  //ohne {responseType: 'text' } hat es auch bei Http Status: 200 einen error gegeben (Vom Backend kommt eine Response mit Text statt JSON im Body)  
@@ -30,7 +33,7 @@ export class UploadFileService {
   
   // loads profilePic of user -> it's a post request, because we have to post the userId to Spring.
   getUserPic(userId: number): Observable<Blob> {
-    return this.http.post(this.serverPath + '/loadProfilePic', userId, { responseType: 'blob' } );
+    return this.http.post(this.serverPath + '/loadProfilePicByUserId', userId, { responseType: 'blob' } );
   }
 
   /* // loads profilePic of user -> Spring returns a fake userDto with the base64code as groupName
