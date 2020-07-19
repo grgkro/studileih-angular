@@ -46,10 +46,10 @@ export class AddProductComponent implements OnInit {
   }
 
   // https://angular.io/guide/component-interaction
-  onFileSelected(selectedFile: File) {
-    console.log(selectedFile)
-    this.selectedFile = selectedFile
-    this.selectedFiles.push(selectedFile);
+  onFileSelected(selectedFiles: File[]) {
+    // console.log(selectedFile)
+    // this.selectedFile = selectedFile
+    this.selectedFiles = selectedFiles;
     console.log(this.selectedFiles)
   }
 
@@ -99,12 +99,13 @@ export class AddProductComponent implements OnInit {
     formData.append("name", this.addForm.get('name').value);
     formData.append("title", this.addForm.get('title').value);
     formData.append("price", this.addForm.get('price').value);
+    console.log(this.addForm.get('price').value)
     formData.append("userId", this.user.id);
     // the images have to be appended each at a time: https://stackoverflow.com/questions/47538736/upload-multiple-files-with-angular-to-spring-controller
     this.selectedFiles.forEach(file => {
       formData.append("imageFiles", file);
     });
-
+console.log(this.selectedFiles[0])
     this.dataService.addProduct(formData)
       .subscribe((res: any) => {
         console.log(res);
@@ -113,6 +114,9 @@ export class AddProductComponent implements OnInit {
         console.log(err);
       }
       );
+
+      // we empty the selected Files array after uploading the pictures.
+      this.selectedFiles = [];
   }
 
   cancel() {
