@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router,  } from '@angular/router';
+import { Router, } from '@angular/router';
 import { UploadFileService } from '../_services/upload-file.service';
 import { UpdateService } from '../_services/update.service';
 import { User } from '../_models/user';
@@ -14,7 +14,7 @@ import { DataService } from '../data.service';
   styleUrls: ['./add-product.component.scss']
 })
 export class AddProductComponent implements OnInit {
- 
+
   addForm: FormGroup;
   onlyNumbersMessage: string = "Bitte keinen Text oder negative Zahlen als Preis eingeben. 😉😉"
   showOnlyNumbersMessage: boolean = false;
@@ -25,11 +25,11 @@ export class AddProductComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
     private uploadFileService: UploadFileService,
-    private _update: UpdateService, 
+    private _update: UpdateService,
     private dataService: DataService,
     private router: Router) { }
 
- 
+
 
   ngOnInit(): void {
     this.updateUser();   //  if the user changes, this will get updated
@@ -38,11 +38,11 @@ export class AddProductComponent implements OnInit {
       title: ['', Validators.required],
       price: ['0'],
       available: ['', Validators.required],
-    }); 
+    });
   }
 
   updateUser(): void {
-    this._update.currentUser.subscribe(user => this.user = user)  
+    this._update.currentUser.subscribe(user => this.user = user)
   }
 
   // https://angular.io/guide/component-interaction
@@ -52,8 +52,8 @@ export class AddProductComponent implements OnInit {
     this.selectedFiles.push(selectedFile);
     console.log(this.selectedFiles)
   }
-  
-    // takes the error and then displays a response to the user or only logs the error on the console (depending on if the error is useful for the user)
+
+  // takes the error and then displays a response to the user or only logs the error on the console (depending on if the error is useful for the user)
   processError(err: HttpErrorResponse) {
     if (err.error instanceof Error) {
       //A client-side or network error occurred.
@@ -72,7 +72,7 @@ export class AddProductComponent implements OnInit {
     }
   }
 
-  
+
 
   // for invalid characters (text, negative numbers...), prevent input
   inputValidator(event: any) {
@@ -95,18 +95,17 @@ export class AddProductComponent implements OnInit {
 
     console.log(this.addForm.value);
 
-      var formData: any = new FormData();
-      formData.append("name", this.addForm.get('name').value);
-      formData.append("title", this.addForm.get('title').value);
-      formData.append("price", this.addForm.get('price').value);
-      formData.append("userId", this.user.id);
-      console.log(this.selectedFile)
-      if (this.selectedFile != null) {
-        formData.append("imageFile", this.selectedFile); 
-      }
-      
-      
-      this.dataService.addProduct(formData)
+    var formData: any = new FormData();
+    formData.append("name", this.addForm.get('name').value);
+    formData.append("title", this.addForm.get('title').value);
+    formData.append("price", this.addForm.get('price').value);
+    formData.append("userId", this.user.id);
+    // the images have to be appended each at a time: https://stackoverflow.com/questions/47538736/upload-multiple-files-with-angular-to-spring-controller
+    this.selectedFiles.forEach(file => {
+      formData.append("imageFiles", file);
+    });
+
+    this.dataService.addProduct(formData)
       .subscribe((res: any) => {
         console.log(res);
         this.router.navigate(['products']);
