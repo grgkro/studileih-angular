@@ -1,4 +1,4 @@
-<p>Bewohner im Wohnheim {{ selectedDorm.name }}</p>
+<p>Im Wohnheim {{ selectedDorm.name }} kannst du folgendes ausleihen:</p>
 <div *ngFor="let product of dormProducts">
   <a routerLink="/product-details/{{ product.id }}">{{product.title}}</a>
   <div class="circular--landscape">

@@ -66,10 +66,11 @@
                         <div *ngFor="let dorm of dormsToShow">
                             <agm-marker [latitude]="dorm.lat" [longitude]="dorm.lng"
                             (markerClick)="markerClicked(dorm)" [agmFitBounds]="true">
+                            <!-- <div *ngIf="productImagesMap"> -->
                             <agm-info-window #infowindow [maxWidth]="480" >
                                 <app-info-window-product-overview [selectedDorm]=selectedDorm [usersFromSelectedDorm]=usersFromSelectedDorm [dormProducts]=dormProducts [productImagesMap]=productImagesMap></app-info-window-product-overview>
                               </agm-info-window>
-                            
+                            <!-- </div> -->
                             <agm-snazzy-info-window [closeWhenOthersOpen]="true" [closeOnMapClick]="true"
                                 [isOpen]="isSnazzyInfoWindowOpened" [maxWidth]="100" [shadow]="true" padding="12px"
                                 backgroundColor="#fff" fontSize="12px" fontColor="#757575" wrapperClass="customClass"
@@ -87,10 +88,11 @@
                     <agm-map [latitude]=selectedDorm.lat [longitude]=selectedDorm.lng [zoom]="currZoom">
                         <agm-marker [latitude]="selectedDorm.lat" [longitude]="selectedDorm.lng"
                             (markerClick)="markerClicked(selectedDorm)">
-                            <agm-info-window #infowindow [maxWidth]="480" >
+                            <!-- <div *ngIf="productImagesMap"> -->
+                            <agm-info-window #infowindow [maxWidth]="480" height="400">
                                 <app-info-window-product-overview [selectedDorm]=selectedDorm [usersFromSelectedDorm]=usersFromSelectedDorm [dormProducts]=dormProducts [productImagesMap]=productImagesMap ></app-info-window-product-overview>
                               </agm-info-window>
-                              
+                            <!-- </div> -->
                             <agm-snazzy-info-window [closeWhenOthersOpen]="true" [closeOnMapClick]="true"
                                 [isOpen]="isSnazzyInfoWindowOpened" [latitude]="selectedDorm.lat"
                                 [longitude]="selectedDorm.lng" [maxWidth]="100" [shadow]="true" padding="12px"
