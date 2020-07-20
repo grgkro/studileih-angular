@@ -1,4 +1,4 @@
-<div id="mydiv" *ngIf="dormProducts">
+<div id="mydiv" *ngIf="dormProducts && selectedDorm">
   
 <p>Im Wohnheim {{ selectedDorm.name }} kannst du folgendes ausleihen:</p>
   <div *ngFor="let product of dormProducts">
