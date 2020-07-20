@@ -7,6 +7,8 @@ import { Chat } from 'src/app/_models/chat';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { DataService } from 'src/app/data.service';
+import { ViewChild} from '@angular/core';
+import {ModalDirective} from 'angular-bootstrap-md';
 
 @Component({
   selector: 'app-chat',
@@ -14,6 +16,7 @@ import { DataService } from 'src/app/data.service';
   styleUrls: ['./chat.component.scss']
 })
 export class ChatComponent implements OnInit {
+  @ViewChild(ModalDirective) modal: ModalDirective;
  // Angular takes care of unsubscribing from many observable subscriptions like those returned from the Http service or when using the async pipe. But the routeParam$ and the _update.currentShowUploadComponent needs to be unsubscribed by hand on ngDestroy. Otherwise, we risk a memory leak when the component is destroyed. https://malcoded.com/posts/angular-async-pipe/   https://www.digitalocean.com/community/tutorials/angular-takeuntil-rxjs-unsubscribe
  destroy$: Subject<boolean> = new Subject<boolean>();
 

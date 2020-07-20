@@ -138,12 +138,38 @@ https://blog.angular.io/version-10-of-angular-now-available-78960babd41
                                                        </mat-datepicker-toggle>
                                                        <mat-date-range-picker #picker></mat-date-range-picker>
                                                   </mat-form-field>
+
+                                                  <div class="md-form">
+                                                       <input
+                                                         type="time"
+                                                         id="input"
+                                                         class="form-control"
+                                                         value="13:00"
+                                                         placeholder="13:00"
+                                                         mdbInput
+                                                         [(ngModel)]="pickUpTime"
+                                                       />
+                                                       <label for="input">Abholzeit am {{ startDate.toLocaleDateString() }} um: </label>
+                                                     </div>
+
+                                                     <div class="md-form">
+                                                       <input
+                                                         type="time"
+                                                         id="input"
+                                                         class="form-control"
+                                                         value="13:00"
+                                                         placeholder="13:00"
+                                                         mdbInput
+                                                         [(ngModel)]="returnTime"
+                                                       />
+                                                       <label for="input">Rückgabe am {{ endDate.toLocaleDateString() }} um: </label>
+                                                     </div>
                                              </div>
 
 
                                         </div>
                                         <div class="col-sm-3">
-                                             <button class="button" type="submit"
+                                             <button class="button" type="submit" mdbBtn color="primary" class="waves-light" mdbWavesEffect
                                                   (click)="onAnfrageSubmit()">Anfragen</button>
                                         </div>
                                    </div>
