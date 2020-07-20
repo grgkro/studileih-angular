@@ -67,18 +67,20 @@
                             <agm-marker [latitude]="dorm.lat" [longitude]="dorm.lng"
                             (markerClick)="markerClicked(dorm)" [agmFitBounds]="true">
                             <!-- <div *ngIf="productImagesMap"> -->
-                            <agm-info-window #infowindow [maxWidth]="480" >
+                               
+                            <agm-info-window #infowindow >
                                 <app-info-window-product-overview [selectedDorm]=selectedDorm [usersFromSelectedDorm]=usersFromSelectedDorm [dormProducts]=dormProducts [productImagesMap]=productImagesMap></app-info-window-product-overview>
                               </agm-info-window>
+                             
                             <!-- </div> -->
-                            <agm-snazzy-info-window [closeWhenOthersOpen]="true" [closeOnMapClick]="true"
+                            <!-- <agm-snazzy-info-window [closeWhenOthersOpen]="true" [closeOnMapClick]="true"
                                 [isOpen]="isSnazzyInfoWindowOpened" [maxWidth]="100" [shadow]="true" padding="12px"
                                 backgroundColor="#fff" fontSize="12px" fontColor="#757575" wrapperClass="customClass"
                                 [showCloseButton]="false" [panOnOpen]="false">
                                 <ng-template>
                                     <div>{{dorm.name}}</div>
                                 </ng-template>
-                            </agm-snazzy-info-window>
+                            </agm-snazzy-info-window> -->
                         </agm-marker>
                         </div>
                         
@@ -89,11 +91,13 @@
                         <agm-marker [latitude]="selectedDorm.lat" [longitude]="selectedDorm.lng"
                             (markerClick)="markerClicked(selectedDorm)">
                             <!-- <div *ngIf="productImagesMap"> -->
-                            <agm-info-window #infowindow [maxWidth]="480" height="400">
+                                
+                            <agm-info-window #infowindow  >
                                 <app-info-window-product-overview [selectedDorm]=selectedDorm [usersFromSelectedDorm]=usersFromSelectedDorm [dormProducts]=dormProducts [productImagesMap]=productImagesMap ></app-info-window-product-overview>
                               </agm-info-window>
+                            
                             <!-- </div> -->
-                            <agm-snazzy-info-window [closeWhenOthersOpen]="true" [closeOnMapClick]="true"
+                            <!-- <agm-snazzy-info-window [closeWhenOthersOpen]="true" [closeOnMapClick]="true"
                                 [isOpen]="isSnazzyInfoWindowOpened" [latitude]="selectedDorm.lat"
                                 [longitude]="selectedDorm.lng" [maxWidth]="100" [shadow]="true" padding="12px"
                                 backgroundColor="#fff" fontSize="12px" fontColor="#757575" wrapperClass="customClass"
@@ -101,7 +105,7 @@
                                 <ng-template>
                                     <div>{{selectedDorm.name}}</div>
                                 </ng-template>
-                            </agm-snazzy-info-window>
+                            </agm-snazzy-info-window> -->
                         </agm-marker>
                     </agm-map>
                 </div>

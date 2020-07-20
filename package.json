@@ -26,6 +26,7 @@
     "@trademe/ng-defer-load": "^8.2.1",
     "@types/jquery": "^3.5.0",
     "file-saver": "^2.0.2",
+    "ng-uikit-pro-standard": "^1.0.0",
     "rxjs": "~6.5.4",
     "snazzy-info-window": "^1.1.1",
     "tslib": "^2.0.0",

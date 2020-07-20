@@ -11,14 +11,16 @@ import { takeUntil } from 'rxjs/operators';
   templateUrl: './info-window-product-overview.component.html',
   styleUrls: ['./info-window-product-overview.component.scss']
 })
-export class InfoWindowProductOverviewComponent implements OnInit {
+export class InfoWindowProductOverviewComponent {
 
   // initialize a private variable _productImagesMap, it's a BehaviorSubject
-  private _productImagesMap = new BehaviorSubject<Map<number, SafeResourceUrl>>(new Map<number, SafeResourceUrl>());
+  // private _productImagesMap = new BehaviorSubject<Map<number, SafeResourceUrl>>(new Map<number, SafeResourceUrl>());
 
-  @Input() selectedDorm: Dorm;    // we get the message as an input from the chat component html ->  <app-message-details [chatMessage]=message></app-message-details>
-  @Input() usersFromSelectedDorm: User[];    // we get the message as an input from the chat component html ->  <app-message-details [chatMessage]=message></app-message-details>
-  @Input() productImagesMap: Map<number, SafeResourceUrl>;                  //The map stores all product images together with the product id: User[];    // we only need to import this users list from the products overview to pass it on to the child component <app-info-window-product-overview> (which is actually now a user-overview)
+  // we import the needed data from the grand-parent: products-component
+  @Input() selectedDorm: Dorm;   
+  @Input() usersFromSelectedDorm: User[];    
+  @Input() productImagesMap: Map<number, SafeResourceUrl>;   //The map stores all product images together with the product id: User[];  
+  @Input() dormProducts: Product[]; 
 
   //https://scotch.io/tutorials/3-ways-to-pass-async-data-to-angular-2-child-components#toc-solution-1-use-ngif
   // change productImagesMap to use getter and setter => Everytime there is a new input (a new value for productImagesMap = a new photo was loaded), the set function gets called -> __productImagesMap gets updated
@@ -33,28 +35,30 @@ export class InfoWindowProductOverviewComponent implements OnInit {
   //   return this._productImagesMap.getValue();
   // }
 
-  @Input() dormProducts: Product[];                  //The map stores all product images together with the product id: User[];    // we only need to import this users list from the products overview to pass it on to the child component <app-info-window-product-overview> (which is actually now a user-overview)
-
   // Angular takes care of unsubscribing from many observable subscriptions like those returned from the Http service or when using the async pipe. But the routeParam$ and the _update.currentShowUploadComponent needs to be unsubscribed by hand on ngDestroy. Otherwise, we risk a memory leak when the component is destroyed. https://malcoded.com/posts/angular-async-pipe/   https://www.digitalocean.com/community/tutorials/angular-takeuntil-rxjs-unsubscribe
-  destroy$: Subject<boolean> = new Subject<boolean>();
+  // destroy$: Subject<boolean> = new Subject<boolean>();
 
-  imagesLoaded: Promise<boolean>;;                  //The map stores all product images together with the product id: User[];    // we only need to import this users list from the products overview to pass it on to the child component <app-info-window-product-overview> (which is actually now a user-overview)
+  imagesLoaded: Promise<boolean>;;                 
 
   constructor() { }
 
-  ngOnInit(): void {
-    // now we can subscribe to it, whenever input changes, 
-    // we will run our grouping logic
-    // this._productImagesMap
-    //   .pipe(takeUntil(this.destroy$))             // We need to unsubscribe from this Observable by hand (because its not a http observable, or other angular managed observable)
-    //   .subscribe(x => {
-    //     this.productImagesMap = x;
-    //     console.log(x)
-    //   });
+  ngOnChanges(changes: SimpleChanges) {
+    // only run when property "data" changed
+    if (changes['productImagesMap']) {
+      this.imagesLoaded = Promise.resolve(true);   // now that all images are loaded, we display them by setting the boolean to true -> *ngIf="imagesLoaded | async" in HTML is now true
+    }
+}
 
-    console.log(this.selectedDorm)
-    this.loadUsersFromDorm(this.selectedDorm);
-  }
+  // ngOnInit(): void {
+  //   // now we can subscribe to it, whenever input changes, 
+  //   // we will run our grouping logic
+  //   // this._productImagesMap
+  //   //   .pipe(takeUntil(this.destroy$))             // We need to unsubscribe from this Observable by hand (because its not a http observable, or other angular managed observable)
+  //   //   .subscribe(x => {
+  //   //     this.productImagesMap = x;
+  //   //     console.log(x)
+  //   //   });
+  // }
 
   // ngOnDestroy() {            // Angular takes care of unsubscribing from many observable subscriptions like those returned from the Http service or when using the async pipe. But the routeParam$ and the _update.currentShowUploadComponent needs to be unsubscribed by hand on ngDestroy. Otherwise, we risk a memory leak when the component is destroyed. https://malcoded.com/posts/angular-async-pipe/   https://www.digitalocean.com/community/tutorials/angular-takeuntil-rxjs-unsubscribe
   //   this.destroy$.next(true);
@@ -62,17 +66,7 @@ export class InfoWindowProductOverviewComponent implements OnInit {
   //   this.destroy$.unsubscribe();
   // }
 
-    ngOnChanges(changes: SimpleChanges) {
-      // only run when property "data" changed
-      if (changes['productImagesMap']) {
-        this.imagesLoaded = Promise.resolve(true);   // now that all images are loaded, we display them by setting the boolean to true -> *ngIf="imagesLoaded | async" in HTML is now true
-     console.log(this.productImagesMap)
-      }
-  }
-
-  loadUsersFromDorm(selectedDorm: Dorm) {
-    console.log(this.usersFromSelectedDorm)
-  }
+   
 
 }
 
