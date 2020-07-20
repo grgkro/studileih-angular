@@ -25,7 +25,7 @@ import { EditUserComponent } from './edit-user/edit-user.component';
 
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatInputModule} from '@angular/material/input';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
 
 import { DeferLoadModule } from '@trademe/ng-defer-load';
 import { ProductDetailsComponent } from './_components/product-details/product-details.component';
@@ -36,13 +36,14 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatCardModule} from '@angular/material/card';
 import {MatTooltipModule} from '@angular/material/tooltip';
 
+import { MDBBootstrapModule } from 'angular-bootstrap-md';
+
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 import { MessagesComponent } from './_components/messages/messages.component';
 import { MessageDetailsComponent } from './_components/message-details/message-details.component';
 import { ChatComponent } from './_components/chat/chat.component';
 import { UploadMultipleFilesComponent } from './_components/upload-multiple-files/upload-multiple-files.component';
 import { InfoWindowProductOverviewComponent } from './_components/info-window-product-overview/info-window-product-overview.component';
-
 
 
 HttpClientModule
@@ -89,13 +90,19 @@ HttpClientModule
     MatCardModule,
     MatTooltipModule,
 
+    MDBBootstrapModule,
+
     AgmSnazzyInfoWindowModule,
     AgmCoreModule.forRoot({
       apiKey: gmaps_environment.GMAPS_API_KEY // The API KEY belongs to Georg and can't be exposed on GITHUB (Hackers are crazy) 
       //-> Therefore it's loaded as a variable from the file gmaps_environment.ts in folder environments. gmaps_environment.ts is in .gitignore, so it won't get pushed to git
     })
   ],
-  providers: [UploadFileService ],
+  providers: [UploadFileService, 
+    {provide: MAT_DATE_LOCALE, useValue: 'de-DE'}   // without this line the date-picker in product-details would be in US format: 07/20/2020 - https://stackoverflow.com/questions/55721254/how-to-change-mat-datepicker-date-format-to-dd-mm-yyyy-in-simplest-way    https://material.angular.io/components/datepicker/overview 
+  ], 
+  
+    
   bootstrap: [AppComponent],
   
 })

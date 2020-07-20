@@ -62,9 +62,9 @@
     <div class="row">
       <div class="col-12">
         <!-- <div class="col-12" align="center"> -->
-        <div>
-          <app-google-maps [usersFromSelectedDorm]=usersFromSelectedDorm></app-google-maps>
-        </div>
+        
+          <app-google-maps [usersFromSelectedDorm]=usersFromSelectedDorm [dormProducts]=dormProducts [productImagesMap]=productImagesMap></app-google-maps>
+        
         <br>
         <br>
       </div>
@@ -102,8 +102,8 @@
                   <!-- https://malcoded.com/posts/angular-async-pipe/ -->
                   <div>
                     <!-- loads the product image. If no image is available, a default pic gets shown *ngIf="map.get(i+1); else noImageFound"-->
-                    <img mat-card-image class="cardImage" [src]="map.get(product.id)" alt="Product Picture"
-                      *ngIf="map.get(product.id); else noImageFound">
+                    <img mat-card-image class="cardImage" [src]="productImagesMap.get(product.id)" alt="Product Picture"
+                      *ngIf="productImagesMap.get(product.id); else noImageFound">
                     <ng-template #noImageFound>
                       <img mat-card-image class="cardImage"
                         src="https://cdn-0.askleo.com/wp-content/uploads/2013/07/image_not_found.png"
@@ -139,9 +139,7 @@
                 <div *ngIf="!checkIsUserOwner(product.userId)">
                   <mat-card-actions class="cardActions">
 
-                    <button mat-button class="btn btn-success">
-                      <a routerLink="/">Ausleihen</a>
-                    </button>
+                    <button class="btn btn-success"  mdbBtn color="primary" class="waves-light" (click)="redirectRoute('/product-details/' + product.id)" mdbWavesEffect>Ausleihen</button>
 
                   </mat-card-actions>
                 </div>
@@ -194,8 +192,8 @@
                 <!-- https://malcoded.com/posts/angular-async-pipe/ -->
                 <div>
                   <!-- loads the product image. If no image is available, a default pic gets shown *ngIf="map.get(i+1); else noImageFound"-->
-                  <img [src]="map.get(product.id)" class="fixImageSize img-thumbnail" alt="Product Picture"
-                    *ngIf="map.get(product.id); else noImageFound">
+                  <img [src]="productImagesMap.get(product.id)" class="fixImageSize img-thumbnail" alt="Product Picture"
+                    *ngIf="productImagesMap.get(product.id); else noImageFound">
                   <ng-template #noImageFound>
                     <img src="https://cdn-0.askleo.com/wp-content/uploads/2013/07/image_not_found.png"
                       alt="Fallbackimage">

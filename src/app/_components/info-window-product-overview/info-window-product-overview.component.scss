@@ -1,0 +1,20 @@
+// https://www.webfx.com/blog/web-design/circular-images-css/
+.circular--landscape {
+    display: inline-block;
+    position: relative;
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    border-radius: 50%;
+  }
+  
+  .circular--landscape img {
+    width: 100%;
+    height: auto;
+    // margin-left: -25px;
+  }
+
+  #mydiv{
+    width:500px;
+    height:500px;
+    }

@@ -10,6 +10,7 @@ import { User } from '../_models/user';
 import { Product } from '../_models/product';
 import { Dorm } from '../_models/dorm';
 import { Chat } from '../_models/chat';
+import { Marker } from '@agm/core';
 
 @Injectable({
   providedIn: 'root'
@@ -40,6 +41,10 @@ export class UpdateService {
   selectedDorm: Dorm = { id: 1, name: "Alexanderstraße", lat: 48.767485, lng: 9.179693, city: "Stuttgart", district: "StuttgartMitte" };  // am Anfang wird als default Wohnheim das Max-Kade in Stuggi Mitte gezeigt (bekanntestes Wohnheim in Stg) - alle Wohnheime am Anfang zu zeigen braucht ewig lang zum Laden
   private selectedDormSource = new BehaviorSubject(this.selectedDorm);  
   currentSelectedDorm = this.selectedDormSource.asObservable();
+
+  markerClicked: Dorm = { id: 1, name: "Alexanderstraße", lat: 48.767485, lng: 9.179693, city: "Stuttgart", district: "StuttgartMitte" };  // am Anfang wird als default Wohnheim das Max-Kade in Stuggi Mitte gezeigt (bekanntestes Wohnheim in Stg) - alle Wohnheime am Anfang zu zeigen braucht ewig lang zum Laden  
+  private markerClickedSource = new BehaviorSubject(this.markerClicked);  
+  currentMarkerClicked = this.markerClickedSource.asObservable();
 
   // stores all chats of the logged in user
   chats: Chat[] = [];
@@ -74,6 +79,11 @@ export class UpdateService {
   changeSelectedDorm(selectedDorm: Dorm) {
     this.selectedDormSource.next(selectedDorm);
   }
+
+  changeMarkerClicked(markerClicked: Dorm) {
+    this.markerClickedSource.next(markerClicked);
+  }
+  
   
   changeNewPhotoWasUploaded() {
     this.triggeringObservable.next(void 0);

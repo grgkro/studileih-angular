@@ -5,6 +5,10 @@ import { DataService } from '../../data.service';
 import { Dorm } from 'src/app/_models/dorm';
 import { UpdateService } from 'src/app/_services/update.service';
 import { User } from 'src/app/_models/user';
+import { SafeResourceUrl } from '@angular/platform-browser';
+import { Product } from 'src/app/_models/product';
+import { InfoWindow } from '@agm/core/services/google-maps-types';
+import { HelperService } from 'src/app/_services/helper.service';
 
 interface DormGroup {
   disabled?: boolean;
@@ -29,6 +33,9 @@ interface Marker {
 })
 export class GoogleMapsComponent implements OnInit {
   @Input() usersFromSelectedDorm: User[];    // we only need to import this users list from the products overview to pass it on to the child component <app-info-window-product-overview> (which is actually now a user-overview)
+  @Input() dormProducts: Product[];                  
+  @Input() productImagesMap: Map<number, SafeResourceUrl>;                  //The map stores all product images together with the product id: User[];    // we only need to import this users list from the products overview to pass it on to the child component <app-info-window-product-overview> (which is actually now a user-overview)
+  // @Input() imagesLoaded: Promise<boolean>;;                 
 
   currZoom: number = 13;
   isSnazzyInfoWindowOpened: boolean = false;
@@ -44,9 +51,9 @@ export class GoogleMapsComponent implements OnInit {
   selectedDorm: Dorm = { id: 1, name: "Alexanderstraße", lat: 48.767485, lng: 9.179693, city: "Stuttgart", district: "StuttgartMitte" }; // irgendwie müssen werte in JS immer am Anfang schon initialisiert werde, das regt richtig auf, wir überschreiben das im onInit sowieso gleich wieder, gibt's da ne andere Möglichkeit?
   dormsToShow: Dorm[] = [];
   markers: Marker[] = [];
+  previousOpenedInfoWindow: InfoWindow;
 
-
-  constructor(private _data: DataService, private _update: UpdateService) { }
+  constructor(private _data: DataService, private _update: UpdateService, private _helper: HelperService) { }
 
   ngOnInit(): void {
     this._data.getDormLocations().subscribe(dorms => {   //load all dorms from backend database
@@ -72,6 +79,7 @@ export class GoogleMapsComponent implements OnInit {
     this.districts = [];
     // now we can refill the arrays by going through all dorms. If the city of that dorm == the selected city, then add the dorm again
     this.collectDormsByCity(event.value);
+    this.previousOpenedInfoWindow = null;
   }
 
   // filter all dorms for the ones that are in one specific city and then sort them into the dormGroups array according to their districts
@@ -124,14 +132,18 @@ export class GoogleMapsComponent implements OnInit {
     this.currZoom = event.value;
   }
 
-  markerClicked(marker: Dorm) {
-    this.isSnazzyInfoWindowOpened = true;
-    this.clickedMarker = marker.name;
-    this.toggleSnazzyInfoWindow()
-  }
-
-  toggleSnazzyInfoWindow() {
-    this.isSnazzyInfoWindowOpened = !this.isSnazzyInfoWindowOpened;
+  markerClicked(dormClicked: Dorm, infoWindow) {
+    // tell the info-window component which marker was clicked
+    this._update.changeMarkerClicked(dormClicked)
+    this._helper.getAllProductsFromSelectedDorm([], dormClicked).then((products => this.dormProducts = products));
+   //TODO
+    // this._update.changeDormProducts(dormClicked)
+   // this._update.changeProductImages(dormClicked)
+    // close the previous info Window
+    if (this.previousOpenedInfoWindow) {
+      this.previousOpenedInfoWindow.close()
+    }
+    this.previousOpenedInfoWindow = infoWindow;
   }
 
   mapClicked($event: MouseEvent) {
