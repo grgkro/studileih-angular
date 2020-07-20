@@ -1,14 +1,12 @@
 <p>Im Wohnheim {{ selectedDorm.name }} kannst du folgendes ausleihen:</p>
 <div *ngFor="let product of dormProducts">
   <a routerLink="/product-details/{{ product.id }}">{{product.title}}</a>
-  <div class="circular--landscape">
-    <div *ngIf="imagesLoaded | async">
+  <div >
+    <div *ngIf="(imagesLoaded | async) ">
+      <div *ngIf="productImagesMap.get(product.id) !== undefined" class="circular--landscape">
       <img [src]="productImagesMap.get(product.id)" alt="Product Picture"
-        *ngIf="productImagesMap.get(product.id); else noImageFound">
-      <ng-template #noImageFound>
-        <img src="https://cdn-0.askleo.com/wp-content/uploads/2013/07/image_not_found.png" alt="Fallbackimage">
-        <!-- <= default picture -->
-      </ng-template>
+        *ngIf="productImagesMap.get(product.id)">
+      </div>
     </div>
   </div>
 
