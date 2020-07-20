@@ -139,9 +139,7 @@
                 <div *ngIf="!checkIsUserOwner(product.userId)">
                   <mat-card-actions class="cardActions">
 
-                    <button mat-button class="btn btn-success">
-                      <a routerLink="/">Ausleihen</a>
-                    </button>
+                    <button class="btn btn-success"  mdbBtn color="primary" class="waves-light" (click)="redirectRoute('/product-details/' + product.id)" mdbWavesEffect>Ausleihen</button>
 
                   </mat-card-actions>
                 </div>

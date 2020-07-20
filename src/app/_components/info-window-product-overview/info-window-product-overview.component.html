@@ -1,18 +1,5 @@
-<div id="mydiv" *ngIf="dormProducts; else noProductsInTHisDorm">
-  <div class="dropdown" mdbDropdown>
-
-    <button mdbDropdownToggle mdbBtn color="primary" class="dropdown-toggle waves-light" type="button"
-      mdbWavesEffect>
-      Dropdown primary
-    </button>
+<div id="mydiv" *ngIf="dormProducts">
   
-    <div class="dropdown-menu dropdown-primary">
-      <button class="dropdown-item" href="#">Action</button>
-      <button class="dropdown-item" href="#">Another action</button>
-      <button class="dropdown-item" href="#">Something else here</button>
-      <button class="dropdown-item" href="#">Something else here</button>
-    </div>
-  </div>
 <p>Im Wohnheim {{ selectedDorm.name }} kannst du folgendes ausleihen:</p>
   <div *ngFor="let product of dormProducts">
     <a routerLink="/product-details/{{ product.id }}">{{product.title}}</a>
@@ -22,12 +9,3 @@
     </div>
   </div>
 </div>
-
-<div id="mydiv" *ngIf="!dormProducts">
-kklsdklds
-</div>
-  <ng-template #noProductsInTHisDorm>
-  <p>Im Wohnheim {{ selectedDorm.name }} gibt es noch nichts zum ausleihen.</p>
-  <br>
-  <p>Sei der Erste, der etwas anbietet. 😊</p>
-</ng-template>

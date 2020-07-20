@@ -225,4 +225,8 @@ export class ProductsComponent implements OnInit {
     this.router.navigate(['edit-product/:' + product.id]);
   };
 
+  redirectRoute(link: string) {
+    this.router.navigate([link]);
+  }
+
 }
