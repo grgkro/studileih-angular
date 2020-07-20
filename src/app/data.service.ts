@@ -148,23 +148,11 @@ export class DataService {
     )
   }
 
-  sendEmailToOwner(startDate: Date, endDate: Date, productId: number, userId: number, ownerId: number) {
-    const formdata: FormData = new FormData();
-    formdata.append('startDate', startDate.toISOString());
-    formdata.append('endDate', endDate.toISOString());
-    formdata.append('productId', productId.toString());
-    formdata.append('userId', userId.toString());
-    formdata.append('ownerId', ownerId.toString());
+  sendEmailToOwner(formdata: FormData) {
     return this.http.post(this.serverPath + '/emails/sendEmail', formdata, {responseType: 'text' });
   }
 
-  sendMessageToOwner(startDate: Date, endDate: Date, productId: number, userId: number, ownerId: number) {
-    const formdata: FormData = new FormData();
-    formdata.append('startDate', startDate.toISOString());
-    formdata.append('endDate', endDate.toISOString());
-    formdata.append('productId', productId.toString());
-    formdata.append('userId', userId.toString());
-    formdata.append('ownerId', ownerId.toString());
+  sendMessageToOwner(formdata: FormData) {
     return this.http.post(this.serverPath + '/messages/sendMessage', formdata, {responseType: 'text' });
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgModule } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DataService } from '../../data.service';
 import { switchMap, takeUntil } from 'rxjs/operators';
@@ -47,12 +47,16 @@ export class ProductDetailsComponent implements OnInit {
 
   endDate = new Date();
   startDate = new Date();
+  pickUpTime: string;
+  returnTime: string;
   // serializedDate = new FormControl((new Date()).toISOString());
 
 
   selectedFile: File;
   selectedFiles: File[] = [];
   response: string;
+
+  
 
   constructor(private route: ActivatedRoute, private uploadFileService: UploadFileService,private _data: DataService, private _update: UpdateService, private _helper: HelperService, private sanitizer: DomSanitizer, private _snackBar: MatSnackBar) { }
 
@@ -270,19 +274,34 @@ this.uploadFileService.pushFileToStorage(this.selectedFile, this.user.id, this.p
   }
 
   
-  onAnfrageSubmit() {
-    console.warn('Anfangsdatum: ', this.startDate);
-    console.warn('Enddatum: ', this.endDate);
-    this.sendEmailToOwner(this.startDate, this.endDate, this.product.id, this.user.id, this.owner.id);
-    this.sendMessageToOwner(this.startDate, this.endDate, this.product.id, this.user.id, this.owner.id);
+  onAnfrageSubmit() { 
+    this.sendEmailToOwner(this.createFormdata());
+    this.sendMessageToOwner(this.createFormdata());
   }
 
-  sendEmailToOwner(startDate: Date, endDate: Date, productId: number, userId: number, ownerId: number) {
-    this._data.sendEmailToOwner(startDate, endDate, productId, userId, ownerId).subscribe(data => console.log(data));
+  createFormdata(): FormData {
+    const formdata: FormData = new FormData();
+    formdata.append('startDate', this.startDate.toISOString());
+    formdata.append('endDate', this.endDate.toISOString());
+    if (this.pickUpTime) {
+      formdata.append('pickUpTime', this.pickUpTime);
+    }
+    if (this.pickUpTime) {
+      formdata.append('returnTime', this.returnTime);
+    }
+    formdata.append('productId', this.product.id.toString());
+    formdata.append('userId', this.user.id.toString());
+    formdata.append('ownerId', this.owner.id.toString());
+    return formdata;
+  }
+  
+
+  sendEmailToOwner(formdata: FormData) {
+    this._data.sendEmailToOwner(formdata).subscribe(data => console.log(data));
   }
 
-  sendMessageToOwner(startDate: Date, endDate: Date, productId: number, userId: number, ownerId: number) {
-    this._data.sendMessageToOwner(startDate, endDate, productId, userId, ownerId).subscribe(data => console.log(data));
+  sendMessageToOwner(formdata: FormData) {
+    this._data.sendMessageToOwner(formdata).subscribe(data => console.log(data));
   }
 
   // takes the error and then displays a response to the user or only logs the error on the console (depending on if the error is useful for the user)
