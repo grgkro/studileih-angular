@@ -67,7 +67,7 @@
                             <agm-marker [latitude]="dorm.lat" [longitude]="dorm.lng"
                             (markerClick)="markerClicked(dorm)" [agmFitBounds]="true">
                             <agm-info-window #infowindow [maxWidth]="480" >
-                                <app-info-window-product-overview [selectedDorm]=selectedDorm [usersFromSelectedDorm]=usersFromSelectedDorm></app-info-window-product-overview>
+                                <app-info-window-product-overview [selectedDorm]=selectedDorm [usersFromSelectedDorm]=usersFromSelectedDorm [dormProducts]=dormProducts [productImagesMap]=productImagesMap></app-info-window-product-overview>
                               </agm-info-window>
                             
                             <agm-snazzy-info-window [closeWhenOthersOpen]="true" [closeOnMapClick]="true"
@@ -88,7 +88,7 @@
                         <agm-marker [latitude]="selectedDorm.lat" [longitude]="selectedDorm.lng"
                             (markerClick)="markerClicked(selectedDorm)">
                             <agm-info-window #infowindow [maxWidth]="480" >
-                                <app-info-window-product-overview [selectedDorm]=selectedDorm [usersFromSelectedDorm]=usersFromSelectedDorm></app-info-window-product-overview>
+                                <app-info-window-product-overview [selectedDorm]=selectedDorm [usersFromSelectedDorm]=usersFromSelectedDorm [dormProducts]=dormProducts [productImagesMap]=productImagesMap ></app-info-window-product-overview>
                               </agm-info-window>
                               
                             <agm-snazzy-info-window [closeWhenOthersOpen]="true" [closeOnMapClick]="true"

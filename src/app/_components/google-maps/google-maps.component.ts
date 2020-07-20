@@ -5,6 +5,8 @@ import { DataService } from '../../data.service';
 import { Dorm } from 'src/app/_models/dorm';
 import { UpdateService } from 'src/app/_services/update.service';
 import { User } from 'src/app/_models/user';
+import { SafeResourceUrl } from '@angular/platform-browser';
+import { Product } from 'src/app/_models/product';
 
 interface DormGroup {
   disabled?: boolean;
@@ -29,6 +31,9 @@ interface Marker {
 })
 export class GoogleMapsComponent implements OnInit {
   @Input() usersFromSelectedDorm: User[];    // we only need to import this users list from the products overview to pass it on to the child component <app-info-window-product-overview> (which is actually now a user-overview)
+  @Input() dormProducts: Product[];                  //The map stores all product images together with the product id: User[];    // we only need to import this users list from the products overview to pass it on to the child component <app-info-window-product-overview> (which is actually now a user-overview)
+  @Input() productImagesMap: Map<number, SafeResourceUrl>;                  //The map stores all product images together with the product id: User[];    // we only need to import this users list from the products overview to pass it on to the child component <app-info-window-product-overview> (which is actually now a user-overview)
+  // @Input() imagesLoaded: Promise<boolean>;;                  //The map stores all product images together with the product id: User[];    // we only need to import this users list from the products overview to pass it on to the child component <app-info-window-product-overview> (which is actually now a user-overview)
 
   currZoom: number = 13;
   isSnazzyInfoWindowOpened: boolean = false;
