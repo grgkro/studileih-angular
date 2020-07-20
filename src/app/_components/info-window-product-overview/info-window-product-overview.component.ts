@@ -5,6 +5,7 @@ import { SafeResourceUrl } from '@angular/platform-browser';
 import { Product } from 'src/app/_models/product';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { UpdateService } from 'src/app/_services/update.service';
 
 @Component({
   selector: 'app-info-window-product-overview',
@@ -40,7 +41,15 @@ export class InfoWindowProductOverviewComponent {
 
   imagesLoaded: Promise<boolean>;;                 
 
-  constructor() { }
+  constructor(private _update: UpdateService) { }
+
+  ngOnInit() {
+     
+    this._update.currentMarkerClicked.subscribe(clickedDorm => {
+      this.selectedDorm = clickedDorm; 
+  })
+}
+ 
 
   ngOnChanges(changes: SimpleChanges) {
     // only run when property "data" changed

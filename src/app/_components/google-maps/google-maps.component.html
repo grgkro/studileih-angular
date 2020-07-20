@@ -65,10 +65,10 @@
                     <agm-map [latitude]=dormsToShow[0].lat [longitude]=dormsToShow[0].lng [fitBounds]="true">
                         <div *ngFor="let dorm of dormsToShow">
                             <agm-marker [latitude]="dorm.lat" [longitude]="dorm.lng"
-                            (markerClick)="markerClicked(dorm)" [agmFitBounds]="true">
+                            (markerClick)="markerClicked(dorm, infoWindow)" [agmFitBounds]="true">
                             <!-- <div *ngIf="productImagesMap"> -->
                                
-                            <agm-info-window #infowindow >
+                            <agm-info-window #infoWindow >
                                 <app-info-window-product-overview [selectedDorm]=selectedDorm [usersFromSelectedDorm]=usersFromSelectedDorm [dormProducts]=dormProducts [productImagesMap]=productImagesMap></app-info-window-product-overview>
                               </agm-info-window>
                              
@@ -89,11 +89,11 @@
                 <div *ngIf="selectedDorm != null">
                     <agm-map [latitude]=selectedDorm.lat [longitude]=selectedDorm.lng [zoom]="currZoom">
                         <agm-marker [latitude]="selectedDorm.lat" [longitude]="selectedDorm.lng"
-                            (markerClick)="markerClicked(selectedDorm)">
+                            (markerClick)="markerClicked(selectedDorm, infoWindow)">
                             <!-- <div *ngIf="productImagesMap"> -->
                                 
-                            <agm-info-window #infowindow  >
-                                <app-info-window-product-overview [selectedDorm]=selectedDorm [usersFromSelectedDorm]=usersFromSelectedDorm [dormProducts]=dormProducts [productImagesMap]=productImagesMap ></app-info-window-product-overview>
+                            <agm-info-window #infoWindow  >
+                                <app-info-window-product-overview  [selectedDorm]=clickedMarker [usersFromSelectedDorm]=usersFromSelectedDorm [dormProducts]=dormProducts [productImagesMap]=productImagesMap ></app-info-window-product-overview>
                               </agm-info-window>
                             
                             <!-- </div> -->
