@@ -19,82 +19,11 @@ import { ImageCroppedEvent } from 'ngx-image-cropper';
 export class UploadFileComponent implements OnInit {
   @Output() selectedFile = new EventEmitter<File>();
 
-  title = 'angular-image-uploader';
-
   imageChangedEvent: any = '';
-  croppedImage: any = '';
-
+  croppedImage: any = '';   // the croppedImage is in base64 and is only used as the preview image of how the cropped image will look like.
   base64TrimmedURL: any = '';
-  generatedImage: string;
- 
-  imageCropped(event: ImageCroppedEvent) {
-      this.croppedImage = event.base64;
-      console.log(this.croppedImage);
-      this.base64TrimmedURL = this.croppedImage.replace(/^data:image\/(png|jpg);base64,/, "");
-      console.log(this.base64TrimmedURL);
-      this.createBlobImageFileAndShow();
-
-  }
-
-   /**Method that will create Blob and show in new window */
-   createBlobImageFileAndShow(): void {
-    this.dataURItoBlob(this.base64TrimmedURL).subscribe((blob: Blob) => {
-      const imageBlob: Blob = blob;
-      const imageName: string = "test.jpeg";
-      this.imageFile = new File([imageBlob], imageName, {
-        type: "image/jpeg"
-      });
-      this.generatedImage = window.URL.createObjectURL(this.imageFile);
-      console.log("generatedFile:")
-      console.log(this.imageFile)
-      console.log("generatedImage:")
-      console.log(this.generatedImage)
-      window.open(this.generatedImage);
-    });
-  }
-
- /* Method to convert Base64Data Url as Image Blob */
- dataURItoBlob(dataURI: string): Observable<Blob> {
-  return Observable.create((observer: Observer<Blob>) => {
-    const byteString: string = window.atob(dataURI);
-    const arrayBuffer: ArrayBuffer = new ArrayBuffer(byteString.length);
-    const int8Array: Uint8Array = new Uint8Array(arrayBuffer);
-    for (let i = 0; i < byteString.length; i++) {
-      int8Array[i] = byteString.charCodeAt(i);
-    }
-    const blob = new Blob([int8Array], { type: "image/jpeg" });
-    observer.next(blob);
-    observer.complete();
-  });
-}
-
-/**Method to Generate a Name for the Image */
-generateName(): string {
-  const date: number = new Date().valueOf();
-  let text: string = "";
-  const possibleText: string =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  for (let i = 0; i < 5; i++) {
-    text += possibleText.charAt(
-      Math.floor(Math.random() * possibleText.length)
-    );
-  }
-  // Replace extension according to your media type like this
-  return date + "." + text + ".jpeg";
-}
-
-  imageLoaded() {
-      // show cropper
-  }
-  cropperReady() {
-      // cropper ready
-  }
-  loadImageFailed() {
-      // show message
-  }
 
   selectedFiles: FileList;
-  currentFileUpload: File;
   imageFile: File;
   userId: number;
   response: string;
@@ -118,6 +47,59 @@ generateName(): string {
     // Now let's also unsubscribe from the subject itself:
     this.destroy$.unsubscribe();
   }
+
+ 
+
+//--------- the next methods all deal with cropping the image, displaying a preview of the cropped image and creating a File of the cropped image, which we can save in the backend. 
+// https://medium.com/better-programming/convert-a-base64-url-to-image-file-in-angular-4-5796a19fdc21
+imageCropped(event: ImageCroppedEvent) {
+  this.croppedImage = event.base64;
+  this.base64TrimmedURL = this.croppedImage.replace(/^data:image\/(png|jpg);base64,/, "");     // we only want the base64code, not the "header"
+  this.createBlobImageFile();
+
+}
+
+/**Method that will create Blob and show in new window */
+ createBlobImageFile(): void {
+  this.dataURItoBlob(this.base64TrimmedURL).subscribe((blob: Blob) => {
+    const imageBlob: Blob = blob;
+    const imageName: string = this.generateName();
+    this.imageFile = new File([imageBlob], imageName, {                      // this line actually creates the File from the cropped image. This file then gets transferred to the parent component, from where its send to backend /database
+      type: "image/jpeg"
+    });
+  });
+}
+
+/* Method to convert Base64Data Url as Image Blob */
+dataURItoBlob(dataURI: string): Observable<Blob> {
+return Observable.create((observer: Observer<Blob>) => {
+  const byteString: string = window.atob(dataURI);
+  const arrayBuffer: ArrayBuffer = new ArrayBuffer(byteString.length);
+  const int8Array: Uint8Array = new Uint8Array(arrayBuffer);
+  for (let i = 0; i < byteString.length; i++) {
+    int8Array[i] = byteString.charCodeAt(i);
+  }
+  const blob = new Blob([int8Array], { type: "image/jpeg" });
+  observer.next(blob);
+  observer.complete();
+});
+}
+
+/**Method to Generate a Name for the Image */
+generateName(): string {
+let text: string = "cropImg-";
+const possibleText: string =
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+for (let i = 0; i < 7; i++) {
+  text += possibleText.charAt(
+    Math.floor(Math.random() * possibleText.length)
+  );
+}
+// Replace extension according to your media type like this
+return text + ".jpeg";
+}
+
+//----------------- cropping end ------
 
   updateUser(): void {
     this._update.currentUser.subscribe(user => this.user = user)  
@@ -148,9 +130,10 @@ generateName(): string {
 
   uploadPic() {
     if (this.checkBeforeUpload()) {
-      // we only allow one file to be uploaded -> item(0) - without the 0 in item(0), you could upload many files at once (which would break the backend code).
-      this.currentFileUpload = this.selectedFiles.item(0);
+
+      // ---- finally we return the cropped image File back to the parent component ------
       this.selectedFile.emit(this.imageFile);
+      
       this._update.changeNewPhotoWasUploaded();   // ohne die Zeile, würde bei "upload new Photo" das Photo als USER profile pic behandelt werden. Wir wollen es aber als PRODUCT pic speichern. (Ist etwas ungeschickt gelöst...)
 
       

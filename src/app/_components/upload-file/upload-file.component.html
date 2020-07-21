@@ -2,25 +2,32 @@
 <div class="container">
     <div class="row" style="margin-top: 5%;">
         <div class="text-center col-md-12">
-            <label>
+        
                 <input type="file" id="fileName" accept="image/*" (change)="selectFile($event)" class="input-left">
                 <!-- accept="image/*" makes the file chose menu pre select "Grafik-Dateien", instead of "Alle Dateien" and shows an alert message ("invalid filetype"), if a filetype that is not an image is uploaded (eg. pdf). But user can still accept the alert and then upload a pdf anyway, so we also need to check the uploaded filetype on the server side.-->
-            </label>
+            
         </div>
     </div>
-    <div class="row" style="margin-top: 5%;">
+    
+    <!-- cropping the image and showing a preview image --- https://www.freakyjolly.com/angular-image-uploader-with-cropper-and-preview-tutorial-with-example/#Update_HTML_Template -->
+    <div class="row" style="margin-top: 5%;" *ngIf="imageChangedEvent != ''">
         <div class="text-center col-md-8">
-            <h5>Crop Image</h5>
+            <h5>Bild zuschneiden</h5>
             <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" [aspectRatio]="4 / 4"
                 [resizeToWidth]="256" format="png" (imageCropped)="imageCropped($event)" (imageLoaded)="imageLoaded()"
                 (cropperReady)="cropperReady()" (loadImageFailed)="loadImageFailed()"></image-cropper>
         </div>
-        <div class="text-center col-md-4">
-            <h5>Preview</h5>
+        <div class="text-center col-md-4" >
+            <h5>Vorschau</h5>
             <img [src]="croppedImage" />
         </div>
     </div>
+    <!-- end of cropping related code -->
+
+    <div class="row" style="margin-top: 5%;">
+        <div class="text-center col-md-8">
+            <button (click)="uploadPic()" mdbBtn color="primary" class="waves-light" mdbWavesEffect>Foto hochladen</button>
+        </div>
+    </div>
 </div>
-<app-image-cropper src=[currentFileUpload]></app-image-cropper>
-<br />
-<button (click)="uploadPic()" mdbBtn color="primary" class="waves-light" mdbWavesEffect>Foto hochladen</button>
+
