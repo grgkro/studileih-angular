@@ -45,6 +45,7 @@ import { ChatComponent } from './_components/chat/chat.component';
 import { UploadMultipleFilesComponent } from './_components/upload-multiple-files/upload-multiple-files.component';
 import { InfoWindowProductOverviewComponent } from './_components/info-window-product-overview/info-window-product-overview.component';
 import { ImageCropperComponent } from './_components/image-cropper/image-cropper.component';
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 
 HttpClientModule
@@ -71,6 +72,7 @@ HttpClientModule
     InfoWindowProductOverviewComponent,
     ImageCropperComponent,
     
+    
   ],
   imports: [
     BrowserModule,
@@ -79,6 +81,8 @@ HttpClientModule
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
+    
+    ImageCropperModule,
    
 
     DeferLoadModule,

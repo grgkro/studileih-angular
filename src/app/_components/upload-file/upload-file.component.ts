@@ -6,8 +6,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { User } from 'src/app/_models/user';
 import { Product } from 'src/app/_models/product';
 import { HelperService } from 'src/app/_services/helper.service';
-import { Subject } from 'rxjs';
+import { Subject, Observable, Observer } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { ImageCroppedEvent } from 'ngx-image-cropper';
 
 
 @Component({
@@ -18,8 +19,83 @@ import { takeUntil } from 'rxjs/operators';
 export class UploadFileComponent implements OnInit {
   @Output() selectedFile = new EventEmitter<File>();
 
+  title = 'angular-image-uploader';
+
+  imageChangedEvent: any = '';
+  croppedImage: any = '';
+
+  base64TrimmedURL: any = '';
+  generatedImage: string;
+ 
+  imageCropped(event: ImageCroppedEvent) {
+      this.croppedImage = event.base64;
+      console.log(this.croppedImage);
+      this.base64TrimmedURL = this.croppedImage.replace(/^data:image\/(png|jpg);base64,/, "");
+      console.log(this.base64TrimmedURL);
+      this.createBlobImageFileAndShow();
+
+  }
+
+   /**Method that will create Blob and show in new window */
+   createBlobImageFileAndShow(): void {
+    this.dataURItoBlob(this.base64TrimmedURL).subscribe((blob: Blob) => {
+      const imageBlob: Blob = blob;
+      const imageName: string = "test.jpeg";
+      this.imageFile = new File([imageBlob], imageName, {
+        type: "image/jpeg"
+      });
+      this.generatedImage = window.URL.createObjectURL(this.imageFile);
+      console.log("generatedFile:")
+      console.log(this.imageFile)
+      console.log("generatedImage:")
+      console.log(this.generatedImage)
+      window.open(this.generatedImage);
+    });
+  }
+
+ /* Method to convert Base64Data Url as Image Blob */
+ dataURItoBlob(dataURI: string): Observable<Blob> {
+  return Observable.create((observer: Observer<Blob>) => {
+    const byteString: string = window.atob(dataURI);
+    const arrayBuffer: ArrayBuffer = new ArrayBuffer(byteString.length);
+    const int8Array: Uint8Array = new Uint8Array(arrayBuffer);
+    for (let i = 0; i < byteString.length; i++) {
+      int8Array[i] = byteString.charCodeAt(i);
+    }
+    const blob = new Blob([int8Array], { type: "image/jpeg" });
+    observer.next(blob);
+    observer.complete();
+  });
+}
+
+/**Method to Generate a Name for the Image */
+generateName(): string {
+  const date: number = new Date().valueOf();
+  let text: string = "";
+  const possibleText: string =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  for (let i = 0; i < 5; i++) {
+    text += possibleText.charAt(
+      Math.floor(Math.random() * possibleText.length)
+    );
+  }
+  // Replace extension according to your media type like this
+  return date + "." + text + ".jpeg";
+}
+
+  imageLoaded() {
+      // show cropper
+  }
+  cropperReady() {
+      // cropper ready
+  }
+  loadImageFailed() {
+      // show message
+  }
+
   selectedFiles: FileList;
   currentFileUpload: File;
+  imageFile: File;
   userId: number;
   response: string;
   user: User = { id: 1 };
@@ -59,6 +135,8 @@ export class UploadFileComponent implements OnInit {
 
   // this function checks if the selected file is an image filetype (.jpg, .png, ...)
   selectFile(event) {
+    this.imageChangedEvent = event;
+
     const file = event.target.files[0];
     if (file.type.match('image.*')) {
       this.selectedFiles = event.target.files;
@@ -72,7 +150,7 @@ export class UploadFileComponent implements OnInit {
     if (this.checkBeforeUpload()) {
       // we only allow one file to be uploaded -> item(0) - without the 0 in item(0), you could upload many files at once (which would break the backend code).
       this.currentFileUpload = this.selectedFiles.item(0);
-      this.selectedFile.emit(this.currentFileUpload);
+      this.selectedFile.emit(this.imageFile);
       this._update.changeNewPhotoWasUploaded();   // ohne die Zeile, würde bei "upload new Photo" das Photo als USER profile pic behandelt werden. Wir wollen es aber als PRODUCT pic speichern. (Ist etwas ungeschickt gelöst...)
 
       
