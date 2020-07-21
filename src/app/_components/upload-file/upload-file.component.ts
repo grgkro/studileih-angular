@@ -16,7 +16,7 @@ import { ImageCroppedEvent } from 'ngx-image-cropper';
   templateUrl: './upload-file.component.html',
   styleUrls: ['./upload-file.component.scss']
 })
-export class UploadFileComponent implements OnInit {
+export class UploadFileComponent {
   @Output() selectedFile = new EventEmitter<File>();
 
   imageChangedEvent: any = '';
@@ -36,19 +36,11 @@ export class UploadFileComponent implements OnInit {
 
   constructor(private uploadFileService: UploadFileService, private _update: UpdateService) { }
 
-  ngOnInit(): void {
-    this.updateUser();   //  if the user changes, this will get updated
-    this.updateProduct();  //  if the product is undefined (which will happen if you upload a user before clicking on one of the products), this would cause an error even if you dont need a product id to upload a user profile pic. So we catch that with the if command. If the product later changes and someone wants to upload a product pic, this line will get the product updated so that we know which product belongs to that product pic
-    this.updateImgType(); // if the imgType changes, this will get updated (for example, if you upload a product pic from the product-details componente, the component just needs to set the imageType to productPic before uploading the photo.)
-  }
-
   ngOnDestroy() {            // Angular takes care of unsubscribing from many observable subscriptions like those returned from the Http service or when using the async pipe. But the routeParam$ and the _update.currentShowUploadComponent needs to be unsubscribed by hand on ngDestroy. Otherwise, we risk a memory leak when the component is destroyed. https://malcoded.com/posts/angular-async-pipe/   https://www.digitalocean.com/community/tutorials/angular-takeuntil-rxjs-unsubscribe
     this.destroy$.next(true);
     // Now let's also unsubscribe from the subject itself:
     this.destroy$.unsubscribe();
   }
-
- 
 
 //--------- the next methods all deal with cropping the image, displaying a preview of the cropped image and creating a File of the cropped image, which we can save in the backend. 
 // https://medium.com/better-programming/convert-a-base64-url-to-image-file-in-angular-4-5796a19fdc21
@@ -101,20 +93,6 @@ return text + ".jpeg";
 
 //----------------- cropping end ------
 
-  updateUser(): void {
-    this._update.currentUser.subscribe(user => this.user = user)  
-  }
-
-  updateProduct(): void {
-    this._update.currentProduct.subscribe(product => { if (product) this.product = product })  
-  }
-
-  updateImgType(): void {
-    this._update.currentImgType
-    .pipe(takeUntil(this.destroy$))  
-    .subscribe(imgType => this.imgType = imgType) 
-  }
-
   // this function checks if the selected file is an image filetype (.jpg, .png, ...)
   selectFile(event) {
     this.imageChangedEvent = event;
@@ -133,13 +111,14 @@ return text + ".jpeg";
 
       // ---- finally we return the cropped image File back to the parent component ------
       this.selectedFile.emit(this.imageFile);
-      
-      this._update.changeNewPhotoWasUploaded();   // ohne die Zeile, würde bei "upload new Photo" das Photo als USER profile pic behandelt werden. Wir wollen es aber als PRODUCT pic speichern. (Ist etwas ungeschickt gelöst...)
+      this._update.changeNewPhotoWasUploaded(); 
+      // this._update.changeNewPhotoWasUploaded();   // ohne die Zeile, würde bei "upload new Photo" das Photo als USER profile pic behandelt werden. Wir wollen es aber als PRODUCT pic speichern. (Ist etwas ungeschickt gelöst...)
 
       
     }
   }
 
+  // TODO: löschen falls nicht mehr notwendig?
   // checks, if at least one file was selected for upload and if a user is logged in
   checkBeforeUpload(): boolean {
     if (this.selectedFiles == undefined || this.user.id == 0) {

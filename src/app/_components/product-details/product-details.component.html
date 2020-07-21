@@ -80,10 +80,8 @@
                                         <div class="col-sm-12">
                                              <div *ngIf="isCurrentUserOwner">
                                                   <div *ngIf="showUploadComponent">
-                                                       <app-upload-file (selectedFile)="onFileSelected($event)">
-                                                       </app-upload-file>
+                                                       <app-upload-file (selectedFile)="onFileSelected($event)"></app-upload-file>
                                                        <!-- when a file gets selected in the upload-file component, we will get that as an output emitted into the product-details component-->
-
                                                   </div>
                                                   <button *ngIf="!showUploadComponent" (click)="toggleUploadComponent()"
                                                        class="btn btn-success"  mdbBtn color="primary" class="waves-light" mdbWavesEffect>Foto hochladen</button>
