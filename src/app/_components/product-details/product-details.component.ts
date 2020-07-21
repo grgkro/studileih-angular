@@ -51,9 +51,6 @@ export class ProductDetailsComponent implements OnInit {
   returnTime: string;
   // serializedDate = new FormControl((new Date()).toISOString());
 
-
-  selectedFile: File;
-  selectedFiles: File[] = [];
   response: string;
 
   
@@ -86,21 +83,17 @@ export class ProductDetailsComponent implements OnInit {
 
   // https://angular.io/guide/component-interaction
   onFileSelected(selectedFile: File) {
-    console.log(selectedFile)
-    this.selectedFile = selectedFile
-    this.selectedFiles.push(selectedFile);
-    console.log(this.selectedFiles)
-    this.saveFile();
+    this.saveFile(selectedFile);
   }
 
-  saveFile() {
+  saveFile(selectedFile: File) {
 // This uploadfunction is responsible for handling uploads of user profile images and product pics. (Unecessary complicated, splitting it in two functions would be better for seperation of concerns)
-this.uploadFileService.pushFileToStorage(this.selectedFile, this.user.id, this.product.id, "productPic").subscribe((response: any) => {
+this.uploadFileService.pushFileToStorage(selectedFile, this.user.id, this.product.id, "productPic").subscribe((response: any) => {
   if (response == "Dein Foto wurde gespeichert.")   //it would be better to check the response status == 200, but I dont know how
     this.response = response;
+ // this._update.changeNewPhotoWasUploaded();
    this._update.changeShowUploadComponent(false);  // if the user uploaded a product photo, we want do not show the upload component anymore in the productdetails component. But therefore we need the information in the productdetails component. -> If a user successfully uploads a product photo (status 200), the upload component changes showUploadComponent to false here. The _update service then updates this value for all subscribes.
   // setTimeout(() => { this.router.navigate(['']); }, 700);  // after uploading a photo we go back to the main page immediatly -> could be changed, maybe better show a success message and stay on the current page...
-  this._update.changeNewPhotoWasUploaded();   // ohne die Zeile, würde bei "upload new Photo" das Photo als USER profile pic behandelt werden. Wir wollen es aber als PRODUCT pic speichern. (Ist etwas ungeschickt gelöst...)
 },
   (err: HttpErrorResponse) => this.processError(err)    // if the image could not be loaded, this part will be executed instead
 );
@@ -127,15 +120,19 @@ this.uploadFileService.pushFileToStorage(this.selectedFile, this.user.id, this.p
     this._update.triggeringObservable.subscribe(() => {
       this._data.getProduct(this.product.id).subscribe(product => {   //the triggeringObservable is of type Observable<void>, so it returns always undefined as value, so we do just .subscribe( () => ...)
         this.product = product;   // we reloaded the product, so that we have the actualised product.picPaths with the new photo.
-        // now we need to check, if the new uploaded photo was maybe deleted earlier -> then it would be in the archive and the user could click "Foto zurückholen", which would cause a fileAlreadyExists Exception, because we would copy the image from the archive to the product image folder, but it already exists in the image folder (because it was uploaded again by the user before restoring it). We dont delete it from the backend here, because the backend handeles it itself and deletes it if the image is in archive directly at the image upload. 
-        const reuploadedButStillArchivedImages = product.picPaths.filter(element => this.deletedImages.includes(element));
-        if (reuploadedButStillArchivedImages.length != 0) {
-          reuploadedButStillArchivedImages.forEach(image => {
-            this.deletedPics.splice(this.deletedImages.indexOf(image), 1)   // deletes the image blob in the frontend so that we can't restore the image anymore
-            this.deletedImages.splice(this.deletedImages.indexOf(image), 1)  // deletes the image name in the frontend so that we can't restore the image anymore
-          });
-        }
-
+        // // now we need to check, if the new uploaded photo was maybe deleted earlier -> then it would be in the archive and the user could click "Foto zurückholen", which would cause a fileAlreadyExists Exception, because we would copy the image from the archive to the product image folder, but it already exists in the image folder (because it was uploaded again by the user before restoring it). We dont delete it from the backend here, because the backend handeles it itself and deletes it if the image is in archive directly at the image upload. 
+        // // TODO: This whole part doesn't make sense anymore, because the photo name is randomly generated now while cropping... Vlt kann man statt nach Dateinamen nach Base64  suchen?
+        // if (product.picPaths != null || product.picPaths.length != 0) {
+        //   const reuploadedButStillArchivedImages = product.picPaths.filter(element => this.deletedImages.includes(element));
+        //   if (reuploadedButStillArchivedImages.length != 0) {
+        //     reuploadedButStillArchivedImages.forEach(image => {
+        //       this.deletedPics.splice(this.deletedImages.indexOf(image), 1)   // deletes the image blob in the frontend so that we can't restore the image anymore
+        //       this.deletedImages.splice(this.deletedImages.indexOf(image), 1)  // deletes the image name in the frontend so that we can't restore the image anymore
+        //     });
+        //   }
+        // }
+        
+        console.log(" to show emptied");
         this.imagesToShow = [];   // we clear the imagesToShow and refill it in the next step (if you dont clear it first, the old photos will appear twice in the array)
         this.loadProductWithProductPictures();  // we load all photos again. (maybe in the future find a way to only load the new photo and not clear the array before)
       })

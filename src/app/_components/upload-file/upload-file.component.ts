@@ -6,8 +6,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { User } from 'src/app/_models/user';
 import { Product } from 'src/app/_models/product';
 import { HelperService } from 'src/app/_services/helper.service';
-import { Subject } from 'rxjs';
+import { Subject, Observable, Observer } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { ImageCroppedEvent } from 'ngx-image-cropper';
 
 
 @Component({
@@ -15,11 +16,15 @@ import { takeUntil } from 'rxjs/operators';
   templateUrl: './upload-file.component.html',
   styleUrls: ['./upload-file.component.scss']
 })
-export class UploadFileComponent implements OnInit {
+export class UploadFileComponent {
   @Output() selectedFile = new EventEmitter<File>();
-  
+
+  imageChangedEvent: any = '';
+  croppedImage: any = '';   // the croppedImage is in base64 and is only used as the preview image of how the cropped image will look like.
+  base64TrimmedURL: any = '';
+
   selectedFiles: FileList;
-  currentFileUpload: File;
+  imageFile: File;
   userId: number;
   response: string;
   user: User = { id: 1 };
@@ -31,34 +36,67 @@ export class UploadFileComponent implements OnInit {
 
   constructor(private uploadFileService: UploadFileService, private _update: UpdateService) { }
 
-  ngOnInit(): void {
-    this.updateUser();   //  if the user changes, this will get updated
-    this.updateProduct();  //  if the product is undefined (which will happen if you upload a user before clicking on one of the products), this would cause an error even if you dont need a product id to upload a user profile pic. So we catch that with the if command. If the product later changes and someone wants to upload a product pic, this line will get the product updated so that we know which product belongs to that product pic
-    this.updateImgType(); // if the imgType changes, this will get updated (for example, if you upload a product pic from the product-details componente, the component just needs to set the imageType to productPic before uploading the photo.)
-  }
-
   ngOnDestroy() {            // Angular takes care of unsubscribing from many observable subscriptions like those returned from the Http service or when using the async pipe. But the routeParam$ and the _update.currentShowUploadComponent needs to be unsubscribed by hand on ngDestroy. Otherwise, we risk a memory leak when the component is destroyed. https://malcoded.com/posts/angular-async-pipe/   https://www.digitalocean.com/community/tutorials/angular-takeuntil-rxjs-unsubscribe
     this.destroy$.next(true);
     // Now let's also unsubscribe from the subject itself:
     this.destroy$.unsubscribe();
   }
 
-  updateUser(): void {
-    this._update.currentUser.subscribe(user => this.user = user)  
-  }
+//--------- the next methods all deal with cropping the image, displaying a preview of the cropped image and creating a File of the cropped image, which we can save in the backend. 
+// https://medium.com/better-programming/convert-a-base64-url-to-image-file-in-angular-4-5796a19fdc21
+imageCropped(event: ImageCroppedEvent) {
+  this.croppedImage = event.base64;
+  this.base64TrimmedURL = this.croppedImage.replace(/^data:image\/(png|jpg);base64,/, "");     // we only want the base64code, not the "header"
+  this.createBlobImageFile();
 
-  updateProduct(): void {
-    this._update.currentProduct.subscribe(product => { if (product) this.product = product })  
-  }
+}
 
-  updateImgType(): void {
-    this._update.currentImgType
-    .pipe(takeUntil(this.destroy$))  
-    .subscribe(imgType => this.imgType = imgType) 
+/**Method that will create Blob and show in new window */
+ createBlobImageFile(): void {
+  this.dataURItoBlob(this.base64TrimmedURL).subscribe((blob: Blob) => {
+    const imageBlob: Blob = blob;
+    const imageName: string = this.generateName();
+    this.imageFile = new File([imageBlob], imageName, {                      // this line actually creates the File from the cropped image. This file then gets transferred to the parent component, from where its send to backend /database
+      type: "image/jpeg"
+    });
+  });
+}
+
+/* Method to convert Base64Data Url as Image Blob */
+dataURItoBlob(dataURI: string): Observable<Blob> {
+return Observable.create((observer: Observer<Blob>) => {
+  const byteString: string = window.atob(dataURI);
+  const arrayBuffer: ArrayBuffer = new ArrayBuffer(byteString.length);
+  const int8Array: Uint8Array = new Uint8Array(arrayBuffer);
+  for (let i = 0; i < byteString.length; i++) {
+    int8Array[i] = byteString.charCodeAt(i);
   }
+  const blob = new Blob([int8Array], { type: "image/jpeg" });
+  observer.next(blob);
+  observer.complete();
+});
+}
+
+/**Method to Generate a Name for the Image */
+generateName(): string {
+let text: string = "cropImg-";
+const possibleText: string =
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+for (let i = 0; i < 7; i++) {
+  text += possibleText.charAt(
+    Math.floor(Math.random() * possibleText.length)
+  );
+}
+// Replace extension according to your media type like this
+return text + ".jpeg";
+}
+
+//----------------- cropping end ------
 
   // this function checks if the selected file is an image filetype (.jpg, .png, ...)
   selectFile(event) {
+    this.imageChangedEvent = event;
+
     const file = event.target.files[0];
     if (file.type.match('image.*')) {
       this.selectedFiles = event.target.files;
@@ -70,15 +108,17 @@ export class UploadFileComponent implements OnInit {
 
   uploadPic() {
     if (this.checkBeforeUpload()) {
-      // we only allow one file to be uploaded -> item(0) - without the 0 in item(0), you could upload many files at once (which would break the backend code).
-      this.currentFileUpload = this.selectedFiles.item(0);
-      this.selectedFile.emit(this.currentFileUpload);
-      this._update.changeNewPhotoWasUploaded();   // ohne die Zeile, würde bei "upload new Photo" das Photo als USER profile pic behandelt werden. Wir wollen es aber als PRODUCT pic speichern. (Ist etwas ungeschickt gelöst...)
+
+      // ---- finally we return the cropped image File back to the parent component ------
+      this.selectedFile.emit(this.imageFile);
+      this._update.changeNewPhotoWasUploaded(); 
+      // this._update.changeNewPhotoWasUploaded();   // ohne die Zeile, würde bei "upload new Photo" das Photo als USER profile pic behandelt werden. Wir wollen es aber als PRODUCT pic speichern. (Ist etwas ungeschickt gelöst...)
 
       
     }
   }
 
+  // TODO: löschen falls nicht mehr notwendig?
   // checks, if at least one file was selected for upload and if a user is logged in
   checkBeforeUpload(): boolean {
     if (this.selectedFiles == undefined || this.user.id == 0) {
