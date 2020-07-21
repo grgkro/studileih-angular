@@ -78,6 +78,14 @@ export class UploadMultipleFilesComponent implements OnInit {
           reader.readAsBinaryString(this.selectedFiles[i]);
         }
       }
+      if (this.checkBeforeUpload()) {
+        // we only allow one file to be uploaded -> item(0) - without the 0 in item(0), you could upload many files at once (which would break the backend code).
+        this.currentFileUpload = this.selectedFiles.item(0);
+  
+        this.currentFilesUpload = Array.from(this.selectedFiles); // https://stackoverflow.com/questions/25333488/why-isnt-the-filelist-object-an-array
+        this.selectedFile.emit(this.currentFilesUpload);
+      }
+
     } else {
       alert('Invalid format! Only images allowed');     // ... when user tries uploading a .pdf etc 
       this.selectedFiles = undefined;                   // sets back this.selectedFiles to undefined, thus the user can't upload the file. Without this line it was still possible to upload a pdf.
@@ -89,17 +97,6 @@ export class UploadMultipleFilesComponent implements OnInit {
     this.base64textString = btoa(binaryString);
     console.log(btoa(binaryString));
     this.imagesToShow.push("data:image\/png;base64," + this.base64textString);    // we need to add the filetype to the base64 code before we can display it.
-  }
-
-  uploadPic() {
-    if (this.checkBeforeUpload()) {
-      // we only allow one file to be uploaded -> item(0) - without the 0 in item(0), you could upload many files at once (which would break the backend code).
-      this.currentFileUpload = this.selectedFiles.item(0);
-
-      this.currentFilesUpload = Array.from(this.selectedFiles); // https://stackoverflow.com/questions/25333488/why-isnt-the-filelist-object-an-array
-      this.selectedFile.emit(this.currentFilesUpload);
-      this._update.changeNewPhotoWasUploaded();   // ohne die Zeile, würde bei "upload new Photo" das Photo als USER profile pic behandelt werden. Wir wollen es aber als PRODUCT pic speichern. (Ist etwas ungeschickt gelöst...)
-    }
   }
 
   // checks, if at least one file was selected for upload and if a user is logged in
