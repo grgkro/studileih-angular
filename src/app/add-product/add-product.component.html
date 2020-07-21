@@ -54,11 +54,15 @@
       </div>
     </form>
   </div>
+
+  
+
   <div class="row">
     <div class="col-sm-12">
 
 
-      <app-upload-multiple-files (selectedFile)="onFileSelected($event)"></app-upload-multiple-files>   <!-- when a file gets selected in the upload-file component, we will get that as an output emitted into the add-product component-->
+      <app-upload-multiple-files (selectedFile)="onFileSelected($event)"></app-upload-multiple-files>
+      <!-- when a file gets selected in the upload-file component, we will get that as an output emitted into the add-product component-->
 
       <!-- <button *ngIf="deletedImages.length != 0" (click)="restoreLastImage()"
                      class="btn btn-info">Letztes Foto zurückholen</button> -->
@@ -70,8 +74,8 @@
            </div>
       </div> -->
   </div>
-  <br/>
-<br/>
-<strong>{{ response }}</strong>
+  <br />
+  <br />
+  <strong>{{ response }}</strong>
 
 </div>

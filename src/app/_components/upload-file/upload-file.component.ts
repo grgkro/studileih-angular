@@ -18,7 +18,7 @@ import { ImageCroppedEvent } from 'ngx-image-cropper';
 })
 export class UploadFileComponent {
   @Output() selectedFile = new EventEmitter<File>();
-
+  
   imageChangedEvent: any = '';
   croppedImage: any = '';   // the croppedImage is in base64 and is only used as the preview image of how the cropped image will look like.
   base64TrimmedURL: any = '';
@@ -46,6 +46,7 @@ export class UploadFileComponent {
 // https://medium.com/better-programming/convert-a-base64-url-to-image-file-in-angular-4-5796a19fdc21
 imageCropped(event: ImageCroppedEvent) {
   this.croppedImage = event.base64;
+  console.log(event.base64);
   this.base64TrimmedURL = this.croppedImage.replace(/^data:image\/(png|jpg);base64,/, "");     // we only want the base64code, not the "header"
   this.createBlobImageFile();
 
@@ -111,10 +112,7 @@ return text + ".jpeg";
 
       // ---- finally we return the cropped image File back to the parent component ------
       this.selectedFile.emit(this.imageFile);
-      this._update.changeNewPhotoWasUploaded(); 
-      // this._update.changeNewPhotoWasUploaded();   // ohne die Zeile, würde bei "upload new Photo" das Photo als USER profile pic behandelt werden. Wir wollen es aber als PRODUCT pic speichern. (Ist etwas ungeschickt gelöst...)
-
-      
+      this._update.changeNewPhotoWasUploaded();   // dadurch wird in der parent component (und auch in allen anderen component, aber die existieren ja in dem moment nicht) alle photos nochmal neu geladen, sodass das neu gespeicherte foto direkt angezeigt bekommt statt erst beim nächsten mal, wenn amn wieder die seite refreshed. 
     }
   }
 
