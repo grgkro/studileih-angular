@@ -26,7 +26,7 @@ export class AddProductComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
     private uploadFileService: UploadFileService,
     private _update: UpdateService,
-    private dataService: DataService,
+    private _data: DataService,
     private router: Router) { }
 
 
@@ -52,6 +52,8 @@ export class AddProductComponent implements OnInit {
     this.selectedFiles = selectedFiles;
     console.log(this.selectedFiles)
   }
+
+  
 
   // takes the error and then displays a response to the user or only logs the error on the console (depending on if the error is useful for the user)
   processError(err: HttpErrorResponse) {
@@ -106,7 +108,7 @@ export class AddProductComponent implements OnInit {
       formData.append("imageFiles", file);
     });
 console.log(this.selectedFiles[0])
-    this.dataService.addProduct(formData)
+    this._data.addProduct(formData)
       .subscribe((res: any) => {
         console.log(res);
         this.router.navigate(['products']);
