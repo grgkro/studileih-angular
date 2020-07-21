@@ -17,7 +17,7 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class UploadFileComponent implements OnInit {
   @Output() selectedFile = new EventEmitter<File>();
-  
+
   selectedFiles: FileList;
   currentFileUpload: File;
   userId: number;

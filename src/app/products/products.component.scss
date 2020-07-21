@@ -3,9 +3,9 @@
     max-height: 200px;
 }
 
-button:hover {
-  background-color: #00a8ff;
-}
+// button:hover {
+//   background-color: #00a8ff;
+// }
 
 a{
     text-decoration:none;  // without this the text in the card gets underlined when we hover over it (because its a link)
@@ -75,19 +75,19 @@ a{
   padding: 16px;
   text-align: center;
   margin: 10px;
-  box-shadow: -12px -12px 12px 0 rgba(255,255,255, 1);
-  box-shadow: 12px 12px 12px 0 rgba(0,0,0, 0.3);
+//   box-shadow: -12px -12px 12px 0 rgba(255,255,255, 1);
+//   box-shadow: 12px 12px 12px 0 rgba(0,0,0, 0.3);
 
   
-  background-image: linear-gradient(
-    135deg,
-    white, 
-    rgb(208, 250, 249),
-    white
-     );
-  background-size: 400%;
-  background-position: left;
-  transition: background-position 0.5s;
+//   background-image: linear-gradient(
+//     135deg,
+//     white, 
+//     rgb(208, 250, 249),
+//     white
+//      );
+//   background-size: 400%;
+//   background-position: left;
+//   transition: background-position 0.5s;
   
 }
 

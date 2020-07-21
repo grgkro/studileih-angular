@@ -1,62 +1,44 @@
-<div class="jumbotron" style="background-color: rgb(250, 241, 241);">
-  <div class="container">
-    <!-- <div class="row">
-      <div class="col">
-        <h1 class="display-3">Products</h1>
+
+
+<div *ngIf="imagesLoaded | async">
+  <!-- Card deck -->
+  
+    
+    <div class="row row-cols-1 row-cols-2 row-cols-md-3 row-cols-lg-4" >
+      <div class="card-deck" *ngFor="let product of products; let i = index">
+    <!-- Card -->
+    <div class="card col mb-4 example-card" >
+
+      <!--Card image-->
+      <div class="view overlay">
+        <img class="card-img-top images" [src]="productImagesMap.get(product.id)" *ngIf="productImagesMap.get(product.id)"
+          alt="Card image cap">
+        <a href="#!">
+          <div class="mask rgba-white-slight"></div>
+        </a>
       </div>
-      <div class="col-md-auto">
-        <button class="btn btn-dark">
-          <a routerLink="/add-product">
-            Add Product
-          </a>
-        </button>
+
+      <!--Card content-->
+      <div class="card-body">
+
+        <!--Title-->
+        <h4 class="card-title">Card title</h4>
+        <!--Text-->
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+          content.</p>
+        <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
+        <button type="button" class="btn btn-light-blue btn-md">Read more</button>
+
       </div>
+
     </div>
+    <!-- Card -->
 
-    <hr class="my-2" />
-    <div class="row justify-content-md-center">
-      <div class="col"></div>
-      <div class="col-md-auto"></div>
-      <div class="col col-lg-2"></div>
+    
     </div>
-    <div >
-      <ul [@listStagger]="products">
-        <li *ngFor="let product of products; let i = index">
-          <ul>
-            <div class="row">
-              <div class="col"></div>
-              <div class="col"></div>
-            </div>
-            <li>
-              <div class="row">
-                <div class="col-8">
-                  {{ product.name }}
-                </div>
-                <div class="col">
-                  <button class="btn btn-light">
-                    <a routerLink="/product-details/{{ product.id }}">View</a>
-                  </button>
-                </div>
-                <div class="col">
-                  <button type="button" class="btn btn-info">
-                    <a routerLink="/edit-product/{{ product.id }}">Edit</a>
-                  </button>
-
-                </div>
-                <div class="col">
-                  <button type="button" (click)="deleteProduct(product.id)" class="btn btn-danger">
-                    Delete
-                  </button>
-                </div>
-              </div>
-            </li>
-          </ul>
-
-        
-        </li>
-      </ul>
-    </div> -->
-
+  </div>
+  <!-- Card deck -->
+</div>
 
 
     <div class="row">
@@ -71,7 +53,7 @@
     </div>
 
     <div>
-      <div class="row justify-content-md-center">
+      <div class="row justify-content-md-center ">
         <div class="col">
           <h1>Im Wohnheim {{ selectedDorm.name }} wird folgendes zum Ausleihen angeboten:</h1>
           <hr class="my-2" />
@@ -91,8 +73,9 @@
         <div class="col-md-3" *ngFor="let product of dormProducts" class="list-inline-item tab1cards">
           <div>
             
-              <!-- wenn die produktcard irgendwo angeklickt wird, wird man weitergeleitet per routerLink zur details component.-->
+              
               <mat-card class="example-card card">
+                <!-- wenn die produktcard irgendwo angeklickt wird, wird man weitergeleitet per routerLink zur details component.-->
                 <a routerLink="/product-details/{{ product.id }}">
                 <mat-card-header>
                   <mat-card-title class="cardTitle">{{ product.title }}</mat-card-title>
@@ -113,7 +96,6 @@
                   </div>
                 </div>
 
-
                 <mat-card-content class="cardContent">
                   <p>
                     Beschreibung: Hallo liebe Freunde, ich verleihe hier meine schönen Sachen. Bei Interesse gerne melden. Alles jute!
@@ -123,6 +105,7 @@
                   </p>
                 </mat-card-content>
               </a>
+
                 <div *ngIf="checkIsUserOwner(product.userId)">
                   <mat-card-actions class="cardActions">
 
@@ -232,6 +215,6 @@
 
       </li>
     </ul>
-  </div>
-</div>
+  
+
 
