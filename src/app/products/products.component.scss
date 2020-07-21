@@ -8,6 +8,40 @@
 //   border: 1px solid;
 // }
 
+// h1 {
+//   border: 1px solid black;
+// }
+
+h3 {
+  margin-top: 1rem;
+  // border: 1px solid black;
+}
+
+.title {
+  border-bottom: 1px solid #dedede;
+}
+
+.wrapper {
+  margin: 6rem;
+  height: 20px;
+  overflow: hidden;
+}
+
+h1 {
+  border-bottom: 8px solid #57c4d0;
+  position: absolute; /* As I've said, adding this allowed me to do so, but the result was far from ideal! */
+}
+
+.wrapper img {
+  //  border: 1px solid black;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+
+.inline {
+  display: inline;
+}
 
 .fixImageSize {
     max-width: 200px;

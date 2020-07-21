@@ -38,7 +38,6 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 
-import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 import { MessagesComponent } from './_components/messages/messages.component';
 import { MessageDetailsComponent } from './_components/message-details/message-details.component';
 import { ChatComponent } from './_components/chat/chat.component';
@@ -96,7 +95,6 @@ HttpClientModule
 
     MDBBootstrapModule,
 
-    AgmSnazzyInfoWindowModule,
     AgmCoreModule.forRoot({
       apiKey: gmaps_environment.GMAPS_API_KEY // The API KEY belongs to Georg and can't be exposed on GITHUB (Hackers are crazy) 
       //-> Therefore it's loaded as a variable from the file gmaps_environment.ts in folder environments. gmaps_environment.ts is in .gitignore, so it won't get pushed to git
