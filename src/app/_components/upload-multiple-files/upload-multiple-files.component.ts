@@ -88,7 +88,7 @@ export class UploadMultipleFilesComponent implements OnInit {
     var binaryString = readerEvt.target.result;
     this.base64textString = btoa(binaryString);
     console.log(btoa(binaryString));
-    this.imagesToShow.push("data:image\/png;base64," + this.base64textString);
+    this.imagesToShow.push("data:image\/png;base64," + this.base64textString);    // we need to add the filetype to the base64 code before we can display it.
   }
 
   uploadPic() {
