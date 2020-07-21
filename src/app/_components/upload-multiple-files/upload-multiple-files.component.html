@@ -1,10 +1,6 @@
-<!-- this is the upload photo menu on http://localhost:4200/upload-userPic -->
+
 <div align="center" style="text-align: center">
     <div class="container">
-        <!-- https://malcoded.com/posts/angular-async-pipe/ -->
-
-        <!-- deferload ist für das lazy loading zuständig, bin aber nicht sicher ob es überhaupt funktioniert.-->
-        <!-- loads the product image. If no image is available, a default pic gets shown -->
         <h1>Hier können mehrere Fotots auf einmal ausgewählt werden:</h1>
         <div class="row" style="margin-top: 1.5rem; margin-bottom: 1.5rem;">
             <div class="col" *ngFor="let image of imagesToShow" style="margin: 1.5rem 0rem 1.5rem 0rem" align="center">
@@ -14,11 +10,12 @@
 
         <div class="row" style="margin-top: 1.5rem; margin-bottom: 1.5rem;">
             <div class="col">
+                <!-- https://stackoverflow.com/questions/1944267/how-to-change-the-button-text-of-input-type-file -->
                 <label class="btn btn-primary">
                     <i class="fa fa-image"></i> Fotos durchsuchen<input type="file" style="display: none;" id="fileName" accept="image/*" (change)="selectFile($event)" class="input-left"
                     multiple >
                   </label>
-                <!-- accept="image/*" makes the file chose menu pre select "Grafik-Dateien", instead of "Alle Dateien" and shows an alert message ("invalid filetype"), if a filetype that is not an image is uploaded (eg. pdf). But user can still accept the alert and then upload a pdf anyway, so we also need to check the uploaded filetype on the server side.-->
+                <!-- multiple makes it possible to upload multiple photos at once. accept="image/*" makes the file chose menu pre select "Grafik-Dateien", instead of "Alle Dateien" and shows an alert message ("invalid filetype"), if a filetype that is not an image is uploaded (eg. pdf). But user can still accept the alert and then upload a pdf anyway, so we also need to check the uploaded filetype on the server side.-->
             </div>
         </div>
 
