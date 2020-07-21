@@ -19,7 +19,7 @@ export class DataService {
   serverPath = 'http://localhost:8090';
   productsPath = 'http://localhost:8090/products';
   imagesPath = 'http://localhost:8090/images';
-  usersPath = 'https://jsonplaceholder.typicode.com/users'
+  usersPath = 'http://localhost:8090/users'
   
 
   httpOptions = {
@@ -113,13 +113,13 @@ export class DataService {
   }
 
   getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(this.serverPath + "/users").pipe(
+    return this.http.get<User[]>(this.usersPath).pipe(
       catchError(this.errorHandler)
     )
   }
 
   getUser(userId): Observable<User> {
-    return this.http.get<User>('https://jsonplaceholder.typicode.com/users/' + userId).pipe(
+    return this.http.get<User>(this.usersPath + '/' + userId).pipe(
       catchError(this.errorHandler)
     )
   }
