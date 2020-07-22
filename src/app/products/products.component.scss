@@ -136,26 +136,22 @@ a{
 
 
 // ------ stylen der Studileih - Sharing is Caring Überschriften Section ---------
-
-.section-title .image {
+// durch das .section-title vor jeder klasse können wir sicherstellen, dass wir nicht durcheinanderkommen (wir könnten natürlich auch individuelle classes benutzen, kp warum ich's jetzt hier so gemacht hab mit einer "super-class"...). 
+.section-title img {
   width: 61px; 
   height: 20px; 
   margin: 0px auto 0 160px;     // margin rechts schiebt das img nach rechts
 }     
-.section-title .text-1 {
+
+.section-title h1 {
   font-size: 2.25rem; 
   font-weight: 400; 
   text-decoration: none solid rgb(0, 0, 0); 
   margin: -32px auto 0 0;
   line-height: 2.5rem;   // damit kann die h2 weiter nach unten geschoben werden, damit es auf einer Höhe mit dem img liegt.
 }
-.section-title .line {
-  width: 245px; 
-  height: 3px; 
-  transform-origin: left center 0; 
-  margin: 0 auto 0 0;
-}
-.section-title .text-2 {
+
+.section-title h2 {
   font-size: 1.25rem; 
   margin: 7px auto 60px 0;
   position:relative; 
