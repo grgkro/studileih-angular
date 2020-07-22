@@ -4,22 +4,14 @@
   border-bottom: 1px solid black;
   position: absolute;
   }
-// div { 
-//   border: 1px solid;
-// }
 
-// h1 {
-//   border: 1px solid black;
-// }
 
 h3 {
   margin-top: 1rem;
   // border: 1px solid black;
 }
 
-.title {
-  border-bottom: 1px solid #dedede;
-}
+
 
 .wrapper {
   margin: 6rem;
@@ -142,3 +134,56 @@ a{
   background-position: right;
 }
 
+
+// ------ stylen der Studileih - Sharing is Caring Überschriften Section ---------
+
+.section-title .image {
+  width: 61px; 
+  height: 20px; 
+  margin: 0px auto 0 160px;     // margin rechts schiebt das img nach rechts
+}     
+.section-title .text-1 {
+  font-size: 2.25rem; 
+  font-weight: 400; 
+  text-decoration: none solid rgb(0, 0, 0); 
+  margin: -32px auto 0 0;
+  line-height: 2.5rem;   // damit kann die h2 weiter nach unten geschoben werden, damit es auf einer Höhe mit dem img liegt.
+}
+.section-title .line {
+  width: 245px; 
+  height: 3px; 
+  transform-origin: left center 0; 
+  margin: 0 auto 0 0;
+}
+.section-title .text-2 {
+  font-size: 1.25rem; 
+  margin: 7px auto 60px 0;
+  position:relative; 
+  top:-12px;         // damit kann h2 näher an die Linie nach oben geschoben werden (-10px relative zu der Position, wo es sonst aufgetaucht wär.)
+}
+
+.section-title hr { 
+  border: 1px solid black;
+  width: 220px;
+  text-align: left;
+    padding:0px 0px;
+    margin: 5px 0px;  // damit kann die Linie weiter nach unten vom h1 element geschoben werden
+  border: 1.3px solid black;
+  border-radius: 5px;
+}
+
+// -------- ---------------------------------------------------------
+
+// div { 
+//   border: 1px solid;
+// }
+
+// h1 {
+//   border: 1px solid black;
+// }
+
+// section {
+//   border: 1px solid black;
+// }
+
+// img { border: 1px solid black;}
