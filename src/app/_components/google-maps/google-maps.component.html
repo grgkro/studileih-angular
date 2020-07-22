@@ -1,17 +1,42 @@
 
     
         <div class="row">
-            <div class="col">
-                <h1 class="display-3">Standort</h1>
-                <hr class="my-2" />
+            <div class="col-4 inline">
+                <h1 class="display-3">Bitte wähle dein Wohnheim aus:</h1>
             </div>
-            <div class="col-md-auto">
+
+                <div class="col-4 inline">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Stadt</mat-label>
+                        <mat-select [formControl]="cityControl" (selectionChange)="changeSelectedCity($event)">
+                            <mat-option *ngFor="let city of allCities" [value]="city">
+                                {{city}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col inline">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Wohnheim</mat-label>
+                        <mat-select [formControl]="dormControl" (selectionChange)="changeSelectedDorm($event)">
+                            <mat-optgroup *ngFor="let group of dormGroups" [label]="group.name" [disabled]="group.disabled">
+                                <mat-option *ngFor="let dorms of group.dorms" [value]="dorms.name">
+                                    {{dorms.name}}
+                                </mat-option>
+                            </mat-optgroup>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                
+            </div>
+            <hr class="my-2" />
+            <!-- <div class="col-md-auto">
                 <label>
                     <mat-slider min="1" max="22" step="1" [value]="currZoom" thumbLabel tickInterval="1"
                         (input)="onInputChange($event)"></mat-slider>
                 </label>
-            </div>
-        </div>
+            </div> -->
+       
         <!-- <div class="row">
             <div class="col">
                 <h2>Bitte wähl deine City aus:</h2>
@@ -32,31 +57,8 @@
             </div>
         </div> -->
         <div class="row">
-            <div class="col">
-                <h2>Bitte wähl dein Wohnheim aus:</h2>
-            </div>
-            <div class="col-md-auto">
-                <mat-form-field appearance="fill">
-                    <mat-label>Stadt</mat-label>
-                    <mat-select [formControl]="cityControl" (selectionChange)="changeSelectedCity($event)">
-                        <mat-option *ngFor="let city of allCities" [value]="city">
-                            {{city}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-            <div class="col-md-auto">
-                <mat-form-field appearance="fill">
-                    <mat-label>Wohnheim</mat-label>
-                    <mat-select [formControl]="dormControl" (selectionChange)="changeSelectedDorm($event)">
-                        <mat-optgroup *ngFor="let group of dormGroups" [label]="group.name" [disabled]="group.disabled">
-                            <mat-option *ngFor="let dorms of group.dorms" [value]="dorms.name">
-                                {{dorms.name}}
-                            </mat-option>
-                        </mat-optgroup>
-                    </mat-select>
-                </mat-form-field>
-            </div>
+           
+           
         </div>
         <div class="row">
             <div class="col">
