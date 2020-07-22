@@ -136,7 +136,8 @@ a{
 
 
 // ------ stylen der Studileih - Sharing is Caring Überschriften Section ---------
-// durch das .section-title vor jeder klasse können wir sicherstellen, dass wir nicht durcheinanderkommen (wir könnten natürlich auch individuelle classes benutzen, kp warum ich's jetzt hier so gemacht hab mit einer "super-class"...). 
+// durch das .section-title vor jeder klasse können wir sicherstellen, dass wir nicht durcheinanderkommen mit anderen h1, h2, ... (wir könnten natürlich auch individuelle classes benutzen, kp warum ich's jetzt hier so gemacht hab mit einer "super-class"...). 
+
 .section-title img {
   width: 61px; 
   height: 20px; 
@@ -159,7 +160,7 @@ a{
 }
 
 .section-title hr { 
-  border: 1px solid black;
+  // border: 1px solid black;
   width: 220px;
   text-align: left;
     padding:0px 0px;
@@ -169,6 +170,10 @@ a{
 }
 
 // -------- ---------------------------------------------------------
+
+img[src^="productImagesMap"] {
+  border: 10px solid black;
+}
 
 // div { 
 //   border: 1px solid;
