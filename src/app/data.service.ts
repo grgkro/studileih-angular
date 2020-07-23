@@ -19,7 +19,8 @@ export class DataService {
   serverPath = 'http://localhost:8090';
   productsPath = 'http://localhost:8090/products';
   imagesPath = 'http://localhost:8090/images';
-  usersPath = 'http://localhost:8090/users'
+  usersPath = 'http://localhost:8090/users';
+  dormsPath = 'http://localhost:8090/dorms';
   
 
   httpOptions = {
@@ -31,7 +32,11 @@ export class DataService {
   constructor(private http: HttpClient) { }
 
   getDormLocations(): Observable<Dorm[]> {
-    return this.http.get<Dorm[]>(this.serverPath +'/dorms');
+    return this.http.get<Dorm[]>(this.dormsPath);
+  }
+
+  getDorms(): Observable<Dorm[]> {
+    return this.http.get<Dorm[]>(this.dormsPath);
   }
 
 
