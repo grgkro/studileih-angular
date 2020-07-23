@@ -46,7 +46,7 @@ import { HelperService } from '../_services/helper.service';
 })
 export class ProductsComponent implements OnInit {
   startAt = performance.now();  // how to check how long it took to execute code -> https://www.youtube.com/watch?v=mNJ06S60B9k - 15:30 min
-
+ 
   products: Product[];
 
   dormProducts: Product[] = [];   // will contain all products of the dorm that is currently selected (selectedDorm) 
@@ -83,7 +83,9 @@ export class ProductsComponent implements OnInit {
 
 
   updateUser(): void {
-    this._update.currentUser.subscribe(user => this.user = user)   //If the user changes, this will get updated
+    this._update.currentUser.subscribe(user => {
+      this.user = user;
+      console.log(user)})   //If the user changes, this will get updated
   }
 
   checkIsUserOwner(productUserId: number) {
@@ -136,9 +138,9 @@ export class ProductsComponent implements OnInit {
       if (product.picPaths != undefined || product.picPaths != null) this.loadMainProductPicture(product);
     })
     this.imagesLoaded = Promise.resolve(true);   // now that all images are loaded, we display them by setting the boolean to true -> *ngIf="imagesLoaded | async" in HTML is now true
- 
- let imagesLoadedAt = performance.now();
- console.log(`${imagesLoadedAt - this.startAt} milliseconds to load all the products and the images`)
+    
+    let imagesLoadedAt = performance.now();
+    console.log(`${imagesLoadedAt - this.startAt} milliseconds to load all the products and the images`)   
   }
 
   //loads only the first picture of the pictures of a product (= the main picture)
@@ -223,9 +225,8 @@ export class ProductsComponent implements OnInit {
     this.router.navigate([link]);
   }
 
-  // how to check how long it took to execute code -> https://www.youtube.com/watch?v=mNJ06S60B9k - 15:30 min
-  endGoogleMapsLoading(endGoogleMapsLoading: any) {
+   // how to check how long it took to execute code -> https://www.youtube.com/watch?v=mNJ06S60B9k - 15:30 min
+   endGoogleMapsLoading(endGoogleMapsLoading: any) {
     console.log(`${endGoogleMapsLoading - this.startAt} milliseconds to start gMpas`)
   }
-
 }

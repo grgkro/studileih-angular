@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { MouseEvent } from '@agm/core';
 import { FormControl } from '@angular/forms';
 import { DataService } from '../../data.service';
@@ -35,10 +35,9 @@ export class GoogleMapsComponent implements OnInit {
   @Input() usersFromSelectedDorm: User[];    // we only need to import this users list from the products overview to pass it on to the child component <app-info-window-product-overview> (which is actually now a user-overview)
   @Input() dormProducts: Product[];                  
   @Input() productImagesMap: Map<number, SafeResourceUrl>;                  //The map stores all product images together with the product id: User[];    // we only need to import this users list from the products overview to pass it on to the child component <app-info-window-product-overview> (which is actually now a user-overview)
-  // @Input() imagesLoaded: Promise<boolean>;;                 
-  @Output() endGoogleMapsLoading = new EventEmitter<any>();
-  
- 
+  // @Input() imagesLoaded: Promise<boolean>;;  
+  @Output() endGoogleMapsLoading = new EventEmitter<any>();               
+
   currZoom: number = 13;
   isSnazzyInfoWindowOpened: boolean = false;
   clickedMarker: string;  // auf welchen Marker wurde geklickt?
@@ -68,12 +67,11 @@ export class GoogleMapsComponent implements OnInit {
         if (!this.allCities.includes(dorm.city)) this.allCities.push(dorm.city)  // erstellt eine Liste aller Städte
         this.sortDormIntoDormGroups(dorm);   // fügt jedes Dorm der richtigen Gruppe hinzu (z.B. Stuttgart Mitte, München Nord) -> die Gruppen sind wichtig für das DropDown Select Menü
       }
-
-       
     })
   }
 
   ngAfterViewInit(): void {
+    //when gMaps finished loading, we send the time it took to the products component, which will subtract the time when the page was opened and then log the difference to the console
     this.endGoogleMapsLoading.emit(performance.now());
   }
 
