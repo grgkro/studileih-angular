@@ -124,9 +124,7 @@ export class DataService {
   }
 
   getUser(userId): Observable<User> {
-    return this.http.get<User>(this.usersPath + '/' + userId).pipe(
-      catchError(this.errorHandler)
-    )
+    return this.http.get<User>(this.usersPath + 'dto/' + userId);
   }
 
   addUser(formData: any): Observable<any> {
