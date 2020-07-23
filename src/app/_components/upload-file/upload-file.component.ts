@@ -26,6 +26,7 @@ export class UploadFileComponent {
   selectedFiles: FileList;
   imageFile: File;
   userId: number;
+
   response: string;
   user: User = { id: 1 };
   imgType: string = "userPic";
