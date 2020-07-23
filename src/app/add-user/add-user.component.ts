@@ -53,7 +53,7 @@ export class AddUserComponent implements OnInit {
       formData.append("profilePic", this.addForm.get('profilePic').value);
       console.log(formData);
 
-      this.http.post(this.dataService.usersPath,formData).subscribe(
+      this.http.post(this.dataService.usersPath,formData, { responseType: 'text'}).subscribe(
         (response) => console.log(response),
         (error) => console.log(error)
       );
