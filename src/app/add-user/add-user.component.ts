@@ -48,7 +48,7 @@ export class AddUserComponent implements OnInit {
       formData.append("name", this.addForm.get('name').value);
       formData.append("email", this.addForm.get('email').value);
       formData.append("password", this.addForm.get('password').value);
-      formData.append("dormId", 2);
+      formData.append("dormId", this.addForm.get('dorm').value);
       formData.append("room", this.addForm.get('room').value);
       formData.append("profilePic", this.addForm.get('profilePic').value);
       console.log(formData);
