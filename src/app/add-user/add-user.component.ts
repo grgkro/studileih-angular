@@ -47,9 +47,11 @@ export class AddUserComponent implements OnInit {
       var formData: any = new FormData();
       formData.append("name", this.addForm.get('name').value);
       formData.append("email", this.addForm.get('email').value);
-      formData.append("dorm", this.addForm.get('dorm').value);
+      formData.append("password", this.addForm.get('password').value);
+      formData.append("dormId", 2);
       formData.append("room", this.addForm.get('room').value);
       formData.append("profilePic", this.addForm.get('profilePic').value);
+      console.log(formData);
 
       this.http.post(this.dataService.usersPath,formData).subscribe(
         (response) => console.log(response),

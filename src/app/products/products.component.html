@@ -15,7 +15,7 @@
       <!-- <div class="col-12" align="center"> -->
 
       <app-google-maps [usersFromSelectedDorm]=usersFromSelectedDorm [dormProducts]=dormProducts
-        [productImagesMap]=productImagesMap></app-google-maps>
+        [productImagesMap]=productImagesMap (endGoogleMapsLoading)="endGoogleMapsLoading($event)"></app-google-maps>
 
       <br>
       <br>
