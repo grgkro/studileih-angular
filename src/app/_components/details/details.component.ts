@@ -31,7 +31,7 @@ import { User } from 'src/app/_models/user';
 })
 export class DetailsComponent implements OnInit {
 
-  user: any;
+  user: User;
   imageToShow: any;
   errorMessage: string;
   showUploadComponent: boolean = false;
@@ -46,8 +46,10 @@ export class DetailsComponent implements OnInit {
 
 
   ngOnInit() {
+    
     this.loadUserWithUserPic();
     this.subscribeTriggeringObservable();
+    
   }
 
   // This function gets called when the user clicks on "Foto hochladen": https://angular.io/guide/component-interaction
@@ -75,7 +77,9 @@ export class DetailsComponent implements OnInit {
       params =>
         this.data.getUser(params['id']))).subscribe(      // this calls the getUser function with the id from the url, which returns an Observable, to which we subscribe. When the Observable is ready it will give us the user.
           user => {
-            this.user = user;                             // user is the user that was just loaded from the database. this.user is the variable, that we store the user in, so that we can access it outside of the scope of the Observable.
+            this.user = user;    
+            console.log(this.user)                         // user is the user that was just loaded from the database. this.user is the variable, that we store the user in, so that we can access it outside of the scope of the Observable.
+            console.log(this.user.id)                         // user is the user that was just loaded from the database. this.user is the variable, that we store the user in, so that we can access it outside of the scope of the Observable.
             this._update.changeUser(this.user);           // change the user in all components that are subscribed to dataService.currentUser
             this._update.changeImgType("userPic");   // ohne die Zeile, würde bei "upload new Photo" das Photo als PRODUCT pic behandelt werden. Wir wollen es aber als USER profile pic speichern. (Ist etwas ungeschickt gelöst...) 
             this.loadUserProfilePic();
@@ -98,6 +102,7 @@ export class DetailsComponent implements OnInit {
 
 
   loadUserProfilePic() {
+    console.log(this.user.id)
     this.uploadFileService.getUserPic(this.user.id).subscribe(       // load user image
       image => {
         console.log(image)
