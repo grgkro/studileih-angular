@@ -124,8 +124,8 @@ export class DataService {
     )
   }
 
-  addUser(user: User): Observable<User> {
-    return this.http.post<User>(this.usersPath, user).pipe(
+  addUser(formData: any): Observable<any> {
+    return this.http.post(this.usersPath,formData,{ responseType: 'text' }).pipe(
       catchError(this.errorHandler)
     )
   }
