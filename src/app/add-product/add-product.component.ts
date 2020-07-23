@@ -69,13 +69,6 @@ export class AddProductComponent implements OnInit {
     this._update.currentUser.subscribe(user => this.user = user)
   }
 
- 
-
-  remove(category: Category): void {
-    console.log("REMOVE", category)
-    category.selected = false;
-
-  }
 
   pickedCategory(category: Category) {
     console.log("PICKED: ", category);
@@ -111,21 +104,6 @@ export class AddProductComponent implements OnInit {
       input.value = '';
     }
   }
-
-//   changeSelected(category: Category) {
-//     console.log(category.name);
-//     this.selectedCategory = category;
-//     console.log("SEEEEEEEEE", this.selectedCategory)
-// // this.toggleHasSelectedCategory();
-//     // this.remove(category);
-
-
-//   }
-
-  // toggleHasSelectedCategory() {
-  //   this.hasSelectedCategory = !this.hasSelectedCategory; 
-  // }
-
 
   // https://angular.io/guide/component-interaction
   onFileSelected(selectedFiles: File[]) {
@@ -180,8 +158,13 @@ export class AddProductComponent implements OnInit {
     var formData: any = new FormData();
     formData.append("name", this.addForm.get('name').value);
     formData.append("title", this.addForm.get('title').value);
+    console.log("bla", this.categories)
+    this.categories.forEach(category => {
+      if (category.selected == true) {
+        formData.append("category", category.name);
+          console.log("APPEND: ", category, category.selected);
+      }});
     formData.append("price", this.addForm.get('price').value);
-    console.log(this.addForm.get('price').value)
     formData.append("userId", this.user.id);
     // the images have to be appended each at a time: https://stackoverflow.com/questions/47538736/upload-multiple-files-with-angular-to-spring-controller
     this.selectedFiles.forEach(file => {

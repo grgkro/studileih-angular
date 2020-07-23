@@ -18,30 +18,36 @@
           class="form-control" id="name" />
       </div>
 
+      <br>
+      <!-- here the user can chose one product category-->
+      <!-- https://material.angular.io/components/chips/overview-->
       <div>
         <label for="categoryList">Bitte wähle eine Kategorie:</label>
         <div >
+          <!-- this chip-list will only contain one chip (the selected Category). But we still need a list, because otherwise you cant let the user generate a chip in the #chipInput input field further down => <input ... [matChipInputFor]="categoryList" -->
           <mat-chip-list #categoryList class="chip-list" aria-label="Gewählte Kategorie">
             <div *ngFor="let category of categories">
               <div *ngIf="category.selected">
                 <mat-chip #selectedCat [removable]="removable"
-                (removed)="remove(category)" >{{ category.name }}
+                (removed)="category.selected = false;" >{{ category.name }}
                   <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
                 </mat-chip>
               </div>
             </div>
           </mat-chip-list>
 
+          <!-- [matChipInputSeparatorKeyCodes] = when the user presses COMMA or ENTER a new chip will get generated -->
+          <!-- [matChipInputAddOnBlur] = if the input field loses focus, the chip gets generated-->
           <label for="chipInput">Eigene Kategorie eingeben:</label>
               <input #chipInput placeholder="z.B. Boombox"
               [matChipInputFor]="categoryList"
-              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-              [matChipInputAddOnBlur]="addOnBlur"
+              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"      
+              [matChipInputAddOnBlur]="addOnBlur"                       
               (matChipInputTokenEnd)="add($event)">
         </div>
 
-        <label for="categoryList2">Oder wähle eine Kategorie aus der Liste:</label>
-        <mat-chip-list #categoryList2 aria-label="Produkt Kategorien">
+        <label for="preDefinedList">Oder wähle eine Kategorie aus der Liste:</label>
+        <mat-chip-list #preDefinedList aria-label="Produkt Kategorien">
           <mat-chip *ngFor="let category of categories" multiple="false" [selectable]="false"   
             (click)="pickedCategory(category)">
             {{category.name}}
@@ -51,7 +57,8 @@
 
 
       
-      
+      <br>
+    
 
 
 
