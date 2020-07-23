@@ -18,6 +18,43 @@
           class="form-control" id="name" />
       </div>
 
+      <div>
+        <label for="categoryList">Bitte wähle eine Kategorie:</label>
+        <div >
+          <mat-chip-list #categoryList class="chip-list" aria-label="Gewählte Kategorie">
+            <div *ngFor="let category of categories">
+              <div *ngIf="category.selected">
+                <mat-chip #selectedCat [removable]="removable"
+                (removed)="remove(category)" >{{ category.name }}
+                  <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                </mat-chip>
+              </div>
+            </div>
+          </mat-chip-list>
+
+          <label for="chipInput">Eigene Kategorie eingeben:</label>
+              <input #chipInput placeholder="z.B. Boombox"
+              [matChipInputFor]="categoryList"
+              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              [matChipInputAddOnBlur]="addOnBlur"
+              (matChipInputTokenEnd)="add($event)">
+        </div>
+
+        <label for="categoryList2">Oder wähle eine Kategorie aus der Liste:</label>
+        <mat-chip-list #categoryList2 aria-label="Produkt Kategorien">
+          <mat-chip *ngFor="let category of categories" multiple="false" [selectable]="false"   
+            (click)="pickedCategory(category)">
+            {{category.name}}
+          </mat-chip>
+        </mat-chip-list>
+      </div>
+
+
+      
+      
+
+
+
       <div class="form-group">
         <label for="price">Preis:</label>
         <input type="number" formControlName="price" value="0" name="price" class="form-control" id="price"
@@ -26,13 +63,13 @@
 
       <div class="row">
         <div class="col-sm-12">
-    
-    
+
+
           <app-upload-multiple-files (selectedFile)="onFileSelected($event)"></app-upload-multiple-files>
           <!-- when a file gets selected in the upload-file component, we will get that as an output emitted into the add-product component-->
-    
+
         </div>
-    
+
       </div>
 
       <div *ngIf="showOnlyNumbersMessage" class="alert alert-danger">
@@ -68,7 +105,7 @@
 
 
 
- 
+
   <br />
   <br />
   <strong>{{ response }}</strong>

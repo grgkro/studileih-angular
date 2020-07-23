@@ -7,6 +7,13 @@ import { User } from '../_models/user';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DataService } from '../data.service';
 
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import {MatChipInputEvent} from '@angular/material/chips';
+
+export interface Category {
+  name: string;
+  selected: boolean;
+}
 
 @Component({
   selector: 'app-add-product',
@@ -22,6 +29,23 @@ export class AddProductComponent implements OnInit {
   response: string;
   selectedFile: File;
   selectedFiles: File[] = [];
+
+  visible = true;
+  selectable = true;
+  removable = true;
+  categories: Category[] = [
+    {name: 'Bohrmaschine',
+    selected: true},
+    {name: 'Leiter',
+    selected: false},
+    {name: 'WLAN',
+    selected: false},
+  ];
+  selectedCategory: Category;
+  hasSelectedCategory: boolean = false;
+  
+  addOnBlur = true;
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
   constructor(private formBuilder: FormBuilder,
     private uploadFileService: UploadFileService,
@@ -45,10 +69,66 @@ export class AddProductComponent implements OnInit {
     this._update.currentUser.subscribe(user => this.user = user)
   }
 
+ 
+
+  remove(category: Category): void {
+    console.log("REMOVE", category)
+    category.selected = false;
+
+  }
+
+  pickedCategory(category: Category) {
+    console.log("PICKED: ", category);
+    if (category.selected) {
+      category.selected = false;
+    } else {
+      this.categories.forEach(category => {
+        if (category.selected == true) {
+            category.selected = false;
+            console.log("EACH: ", category, category.selected);
+        }});
+        category.selected = true;
+    }
+    console.log("Picked", category.name);
+  }
+
+  add(event: MatChipInputEvent): void {
+    const input = event.input;
+    const value = event.value;
+
+    // Add our category
+    if ((value || '').trim()) {
+      this.categories.forEach(category => {
+        if (category.selected == true) {
+            category.selected = false;
+            console.log("EACH: ", category, category.selected);
+        }});
+      this.categories.push({name: value.trim(), selected: true});
+    }
+
+    // Reset the input value
+    if (input) {
+      input.value = '';
+    }
+  }
+
+//   changeSelected(category: Category) {
+//     console.log(category.name);
+//     this.selectedCategory = category;
+//     console.log("SEEEEEEEEE", this.selectedCategory)
+// // this.toggleHasSelectedCategory();
+//     // this.remove(category);
+
+
+//   }
+
+  // toggleHasSelectedCategory() {
+  //   this.hasSelectedCategory = !this.hasSelectedCategory; 
+  // }
+
+
   // https://angular.io/guide/component-interaction
   onFileSelected(selectedFiles: File[]) {
-    // console.log(selectedFile)
-    // this.selectedFile = selectedFile
     this.selectedFiles = selectedFiles;
     console.log(this.selectedFiles)
   }
