@@ -1,6 +1,6 @@
 <div class="col user-container">
   <div class="jumbotron">
-    <h1 class="display-4">Add Product</h1>
+    <h1 class="display-4">Neues Angebot erstellen</h1>
 
     <hr class="my-2">
     <form [formGroup]="addForm" (ngSubmit)="onSubmit()">
@@ -12,10 +12,10 @@
       </div>
 
       <div class="form-group">
-        <label for="name">Kurze Beschreibung:</label>
-        <input type="text" formControlName="name"
-          placeholder="Gerne kann meine Bohrmaschine hier für 2-3 Tage ausgeleihen werden." name="Name"
-          class="form-control" id="name" />
+        <label for="description">Kurze Beschreibung:</label>
+        <input type="text" formControlName="description"
+          placeholder="Gerne kann meine Bohrmaschine hier für 2-3 Tage ausgeleihen werden." name="description"
+          class="form-control" id="description" />
       </div>
     
       <br>
@@ -70,7 +70,7 @@
             {{ onlyNumbersMessage }}
           </div>
           <br>
-          <input type="checkbox" id="beerCheckbox" checked="checked" formControlName="isBeerOk" >
+          <input type="checkbox" id="beerCheckbox" checked formControlName="isBeerOk" >
           <label for="beerCheckbox">Oder ein Bier.</label><br>
         </div>
 
@@ -97,7 +97,7 @@
           <div class="col-sm-3">
                <div class="md-form">
                     <input type="time" id="startTimeInput" class="form-control" 
-                         placeholder="13:00" mdbInput formControlName="pickUpTime" />
+                         placeholder="" mdbInput formControlName="pickUpTime" />
                     <label for="startTimeInput">Abholbar ab: </label>
                </div>
           </div>

@@ -5,7 +5,7 @@ export interface Product {
     result?: { [key: string]: any; };
     id?: number;   // id? means that that field can be empty
     userId?: number;
-    name?: string;
+    description?: string;
     title?: string;
     price?: number;
     isBeerOk?: boolean;

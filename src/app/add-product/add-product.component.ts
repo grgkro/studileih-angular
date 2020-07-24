@@ -87,7 +87,8 @@ export class AddProductComponent implements OnInit {
   ];
   selectedCategory: Category;
   hasSelectedCategory: boolean = false;
-  
+  timeNow = new Date().toString().split(' ')[4]   // gives us the current time in format hh:mm:ss
+
   addOnBlur = true;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   test: boolean =false;
@@ -102,19 +103,21 @@ export class AddProductComponent implements OnInit {
 
 
   ngOnInit(): void {
+    
     this.updateUser();   //  if the user changes, this will get updated
     this.addForm = this.formBuilder.group({            //https://angular.io/guide/reactive-forms
-      name: ['', Validators.required],
+      description: ['', Validators.required],
       title: ['', Validators.required],
       price: ['0'],
       isBeerOk: [true],
-      available: ['', Validators.required],
-      startDate: [],
+      available: [true],
+      startDate: [new Date()],
       endDate: [],
-      pickUpTime: [''],
+      pickUpTime: [this.timeNow.substring(0, this.timeNow.length-3)],  //timeNow is in format hh:mm:ss, but we want only hh:mm, so we take the substring without the last 3 chars
       returnTime: ['']
-
     });
+    console.log(this.addForm.get('startDate').value);
+    console.log(this.addForm.get('startDate').value.getTime()/1000.0);
   }
 
   updateUser(): void {
@@ -208,7 +211,7 @@ export class AddProductComponent implements OnInit {
     console.log(this.addForm.value);
 
     var formData: any = new FormData();
-    formData.append("name", this.addForm.get('name').value);
+    formData.append("description", this.addForm.get('description').value);
     formData.append("title", this.addForm.get('title').value);
     console.log("bla", this.categories)
     this.categories.forEach(category => {
@@ -219,11 +222,17 @@ export class AddProductComponent implements OnInit {
     formData.append("price", this.addForm.get('price').value);
     formData.append("isBeerOk", this.addForm.get('isBeerOk').value);
     formData.append("userId", this.user.id);
+    // https://www.epochconverter.com/
+    if (this.addForm.get('startDate').value) formData.append("startDate", this.addForm.get('startDate').value.getTime()/1000.0);   // transforms the startTime to MILLISECONDS since 1970-01-01 (epoche time)
+    console.log(this.addForm.get('startDate').value.getTime()/1000.0);
+    if (this.addForm.get('endDate').value) formData.append("endDate", this.addForm.get('endDate').value.getTime()/1000.0);
+    formData.append("pickUpTime", this.addForm.get('pickUpTime').value)
+    formData.append("returnTime", this.addForm.get('returnTime').value)
     // the images have to be appended each at a time: https://stackoverflow.com/questions/47538736/upload-multiple-files-with-angular-to-spring-controller
     this.selectedFiles.forEach(file => {
       formData.append("imageFiles", file);
     });
-console.log(this.addForm.get('isBeerOk').value)
+
     this._data.addProduct(formData)
       .subscribe((res: any) => {
         console.log(res);
