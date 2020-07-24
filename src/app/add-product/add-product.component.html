@@ -17,12 +17,13 @@
           placeholder="Gerne kann meine Bohrmaschine hier für 2-3 Tage ausgeleihen werden." name="Name"
           class="form-control" id="name" />
       </div>
-
+    
       <br>
       <!-- here the user can chose one product category-->
       <!-- https://material.angular.io/components/chips/overview-->
       <div>
         <label for="categoryList">Bitte wähle eine Kategorie:</label>
+        <br>
         <div >
           <!-- this chip-list will only contain one chip (the selected Category). But we still need a list, because otherwise you cant let the user generate a chip in the #chipInput input field further down => <input ... [matChipInputFor]="categoryList" -->
           <mat-chip-list #categoryList class="chip-list" aria-label="Gewählte Kategorie">
@@ -35,18 +36,22 @@
               </div>
             </div>
           </mat-chip-list>
+          <br>
 
           <!-- [matChipInputSeparatorKeyCodes] = when the user presses COMMA or ENTER a new chip will get generated -->
           <!-- [matChipInputAddOnBlur] = if the input field loses focus, the chip gets generated-->
           <label for="chipInput">Eigene Kategorie eingeben:</label>
+          <br>
               <input #chipInput placeholder="z.B. Boombox"
               [matChipInputFor]="categoryList"
               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"      
               [matChipInputAddOnBlur]="addOnBlur"                       
               (matChipInputTokenEnd)="add($event)">
         </div>
+        <br>
 
         <label for="preDefinedList">Oder wähle eine Kategorie aus der Liste:</label>
+        <br>
         <mat-chip-list #preDefinedList aria-label="Produkt Kategorien">
           <mat-chip *ngFor="let category of categories" multiple="false" [selectable]="false"   
             (click)="pickedCategory(category)">
@@ -55,20 +60,59 @@
         </mat-chip-list>
       </div>
 
-
-      
       <br>
-    
-
-
-
       <div class="form-group">
-        <label for="price">Preis:</label>
+        <label for="price">Preis in €:</label>
         <input type="number" formControlName="price" value="0" name="price" class="form-control" id="price"
           (input)="inputValidator($event)" />
-      </div>
+          <br>
+          <div *ngIf="showOnlyNumbersMessage" class="alert alert-danger">
+            {{ onlyNumbersMessage }}
+          </div>
+          <br>
+          <input type="checkbox" id="beerCheckbox" checked="checked" formControlName="isBeerOk" >
+          <label for="beerCheckbox">Oder ein Bier.</label><br>
+        </div>
 
-      <div class="row">
+        <div class="row">
+          <div class="col">
+               <h1 class="display-3">Du kannst hier einen Zeitraum angeben, von wann bis wann das Teil ausgeliehen werden kann. Oder einfach freilassen, falls der Zeitraum egal ist:</h1>
+          </div>
+     </div>
+     <hr class="my-2" />
+     <div class="row">
+          <div class="col-sm-3">
+               <mat-form-field appearance="fill">
+                    <mat-label>Von wann bis wann?</mat-label>
+
+                    <mat-date-range-input [rangePicker]="picker">
+                         <input matStartDate matInput placeholder="Startdatum" formControlName="startDate">
+                         <input matEndDate matInput placeholder="Enddatum" formControlName="endDate">
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matSuffix [for]="picker">
+                    </mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
+               </mat-form-field>
+          </div>
+          <div class="col-sm-3">
+               <div class="md-form">
+                    <input type="time" id="startTimeInput" class="form-control" 
+                         placeholder="13:00" mdbInput formControlName="pickUpTime" />
+                    <label for="startTimeInput">Abholbar ab: </label>
+               </div>
+          </div>
+          <div class="col-sm-3">
+               <div class="md-form">
+                    <input type="time" id="returnTimeInput" class="form-control"
+                         placeholder="13:00" mdbInput formControlName="returnTime" />
+                    <label for="returnTimeInput">Rückgabe ab: </label>
+               </div>
+          </div>
+          
+
+     </div>
+
+          <div class="row">
         <div class="col-sm-12">
 
 
@@ -79,9 +123,7 @@
 
       </div>
 
-      <div *ngIf="showOnlyNumbersMessage" class="alert alert-danger">
-        {{ onlyNumbersMessage }}
-      </div>
+      
 
       <!-- <div class="form-group">
               <label for="picPaths">Pic paths:</label>

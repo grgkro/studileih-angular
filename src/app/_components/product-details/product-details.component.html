@@ -17,6 +17,8 @@
                               <li><strong>Name:</strong> {{ product?.name }}</li>
                               <li><strong>Besitzer:</strong> {{ owner?.name }}</li>
                               <li><strong>Price:</strong> {{ product?.price }} €</li>
+                              <li><strong>Wird statt Geld auch ein Bier aktzeptiert?:</strong>
+                                   {{ (product?.isBeerOk) ? 'Nur Klares ist Wares.' : 'Nur Bares ist Wares.' }} €</li>
                               <li><strong>Product Id:</strong> {{ product?.id }}</li>
                               <li><strong>product.UserId:</strong> {{ product?.userId }}</li>
                               <li *ngIf="user"><strong>user.id (id des gerade aktiven users):</strong> {{ user?.id }}
@@ -80,14 +82,17 @@
                                         <div class="col-sm-12">
                                              <div *ngIf="isCurrentUserOwner">
                                                   <div *ngIf="showUploadComponent">
-                                                       <app-upload-file (selectedFile)="onFileSelected($event)"></app-upload-file>
+                                                       <app-upload-file (selectedFile)="onFileSelected($event)">
+                                                       </app-upload-file>
                                                        <!-- when a file gets selected in the upload-file component, we will get that as an output emitted into the product-details component-->
                                                   </div>
                                                   <button *ngIf="!showUploadComponent" (click)="toggleUploadComponent()"
-                                                       class="btn btn-success"  mdbBtn color="primary" class="waves-light" mdbWavesEffect>Foto hochladen</button>
+                                                       class="btn btn-success" mdbBtn color="primary"
+                                                       class="waves-light" mdbWavesEffect>Foto hochladen</button>
                                                   <div class="divider"></div>
                                                   <button *ngIf="deletedImages.length != 0" (click)="restoreLastImage()"
-                                                       class="btn btn-info"  mdbBtn color="secondary" class="waves-light" mdbWavesEffect>Letztes Foto zurückholen</button>
+                                                       class="btn btn-info" mdbBtn color="secondary" class="waves-light"
+                                                       mdbWavesEffect>Letztes Foto zurückholen</button>
                                              </div>
                                         </div>
                                         <div class="row">
@@ -117,72 +122,54 @@ https://stackoverflow.com/questions/62615428/angular-10-date-range-picker-calend
 https://blog.angular.io/version-10-of-angular-now-available-78960babd41
 -->
                                    <div *ngIf="!isCurrentUserOwner">
-               <!-- only show the date picker, if the user is not the owner of the product. The owner can't rent his own product, so he doesn't need the date picker to chose when he wants to rent it.-->
-               <div class="row">
-                    <div class="col">
-                         <h1 class="display-3">Ausleihen</h1>
-                    </div>
-               </div>
-               <hr class="my-2" />
-               <div class="row">
-                                        <div class="col-sm-3">
-                                             <mat-form-field appearance="fill">
-                                                  <mat-label>Von wann bis wann?</mat-label>
-
-                                                  <mat-date-range-input [rangePicker]="picker">
-                                                       <input matStartDate matInput placeholder="Anfangsdatum"
-                                                            [(ngModel)]="startDate">
-                                                       <input matEndDate matInput placeholder="Enddatum"
-                                                            [(ngModel)]="endDate">
-                                                  </mat-date-range-input>
-                                                  <mat-datepicker-toggle matSuffix [for]="picker">
-                                                  </mat-datepicker-toggle>
-                                                  <mat-date-range-picker #picker></mat-date-range-picker>
-                                             </mat-form-field>
-                                   </div>
-                                   <div class="col-sm-3">
-                                        <div class="md-form">
-                                             <input
-                                             
-                                               type="time"
-                                               id="input"
-                                               class="form-control"
-                                               value="13:00"
-                                               placeholder="13:00"
-                                               mdbInput
-                                               [(ngModel)]="pickUpTime"
-                                             />
-                                             <label for="input">Abholzeit am {{ startDate.toLocaleDateString() }} um: </label>
-                                           </div>
+                                        <!-- only show the date picker, if the user is not the owner of the product. The owner can't rent his own product, so he doesn't need the date picker to chose when he wants to rent it.-->
+                                        <div class="row">
+                                             <div class="col">
+                                                  <h1 class="display-3">Ausleihen</h1>
+                                             </div>
                                         </div>
-                                           <div class="col-sm-3">
-                                           <div class="md-form">
-                                             <input
-                                               type="time"
-                                               id="input"
-                                               class="form-control"
-                                               value="13:00"
-                                               placeholder="13:00"
-                                               mdbInput
-                                               [(ngModel)]="returnTime"
-                                             />
-                                             <label for="input">Rückgabe am {{ endDate.toLocaleDateString() }} um: </label>
-                                           </div>
+                                        <hr class="my-2" />
+                                        <div class="row">
+                                             <div class="col-sm-3">
+                                                  <mat-form-field appearance="fill">
+                                                       <mat-label>Von wann bis wann?</mat-label>
+
+                                                       <mat-date-range-input [rangePicker]="picker">
+                                                            <input matStartDate matInput placeholder="Anfangsdatum"
+                                                                 [(ngModel)]="startDate">
+                                                            <input matEndDate matInput placeholder="Enddatum"
+                                                                 [(ngModel)]="endDate">
+                                                       </mat-date-range-input>
+                                                       <mat-datepicker-toggle matSuffix [for]="picker">
+                                                       </mat-datepicker-toggle>
+                                                       <mat-date-range-picker #picker></mat-date-range-picker>
+                                                  </mat-form-field>
+                                             </div>
+                                             <div class="col-sm-3">
+                                                  <div class="md-form">
+                                                       <input type="time" id="input" class="form-control" value="13:00"
+                                                            placeholder="13:00" mdbInput [(ngModel)]="pickUpTime" />
+                                                       <label for="input">Abholzeit am
+                                                            {{ startDate.toLocaleDateString() }} um: </label>
+                                                  </div>
+                                             </div>
+                                             <div class="col-sm-3">
+                                                  <div class="md-form">
+                                                       <input type="time" id="input" class="form-control" value="13:00"
+                                                            placeholder="13:00" mdbInput [(ngModel)]="returnTime" />
+                                                       <label for="input">Rückgabe am {{ endDate.toLocaleDateString() }}
+                                                            um: </label>
+                                                  </div>
+                                             </div>
+                                             <div class="col-sm-3">
+                                                  <button class="button" type="submit" mdbBtn color="primary"
+                                                       class="waves-light" mdbWavesEffect
+                                                       (click)="onAnfrageSubmit()">Anfragen</button>
+                                             </div>
+                                        </div>
                                    </div>
-                                   <div class="col-sm-3">
-                                        <button class="button" type="submit" mdbBtn color="primary" class="waves-light" mdbWavesEffect
-                                             (click)="onAnfrageSubmit()">Anfragen</button>
-                                   </div>
-                                             
-
-
-                                         
-      
-
                               </div>
                          </div>
                     </div>
                </div>
           </div>
-     </div>
-</div>

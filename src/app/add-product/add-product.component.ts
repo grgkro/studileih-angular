@@ -40,12 +40,58 @@ export class AddProductComponent implements OnInit {
     selected: false},
     {name: 'WLAN',
     selected: false},
+    {name: 'Staubsauger',
+    selected: false},
+    {name: 'DVD',
+    selected: false},
+    {name: 'Werkzeug',
+    selected: false},
+    {name: 'Grillzeug',
+    selected: false},
+    {name: 'Mixer',
+    selected: false},
+    {name: 'Küchenwaage',
+    selected: false},
+    {name: 'Waage',
+    selected: false},
+    {name: 'Gästematraze',
+    selected: false},
+    {name: 'Beamer',
+    selected: false},
+    {name: 'Fahrrad',
+    selected: false},
+    {name: 'Bücher',
+    selected: false},
+    {name: 'Brettspiele',
+    selected: false},
+    {name: 'Spielekonsole',
+    selected: false},
+    {name: 'Raclette',
+    selected: false},
+    {name: 'Campingausrüstung',
+    selected: false},
+    {name: 'Akkuschrauber',
+    selected: false},
+    {name: 'Schlitten',
+    selected: false},
+    {name: 'Schraubenzieher',
+    selected: false},
+    {name: 'Auto',
+    selected: false},
+    {name: 'Lebensmittel',
+    selected: false},
+    {name: 'Zeit',
+    selected: false},
+    {name: 'Stühle',
+    selected: false},
   ];
   selectedCategory: Category;
   hasSelectedCategory: boolean = false;
   
   addOnBlur = true;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+  test: boolean =false;
+  checked: boolean = false;
 
   constructor(private formBuilder: FormBuilder,
     private uploadFileService: UploadFileService,
@@ -61,7 +107,13 @@ export class AddProductComponent implements OnInit {
       name: ['', Validators.required],
       title: ['', Validators.required],
       price: ['0'],
+      isBeerOk: [true],
       available: ['', Validators.required],
+      startDate: [],
+      endDate: [],
+      pickUpTime: [''],
+      returnTime: ['']
+
     });
   }
 
@@ -165,12 +217,13 @@ export class AddProductComponent implements OnInit {
           console.log("APPEND: ", category, category.selected);
       }});
     formData.append("price", this.addForm.get('price').value);
+    formData.append("isBeerOk", this.addForm.get('isBeerOk').value);
     formData.append("userId", this.user.id);
     // the images have to be appended each at a time: https://stackoverflow.com/questions/47538736/upload-multiple-files-with-angular-to-spring-controller
     this.selectedFiles.forEach(file => {
       formData.append("imageFiles", file);
     });
-console.log(this.selectedFiles[0])
+console.log(this.addForm.get('isBeerOk').value)
     this._data.addProduct(formData)
       .subscribe((res: any) => {
         console.log(res);
