@@ -6,18 +6,18 @@ body {
     margin: 0;
     // font-family:'Montserrat' !important;  //this doesnt work, it seems like it gets overwritten by bootstrap
     height: 100vh;
-    background-image: linear-gradient(45deg, rgb(246, 250, 227), #fcf6ec, #f5e1e1);
-    background-size: 800%;
-    animation: bg-animation 20s infinite alternate; //alternate: the animation doesnt jump back and simply restart (which would be very noticable). instead it starts at the end in the opposite direction.
+    // background-image: linear-gradient(45deg, rgb(246, 250, 227), #fcf6ec, #f5e1e1);
+    // background-size: 800%;
+    // // animation: bg-animation 20s infinite alternate; //alternate: the animation doesnt jump back and simply restart (which would be very noticable). instead it starts at the end in the opposite direction.
 }
 // animation for slow changing the background color (duration: 20sec) https://www.youtube.com/watch?v=f3mwKLXpOLk
-@keyframes bg-animation {
-    0% {
-        background-position: left top;}
-    100% {
-        background-position: right bottom;
-    }
-}
+// @keyframes bg-animation {
+//     0% {
+//         background-position: left top;}
+//     100% {
+//         background-position: right bottom;
+//     }
+// }
 
 .images {
     height:200px;
@@ -76,4 +76,15 @@ body {
 html, body { height: 100%; }
 body { margin: 0; 
     //font-family: Roboto, "Helvetica Neue", sans-serif; 
+}
+
+.bg {
+  /* The image used */
+  background-image: url("assets/images/Background-25prozentOpacity.png");  /* Change photo opacity: https://www.peko-step.com/en/tool/alphachannel_en.html
+  /* Full height */
+  height: 100%;
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
