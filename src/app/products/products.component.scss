@@ -175,6 +175,12 @@ img[src^="productImagesMap"] {
   border: 10px solid black;
 }
 
+.row {
+  border-bottom: 1px solid #000;
+}
+.col {
+  border-bottom: 1px solid #000;
+}
 // div { 
 //   border: 1px solid;
 // }
@@ -188,3 +194,4 @@ img[src^="productImagesMap"] {
 // }
 
 // img { border: 1px solid black;}
+

@@ -8,9 +8,24 @@
     overflow: hidden !important;
 }
 
-inline {
-    display: inline;
+.inline {
+    display: inline-block;
 }
+
+.row {
+    border: 1px solid #000;
+  }
+  .col {
+    border: 1px solid #000;
+  }
+
+  @media (max-width: 575px) {
+    .break-text {
+        max-width: 100px;
+    }
+  }
+
+  
 
 // div { 
 //   border: 1px solid;
