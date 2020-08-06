@@ -69,6 +69,9 @@
           <div *ngIf="showOnlyNumbersMessage" class="alert alert-danger">
             {{ onlyNumbersMessage }}
           </div>
+          <div *ngIf="priceTooHigh" class="alert alert-danger">
+            {{ priceTooHighMessage }}
+          </div>
           <br>
           <input type="checkbox" id="beerCheckbox" checked formControlName="isBeerOk" >
           <label for="beerCheckbox">Oder ein Bier.</label><br>

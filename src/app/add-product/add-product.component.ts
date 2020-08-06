@@ -25,10 +25,14 @@ export class AddProductComponent implements OnInit {
   addForm: FormGroup;
   onlyNumbersMessage: string = "Bitte keinen Text oder negative Zahlen als Preis eingeben. 😉😉"
   showOnlyNumbersMessage: boolean = false;
+  priceTooHigh = false;
+  maxPrice: number = 250; // nobody is going to rent out a ferarri on that site...
+  priceTooHighMessage: string = "Der Preis darf maximal " + this.maxPrice + " € betragen."; 
   user: User;
   response: string;
   selectedFile: File;
   selectedFiles: File[] = [];
+  
 
   visible = true;
   selectable = true;
@@ -197,6 +201,11 @@ export class AddProductComponent implements OnInit {
       this.showOnlyNumbersMessage = true;
     } else {
       this.showOnlyNumbersMessage = false;
+    }
+    if (this.addForm.get('price').value > this.maxPrice) {
+      this.priceTooHigh = true;
+    } else {
+      this.priceTooHigh = false;
     }
   }
 

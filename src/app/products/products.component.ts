@@ -48,7 +48,7 @@ export class ProductsComponent implements OnInit {
   startAt = performance.now();  // how to check how long it took to execute code -> https://www.youtube.com/watch?v=mNJ06S60B9k - 15:30 min
  
   products: Product[];
-
+  productsWithoutDormProducts: Product[];
   dormProducts: Product[] = [];   // will contain all products of the dorm that is currently selected (selectedDorm) 
   dormImages = new Map();
   usersFromSelectedDorm: User[] = [];
@@ -71,7 +71,7 @@ export class ProductsComponent implements OnInit {
     this.getSelectedDorm();  // get the currently selected dorm by subscribing to the currentSelectedDorm Observable
     this.loadProductImages();
     this.updateUser();   //  we need to know which user is currently logged in, because if he's the owner of a product, he will not see the "Ausleih" button, and instead he will see the "Edit" and "Delete" buttons. 
-
+   
   }
 
   ngOnDestroy() {            // Angular takes care of unsubscribing from many observable subscriptions like those returned from the Http service or when using the async pipe. But the routeParam$ and the _update.currentShowUploadComponent needs to be unsubscribed by hand on ngDestroy. Otherwise, we risk a memory leak when the component is destroyed. https://malcoded.com/posts/angular-async-pipe/   https://www.digitalocean.com/community/tutorials/angular-takeuntil-rxjs-unsubscribe
@@ -130,6 +130,7 @@ export class ProductsComponent implements OnInit {
     // and then we filter all products for the ones that are owned by one of the users from that dorm (product.userId = user.id)
     //TODO: sehr unsauber gelöst -> im helperService gibt es die Funktion filterProductsByUsers schon, es klappt nur noch nicht die hier einzubinden.
     this.dormProducts = this._helper.filterProductsByUsers(this.products, usersFromSelectedDorm);
+    this.productsWithoutDormProducts = this.products.filter(x => !this.dormProducts.includes(x));
   }
 
   //load the main image for each product
