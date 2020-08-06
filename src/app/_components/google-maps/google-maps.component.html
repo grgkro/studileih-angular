@@ -1,41 +1,38 @@
-<!-- <div class="container"> -->
-    <div class="row" >
-        <div class="col  break-text" style="min-width: 200px; " >
+<div class="container">
+    <div class="row " >
+        <div class="col break-text" style="min-width: 200px; padding-top: 0.4rem; position: relative; left: -1rem;" >
             <h1 >Bitte wähle dein Wohnheim aus:</h1>
         </div>
-
-        <div class="row">
-            <div class="col-sm " style="min-width: 200px; position:relative; right: 0.95rem; ">
-                <mat-form-field appearance="fill">
-                    <mat-label>Stadt</mat-label>
-                    <mat-select [formControl]="cityControl" (selectionChange)="changeSelectedCity($event)">
-                        <mat-option style="background-color: rgb(0, 168, 255, 0.5); font-size: 15px;"
-                            *ngFor="let city of allCities" [value]="city">
-                            {{city}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-            <div class="col-sm " style="min-width: 200px; position:relative; right: 0.95rem; ">
-                <mat-form-field appearance="fill">
-                    <mat-label>Wohnheim</mat-label>
-                    <mat-select [formControl]="dormControl" (selectionChange)="changeSelectedDorm($event)">
-                        <mat-optgroup style="background-color: rgb(0, 168, 255, 0.8);" *ngFor="let group of dormGroups"
-                            [label]="group.name" [disabled]="group.disabled">
-                            <mat-option style="background-color: rgb(0, 168, 255, 0.5);" *ngFor="let dorms of group.dorms"
-                                [value]="dorms.name">
-                                {{dorms.name}}
-                            </mat-option>
-                        </mat-optgroup>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-        </div>
-    
         
-    
+            <div class="row">
+                <div class="col-sm " style="min-width: 200px; ">
+                    <mat-form-field appearance="fill" >
+                        <mat-label style="font-weight: 600; font-size: 1rem">Stadt</mat-label>
+                        <mat-select [formControl]="cityControl" (selectionChange)="changeSelectedCity($event)">
+                            <mat-option style="background-color: rgb(0, 168, 255, 0.5); font-size: 15px;"
+                                *ngFor="let city of allCities" [value]="city">
+                                {{city}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="col-sm " style="min-width: 200px;">
+                    <mat-form-field appearance="fill">
+                        <mat-label style="font-weight: 600; font-size: 1rem">Wohnheim</mat-label>
+                        <mat-select  [formControl]="dormControl" (selectionChange)="changeSelectedDorm($event)">
+                            <mat-optgroup style="color: red !important;" *ngFor="let group of dormGroups"
+                                [label]="group.name" [disabled]="group.disabled">
+                                <mat-option style="background-color: rgb(0, 168, 255, 0.5);" *ngFor="let dorms of group.dorms"
+                                    [value]="dorms.name">
+                                    {{dorms.name}}
+                                </mat-option>
+                            </mat-optgroup>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
     </div>
-<!-- </div> -->
+
 
 <!-- <hr class="my-2" /> -->
 <!-- <div class="col-md-auto">
@@ -45,31 +42,9 @@
                 </label>
             </div> -->
 
-<!-- <div class="row">
-            <div class="col">
-                <h2>Bitte wähl deine City aus:</h2>
-            </div>
-            <div class="col-md-auto">
-                <mat-form-field appearance="fill">
-                    <mat-label>Stadt</mat-label>
-                    <mat-select [formControl]="cityControl">
-                        <mat-option>-- None --</mat-option>
-                        <mat-optgroup *ngFor="let group of dormGroups" [label]="group.name"
-                            [disabled]="group.disabled">
-                            <mat-option *ngFor="let dorm of group.dorm" [value]="dorm.city" >
-                                {{dorm.city}}
-                            </mat-option>
-                        </mat-optgroup>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-        </div> -->
-<div class="row">
 
-
-</div>
 <div class="row">
-    <div class="col">
+    <div class="col" style="padding: 0px;">
         <!-- loads the google maps and centers it at Stuttgart (lat = 48, lng = 9) -->
         <div *ngIf="selectedDorm == null">
             <agm-map [latitude]=dormsToShow[0].lat [longitude]=dormsToShow[0].lng [fitBounds]="true">
@@ -124,4 +99,5 @@
             </agm-map>
         </div>
     </div>
+</div>
 </div>

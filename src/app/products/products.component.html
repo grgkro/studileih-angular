@@ -1,15 +1,16 @@
-
-
-
-
+<div class="container">
+  <div class="row">
+    <div class="col-12">
       <section class="section-title">
-          <img src="../../assets/images/logo.png">   <!-- normally you would add a alt="" here, but that was always quickly displayed before angular loaded the img. So it's better looking without alt="" here. --> 
-          <h1>Studileih</h1>
-            <hr/>
-          <h2>Sharing is Caring</h2>
+        <img src="../../assets/images/logo.png">
+        <!-- normally you would add a alt="" here, but that was always quickly displayed before angular loaded the img. So it's better looking without alt="" here. -->
+        <h1>Studileih</h1>
+        <hr />
+        <h2>Sharing is Caring</h2>
       </section>
-     
-  
+    </div>
+  </div>
+
   <div class="row">
     <div class="col-12">
       <!-- <div class="col-12" align="center"> -->
@@ -22,93 +23,13 @@
     </div>
   </div>
 
-  <div>
-    <div class="row justify-content-md-center ">
-      <div class="col">
-        <h1 >Im Wohnheim {{ selectedDorm.name }} wird folgendes zum Ausleihen angeboten:</h1>
-        <!-- <hr class="my-2" /> -->
-      </div>
-      <div class="col-md-auto">
-      </div>
-      <div class="col col-lg-2">
-        <a routerLink="/add-product" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}">
-          <i class="material-icons">add</i>
-        </a>
-      </div>
-    </div>
+  <br>
+  <br>
 
-
-    <div [@listStagger]="dormProducts" class="list-inline row justify-content-md-left">
-      <!--listStagger ist eine spezielle Animation, bei der die Liste nicht auf einmal dargestellt wird, sondern zeitlich verzögert auftaucht-->
-      <div class="col-md-3" *ngFor="let product of dormProducts" class="list-inline-item tab1cards">
-        <div>
-
-
-          <mat-card class="example-card card">
-            <!-- wenn die produktcard irgendwo angeklickt wird, wird man weitergeleitet per routerLink zur details component.-->
-            <a routerLink="/product-details/{{ product.id }}">
-              <mat-card-header>
-                <mat-card-title class="cardTitle">{{ product.title }}</mat-card-title>
-                <mat-card-subtitle class="cardSubTitle">{{ product.name }}</mat-card-subtitle>
-              </mat-card-header>
-              <div *ngIf="imagesLoaded | async">
-                <!-- https://malcoded.com/posts/angular-async-pipe/ -->
-                <div>
-                  <!-- loads the product image. If no image is available, a default pic gets shown *ngIf="map.get(i+1); else noImageFound"-->
-                  <img mat-card-image class="cardImage" [src]="productImagesMap.get(product.id)" alt="Product Picture"
-                    *ngIf="productImagesMap.get(product.id); else noImageFound">
-                  <ng-template #noImageFound>
-                    <img mat-card-image class="cardImage"
-                      src="https://cdn-0.askleo.com/wp-content/uploads/2013/07/image_not_found.png" alt="Fallbackimage">
-                    <!-- <= default picture -->
-                  </ng-template>
-                </div>
-              </div>
-
-              <mat-card-content class="cardContent">
-                <p>
-                  Beschreibung: Hallo liebe Freunde, ich verleihe hier meine schönen Sachen. Bei Interesse gerne melden.
-                  Alles jute!
-                  <br>
-                  Preis: {{ product.price }} €
-
-                </p>
-              </mat-card-content>
-            </a>
-
-            <div *ngIf="checkIsUserOwner(product.userId)">
-              <mat-card-actions class="cardActions">
-
-                <button mat-button class="btn btn-success">
-                  <a routerLink="/edit-product/{{ product.id }}">Edit</a>
-                </button>
-                <div class="divider"></div>
-                <button mat-button (click)="deleteProduct(product.id)" class="btn btn-danger">
-                  Delete
-                </button>
-
-              </mat-card-actions>
-            </div>
-            <div *ngIf="!checkIsUserOwner(product.userId)">
-              <mat-card-actions class="cardActions">
-
-                <button class="btn btn-success" mdbBtn color="primary" class="waves-light"
-                  (click)="redirectRoute('/product-details/' + product.id)" mdbWavesEffect>Ausleihen</button>
-
-              </mat-card-actions>
-            </div>
-          </mat-card>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-
-  <div class="row justify-content-md-center">
+  <div class="row justify-content-md-center ">
     <div class="col">
-      <h1>Alle Produkte auf Studileih:</h1>
-      <hr class="my-2" />
+      <h1>Im Wohnheim {{ selectedDorm.name }} wird folgendes zum Ausleihen angeboten:</h1>
+      <!-- <hr class="my-2" /> -->
     </div>
     <div class="col-md-auto">
     </div>
@@ -118,71 +39,250 @@
       </a>
     </div>
   </div>
-  <ul [@listStagger]="products">
-    <!--listStagger ist eine spezielle Animation, bei der die Liste nicht auf einmal dargestellt wird, sondern zeitlich verzögert auftaucht-->
-    <li *ngFor="let product of products">
 
-      <div class="row">
-        <div class="col-3">
-          <a routerLink="/product-details/{{ product.id }}">
-            <p class="blocktext">{{ product.title }}</p>
-          </a>
-          <!-- wenn der username angeklickt wird, wird man weitergeleitet per routerLink zur details component.-->
-          <ul>
-            <li>
-              <p class="blocktext">name: {{ product.name }}</p>
-            </li>
-            <li>
-              <p class="blocktext">price: {{ product.price }}</p>
-            </li>
-            <li>
-              <p class="blocktext">id: {{ product.id }}</p>
-            </li>
-          </ul>
-        </div>
-        <div class="col-6" align="center">
-          <ul>
-            <li *ngIf="imagesLoaded | async">
-              <!-- https://malcoded.com/posts/angular-async-pipe/ -->
-              <div>
-                <!-- loads the product image. If no image is available, a default pic gets shown *ngIf="map.get(i+1); else noImageFound"-->
-                <img [src]="productImagesMap.get(product.id)" class="fixImageSize img-thumbnail" alt="Product Picture"
-                  *ngIf="productImagesMap.get(product.id); else noImageFound">
-                <ng-template #noImageFound>
-                  <img src="https://cdn-0.askleo.com/wp-content/uploads/2013/07/image_not_found.png"
-                    alt="Fallbackimage">
-                  <!-- <= default picture -->
-                </ng-template>
+  <br>
+  <br>
+  <!-- <div>
+    <div class="row">
+      <div class="col-12">
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+          <div class="row">
+            <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+              <div class="carousel-inner">
+                
+                <div class="carousel-item active">
+                  <div class="row">
+                    <div *ngFor="let product of dormProducts | slice:0:3; let i = index">
+                     
+                      <div class="col-md-2 col-sm-6 col-12" *ngIf="imagesLoaded | async">
+                        <img class="cardImage" [src]="productImagesMap.get(product.id)" alt="Product Picture"
+                          *ngIf="productImagesMap.get(product.id); else noImageFound">
+                        <ng-template #noImageFound>
+                          <img class="cardImage" src="../../assets/images/noImage.JPG" alt="Fallbackimage">
+                     
+                        </ng-template>
+                        <br>
+                        <br>
+                        <div class="row">
+                          <div class="col" style="justify-content-left; padding-left: 2rem;">
+                            <p class="cardTitle">{{ product.title | slice:0:10 }} {{ product.price }} €</p>
+                          </div>
+                        </div>
+                    
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div *ngFor="let product2 of dormProducts | slice:3:10 ; let c = index">
+                  {{c}}
+                  <div *ngIf="(c % 3) == 1">
+                    <div class="carousel-item" >
+                      <div class="row">
+                       
+                        <div *ngFor="let product of dormProducts | slice:c:(c+3); let i = index">
+                          {{i}} und {{c}}
+                            <div class="col-md-2 col-sm-6 col-12" *ngIf="imagesLoaded | async">
+                              <img class="cardImage" [src]="productImagesMap.get(product.id)" alt="Product Picture"
+                                *ngIf="productImagesMap.get(product.id); else noImageFound">
+                              <ng-template #noImageFound>
+                                <img class="cardImage" src="../../assets/images/noImage.JPG" alt="Fallbackimage">
+                               
+                              </ng-template>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+
               </div>
-            </li>
-          </ul>
+              <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+              </a>
+              <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+              </a>
+            </div>
+          </div>
         </div>
+      </div>
+    </div>
+  </div> -->
 
-        <div class="col-3" align="center">
+
+
+  <div [@listStagger]="dormProducts" class=" row " style=" justify-content: left;">
+    <!--listStagger ist eine spezielle Animation, bei der die Liste nicht auf einmal dargestellt wird, sondern zeitlich verzögert auftaucht-->
+    <div *ngFor="let product of dormProducts; let i = index">
+      <!-- das 1., 2. und 3. Produkt in jeder Reihe soll padding bekommen, die 4. (= jeweils letztes Produkt in jeder Reihe) soll kein padding bekommen, da der rechte Bildrand mit dem containerrand aligned sein soll. -->
+      <div class="imagePaddingLeft" [ngClass]="{'imagePaddingRight': ((i+1) % 3 != 0) || (i == 0) }">
+        <!-- wenn die produktcard irgendwo angeklickt wird, wird man weitergeleitet per routerLink zur details component.-->
+        <a routerLink="/product-details/{{ product.id }}">
+          <div *ngIf="imagesLoaded | async">
+            <!-- https://malcoded.com/posts/angular-async-pipe/ -->
+            <div>
+              <!-- loads the product image. If no image is available, a default pic gets shown *ngIf="map.get(i+1); else noImageFound"-->
+              <img class="cardImage" [src]="productImagesMap.get(product.id)" alt="Product Picture"
+                *ngIf="productImagesMap.get(product.id); else noImageFound">
+              <ng-template #noImageFound>
+                <img class="cardImage" src="../../assets/images/noImage.JPG" alt="Fallbackimage">
+                <!-- <= default picture -->
+              </ng-template>
+            </div>
+          </div>
+
+          <br>
+
+          <!-- https://stackoverflow.com/questions/16754608/cause-line-to-wrap-to-new-line-after-100-characters -->
+          <!-- https://stackoverflow.com/questions/23310736/two-p-tag-in-same-line -->
+          <div style="overflow: hidden;">
+            <p class="cardTitle cardText" *ngIf="product.title.length < 31" style="float: left;">{{ product.title }}</p>
+            <p class="cardTitle cardText" *ngIf="product.title.length > 30" style="float: left;">
+              {{ product.title | slice:0:30 }}...</p>
+            <p class="priceTitle cardText" style="float: right;">{{ product.price }} € </p>
+          </div>
 
 
 
-          <ul>
-            <li>
-              <button class="btn btn-light">
-                <a routerLink="/product-details/{{ product.id }}">View</a>
+
+          <!-- <mat-card-subtitle class="cardSubTitle">{{ product.name }}</mat-card-subtitle> -->
+
+        </a>
+      </div>
+      <!-- <div *ngIf="i < 4"> -->
+
+
+
+
+
+      <!-- <div *ngIf="checkIsUserOwner(product.userId)">
+              
+                <button class="btn btn-success" mdbBtn color="primary" class="waves-light"
+                (click)="redirectRoute('/edit-product/' + product.id)" mdbWavesEffect>
+                Bearbeiten
+                </button>
+                
+                <div class="divider"></div>
+                <button mat-button (click)="deleteProduct(product.id)" class="btn btn-danger">
+                  Delete
+                </button>
+
+             
+            </div>
+            <div *ngIf="!checkIsUserOwner(product.userId)">
+             
+                <button class="btn btn-success" mdbBtn color="primary" class="waves-light"
+                  (click)="redirectRoute('/product-details/' + product.id)" mdbWavesEffect>Ausleihen</button>
+
+             
+            </div> -->
+
+
+      <br>
+    </div>
+  </div>
+
+  <br>
+  <br>
+
+  <div class="row justify-content-md-center ">
+    <div class="col">
+      <h1>In den anderen Wohnheimen wird außerdem angeboten:</h1>
+      <!-- <hr class="my-2" /> -->
+    </div>
+    <div class="col-md-auto">
+    </div>
+    <div class="col col-lg-2">
+      <a routerLink="/add-product" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}">
+        <i class="material-icons">add</i>
+      </a>
+    </div>
+  </div>
+
+  <br>
+  <br>
+
+  <div [@listStagger]="productsWithoutDormProducts" class=" row " style=" justify-content: left;">
+    <!--listStagger ist eine spezielle Animation, bei der die Liste nicht auf einmal dargestellt wird, sondern zeitlich verzögert auftaucht-->
+    <div *ngFor="let product of productsWithoutDormProducts; let i = index">
+      <!-- das 1., 2. und 3. Produkt in jeder Reihe soll padding bekommen, die 4. (= jeweils letztes Produkt in jeder Reihe) soll kein padding bekommen, da der rechte Bildrand mit dem containerrand aligned sein soll. -->
+      <div class="imagePaddingLeft" [ngClass]="{'imagePaddingRight': ((i+1) % 3 != 0) || (i == 0) }">
+        <!-- wenn die produktcard irgendwo angeklickt wird, wird man weitergeleitet per routerLink zur details component.-->
+        <a routerLink="/product-details/{{ product.id }}">
+          <div *ngIf="imagesLoaded | async">
+            <!-- https://malcoded.com/posts/angular-async-pipe/ -->
+            <div>
+              <!-- loads the product image. If no image is available, a default pic gets shown *ngIf="map.get(i+1); else noImageFound"-->
+              <img class="cardImage" [src]="productImagesMap.get(product.id)" alt="Product Picture"
+                *ngIf="productImagesMap.get(product.id); else noImageFound">
+              <ng-template #noImageFound>
+                <img class="cardImage" src="../../assets/images/noImage.JPG" alt="Fallbackimage">
+                <!-- <= default picture -->
+              </ng-template>
+            </div>
+          </div>
+
+          <br>
+
+          <!-- https://stackoverflow.com/questions/16754608/cause-line-to-wrap-to-new-line-after-100-characters -->
+          <!-- https://stackoverflow.com/questions/23310736/two-p-tag-in-same-line -->
+          <div style="overflow: hidden;">
+            <p class="cardTitle cardText" *ngIf="product.title.length < 31" style="float: left;">{{ product.title }}</p>
+            <p class="cardTitle cardText" *ngIf="product.title.length > 30" style="float: left;">
+              {{ product.title | slice:0:30 }}...</p>
+            <p class="priceTitle cardText" style="float: right;">{{ product.price }} € </p>
+            <br>
+            <br>
+            <br>
+            <p class="priceTitle cardText" *ngIf="product.title.length < 16" style="float: left;">{{  product.dorm }}
+            </p>
+            <p class="priceTitle cardText" *ngIf="product.title.length > 15" style="float: left;">
+              {{  product.dorm | slice:0:15 }}... </p>
+            <p class="priceTitle cardText" style="float: right;">{{ product.city | slice:0:15 }} </p>
+          </div>
+
+
+
+
+          <!-- <mat-card-subtitle class="cardSubTitle">{{ product.name }}</mat-card-subtitle> -->
+
+        </a>
+      </div>
+      <!-- <div *ngIf="i < 4"> -->
+
+
+
+
+
+      <!-- <div *ngIf="checkIsUserOwner(product.userId)">
+            
+              <button class="btn btn-success" mdbBtn color="primary" class="waves-light"
+              (click)="redirectRoute('/edit-product/' + product.id)" mdbWavesEffect>
+              Bearbeiten
               </button>
-            </li>
-            <li>
-              <button type="button" class="btn btn-info">
-                <a routerLink="/edit-product/{{ product.id }}">Edit</a>
-              </button>
-            </li>
-            <li>
-              <button type="button" (click)="deleteProduct(product.id)" class="btn btn-danger">
+              
+              <div class="divider"></div>
+              <button mat-button (click)="deleteProduct(product.id)" class="btn btn-danger">
                 Delete
               </button>
-            </li>
-          </ul>
 
-        </div>
+           
+          </div>
+          <div *ngIf="!checkIsUserOwner(product.userId)">
+           
+              <button class="btn btn-success" mdbBtn color="primary" class="waves-light"
+                (click)="redirectRoute('/product-details/' + product.id)" mdbWavesEffect>Ausleihen</button>
 
-      </div>
+           
+          </div> -->
 
-    </li>
-  </ul>
+
+      <br>
+    </div>
+  </div>
+</div>

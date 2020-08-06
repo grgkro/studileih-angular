@@ -64,22 +64,44 @@ a{
   background-size: cover;
 }
 
-.cardTitle {
-  height: 4rem;
+.cardText {
+  height: 2rem;
+  font-weight:300;
+  // text-decoration: none solid rgb(0, 0, 0);
   font-size: 1.5rem;
-  font-style: bold;
-  
+  color: black;
+}
+
+.cardTitle {
+    max-width:14ch !important;  // 1ch equals the width of one "0", so about the average of a char in that font and font-size.
+    word-wrap:break-word !important;
+    padding-left: -0.5rem;
+}
+
+// .priceTitle {
+//     padding-right: 0rem;
+// }
+
+.imagePaddingLeft {
+  padding-left: 0.8rem;
+}
+
+.imagePaddingRight {
+  padding-right: 4.1rem !important;
 }
 
 .cardSubTitle {
   height: 2rem;
-  font-size: 1rem;font-style: italic;
+  font-size: 1rem;
+  font-style: italic;
 }
 
 .cardImage {
-  padding-left: 1rem;
-  padding-right: 1rem;
-  height: 8rem;
+height: 200px; 
+width: 315px;
+border-radius: 25px 25px 25px 25px;
+ border: 1.5px solid rgb(0, 168, 255, 0.5); 
+   box-shadow: 12px 12px 12px 0 rgba(0,0,0, 0.3);
 }
 
 .cardContent {
@@ -112,6 +134,10 @@ a{
   padding: 16px;
   text-align: center;
   margin: 10px;
+  opacity: 1;
+  background-color:rgb(0,0,0,0);
+  border: 0px;
+  shadow: 0px 0px;
 //   box-shadow: -12px -12px 12px 0 rgba(255,255,255, 1);
 //   box-shadow: 12px 12px 12px 0 rgba(0,0,0, 0.3);
 
@@ -128,10 +154,9 @@ a{
   
 }
 
-// make the cards change color on hover: https://www.youtube.com/watch?v=f3mwKLXpOLk
-.card:hover,
-.card:focus {
-  background-position: right;
+// https://stackoverflow.com/questions/4502633/how-to-affect-other-elements-when-one-element-is-hovered
+a:hover .cardText {
+  color: rgb(0, 160, 255, 0.5);
 }
 
 
@@ -175,14 +200,14 @@ img[src^="productImagesMap"] {
   border: 10px solid black;
 }
 
-.row {
-  border-bottom: 1px solid #000;
-}
-.col {
-  border-bottom: 1px solid #000;
-}
+// .row {
+//   border-bottom: 3px solid blue;
+// }
+// .col {
+//   border-bottom: 2px dotted #000;
+// }
 // div { 
-//   border: 1px solid;
+//   border: 1px solid green;
 // }
 
 // h1 {
