@@ -12,11 +12,21 @@
     display: inline-block;
 }
 
-optgroup {
-  background-color: gray;
-  color: red;
-  background: black;
-}
+// https://stackoverflow.com/questions/63248426/angular-material-changing-background-color-of-optiongroup-doesnt-work/63289353#63289353
+.mat-optgroup{ 
+  background-color: rgb(0, 168, 255, 0.2); 
+  display: block
+} 
+
+// .mat-option{ 
+   
+//   background-color:  rgb(0, 168, 255, 0.5) !important; 
+// }
+
+// .mat-optgroup{ 
+//   width:2000px !important; 
+//   background-color: red !important; 
+//   font-size: 10px !important; } 
 
 // .row {
 //     border: 1px solid red;

@@ -9,7 +9,7 @@
                     <mat-form-field appearance="fill" >
                         <mat-label style="font-weight: 600; font-size: 1rem">Stadt</mat-label>
                         <mat-select [formControl]="cityControl" (selectionChange)="changeSelectedCity($event)">
-                            <mat-option style="background-color: rgb(0, 168, 255, 0.5); font-size: 15px;"
+                            <mat-option style="background-color: rgb(0, 168, 255, 0.5);"
                                 *ngFor="let city of allCities" [value]="city">
                                 {{city}}
                             </mat-option>
@@ -20,9 +20,9 @@
                     <mat-form-field appearance="fill">
                         <mat-label style="font-weight: 600; font-size: 1rem">Wohnheim</mat-label>
                         <mat-select  [formControl]="dormControl" (selectionChange)="changeSelectedDorm($event)">
-                            <mat-optgroup style="color: red !important;" *ngFor="let group of dormGroups"
+                            <mat-optgroup  *ngFor="let group of dormGroups"
                                 [label]="group.name" [disabled]="group.disabled">
-                                <mat-option style="background-color: rgb(0, 168, 255, 0.5);" *ngFor="let dorms of group.dorms"
+                                <mat-option style="background-color: rgb(0, 168, 255, 0.3);" *ngFor="let dorms of group.dorms"
                                     [value]="dorms.name">
                                     {{dorms.name}}
                                 </mat-option>
