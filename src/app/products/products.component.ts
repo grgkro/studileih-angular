@@ -130,6 +130,7 @@ export class ProductsComponent implements OnInit {
     // and then we filter all products for the ones that are owned by one of the users from that dorm (product.userId = user.id)
     //TODO: sehr unsauber gelöst -> im helperService gibt es die Funktion filterProductsByUsers schon, es klappt nur noch nicht die hier einzubinden.
     this.dormProducts = this._helper.filterProductsByUsers(this.products, usersFromSelectedDorm);
+    // At the bottom of the page we dont want to show all products again. We only want to show the products that are not from the selected Dorm and therefore have not been shown yet at the dormProducts section.
     this.productsWithoutDormProducts = this.products.filter(x => !this.dormProducts.includes(x));
   }
 
