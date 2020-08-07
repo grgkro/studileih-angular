@@ -3,31 +3,59 @@
   <form [formGroup] ="addForm" (ngSubmit)="onFormSubmit()">
     <div class="form-group">
       <label for="name" >Benutzername:</label>
-      <input type="text" formControlName="name" placeholder="Benutzername" name="Name" class="form-control" id="name">
+      <input required type="text" formControlName="name" placeholder="Benutzername" name="Name" class="form-control" id="name">
+      <!-- <app-field-error-display 
+        [displayError]="isFieldValid('name')" 
+        errorMsg="Please inform your name">
+      </app-field-error-display> -->
     </div>
   
         <div class="form-group">
           <label for="email">Email:</label>
-          <input formControlName="email" placeholder="email@email.de" name="Email" class="form-control" id="email">
+          <input required formControlName="email" placeholder="email@email.de" name="Email" class="form-control" id="email">
         </div>
     <div class="form-group">
       <label for="password">Passwort:</label>
       <input type="text" formControlName="password" placeholder="1234" name="password" class="form-control" id="password">
     </div>
 
-
-    <div class="form-group">
-      <label for="dorm">Wohnheim:</label>
-      <input formControlName="dorm" placeholder="Dorm" name="dorm" class="form-control" id="dorm">
-    </div>
+    <label >Bitte wähle dein Wohnheim aus:</label>
+    <div class="row">
+      <div class="col-4 " style="min-width: 200px; ">
+          <mat-form-field appearance="fill" >
+              <mat-label style="font-weight: 600; font-size: 1rem">Stadt</mat-label>
+              <mat-select [formControl]="cityControl" (selectionChange)="changeSelectedCity($event)">
+                  <mat-option style="background-color: rgb(0, 168, 255, 0.5);"
+                      *ngFor="let city of allCities" [value]="city">
+                      {{city}}
+                  </mat-option>
+              </mat-select>
+          </mat-form-field>
+      </div>
+      <div class="col-1 " style="min-width: 200px;">
+          <mat-form-field appearance="fill">
+              <mat-label style="font-weight: 600; font-size: 1rem">Wohnheim</mat-label>
+              <mat-select required [formControl]="dormControl" (selectionChange)="changeSelectedDorm($event)" >
+                  <mat-optgroup  *ngFor="let group of dormGroups"
+                      [label]="group.name" [disabled]="group.disabled">
+                      <mat-option style="background-color: rgb(0, 168, 255, 0.3);" *ngFor="let dorms of group.dorms"
+                          [value]="dorms.name">
+                          {{dorms.name}}
+                      </mat-option>
+                  </mat-optgroup>
+              </mat-select>
+              <mat-error *ngIf="addForm.get('dorm').hasError('required')">Du musst ein Wohnheim auswählen.</mat-error>
+          </mat-form-field>
+      </div>
+  </div>
 
     <div class="row">
       <div class="col-sm-12">
            
-                <div *ngIf="!showUploadComponent">
+               
                      <app-upload-file [isUserPic]=true (selectedFile)="onFileSelected($event)"></app-upload-file>
                      <!-- when a file gets selected in the upload-file component, we will get that as an output emitted into the product-details component-->
-                </div>
+               
                
            
       </div>
@@ -44,12 +72,12 @@
 
 <div class="row">
     <div class="col-4">
-      <button class="btn btn-success">Add</button>
+      <button type="submit" class="btn btn-success" >Registrieren</button>
     </div>
     <div class="col-4">
       <button type="button" class="btn btn-danger">
         <a routerLink="/users">
-          Cancel
+          Abbrechen
         </a>
       </button>
     </div>

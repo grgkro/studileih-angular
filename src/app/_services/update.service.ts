@@ -38,6 +38,10 @@ export class UpdateService {
   private showUploadComponentSource = new BehaviorSubject(this.showUploadComponent);  //false is the default value
   currentShowUploadComponent = this.showUploadComponentSource.asObservable();
   
+  dorms: Dorm[] = [];
+  private dormsSource$ = new BehaviorSubject(this.dorms);  
+  currentDorms$ = this.dormsSource$.asObservable();
+
   selectedDorm: Dorm = { id: 1, name: "Alexanderstraße", lat: 48.767485, lng: 9.179693, city: "Stuttgart", district: "StuttgartMitte" };  // am Anfang wird als default Wohnheim das Max-Kade in Stuggi Mitte gezeigt (bekanntestes Wohnheim in Stg) - alle Wohnheime am Anfang zu zeigen braucht ewig lang zum Laden
   private selectedDormSource = new BehaviorSubject(this.selectedDorm);  
   currentSelectedDorm = this.selectedDormSource.asObservable();
@@ -45,6 +49,10 @@ export class UpdateService {
   markerClicked: Dorm = { id: 1, name: "Alexanderstraße", lat: 48.767485, lng: 9.179693, city: "Stuttgart", district: "StuttgartMitte" };  // am Anfang wird als default Wohnheim das Max-Kade in Stuggi Mitte gezeigt (bekanntestes Wohnheim in Stg) - alle Wohnheime am Anfang zu zeigen braucht ewig lang zum Laden  
   private markerClickedSource = new BehaviorSubject(this.markerClicked);  
   currentMarkerClicked = this.markerClickedSource.asObservable();
+
+  allCities: string[] = [];
+  private allCitiesSource$ = new BehaviorSubject(this.allCities);  //false is the default value
+  currentAllCities$ = this.allCitiesSource$.asObservable();
 
   // stores all chats of the logged in user
   chats: Chat[] = [];
@@ -83,10 +91,18 @@ export class UpdateService {
   changeMarkerClicked(markerClicked: Dorm) {
     this.markerClickedSource.next(markerClicked);
   }
+
+  changeDorms(dorms: Dorm[]) {
+    this.dormsSource$.next(dorms);
+  }
   
   
   changeNewPhotoWasUploaded() {
     this.triggeringObservable.next(void 0);
+  }
+
+  changeListOfAllCities(allCities: string[]) {
+    this.allCitiesSource$.next(allCities);
   }
 
   changeChats(chats: Chat[]) {

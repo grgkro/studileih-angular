@@ -7,14 +7,11 @@ import { UpdateService } from 'src/app/_services/update.service';
 import { User } from 'src/app/_models/user';
 import { SafeResourceUrl } from '@angular/platform-browser';
 import { Product } from 'src/app/_models/product';
+import { DormGroup } from 'src/app/_models/dormGroup';
 import { InfoWindow } from '@agm/core/services/google-maps-types';
 import { HelperService } from 'src/app/_services/helper.service';
 
-interface DormGroup {
-  disabled?: boolean;
-  name?: string;
-  dorms?: Dorm[];
-}
+
 
 // just an interface for type safety.
 interface Marker {
@@ -58,17 +55,42 @@ export class GoogleMapsComponent implements OnInit {
 
   ngOnInit(): void {
     this._data.getDormLocations().subscribe(dorms => {   //load all dorms from backend database
-      for (let dorm of dorms) {
-        this.dorms.push(dorm);    // fügt alle dorms einem Array hinzu (brauchen wir später)
+      this.dorms = dorms;    // fügt alle dorms einem Array hinzu (brauchen wir später)
+      for (let dorm of dorms) {  
         if (dorm.name == "Alexanderstraße") {   
-          this.selectedDorm = dorm;   // am Anfang wird als default Wohnheim das Max-Kade in Stuggi Mitte gezeigt (bekanntestes Wohnheim in Stg) - alle Wohnheime am Anfang zu zeigen braucht ewig lang zum Laden
+          this.selectedDorm = dorm;   // am Anfang wird als default Wohnheim das Alexanderstraße in Stuggi Mitte gezeigt - alle Wohnheime am Anfang zu zeigen braucht ewig lang zum Laden
           this._update.changeSelectedDorm(this.selectedDorm);    // we change the dorm in the update service so that the other components can know, which dorm is selected
         }
         if (!this.allCities.includes(dorm.city)) this.allCities.push(dorm.city)  // erstellt eine Liste aller Städte
         this.sortDormIntoDormGroups(dorm);   // fügt jedes Dorm der richtigen Gruppe hinzu (z.B. Stuttgart Mitte, München Nord) -> die Gruppen sind wichtig für das DropDown Select Menü
       }
+      this._update.changeListOfAllCities(this.allCities);
+      this._update.changeDorms(this.dorms);
     })
+
+    
   }
+
+  // async sortDormsIntoDormGroups() {
+  //   await this.loadDorms(); 
+  //    // do something else here after firstFunctions complete
+  //    for (let dorm of this.dorms) {
+  //     this.dorms.push(dorm);    // fügt alle dorms einem Array hinzu (brauchen wir später)
+  //     if (dorm.name == "Alexanderstraße") {   
+  //       this.selectedDorm = dorm;   // am Anfang wird als default Wohnheim das Max-Kade in Stuggi Mitte gezeigt (bekanntestes Wohnheim in Stg) - alle Wohnheime am Anfang zu zeigen braucht ewig lang zum Laden
+  //       this._update.changeSelectedDorm(this.selectedDorm);    // we change the dorm in the update service so that the other components can know, which dorm is selected
+  //     }
+  //     if (!this.allCities.includes(dorm.city)) this.allCities.push(dorm.city)  // erstellt eine Liste aller Städte
+  //     this.sortDormIntoDormGroups(dorm);   // fügt jedes Dorm der richtigen Gruppe hinzu (z.B. Stuttgart Mitte, München Nord) -> die Gruppen sind wichtig für das DropDown Select Menü
+  //   }
+  //  }
+ 
+  //  // https://stackoverflow.com/questions/62819495/js-async-await-second-function-doesnt-wait-for-first-function-to-complete/62819532#62819532
+  //  async loadDorms(): Promise<any> {
+  //    this.dorms = await this._data.getDormLocations().toPromise();
+  //    return Promise.resolve();
+  //  }
+  
 
   ngAfterViewInit(): void {
     //when gMaps finished loading, we send the time it took to the products component, which will subtract the time when the page was opened and then log the difference to the console
