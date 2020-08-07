@@ -1,6 +1,15 @@
 <div *ngIf="user">
   <!-- Falls der User schon geladen ist, dann führe das Folgende aus-->
-  <h1>{{ user?.name }}</h1>
+  <h1 style="margin-left: 3.5rem;">{{ user?.name }}</h1>
+
+  <!-- loads the user image. If no image is available, a default pic gets shown -->
+  <img [src]="imageToShow" class="images userPic" alt="User Profile Picture" *ngIf="imageToShow; else noImageFound">
+  <ng-template #noImageFound>
+    <img src="https://cdn-0.askleo.com/wp-content/uploads/2013/07/image_not_found.png" alt="Fallbackimage">
+    <!-- <= default picture -->
+  </ng-template>
+  <br>
+  <br>
 
   <ul>
     <li><strong>Username:</strong> {{ user?.name }}</li>
@@ -27,32 +36,26 @@
             </div>
           </div>
         </div>
-        <div class="col-8"></div>
       </div>
     </li>
   </ul>
 
   <div>
-    <!-- loads the user image. If no image is available, a default pic gets shown -->
-    <img [src]="imageToShow" class="images" alt="User Profile Picture" *ngIf="imageToShow; else noImageFound">
-    <ng-template #noImageFound>
-      <img src="https://cdn-0.askleo.com/wp-content/uploads/2013/07/image_not_found.png" alt="Fallbackimage">
-      <!-- <= default picture -->
-    </ng-template>
+    
     <br>
    <br>
    
 
-    <!-- "upload new Photo" button -->
-    <div *ngIf="showUploadComponent">
-      
-      <app-upload-file (selectedFile)="onFileSelected($event)"></app-upload-file>   <!-- when a file gets selected in the upload-file component, we will get that as an output emitted into the user-details component-->
+   <div class="row">
+     <div class=" col" style="margin-left: -14.5rem;">
+      <app-upload-file [isUserPic]=true (selectedFile)="onFileSelected($event)"></app-upload-file>   <!-- when a file gets selected in the upload-file component, we will get that as an output emitted into the user-details component-->
 
-    </div>
-    <button *ngIf="!showUploadComponent" (click)="toggleUploadComponent()" class="btn btn-success">Upload new
-      Photo</button>
-      <div class="divider"></div>
-      <div class="divider"></div>
+     </div>
+   </div>
+      
+     
+   
+   
     <strong>{{ response }}</strong> 
     <strong>{{ errorMessage }}</strong>
   </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UploadFileService } from 'src/app/_services/upload-file.service';
 import { UpdateService } from 'src/app/_services/update.service';
@@ -17,6 +17,10 @@ import { ImageCroppedEvent } from 'ngx-image-cropper';
   styleUrls: ['./upload-file.component.scss']
 })
 export class UploadFileComponent {
+
+  // we import the info, if the image is a profilePic or a productPic (profilePics have to get rounded in the "Vorschau")
+  @Input() isUserPic: boolean; 
+  // we export the selected file, so that the add-product/add-user component can save it along with the new product/user.
   @Output() selectedFile = new EventEmitter<File>();
   
   imageChangedEvent: any = '';

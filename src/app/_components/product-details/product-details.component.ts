@@ -30,7 +30,7 @@ export class ProductDetailsComponent implements OnInit {
   owner: User = {};   // the user who is the owner of the product
   users: User[] = []; // list of all users, from which we take the owner and user variable. 
   isCurrentUserOwner: boolean = false;
-  showUploadComponent: boolean = false;
+  
   errorMessage: string;
   imagesList = []; //var array = new Array();   is similar to:    var array = [];
   routeParam$: Observable<Product>;
@@ -58,7 +58,6 @@ export class ProductDetailsComponent implements OnInit {
   constructor(private route: ActivatedRoute, private uploadFileService: UploadFileService,private _data: DataService, private _update: UpdateService, private _helper: HelperService, private sanitizer: DomSanitizer, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
-    this.subscribeShowUploadObservable();
     this.routeParam$ = this.route.params.pipe(switchMap(params => this._data.getProduct(params['id'])))  // get the productId from the URL parameter /{id}. pipe & switchMap take care that if the userId changes for some reason, the following process gets stopped: https://www.concretepage.com/angular/angular-switchmap-example (not necessary yet, because the user profile image loads pretty fast, but if that takes longer and the user switches to another site, it's better to stop the process)
     this.loadProductWithProductPictures(); // load the product with the main product picture - get the productId from the URL parameter /{id}
     this.updateUser();   //  if the user changes, this will get updated
@@ -106,13 +105,6 @@ this.uploadFileService.pushFileToStorage(selectedFile, this.user.id, this.produc
       this.users = users;
       this._update.changeUsers(this.users);   // we update the users in all components, so that we dont need to load them again from the backend.
     })
-  }
-
-
-  subscribeShowUploadObservable(): void {
-    this._update.currentShowUploadComponent
-      .pipe(takeUntil(this.destroy$))             // We need to unsubscribe from this Observable by hand
-      .subscribe(showUploadComponent => this.showUploadComponent = showUploadComponent)  // when the user uploaded a product photo, we want do not show the upload component anymore. But therefore we need the information, if a photo was uploaded from the upload component. -> If a user successfully uploads a product photo (status 200), the upload component will change showUploadComponent to false. The _update service then updates this value for all subscribes. Therefore we need to subscribe here, to get that change.
   }
 
   // when a new photo gets uploaded, the triggeringObservable will be triggered and the following code will be excecuted (to refresh the photots, so that it immediately shows the newly uploaded photo.)
@@ -191,11 +183,6 @@ this.uploadFileService.pushFileToStorage(selectedFile, this.user.id, this.produc
         this.errorMessage = this._helper.createErrorMessage(err, "User oder Profilfoto konnte nicht gefunden werden");
       }
     );
-  }
-
-  // Hide or Show the Upload function (the "Durchsuchen" Button)
-  toggleUploadComponent() {
-    this.showUploadComponent = !this.showUploadComponent;             // if showUploadComponent was false, it's now true.
   }
 
   // This image upload code is basically taken from here: https://stackoverflow.com/questions/45530752/getting-image-from-api-in-angular-4-5  (first answer) or see the code directly: https://stackblitz.com/edit/angular-1yr75s

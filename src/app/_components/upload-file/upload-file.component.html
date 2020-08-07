@@ -1,32 +1,36 @@
 <!-- this is the upload photo menu on http://localhost:4200/upload-userPic  or product-details-->
 <div class="container">
-    <div class="row" style="margin-top: 5%;">
-        <div class="text-center col-md-12">
+    <div class="row" style="margin-top: 2%;">
+        <div class="text-left col-md-12">
         
-                <input type="file" id="fileName" accept="image/*" (change)="selectFile($event)" class="input-left">
+            <!-- https://stackoverflow.com/questions/1944267/how-to-change-the-button-text-of-input-type-file -->
+            <label class="btn btn-primary">
+                <i class="fa fa-image"></i> Fotos durchsuchen<input type="file" style="display: none;" id="fileName" accept="image/*" (change)="selectFile($event)" class="input-left">
+            </label>
                 <!-- accept="image/*" makes the file chose menu pre select "Grafik-Dateien", instead of "Alle Dateien" and shows an alert message ("invalid filetype"), if a filetype that is not an image is uploaded (eg. pdf). But user can still accept the alert and then upload a pdf anyway, so we also need to check the uploaded filetype on the server side.-->
             
         </div>
     </div>
     
     <!-- cropping the image and showing a preview image --- https://www.freakyjolly.com/angular-image-uploader-with-cropper-and-preview-tutorial-with-example/#Update_HTML_Template -->
-    <div class="row" style="margin-top: 5%;" *ngIf="imageChangedEvent != ''">
+    <div class="row" style="margin-top: 4%;" *ngIf="imageChangedEvent != ''">
         <div class="text-center col-md-8">
-            <h5>Bild zuschneiden</h5>
+            <h3>Bild zuschneiden</h3>
             <image-cropper [imageChangedEvent]="imageChangedEvent" [maintainAspectRatio]="true" [aspectRatio]="4 / 4"
                 [resizeToWidth]="256" format="png" (imageCropped)="imageCropped($event)" 
                 ></image-cropper>
         </div>
         <div class="text-center col-md-4" >
-            <h5>Vorschau</h5>
-            <img [src]="croppedImage" />
+            <h3>Vorschau</h3>
+            <img [ngClass]="{'userPic': isUserPic }"  [src]="croppedImage" />
         </div>
     </div>
     <!-- end of cropping related code -->
+    <br>
 
-    <div class="row" style="margin-top: 5%;">
-        <div class="text-center col-md-8">
-            <button (click)="uploadPic()" mdbBtn color="primary" class="waves-light" mdbWavesEffect>Foto hochladen</button>
+    <div class="row" *ngIf="imageFile"  >
+        <div class="text-left col-md-12" [ngClass]="{'productPic': !isUserPic }" >
+            <button type="button" (click)="uploadPic()" mdbBtn color="primary" class="waves-light" mdbWavesEffect>Foto hochladen</button>
         </div>
     </div>
 </div>

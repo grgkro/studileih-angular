@@ -18,7 +18,7 @@
                               <li><strong>Besitzer:</strong> {{ owner?.name }}</li>
                               <li><strong>Price:</strong> {{ product?.price }} €</li>
                               <li><strong>Wird statt Geld auch ein Bier aktzeptiert?:</strong>
-                                   {{ (product?.isBeerOk) ? 'Nur Klares ist Wares.' : 'Nur Bares ist Wares.' }} €</li>
+                                   {{ (product?.isBeerOk) ? 'Bier ist auch okay.' : 'Nur Bares ist Wares.' }} €</li>
                               <li><strong>Product Id:</strong> {{ product?.id }}</li>
                               <li><strong>product.UserId:</strong> {{ product?.userId }}</li>
                               <li *ngIf="user"><strong>user.id (id des gerade aktiven users):</strong> {{ user?.id }}
@@ -50,10 +50,10 @@
                               </li>
                          </ul>
 
-                         <div align="center" style="text-align: center">
-                              <div class="container" style="display: inline-block">
+                         <div >
+                              <div style="display: inline-block">
                                    <!-- https://malcoded.com/posts/angular-async-pipe/ -->
-                                   <div class="row" style="margin-top: 1.5rem; margin-bottom: 1.5rem;"
+                                   <div class="row"
                                         *ngIf="imagesLoaded | async">
                                         <!-- deferload ist für das lazy loading zuständig, bin aber nicht sicher ob es überhaupt funktioniert.-->
                                         <!-- loads the product image. If no image is available, a default pic gets shown -->
@@ -80,19 +80,19 @@
                                    </div>
                                    <div class="row">
                                         <div class="col-sm-12">
-                                             <div *ngIf="isCurrentUserOwner">
-                                                  <div *ngIf="showUploadComponent">
-                                                       <app-upload-file (selectedFile)="onFileSelected($event)">
+                                             <div *ngIf="isCurrentUserOwner" >
+                                                  <button *ngIf="deletedImages.length != 0" style="position: relative; left: 1rem;"
+                                                       (click)="restoreLastImage()"
+                                                        mdbBtn color="secondary" class="waves-light"
+                                                       mdbWavesEffect>Letztes Foto zurückholen</button>
+                                                       <!-- [...] = input that gets passed into the child. (...) = output from the child. If isUserPic = true the "Vorschau" Pic will get rounded. -->
+                                                       <app-upload-file [isUserPic]=false (selectedFile)="onFileSelected($event)">
                                                        </app-upload-file>
                                                        <!-- when a file gets selected in the upload-file component, we will get that as an output emitted into the product-details component-->
-                                                  </div>
-                                                  <button *ngIf="!showUploadComponent" (click)="toggleUploadComponent()"
-                                                       class="btn btn-success" mdbBtn color="primary"
-                                                       class="waves-light" mdbWavesEffect>Foto hochladen</button>
+                                                 
+                                                  
                                                   <div class="divider"></div>
-                                                  <button *ngIf="deletedImages.length != 0" (click)="restoreLastImage()"
-                                                       class="btn btn-info" mdbBtn color="secondary" class="waves-light"
-                                                       mdbWavesEffect>Letztes Foto zurückholen</button>
+                                                  
                                              </div>
                                         </div>
                                         <div class="row">
