@@ -46,6 +46,7 @@ import { ChatComponent } from './_components/chat/chat.component';
 import { UploadMultipleFilesComponent } from './_components/upload-multiple-files/upload-multiple-files.component';
 import { InfoWindowProductOverviewComponent } from './_components/info-window-product-overview/info-window-product-overview.component';
 import { ImageCropperModule } from 'ngx-image-cropper';
+import { AddDormComponent } from './_components/add-dorm/add-dorm.component';
 
 
 HttpClientModule
@@ -70,6 +71,7 @@ HttpClientModule
     ChatComponent,
     UploadMultipleFilesComponent,
     InfoWindowProductOverviewComponent,
+    AddDormComponent,
     
     
   ],

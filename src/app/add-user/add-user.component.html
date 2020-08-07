@@ -1,91 +1,91 @@
-<div class="col-md-6 user-container">
-  <h2 class="text-center">Registrieren</h2>
+<div class="col-12  user-container">
   <form [formGroup]="addForm" (ngSubmit)="onFormSubmit()">
-    <div class="form-group">
-      <label for="name">Benutzername*:</label>
-      <input required type="text" formControlName="name" placeholder="Benutzername" name="Name" class="form-control"
-        id="name"
-        [ngClass]="{'is-invalid': addForm.get('name').errors && (addForm.get('name').touched || addForm.get('name').dirty), 'is-valid':addForm.get('name').valid}">
-      <div class="alert alert-danger" role="alert"
-        *ngIf="addForm.get('name').invalid && (addForm.get('name').touched || addForm.get('name').dirty)">
-        Bitte Namen eingeben.
+  <div class="row d-flex justify-content-center">
+    <div class="col-8">
+      <h2 class="text-center">Registrieren</h2>
+      
+        <div class="form-group">
+          <label for="name">Benutzername*:</label>
+          <input required type="text" formControlName="name" placeholder="Benutzername" name="Name" class="form-control"
+            id="name"
+            [ngClass]="{'is-invalid': addForm.get('name').errors && (addForm.get('name').touched || addForm.get('name').dirty), 'is-valid':addForm.get('name').valid}">
+          <div class="alert alert-danger" role="alert"
+            *ngIf="addForm.get('name').invalid && (addForm.get('name').touched || addForm.get('name').dirty)">
+            Bitte Namen eingeben.
+          </div>
+        </div>
+    
+        <div class="form-group">
+          <label for="email">Email*:</label>
+          <input required formControlName="email" placeholder="email@email.de" name="Email" class="form-control" id="email"
+            [ngClass]="{'is-invalid': addForm.get('email').errors && (addForm.get('email').touched || addForm.get('email').dirty), 'is-valid':addForm.get('email').valid}">
+          <div class="alert alert-danger" role="alert"
+            *ngIf="addForm.get('email').invalid && (addForm.get('email').touched || addForm.get('email').dirty)">
+            Bitte eine gültige Email Adresse eingeben.
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="password">Passwort*:</label>
+          <input required type="text" formControlName="password" placeholder="1234" name="password" class="form-control"
+            id="password"
+            [ngClass]="{'is-invalid': addForm.get('password').errors && (addForm.get('password').touched || addForm.get('password').dirty), 'is-valid':addForm.get('password').valid}">
+          <div class="alert alert-danger" role="alert"
+            *ngIf="addForm.get('password').invalid && (addForm.get('password').touched || addForm.get('password').dirty)">
+            Bitte deine Email Adresse eingeben.
+          </div>
+        </div>
+    
+        <label>Bitte wähle dein Wohnheim aus:</label>
+        <div class="row">
+          <div class="col-4 " style="min-width: 200px; ">
+            <mat-form-field appearance="fill">
+              <mat-label style="font-weight: 600; font-size: 1rem">Stadt</mat-label>
+              <mat-select formControlName="city" (selectionChange)="changeSelectedCity($event)">
+                <mat-option style="background-color: rgb(0, 168, 255, 0.5);" *ngFor="let city of allCities" [value]="city">
+                  {{city}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-1 " style="min-width: 200px;">
+            <mat-form-field appearance="fill">
+              <mat-label style="font-weight: 600; font-size: 1rem">Wohnheim</mat-label>
+              <mat-select required formControlName="dorm" (selectionChange)="changeSelectedDorm($event)">
+                <mat-optgroup *ngFor="let group of dormGroups" [label]="group.name" [disabled]="group.disabled">
+                  <mat-option style="background-color: rgb(0, 168, 255, 0.3);" *ngFor="let dorms of group.dorms"
+                    [value]="dorms.name">
+                    {{dorms.name}}
+                  </mat-option>
+                </mat-optgroup>
+              </mat-select>
+              <mat-error *ngIf="addForm.get('dorm').hasError('required')">Du musst ein Wohnheim auswählen.</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
       </div>
     </div>
+  
 
-    <div class="form-group">
-      <label for="email">Email*:</label>
-      <input required formControlName="email" placeholder="email@email.de" name="Email" class="form-control" id="email"
-        [ngClass]="{'is-invalid': addForm.get('email').errors && (addForm.get('email').touched || addForm.get('email').dirty), 'is-valid':addForm.get('email').valid}">
-      <div class="alert alert-danger" role="alert"
-        *ngIf="addForm.get('email').invalid && (addForm.get('email').touched || addForm.get('email').dirty)">
-        Bitte eine gültige Email Adresse eingeben.
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="password">Passwort*:</label>
-      <input required type="text" formControlName="password" placeholder="1234" name="password" class="form-control"
-        id="password"
-        [ngClass]="{'is-invalid': addForm.get('password').errors && (addForm.get('password').touched || addForm.get('password').dirty), 'is-valid':addForm.get('password').valid}">
-      <div class="alert alert-danger" role="alert"
-        *ngIf="addForm.get('password').invalid && (addForm.get('password').touched || addForm.get('password').dirty)">
-        Bitte deine Email Adresse eingeben.
-      </div>
-    </div>
-
-    <label>Bitte wähle dein Wohnheim aus:</label>
-    <div class="row">
-      <div class="col-4 " style="min-width: 200px; ">
-        <mat-form-field appearance="fill">
-          <mat-label style="font-weight: 600; font-size: 1rem">Stadt</mat-label>
-          <mat-select formControlName="city" (selectionChange)="changeSelectedCity($event)">
-            <mat-option style="background-color: rgb(0, 168, 255, 0.5);" *ngFor="let city of allCities" [value]="city">
-              {{city}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div class="col-1 " style="min-width: 200px;">
-        <mat-form-field appearance="fill">
-          <mat-label style="font-weight: 600; font-size: 1rem">Wohnheim</mat-label>
-          <mat-select required formControlName="dorm" (selectionChange)="changeSelectedDorm($event)">
-            <mat-optgroup *ngFor="let group of dormGroups" [label]="group.name" [disabled]="group.disabled">
-              <mat-option style="background-color: rgb(0, 168, 255, 0.3);" *ngFor="let dorms of group.dorms"
-                [value]="dorms.name">
-                {{dorms.name}}
-              </mat-option>
-            </mat-optgroup>
-          </mat-select>
-          <mat-error *ngIf="addForm.get('dorm').hasError('required')">Du musst ein Wohnheim auswählen.</mat-error>
-        </mat-form-field>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-sm-12">
-
-
+    <div class="row d-flex justify-content-center">
+      <div class="col-8">
         <app-upload-file [isUserPic]=true (selectedFile)="onFileSelected($event)"></app-upload-file>
         <!-- when a file gets selected in the upload-file component, we will get that as an output emitted into the product-details component-->
-
-
-
       </div>
-      <div class="row">
-        <div class="col-sm-3">
+      </div>
+     
+      <div class="row d-flex justify-content-center">
+        <div class="col-8">
           <br />
           <br />
           <strong>{{ response }}</strong>
         </div>
       </div>
-    </div>
-
-
-
-    <div class="row">
-      <div class="col-4">
+    
+    <div class="row d-flex justify-content-center">
+      <div class="col-8">
         <button type="submit" class="btn btn-success" [disabled]="!addForm.valid">Registrieren</button>
       </div>
-      <div class="col-4">
+      <div class="col-8">
         <button type="button" class="btn btn-danger">
           <a routerLink="/users">
             Abbrechen
@@ -93,5 +93,31 @@
         </button>
       </div>
     </div>
+
   </form>
+
+  <br><br>
+
+  <div class="row d-flex justify-content-center">
+    <div class="col-8">
+      <div *ngIf="showAddDorm">
+        <app-add-dorm></app-add-dorm>
+      </div>
+      
+      <br>
+      <div *ngIf="!showAddDorm">
+        <button id="addDorm" type="button" (click)="addDorm()" mdbBtn color="secondary" class="waves-light"
+        cmdbWavesEffect>Wohnheim hinzufügen</button>
+      </div>
+      
+      <div *ngIf="showAddDorm">
+        <button id="addDorm" type="button" (click)="cancelAddDorm()" mdbBtn color="secondary" class="waves-light"
+        cmdbWavesEffect>Doch nicht</button>
+      </div>
+        
+      <br>
+
+    </div>
+  </div>
+
 </div>

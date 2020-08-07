@@ -25,6 +25,7 @@ export class AddUserComponent implements OnInit {
     private _update: UpdateService) { }
 
   addForm: FormGroup;
+  
 
   showUploadComponent: boolean = false;
   response: string;
@@ -39,6 +40,7 @@ export class AddUserComponent implements OnInit {
   dorms: Array<Dorm> = [];    // liste aller Wohnheime 
   selectedDorm: Dorm = { id: 1, name: "Alexanderstraße", lat: 48.767485, lng: 9.179693, city: "Stuttgart", district: "StuttgartMitte" }; // irgendwie müssen werte in JS immer am Anfang schon initialisiert werde, das regt richtig auf, wir überschreiben das im onInit sowieso gleich wieder, gibt's da ne andere Möglichkeit?
   hasUserSubmitted: boolean = false;
+  showAddDorm: boolean = false;
 
   // Angular takes care of unsubscribing from many observable subscriptions like those returned from the Http service or when using the async pipe. But the routeParam$ and the _update.currentShowUploadComponent needs to be unsubscribed by hand on ngDestroy. Otherwise, we risk a memory leak when the component is destroyed. https://malcoded.com/posts/angular-async-pipe/   https://www.digitalocean.com/community/tutorials/angular-takeuntil-rxjs-unsubscribe
   destroy$: Subject<boolean> = new Subject<boolean>();
@@ -52,6 +54,7 @@ export class AddUserComponent implements OnInit {
       dorm: ['', Validators.required],
       profilePic: [''],
     });
+   
     this.updateAllCities();
     this.updateDorms();
   }
@@ -60,6 +63,19 @@ export class AddUserComponent implements OnInit {
     this.destroy$.next(true);
     // Now let's also unsubscribe from the subject itself:
     this.destroy$.unsubscribe();
+  }
+
+  addDorm(): void {
+    if (!this.showAddDorm) {
+      this.showAddDorm = true;
+    } else {
+      this.showAddDorm = false;
+      console.log("Shouldnt happen")
+    }
+  }
+
+  cancelAddDorm():void {
+    this.showAddDorm = false;
   }
 
   //get the list of cities that was previously loaded on the main page

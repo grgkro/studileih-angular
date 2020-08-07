@@ -1,0 +1,50 @@
+
+<label for="addDorm">Dein Wohnheim ist nicht dabei? Drücke auf den Knopf, um ein neues Wohnheim unserer Liste
+    hinzuzufügen:</label>
+  
+
+    <form [formGroup]="dormForm" (ngSubmit)="onDormFormSubmit()">
+      <div class="form-group">
+        <label for="dormName">Name des Wohnheims:</label>
+        <input type="text" formControlName="name" placeholder="z.B. Max-Kade-Wohnheim, oder Straße + Hausnummer"
+          name="Name" class="form-control" id="dormName"
+          [ngClass]="{'is-invalid': dormForm.get('name').errors && (dormForm.get('name').touched || dormForm.get('name').dirty), 'is-valid':dormForm.get('name').valid}">
+      </div>
+
+      <div class="form-group">
+        <label for="dormCity">Stadt*:</label>
+        <input required type="text" formControlName="city" placeholder="Münchhausen" name="Name"
+          class="form-control" id="dormCity"
+          [ngClass]="{'is-invalid': dormForm.get('city').errors && (dormForm.get('city').touched || dormForm.get('city').dirty), 'is-valid':dormForm.get('city').valid}">
+        <div class="alert alert-danger" role="alert"
+          *ngIf="dormForm.get('city').invalid && (dormForm.get('city').touched || dormForm.get('city').dirty)">
+          Bitte Stadt eingeben.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="dormStreet">Straße*:</label>
+        <input required type="text" formControlName="street" placeholder="Breite Straße" name="Name"
+          class="form-control" id="dormStreet"
+          [ngClass]="{'is-invalid': dormForm.get('street').errors && (dormForm.get('street').touched || dormForm.get('street').dirty), 'is-valid':dormForm.get('street').valid}">
+        <div class="alert alert-danger" role="alert"
+          *ngIf="dormForm.get('street').invalid && (dormForm.get('street').touched || dormForm.get('street').dirty)">
+          Bitte Straße eingeben.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="dormHouseNumber">Hausnummer*:</label>
+        <input required type="text" formControlName="houseNumber" placeholder="420" name="Name" class="form-control"
+          id="dormHouseNumber"
+          [ngClass]="{'is-invalid': dormForm.get('houseNumber').errors && (dormForm.get('houseNumber').touched || dormForm.get('houseNumber').dirty), 'is-valid':dormForm.get('houseNumber').valid}">
+        <div class="alert alert-danger" role="alert"
+          *ngIf="dormForm.get('houseNumber').invalid && (dormForm.get('houseNumber').touched || dormForm.get('houseNumber').dirty)">
+          Bitte Hausnummer eingeben.
+        </div>
+      </div>
+
+      <button id="addDorm" type="submit" mdbBtn color="secondary" class="waves-light"
+        cmdbWavesEffect>Wohnheim hinzufügen</button>
+    </form>
+
