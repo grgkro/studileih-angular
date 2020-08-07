@@ -38,74 +38,18 @@ export class AddUserComponent implements OnInit {
   districts: string[] = [];     // die Liste hilft zu merken, welche Stadtviertel schon in dormGroups auftauchen, erspart mehrere for each schleifen
   dorms: Array<Dorm> = [];    // liste aller Wohnheime 
   selectedDorm: Dorm = { id: 1, name: "Alexanderstraße", lat: 48.767485, lng: 9.179693, city: "Stuttgart", district: "StuttgartMitte" }; // irgendwie müssen werte in JS immer am Anfang schon initialisiert werde, das regt richtig auf, wir überschreiben das im onInit sowieso gleich wieder, gibt's da ne andere Möglichkeit?
-  hasUserChosenADorm: boolean = false;
+  hasUserSubmitted: boolean = false;
 
   // Angular takes care of unsubscribing from many observable subscriptions like those returned from the Http service or when using the async pipe. But the routeParam$ and the _update.currentShowUploadComponent needs to be unsubscribed by hand on ngDestroy. Otherwise, we risk a memory leak when the component is destroyed. https://malcoded.com/posts/angular-async-pipe/   https://www.digitalocean.com/community/tutorials/angular-takeuntil-rxjs-unsubscribe
   destroy$: Subject<boolean> = new Subject<boolean>();
-
-  // this function gets called when the user choses a city in the dropdown select menu above the google maps
-  changeSelectedCity(event) {
-    // first we have to empty the previously filled arrays, so that we can refill them with the dorms of the newly selected city  
-    this.dormGroups = [];
-    this.selectedDorm = null;
-    this.cities = [];
-    this.districts = [];
-    // now we can refill the arrays by going through all dorms. If the city of that dorm == the selected city, then add the dorm again
-    this.collectDormsByCity(event.value);
-  }
-
-  // filter all dorms for the ones that are in one specific city and then sort them into the dormGroups array according to their districts
-  collectDormsByCity(city: string) {
-    this.dorms.forEach(dorm => {
-      if (dorm.city == city) {
-        this.sortDormIntoDormGroups(dorm);
-      }
-    });
-  }
-
-  // this function gets called when the user choses a dorm in the dropdown select menu above the google maps -> event.value is the name of the selected dorm. But we need the dorm itself, not just the name, so we go through all dorms and take the one that has the same name.
-  changeSelectedDorm(event) {
-    this.hasUserChosenADorm = true;
-    this.dorms.forEach(element => {
-      if (element.name == event.value) {
-        this.selectedDorm = element;
-        // this._update.changeSelectedDorm(this.selectedDorm);    // we change the dorm in the update service so that the other components can know, which dorm is currently selected
-      }
-    })
-
-  }
-
-  // abgefuckt komplizierter Sortieralgorithmus, nur anschauen wenn man wissen will, wie das array dormGroups befüllt wird!! -> wenn man bei "Wähle dein Wohnheim aus" auf das dropdown select menü geht, sieht man das Ergebnis von dieser Sortierung
-  sortDormIntoDormGroups(dorm: Dorm) {
-    if (!this.cities.includes(dorm.city) && dorm.district == null) {   // zB das wohnheim Göppingen hat nur eine Stadt (Göppingen) aber keinen District (in Göppingen gibt's nur 1 Wohnheim, Göppingen ist auch ziemlich klein, "Göppingen Mitte" oder so macht hier keinen Sinn)
-      this.cities.push(dorm.city)
-      this.dormGroups.push({ name: dorm.city, dorms: [dorm] })            // erstellt eine neue dormGroup mit dem dorm und added sie direkt zu den dormGroups. der name der neuen dormGroup wird gleich der Stadt gesetzt (wenn kein district angegeben ist, gitb es je Stadt nur eine dormGroup)
-    } else if (this.cities.includes(dorm.city) && dorm.district == null) {    // zb stadt Ludwigsburg hat mehrere Wohnheime, aber keine districte (Ludwigsburg ist auch relativ klein) -> damit nicht bei jedem Wohnheim eine neue DormGroup erstellt wird, wird eine cities Liste geführt. Ist schon ein Wohnheim für eine city (zb Ludwigsburg) in der Liste cities, dann gibt es auch schon eine dormGroup dafür in der Liste dormGroups. Wir müssen also diese dormGroup aus dormGroups holen und das neue Wohnheim hinzufügen
-      this.addDormToExistingDormGroup(dorm, dorm.city);
-    } else if (!this.districts.includes(dorm.district)) {               // erstellt für jedes Wohnheim, das einen district angegeben hat und bei dem der district noch nicht in der dormGroups oder in der Liste districts auftaucht, eine neue dormGroup
-      this.districts.push(dorm.district)
-      this.dormGroups.push({ name: dorm.district, dorms: [dorm] })                               // der name der dormGroup wird gleich dem Stadtviertel! gesetzt (nicht gleich der Stadt), denn wenn das dorm einen District angegeben hat, bedeutet das, dass es mehrere dormGroups für eine Stadt gibt (je Stadtviertel eine dormGroup und nicht je Stadt eine dormGroup)
-    } else if (this.districts.includes(dorm.district)) {                                    // added das Wohnheim, das einen district angegeben hat und bei dem der district bereits eine dormGroup in der dormGroups hat      
-      this.addDormToExistingDormGroup(dorm, dorm.district);
-    }
-  }
-
-  // geh durch alle dormGroups und hol die dormGroup, die zu der Stadt oder zu dem Stadtviertel gehört, das im compareString mitgegeben wurde dann adde das Wohnheim zu der dromGroup
-  addDormToExistingDormGroup(dorm: Dorm, compareString: string) {
-    for (var i = 0; i < this.dormGroups.length; i++) {
-      if (this.dormGroups[i].name == compareString) {
-        this.dormGroups[i].dorms.push(dorm)  // 
-      }
-    }
-  }
 
   ngOnInit(): void {
     this.addForm = this.formBuilder.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: [''],
+      password: ['', Validators.required],
+      city: [''],
       dorm: ['', Validators.required],
-      room: [''],
       profilePic: [''],
     });
     this.updateAllCities();
@@ -164,24 +108,15 @@ export class AddUserComponent implements OnInit {
       )
   }
 
-  onSubmit() {
-    console.log(this.addForm.value);
-    this.dataService.addUser(this.addForm.value)
-      .subscribe((res: any) => {
-        this.router.navigate(['users']);
-      }, (err: any) => {
-        console.log(err);
-      }
-      );
-  }
-
   //this sends all data to the backend when button "add" was clicked
   onFormSubmit() {
+    this.hasUserSubmitted = true;
     var formData: any = new FormData();
     formData.append("name", this.addForm.get('name').value);
     formData.append("email", this.addForm.get('email').value);
     formData.append("password", this.addForm.get('password').value);
-    formData.append("dormId", this.selectedDorm.id);
+    formData.append("city", this.addForm.get('city').value);
+    formData.append("dormId", this.selectedDorm.id);   // we don't actually use the dorm value from the addForm. This is because we need the id of it and that is easier this way. But we still need the formControl dorm in addForm, to show a validation message if the formControl was left empty.
     formData.append("profilePic", this.selectedFile);
     console.log("hello", formData);
     console.log(this.selectedFile)
@@ -199,5 +134,59 @@ export class AddUserComponent implements OnInit {
   }
 
  
+
+  // this function gets called when the user choses a city in the dropdown select menu above the google maps
+  changeSelectedCity(event) {
+    // first we have to empty the previously filled arrays, so that we can refill them with the dorms of the newly selected city  
+    this.dormGroups = [];
+    this.selectedDorm = null;
+    this.cities = [];
+    this.districts = [];
+    // now we can refill the arrays by going through all dorms. If the city of that dorm == the selected city, then add the dorm again
+    this.collectDormsByCity(event.value);
+  }
+
+  // filter all dorms for the ones that are in one specific city and then sort them into the dormGroups array according to their districts
+  collectDormsByCity(city: string) {
+    this.dorms.forEach(dorm => {
+      if (dorm.city == city) {
+        this.sortDormIntoDormGroups(dorm);
+      }
+    });
+  }
+
+  // this function gets called when the user choses a dorm in the dropdown select menu above the google maps -> event.value is the name of the selected dorm. But we need the dorm itself, not just the name, so we go through all dorms and take the one that has the same name.
+  changeSelectedDorm(event) {
+    this.dorms.forEach(element => {
+      if (element.name == event.value) {
+        this.selectedDorm = element;
+      }
+    })
+
+  }
+
+  // komplizierter Sortieralgorithmus, nur anschauen wenn man wissen will, wie das array dormGroups befüllt wird!! -> wenn man bei "Wähle dein Wohnheim aus" auf das dropdown select menü geht, sieht man das Ergebnis von dieser Sortierung
+  sortDormIntoDormGroups(dorm: Dorm) {
+    if (!this.cities.includes(dorm.city) && dorm.district == null) {   // zB das wohnheim Göppingen hat nur eine Stadt (Göppingen) aber keinen District (in Göppingen gibt's nur 1 Wohnheim, Göppingen ist auch ziemlich klein, "Göppingen Mitte" oder so macht hier keinen Sinn)
+      this.cities.push(dorm.city)
+      this.dormGroups.push({ name: dorm.city, dorms: [dorm] })            // erstellt eine neue dormGroup mit dem dorm und added sie direkt zu den dormGroups. der name der neuen dormGroup wird gleich der Stadt gesetzt (wenn kein district angegeben ist, gitb es je Stadt nur eine dormGroup)
+    } else if (this.cities.includes(dorm.city) && dorm.district == null) {    // zb stadt Ludwigsburg hat mehrere Wohnheime, aber keine districte (Ludwigsburg ist auch relativ klein) -> damit nicht bei jedem Wohnheim eine neue DormGroup erstellt wird, wird eine cities Liste geführt. Ist schon ein Wohnheim für eine city (zb Ludwigsburg) in der Liste cities, dann gibt es auch schon eine dormGroup dafür in der Liste dormGroups. Wir müssen also diese dormGroup aus dormGroups holen und das neue Wohnheim hinzufügen
+      this.addDormToExistingDormGroup(dorm, dorm.city);
+    } else if (!this.districts.includes(dorm.district)) {               // erstellt für jedes Wohnheim, das einen district angegeben hat und bei dem der district noch nicht in der dormGroups oder in der Liste districts auftaucht, eine neue dormGroup
+      this.districts.push(dorm.district)
+      this.dormGroups.push({ name: dorm.district, dorms: [dorm] })                               // der name der dormGroup wird gleich dem Stadtviertel! gesetzt (nicht gleich der Stadt), denn wenn das dorm einen District angegeben hat, bedeutet das, dass es mehrere dormGroups für eine Stadt gibt (je Stadtviertel eine dormGroup und nicht je Stadt eine dormGroup)
+    } else if (this.districts.includes(dorm.district)) {                                    // added das Wohnheim, das einen district angegeben hat und bei dem der district bereits eine dormGroup in der dormGroups hat      
+      this.addDormToExistingDormGroup(dorm, dorm.district);
+    }
+  }
+
+  // geh durch alle dormGroups und hol die dormGroup, die zu der Stadt oder zu dem Stadtviertel gehört, das im compareString mitgegeben wurde dann adde das Wohnheim zu der dromGroup
+  addDormToExistingDormGroup(dorm: Dorm, compareString: string) {
+    for (var i = 0; i < this.dormGroups.length; i++) {
+      if (this.dormGroups[i].name == compareString) {
+        this.dormGroups[i].dorms.push(dorm)  // 
+      }
+    }
+  }
 
 }
