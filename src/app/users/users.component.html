@@ -27,7 +27,7 @@
                                     <div>
                                         <div *ngIf="user.dormId == currentUser.dormId && user.id != currentUser.id"
                                             style="text-align:center">
-                                            <li style="box-shadow: 12px 12px 12px 0 rgba(0,0,0, 0.3);">
+                                            <li class="shadow">
                                                 <a routerLink="/details/{{ user.id }}">
                                                     <!-- for Schleife über alle geladenen User - startet erst, wenn alle user geladen sind: async: https://malcoded.com/posts/angular-async-pipe/ -->
 

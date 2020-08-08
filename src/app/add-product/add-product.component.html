@@ -1,165 +1,169 @@
-<div class="col user-container">
-  <!-- <div class="jumbotron"> -->
-    <h1 class="display-4">Neues Angebot erstellen</h1>
-
-    <hr class="my-2">
-    <form [formGroup]="addForm" (ngSubmit)="onSubmit()">
-
-      <div class="form-group">
-        <label for="email">Knackiger Titel:</label>
-        <input formControlName="title" placeholder="Bohrmaschine mit Metall-Bohrerset" name="title" class="form-control"
-          id="title" />
-      </div>
-
-      <div class="form-group">
-        <label for="description">Kurze Beschreibung:</label>
-        <input type="text" formControlName="description"
-          placeholder="Gerne kann meine Bohrmaschine hier für 2-3 Tage ausgeleihen werden." name="description"
-          class="form-control" id="description" />
-      </div>
+<div class="container">
+  <div class="row">
+    <div class="col user-container">
+      <!-- <div class="jumbotron"> -->
+        <h1 class="display-4">Neues Angebot erstellen</h1>
     
-      <br>
-      <!-- here the user can chose one product category-->
-      <!-- https://material.angular.io/components/chips/overview-->
-      <div>
-        <label for="categoryList">Bitte wähle eine Kategorie:</label>
-        <br>
-        <div >
-          <!-- this chip-list will only contain one chip (the selected Category). But we still need a list, because otherwise you cant let the user generate a chip in the #chipInput input field further down => <input ... [matChipInputFor]="categoryList" -->
-          <mat-chip-list #categoryList class="chip-list" aria-label="Gewählte Kategorie">
-            <div *ngFor="let category of categories">
-              <div *ngIf="category.selected">
-                <mat-chip #selectedCat [removable]="removable"
-                (removed)="category.selected = false;" >{{ category.name }}
-                  <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-                </mat-chip>
-              </div>
+        <hr class="my-2">
+        <form [formGroup]="addForm" (ngSubmit)="onSubmit()" >
+    
+          <div class="form-group">
+            <label for="email">Knackiger Titel:</label>
+            <input formControlName="title" placeholder="Bohrmaschine mit Metall-Bohrerset" name="title" class="form-control"
+              id="title" />
+          </div>
+    
+          <div class="form-group">
+            <label for="description">Kurze Beschreibung:</label>
+            <input type="text" formControlName="description"
+              placeholder="Gerne kann meine Bohrmaschine hier für 2-3 Tage ausgeleihen werden." name="description"
+              class="form-control" id="description" />
+          </div>
+        
+          <br>
+          <!-- here the user can chose one product category-->
+          <!-- https://material.angular.io/components/chips/overview-->
+          <div>
+            <label for="categoryList">Bitte wähle eine Kategorie:</label>
+            <br>
+            <div >
+              <!-- this chip-list will only contain one chip (the selected Category). But we still need a list, because otherwise you cant let the user generate a chip in the #chipInput input field further down => <input ... [matChipInputFor]="categoryList" -->
+              <mat-chip-list #categoryList class="chip-list" aria-label="Gewählte Kategorie">
+                <div *ngFor="let category of categories">
+                  <div *ngIf="category.selected">
+                    <mat-chip #selectedCat [removable]="removable"
+                    (removed)="category.selected = false;" >{{ category.name }}
+                      <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                    </mat-chip>
+                  </div>
+                </div>
+              </mat-chip-list>
+              <br>
+    
+              <!-- [matChipInputSeparatorKeyCodes] = when the user presses COMMA or ENTER a new chip will get generated -->
+              <!-- [matChipInputAddOnBlur] = if the input field loses focus, the chip gets generated-->
+              <label for="chipInput">Eigene Kategorie eingeben:</label>
+              <br>
+                  <input #chipInput placeholder="z.B. Boombox"
+                  [matChipInputFor]="categoryList"
+                  [matChipInputSeparatorKeyCodes]="separatorKeysCodes"      
+                  [matChipInputAddOnBlur]="addOnBlur"                       
+                  (matChipInputTokenEnd)="add($event)">
             </div>
-          </mat-chip-list>
+            <br>
+    
+            <label for="preDefinedList">Oder wähle eine Kategorie aus der Liste:</label>
+            <br>
+            <mat-chip-list #preDefinedList aria-label="Produkt Kategorien">
+              <mat-chip *ngFor="let category of categories" multiple="false" [selectable]="false"   
+                (click)="pickedCategory(category)">
+                {{category.name}}
+              </mat-chip>
+            </mat-chip-list>
+          </div>
+    
           <br>
-
-          <!-- [matChipInputSeparatorKeyCodes] = when the user presses COMMA or ENTER a new chip will get generated -->
-          <!-- [matChipInputAddOnBlur] = if the input field loses focus, the chip gets generated-->
-          <label for="chipInput">Eigene Kategorie eingeben:</label>
-          <br>
-              <input #chipInput placeholder="z.B. Boombox"
-              [matChipInputFor]="categoryList"
-              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"      
-              [matChipInputAddOnBlur]="addOnBlur"                       
-              (matChipInputTokenEnd)="add($event)">
-        </div>
-        <br>
-
-        <label for="preDefinedList">Oder wähle eine Kategorie aus der Liste:</label>
-        <br>
-        <mat-chip-list #preDefinedList aria-label="Produkt Kategorien">
-          <mat-chip *ngFor="let category of categories" multiple="false" [selectable]="false"   
-            (click)="pickedCategory(category)">
-            {{category.name}}
-          </mat-chip>
-        </mat-chip-list>
-      </div>
-
-      <br>
-      <div class="form-group">
-        <label for="price">Preis in €:</label>
-        <input type="number" formControlName="price" value="0" name="price" class="form-control" id="price"
-          (input)="inputValidator($event)" />
-          <br>
-          <div *ngIf="showOnlyNumbersMessage" class="alert alert-danger">
-            {{ onlyNumbersMessage }}
+          <div class="form-group">
+            <label for="price">Preis in €:</label>
+            <input type="number" formControlName="price" value="0" name="price" class="form-control" id="price"
+              (input)="inputValidator($event)" />
+              <br>
+              <div *ngIf="showOnlyNumbersMessage" class="alert alert-danger">
+                {{ onlyNumbersMessage }}
+              </div>
+              <div *ngIf="priceTooHigh" class="alert alert-danger">
+                {{ priceTooHighMessage }}
+              </div>
+              <br>
+              <input type="checkbox" id="beerCheckbox" checked formControlName="isBeerOk" >
+              <label for="beerCheckbox">Oder ein Bier.</label><br>
+            </div>
+    
+            <div class="row">
+              <div class="col">
+                   <h1 class="display-3">Du kannst hier einen Zeitraum angeben, von wann bis wann das Teil ausgeliehen werden kann. Oder einfach freilassen, falls der Zeitraum egal ist:</h1>
+              </div>
+         </div>
+         <hr class="my-2" />
+         <div class="row">
+              <div class="col-sm-3">
+                   <mat-form-field appearance="fill">
+                        <mat-label>Von wann bis wann?</mat-label>
+    
+                        <mat-date-range-input [rangePicker]="picker">
+                             <input matStartDate matInput placeholder="Startdatum" formControlName="startDate">
+                             <input matEndDate matInput placeholder="Enddatum" formControlName="endDate">
+                        </mat-date-range-input>
+                        <mat-datepicker-toggle matSuffix [for]="picker">
+                        </mat-datepicker-toggle>
+                        <mat-date-range-picker #picker></mat-date-range-picker>
+                   </mat-form-field>
+              </div>
+              <div class="col-sm-3">
+                   <div class="md-form">
+                        <input type="time" id="startTimeInput" class="form-control" 
+                             placeholder="" mdbInput formControlName="pickUpTime" />
+                        <label for="startTimeInput">Abholbar ab: </label>
+                   </div>
+              </div>
+              <div class="col-sm-3">
+                   <div class="md-form">
+                        <input type="time" id="returnTimeInput" class="form-control"
+                             placeholder="13:00" mdbInput formControlName="returnTime" />
+                        <label for="returnTimeInput">Rückgabe ab: </label>
+                   </div>
+              </div>
+              
+    
+         </div>
+    
+              <div class="row">
+            <div class="col-sm-12">
+    
+    
+              <app-upload-multiple-files (selectedFile)="onFileSelected($event)"></app-upload-multiple-files>
+              <!-- when a file gets selected in the upload-file component, we will get that as an output emitted into the add-product component-->
+    
+            </div>
+    
           </div>
-          <div *ngIf="priceTooHigh" class="alert alert-danger">
-            {{ priceTooHighMessage }}
-          </div>
-          <br>
-          <input type="checkbox" id="beerCheckbox" checked formControlName="isBeerOk" >
-          <label for="beerCheckbox">Oder ein Bier.</label><br>
-        </div>
-
-        <div class="row">
-          <div class="col">
-               <h1 class="display-3">Du kannst hier einen Zeitraum angeben, von wann bis wann das Teil ausgeliehen werden kann. Oder einfach freilassen, falls der Zeitraum egal ist:</h1>
-          </div>
-     </div>
-     <hr class="my-2" />
-     <div class="row">
-          <div class="col-sm-3">
-               <mat-form-field appearance="fill">
-                    <mat-label>Von wann bis wann?</mat-label>
-
-                    <mat-date-range-input [rangePicker]="picker">
-                         <input matStartDate matInput placeholder="Startdatum" formControlName="startDate">
-                         <input matEndDate matInput placeholder="Enddatum" formControlName="endDate">
-                    </mat-date-range-input>
-                    <mat-datepicker-toggle matSuffix [for]="picker">
-                    </mat-datepicker-toggle>
-                    <mat-date-range-picker #picker></mat-date-range-picker>
-               </mat-form-field>
-          </div>
-          <div class="col-sm-3">
-               <div class="md-form">
-                    <input type="time" id="startTimeInput" class="form-control" 
-                         placeholder="" mdbInput formControlName="pickUpTime" />
-                    <label for="startTimeInput">Abholbar ab: </label>
-               </div>
-          </div>
-          <div class="col-sm-3">
-               <div class="md-form">
-                    <input type="time" id="returnTimeInput" class="form-control"
-                         placeholder="13:00" mdbInput formControlName="returnTime" />
-                    <label for="returnTimeInput">Rückgabe ab: </label>
-               </div>
-          </div>
+    
           
-
-     </div>
-
+    
+          <!-- <div class="form-group">
+                  <label for="picPaths">Pic paths:</label>
+                  <input
+                    type="text"
+                    formControlName="picPaths"
+                    placeholder="Pic paths"
+                    name="picPaths"
+                    class="form-control"
+                    id="picPaths"
+                  />
+                </div> -->
+    
           <div class="row">
-        <div class="col-sm-12">
-
-
-          <app-upload-multiple-files (selectedFile)="onFileSelected($event)"></app-upload-multiple-files>
-          <!-- when a file gets selected in the upload-file component, we will get that as an output emitted into the add-product component-->
-
-        </div>
-
-      </div>
-
-      
-
-      <!-- <div class="form-group">
-              <label for="picPaths">Pic paths:</label>
-              <input
-                type="text"
-                formControlName="picPaths"
-                placeholder="Pic paths"
-                name="picPaths"
-                class="form-control"
-                id="picPaths"
-              />
-            </div> -->
-
-      <div class="row">
-        <div class="col-4">
-          <button type="submit" class="btn btn-success">Hinzufügen</button>
-        </div>
-        <div class="col-4">
-          <button type="button" class="btn btn-danger">
-            <a routerLink="">
-              Abbrechen
-            </a>
-          </button>
-        </div>
-      </div>
-    </form>
-  <!-- </div> -->
-
-
-
-
-  <br />
-  <br />
-  <strong>{{ response }}</strong>
-
+            <div class="col-4">
+              <button type="submit" class="btn btn-success">Hinzufügen</button>
+            </div>
+            <div class="col-4">
+              <button type="button" class="btn btn-danger">
+                <a routerLink="">
+                  Abbrechen
+                </a>
+              </button>
+            </div>
+          </div>
+        </form>
+      <!-- </div> -->
+    
+    
+    
+    
+      <br />
+      <br />
+      <strong>{{ response }}</strong>
+    
+    </div>
+  </div>
 </div>

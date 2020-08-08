@@ -8,23 +8,13 @@
     </div>
 
     <hr class="my-2" />
-    <div class="row justify-content-md-center">
-      <div class="col"></div>
-      <div class="col-md-auto"></div>
-      <div class="col col-lg-2"></div>
-    </div>
+    
     <div *ngIf="userHasChats | async">
-        <ul [@listStagger]="chats">
-          <li *ngFor="let chat of chats; let i = index">
+        <ul [@listStagger]="chats" >
+          <li *ngFor="let chat of chats; let i = index" class="shadow">
             <ul>
-              <div class="row">
-                <div class="col"></div>
-                <div class="col"></div>
-              </div>
-
               <li>
-                <div class="row">
-
+                <div class="row" >
                   <div class="col-2">
                     <a routerLink="/chat/{{ chat.id }}">
                       <div
