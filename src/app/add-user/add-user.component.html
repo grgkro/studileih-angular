@@ -17,7 +17,7 @@
     
         <div class="form-group">
           <label for="email">Email*:</label>
-          <input required formControlName="email" placeholder="email@email.de" name="Email" class="form-control" id="email"
+          <input required formControlName="email" placeholder="email@gmail.com" name="Email" class="form-control" id="email"
             [ngClass]="{'is-invalid': addForm.get('email').errors && (addForm.get('email').touched || addForm.get('email').dirty), 'is-valid':addForm.get('email').valid}">
           <div class="alert alert-danger" role="alert"
             *ngIf="addForm.get('email').invalid && (addForm.get('email').touched || addForm.get('email').dirty)">
