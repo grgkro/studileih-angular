@@ -1,44 +1,55 @@
-<div class="row justify-content-md-center">
-    <div class="col">
-        <div style="display: inline-block">
-            <h1 >Andere Benutzer in deinem Wohnheim:</h1>
+<div *ngIf="currentUser && dorms">
+    <div class="row justify-content-md-center">
+        <div class="col">
+            <div style="display: inline-block">
+                <h1 >Andere Benutzer im Wohnheim {{ dorms[currentUser.dormId - 1].name }}:</h1>
+            </div>
+            
         </div>
+        <div class="col-md-auto">
+          </div>
+        <div class="col col-lg-2">
+            <a routerLink="/add-user" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}">
+                <i class="material-icons">add</i>
+              </a> 
+        </div>
+    </div>
+    
+    <div *ngIf="dataLoaded | async">
+        <ul [@listStagger]="users$">  <!--listStagger ist eine spezielle Animation, bei der die Liste nicht auf einmal dargestellt wird, sondern zeitlich verzögert auftaucht-->
+            <div *ngFor="let user of users$ | async">
+                <!-- next we will filter out all users from other dorms and the currentUser himself, so that we only see the other users from the same dorm.-->
+                <div *ngIf="user.dormId == currentUser.dormId && user.id != currentUser.id">
+                    <li > <!-- for Schleife über alle geladenen User - startet erst, wenn alle user geladen sind: async: https://malcoded.com/posts/angular-async-pipe/ -->
+                        
+                            <a routerLink="/details/{{ user.id }}">{{user.name}}</a>  <!-- wenn der username angeklickt wird, wird man weitergeleitet per routerLink zur details component.-->
+                            <ul>
+                                 <!-- loads the user image. If no image is available, a default pic gets shown -->
+  <img [src]="userImagesMap.get(user.id)" class="images userPic" alt="User Profile Picture" *ngIf="userImagesMap.get(user.id); else noImageFound">
+  <ng-template #noImageFound>
+    <img src="../../assets/images/noImage.JPG" alt="Fallbackimage">
+  </ng-template>
+  <br>
+  <br>
+                                <li>{{ user.email }}</li>
+                            </ul>
+                        
+                        
+                        <!-- <div class="row">
+                            <div class="col">
+                                <button class="btn btn-danger">Click Me</button>
+                            </div>
+                            <div class="col">
+                                <button class="btn btn-info">Click Me</button>
+                            </div>
+                        </div> -->
+                    </li>
+                </div>
+            </div>
+            
+        </ul>
+    </div>
         
-    </div>
-    <div class="col-md-auto">
-      </div>
-    <div class="col col-lg-2">
-        <a routerLink="/add-user" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}">
-            <i class="material-icons">add</i>
-          </a> 
-    </div>
 </div>
 
-<div *ngIf="currentUser">
-    <ul [@listStagger]="users$">  <!--listStagger ist eine spezielle Animation, bei der die Liste nicht auf einmal dargestellt wird, sondern zeitlich verzögert auftaucht-->
-        <div *ngFor="let user of users$ | async">
-            <!-- next we will filter out all users from other dorms and the currentUser himself, so that we only see the other users from the same dorm.-->
-            <div *ngIf="user.dormId == currentUser.dormId && user.id != currentUser.id">
-                <li > <!-- for Schleife über alle geladenen User - startet erst, wenn alle user geladen sind: async: https://malcoded.com/posts/angular-async-pipe/ -->
-                    
-                        <a routerLink="/details/{{ user.id }}">{{user.name}}</a>  <!-- wenn der username angeklickt wird, wird man weitergeleitet per routerLink zur details component.-->
-                        <ul>
-                            <li>{{ user.email }}</li>
-                            <li><a href="http://{{ user.website }}"></a>{{ user.website }}</li>
-                        </ul>
-                    
-                    
-                    <!-- <div class="row">
-                        <div class="col">
-                            <button class="btn btn-danger">Click Me</button>
-                        </div>
-                        <div class="col">
-                            <button class="btn btn-info">Click Me</button>
-                        </div>
-                    </div> -->
-                </li>
-            </div>
-        </div>
-        
-    </ul>
-</div>
+

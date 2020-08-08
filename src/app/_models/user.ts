@@ -15,5 +15,6 @@ export interface User {
     profilePic?: string;
     products?: Product[];
     createdAt?: string;
-    updatedAt?: string;  
+    updatedAt?: string;
+    imageBlob?: any;  
 }

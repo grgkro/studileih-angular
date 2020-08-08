@@ -6,14 +6,12 @@
   <img [src]="imageToShow" class="images userPic" alt="User Profile Picture" *ngIf="imageToShow; else noImageFound">
   <ng-template #noImageFound>
     <img src="https://cdn-0.askleo.com/wp-content/uploads/2013/07/image_not_found.png" alt="Fallbackimage">
-    <!-- <= default picture -->
   </ng-template>
   <br>
   <br>
 
   <ul>
     <li><strong>Username:</strong> {{ user?.name }}</li>
-    <li><strong>Email:</strong> {{ user?.email }}</li>
     <li>
       <div class="row">
         <div class="col-4">
