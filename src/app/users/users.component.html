@@ -22,12 +22,12 @@
                         <!--listStagger ist eine spezielle Animation, bei der die Liste nicht auf einmal dargestellt wird, sondern zeitlich verzögert auftaucht-->
                         <div *ngFor="let user of users">
                             <!-- next we will filter out all users from other dorms and the currentUser himself, so that we only see the other users from the same dorm.-->
-                            <div class="row ">
-                                <div class="col">
+                            <div class="row " >
+                                <div class="col" >
                                     <div>
                                         <div *ngIf="user.dormId == currentUser.dormId && user.id != currentUser.id"
                                             style="text-align:center">
-                                            <li>
+                                            <li style="box-shadow: 12px 12px 12px 0 rgba(0,0,0, 0.3);">
                                                 <a routerLink="/details/{{ user.id }}">
                                                     <!-- for Schleife über alle geladenen User - startet erst, wenn alle user geladen sind: async: https://malcoded.com/posts/angular-async-pipe/ -->
 
