@@ -1,7 +1,7 @@
 <div class="row justify-content-md-center">
     <div class="col">
-        <div class="double" style="display: inline-block">
-            <h1 >Users</h1>
+        <div style="display: inline-block">
+            <h1 >Andere Benutzer in deinem Wohnheim:</h1>
         </div>
         
     </div>
@@ -14,21 +14,31 @@
     </div>
 </div>
 
-
-<ul [@listStagger]="users$">  <!--listStagger ist eine spezielle Animation, bei der die Liste nicht auf einmal dargestellt wird, sondern zeitlich verzögert auftaucht-->
-    <li *ngFor="let user of users$ | async"> <!-- for Schleife über alle geladenen User - startet erst, wenn alle user geladen sind: async: https://malcoded.com/posts/angular-async-pipe/ -->
-        <a routerLink="/details/{{ user.id }}">{{user.name}}</a>  <!-- wenn der username angeklickt wird, wird man weitergeleitet per routerLink zur details component.-->
-        <ul>
-            <li>{{ user.email }}</li>
-            <li><a href="http://{{ user.website }}"></a>{{ user.website }}</li>
-        </ul>
-        <!-- <div class="row">
-            <div class="col">
-                <button class="btn btn-danger">Click Me</button>
+<div *ngIf="currentUser">
+    <ul [@listStagger]="users$">  <!--listStagger ist eine spezielle Animation, bei der die Liste nicht auf einmal dargestellt wird, sondern zeitlich verzögert auftaucht-->
+        <div *ngFor="let user of users$ | async">
+            <!-- next we will filter out all users from other dorms and the currentUser himself, so that we only see the other users from the same dorm.-->
+            <div *ngIf="user.dormId == currentUser.dormId && user.id != currentUser.id">
+                <li > <!-- for Schleife über alle geladenen User - startet erst, wenn alle user geladen sind: async: https://malcoded.com/posts/angular-async-pipe/ -->
+                    
+                        <a routerLink="/details/{{ user.id }}">{{user.name}}</a>  <!-- wenn der username angeklickt wird, wird man weitergeleitet per routerLink zur details component.-->
+                        <ul>
+                            <li>{{ user.email }}</li>
+                            <li><a href="http://{{ user.website }}"></a>{{ user.website }}</li>
+                        </ul>
+                    
+                    
+                    <!-- <div class="row">
+                        <div class="col">
+                            <button class="btn btn-danger">Click Me</button>
+                        </div>
+                        <div class="col">
+                            <button class="btn btn-info">Click Me</button>
+                        </div>
+                    </div> -->
+                </li>
             </div>
-            <div class="col">
-                <button class="btn btn-info">Click Me</button>
-            </div>
-        </div> -->
-    </li>
-</ul>
+        </div>
+        
+    </ul>
+</div>
