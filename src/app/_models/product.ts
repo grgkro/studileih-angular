@@ -14,6 +14,11 @@ export interface Product {
     createdAt?: string;
     updatedAt?: string;
     picPaths?: string[];  
+    startDay?: string;
+    endDay?: string;
+    pickUpTime?: string;
+    returnTime?: string;
+    category?: string;
 
     // the next two properties are used to display the city and dorm of the products from the other dorms on the main page (products component) -> extra loading the dorm and city with the userId of the product is too complicated here.
     dorm?: string;

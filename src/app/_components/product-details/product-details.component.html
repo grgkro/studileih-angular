@@ -1,6 +1,5 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons&display=block" rel="stylesheet">
 
-<div class="jumbotron jumbotron-fluid">
      <div class="container">
           <h1>{{errorMessage}}</h1>
           <div *ngIf="product">
@@ -15,12 +14,13 @@
                     <div class="col">
                          <ul>
                               <li><strong>Beschreibung:</strong> {{ product?.description }}</li>
+                              <li><strong>Kategorie:</strong> {{ product?.category }}</li>
                               <li><strong>Besitzer:</strong> {{ owner?.name }}</li>
                               <li><strong>Price:</strong> {{ product?.price }} €</li>
                               <li><strong>Wird statt Geld auch ein Bier aktzeptiert?:</strong>
                                    {{ (product?.isBeerOk) ? 'Bier ist auch okay.' : 'Nur Bares ist Wares.' }} €</li>
-                              <li><strong>Product Id:</strong> {{ product?.id }}</li>
-                              <li><strong>product.UserId:</strong> {{ product?.userId }}</li>
+                              <li><strong>Verfügbar?:</strong> {{ product?.available ? 'Ja' : 'Nein, gerade ausgeliehen bis: ' }}</li>
+                              <li><strong>Ausleihbar von - bis:</strong> {{ product?.startDay }}</li>
                               <li *ngIf="user"><strong>user.id (id des gerade aktiven users):</strong> {{ user?.id }}
                               </li>
                               <li *ngIf="isCurrentUserOwner">
@@ -29,8 +29,9 @@
                                         <div class="col-4">
                                              <div class="row">
                                                   <div class="col">
-                                                       <button class="btn btn-danger">
-                                                            <svg class="bi bi-trash" width="1.5em" height="1.5em"
+                                                       <button class="btn btn-danger" (click)="deleteProduct(product.id)">
+                                                            <a routerLink="">
+                                                                 <svg class="bi bi-trash" width="1.5em" height="1.5em"
                                                                  viewBox="0 0 16 16" fill="currentColor"
                                                                  xmlns="http://www.w3.org/2000/svg">
                                                                  <path
@@ -38,6 +39,7 @@
                                                                  <path fill-rule="evenodd"
                                                                       d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
                                                             </svg>
+                                                            </a> 
                                                        </button>
                                                   </div>
                                                   <div class="col">

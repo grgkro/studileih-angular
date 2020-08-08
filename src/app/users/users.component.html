@@ -17,7 +17,8 @@
             <div class="col">
 
                 <div *ngIf="dataLoaded | async">
-                    <ul [@listStagger]="users">
+                    <ul [@listStagger]="users" >
+                    <!-- <ul [@listStagger]="users" class=" row "> --> <!-- uncomment this to make many cards appear in one row.-->
                         <!--listStagger ist eine spezielle Animation, bei der die Liste nicht auf einmal dargestellt wird, sondern zeitlich verzögert auftaucht-->
                         <div *ngFor="let user of users">
                             <!-- next we will filter out all users from other dorms and the currentUser himself, so that we only see the other users from the same dorm.-->

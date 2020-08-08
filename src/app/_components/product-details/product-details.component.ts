@@ -257,6 +257,18 @@ this.uploadFileService.pushFileToStorage(selectedFile, this.user.id, this.produc
   }
 
   
+  deleteProduct(id: number) {
+    this._data.deleteProduct(id)
+      .subscribe(data => {
+        console.log(data);
+        // this.products = this.products.filter(product => product.id !== id);
+        console.log('Product deleted successfully!');
+        // we have to reload the product images, because we dont store the productId with the images, so if the order of products changes, the images would get mixed up.
+        // this.loadProductImages();
+      })
+  };
+
+  
   onAnfrageSubmit() { 
     this.sendEmailToOwner(this.createFormdata());
     this.sendMessageToOwner(this.createFormdata());
