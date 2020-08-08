@@ -46,6 +46,7 @@ export class UsersComponent implements OnInit {
   dorms: Dorm[];
   dataLoaded: Promise<boolean>;
   userImagesMap = new Map();
+  testUsers: User[] = [{ id: 1}]
 
    // Angular takes care of unsubscribing from many observable subscriptions like those returned from the Http service or when using the async pipe. But the routeParam$ and the _update.currentShowUploadComponent needs to be unsubscribed by hand on ngDestroy. Otherwise, we risk a memory leak when the component is destroyed. https://malcoded.com/posts/angular-async-pipe/   https://www.digitalocean.com/community/tutorials/angular-takeuntil-rxjs-unsubscribe
    destroy$: Subject<boolean> = new Subject<boolean>();
@@ -78,32 +79,40 @@ export class UsersComponent implements OnInit {
    .subscribe(dorms => {
      if (dorms.length > 0) {
        this.dorms = dorms
-       console.log("if statement", dorms)
+       
      } else if (dorms.length == 0) {
        this._data.getDormLocations().subscribe(dorms => {
-         this.dorms = dorms; 
+         this.dorms = dorms;
          this._update.changeDorms(dorms);
-         console.log("else statement", dorms)})
+       })
      }
     })
   }
 
   loadUsersAndProfileImages() {
     this.users$.subscribe((users) => {
-      this.users = users;
+      this.users = this.sortUsersByProductsAndProfilePic(users);
+      
+       
     for (let user of users) {
       this.loadProfilePic(user);
     }
     this.dataLoaded = Promise.resolve(true);
+    
     }); 
+  }
+
+  //sorts the array users by the number of products they offer. If both offer the same number of products, the user with profile Pic gets picked first. => This way the more active users appear first in the users overview.
+  sortUsersByProductsAndProfilePic(users) {
+    users.forEach((user) => {if (user.profilePic) {user.hasProfilePic = true;} else { user.hasProfilePic = false}})
+    return users.sort((a, b) => (a.products.length < b.products.length) ? 1 : (a.products.length === b.products.length) ? ((a.hasProfilePic < b.hasProfilePic) ? 1 : -1) : -1)
   }
 
 
   loadProfilePic(user: User) {
-    console.log(user.id)
+    
     this.uploadFileService.getUserPic(user.id).subscribe(       // load user image
       image => {
-        console.log(image)
         this.createImageFromBlob(image, user);
       })
   }

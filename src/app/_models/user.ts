@@ -16,5 +16,5 @@ export interface User {
     products?: Product[];
     createdAt?: string;
     updatedAt?: string;
-    imageBlob?: any;  
+    hasProfilePic?: boolean;
 }
