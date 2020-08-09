@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "studileih-ceb70": {
+      "hosting": {
+        "studileih": [
+          "studileih-ceb70"
+        ]
+      }
+    }
+  }
+}
