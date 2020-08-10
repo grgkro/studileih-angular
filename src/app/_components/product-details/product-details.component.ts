@@ -1,5 +1,5 @@
 import { Component, OnInit, NgModule } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../../data.service';
 import { switchMap, takeUntil } from 'rxjs/operators';
 import { Product } from 'src/app/_models/product';
@@ -55,7 +55,7 @@ export class ProductDetailsComponent implements OnInit {
 
   
 
-  constructor(private route: ActivatedRoute, private uploadFileService: UploadFileService,private _data: DataService, private _update: UpdateService, private _helper: HelperService, private sanitizer: DomSanitizer, private _snackBar: MatSnackBar) { }
+  constructor(private route: ActivatedRoute, private router: Router, private uploadFileService: UploadFileService,private _data: DataService, private _update: UpdateService, private _helper: HelperService, private sanitizer: DomSanitizer, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.routeParam$ = this.route.params.pipe(switchMap(params => this._data.getProduct(params['id'])))  // get the productId from the URL parameter /{id}. pipe & switchMap take care that if the userId changes for some reason, the following process gets stopped: https://www.concretepage.com/angular/angular-switchmap-example (not necessary yet, because the user profile image loads pretty fast, but if that takes longer and the user switches to another site, it's better to stop the process)
@@ -263,6 +263,7 @@ this.uploadFileService.pushFileToStorage(selectedFile, this.user.id, this.produc
         console.log(data);
         // this.products = this.products.filter(product => product.id !== id);
         console.log('Product deleted successfully!');
+        this.router.navigate(['products']);
         // we have to reload the product images, because we dont store the productId with the images, so if the order of products changes, the images would get mixed up.
         // this.loadProductImages();
       })
