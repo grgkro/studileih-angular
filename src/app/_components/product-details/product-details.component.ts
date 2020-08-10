@@ -134,10 +134,7 @@ this.uploadFileService.pushFileToStorage(selectedFile, this.user.id, this.produc
     this.routeParam$
       .pipe(takeUntil(this.destroy$))           // We need to unsubscribe from this Observable by hand, because its not an observable returned by a http request
       .subscribe(product => {
-        this.product = product;
-
-        // this.loadOwner();                      
-        
+        this.product = product;                    
         this._update.changeProduct(this.product);    // we change the product in the data service so that if a picture for this product get's uploaded with the upload-file component, the upload-component knows witch is the current product and the image can be stored under the right productId.
         // is the user who looks at the details of this product also the owner of the product? if he is the owner -> show "delete", "update" and "Upload new Photo" button
         if (this.user != undefined && this.product.userId == this.user.id) {

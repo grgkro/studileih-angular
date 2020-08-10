@@ -39,7 +39,7 @@ export class AddProductComponent implements OnInit {
   removable = true;
   categories: Category[] = [
     {name: 'Bohrmaschine',
-    selected: true},
+    selected: false},
     {name: 'Leiter',
     selected: false},
     {name: 'WLAN',
@@ -49,6 +49,8 @@ export class AddProductComponent implements OnInit {
     {name: 'DVD',
     selected: false},
     {name: 'Werkzeug',
+    selected: false},
+    {name: 'Grill',
     selected: false},
     {name: 'Grillzeug',
     selected: false},
@@ -133,6 +135,7 @@ export class AddProductComponent implements OnInit {
     console.log("PICKED: ", category);
     if (category.selected) {
       category.selected = false;
+      this.hasSelectedCategory= false;
     } else {
       this.categories.forEach(category => {
         if (category.selected == true) {
@@ -140,6 +143,7 @@ export class AddProductComponent implements OnInit {
             console.log("EACH: ", category, category.selected);
         }});
         category.selected = true;
+        this.hasSelectedCategory= true;
     }
     console.log("Picked", category.name);
   }
@@ -156,6 +160,7 @@ export class AddProductComponent implements OnInit {
             console.log("EACH: ", category, category.selected);
         }});
       this.categories.push({name: value.trim(), selected: true});
+      this.hasSelectedCategory= true;
     }
 
     // Reset the input value

@@ -1,140 +1,157 @@
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons&display=block" rel="stylesheet">
+<div class="container">
+     <h1>{{errorMessage}}</h1>
+     <div *ngIf="product">
+          <!-- Falls das Product schon geladen ist, dann führe das Folgende aus-->
+          <div class="row">
+               <div class="col">
+                    <h1 class="display-3">{{ product?.title }}</h1>
+               </div>
+          </div>
+          <hr class="my-2" />
+          <div class="row">
+               <div class="col">
+                    <ul>
+                         <li><strong>Beschreibung:</strong> {{ product?.description }}</li>
+                         <li><strong>Kategorie:</strong> {{ product?.category }}</li>
+                         <li><strong>Besitzer:</strong> {{ owner?.name }}</li>
+                         <div *ngIf="product.price == 0 && product.beerOk">
+                              <li><strong>Preis:</strong> Der Besitzer möchte statt Geld lieber ein Bier. </li>
+                         </div>
+                         <div *ngIf="product.price != 0">
+                              <li><strong>Preis:</strong> {{ product?.price }} €</li>
+                              <li><strong>Wird statt Geld auch ein Bier akzeptiert?:</strong>
+                                   {{ (product?.beerOk) ? 'Ja, der Besitzer würde sich auch mit einem Bier begnügen.' : 'Nur Bares ist Wares.' }}
+                              </li>
+                         </div>
 
-     <div class="container">
-          <h1>{{errorMessage}}</h1>
-          <div *ngIf="product">
-               <!-- Falls das Product schon geladen ist, dann führe das Folgende aus-->
-               <div class="row">
-                    <div class="col">
-                         <h1 class="display-3">{{ product?.title }}</h1>
+                         <li><strong>Verfügbar?:</strong> {{ product?.available ? 'Ja' : 'Nein, gerade ausgeliehen.' }}
+                         </li>
+                         <div *ngIf="product.startDay && product.endDay">
+                              <li><strong>Ausleihbar von - bis:</strong> {{ product?.startDay |date:'mediumDate'}} -
+                                   {{ product?.endDay |date:'mediumDate'}}</li>
+                         </div>
+
+                         <li *ngIf="user"><strong>user.id (id des gerade aktiven users):</strong> {{ user?.id }}
+                         </li>
+                         <li *ngIf="isCurrentUserOwner">
+                              <!-- if the current user is the owner, he will see the delete and update button -->
+                              <div class="row">
+                                   <div class="col-4">
+                                        <div class="row">
+                                             <div class="col">
+                                                  <!-- <a mdbBtn color="danger" size="lg" class="waves-light" mdbWavesEffect data-toggle="modal"
+              data-target="#cancelModal">Abbrechen</a> -->
+                                                  <button class="btn btn-danger" data-toggle="modal"
+                                                       data-target="#cancelModal">
+
+                                                       <svg class="bi bi-trash" width="1.5em" height="1.5em"
+                                                            viewBox="0 0 16 16" fill="currentColor"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                 d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                                            <path fill-rule="evenodd"
+                                                                 d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                                                       </svg>
+
+                                                  </button>
+                                                  <!-- Modal -->
+                                                  <div class="modal fade" id="cancelModal" tabindex="-1" role="dialog"
+                                                       aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                       <div class="modal-dialog modal-dialog-centered" role="document">
+                                                            <div class="modal-content">
+                                                                 <div class="modal-header">
+                                                                      <h5 class="modal-title"
+                                                                           id="exampleModalLongTitle">Produkt endgültig
+                                                                           löschen?</h5>
+                                                                      <button type="button" class="close"
+                                                                           data-dismiss="modal" aria-label="Close">
+                                                                           <span aria-hidden="true">&times;</span>
+                                                                      </button>
+                                                                 </div>
+
+                                                                 <div class="modal-footer">
+                                                                      <button mdbBtn type="button" size="md"
+                                                                           color="primary" class="waves-light"
+                                                                           mdbWavesEffect
+                                                                           data-dismiss="modal">Abbrechen</button>
+                                                                      <button mdbBtn type="button" color="danger"
+                                                                           size="md" class="waves-light" mdbWavesEffect
+                                                                           (click)="deleteProduct(product.id)"
+                                                                           data-dismiss="modal">Löschen</button>
+                                                                 </div>
+                                                            </div>
+                                                       </div>
+                                                  </div>
+                                             </div>
+                                             <div class="col">
+                                                  <button class="btn btn-primary">update</button>
+                                             </div>
+                                        </div>
+                                   </div>
+                                   <div class="col-8"></div>
+                              </div>
+                         </li>
+                    </ul>
+               </div>
+          </div>
+
+
+
+          
+               <div style="display: inline-block">
+                    <!-- https://malcoded.com/posts/angular-async-pipe/ -->
+                    <div  class="row" *ngIf="imagesLoaded | async">
+                         <!-- deferload ist für das lazy loading zuständig, bin aber nicht sicher ob es überhaupt funktioniert.-->
+                         <!-- loads the product image. If no image is available, a default pic gets shown -->
+                         <div *ngFor="let image of imagesToShow; let i = index" (deferLoad)="image.show = true">
+                              <div class="col" style="margin: 1.5rem 0rem 1.5rem 0rem" align="center">
+                                   <ng-container *ngIf="image.show">
+                                        <div class="container">
+                                             <img [src]="image" class="images img-thumbnail" alt="Product Picture"
+                                                  *ngIf="image; else noImageFound">
+                                             <button class="delete-btn btn" *ngIf="isCurrentUserOwner"
+                                                  (click)="deleteProductImage(i)">x</button>
+                                             <!-- if the currect user is the owner, we show a delete button in the top right corner of the image-->
+                                        </div>
+                                   </ng-container>
+                                   <ng-template #noImageFound>
+                                        <img src="https://cdn-0.askleo.com/wp-content/uploads/2013/07/image_not_found.png"
+                                             alt="Fallbackimage">
+                                        <!-- <= default picture -->
+                                   </ng-template>
+
+                              </div>
+                         </div>
+                    </div>
+                    <div class="row">
+                         <div class="col-sm-12">
+                              <div *ngIf="isCurrentUserOwner">
+                                   <button *ngIf="deletedImages.length != 0" style="position: relative; left: 1rem;"
+                                        (click)="restoreLastImage()" mdbBtn color="secondary" class="waves-light"
+                                        mdbWavesEffect>Letztes
+                                        Foto zurückholen</button>
+                                   <!-- [...] = input that gets passed into the child. (...) = output from the child. If isUserPic = true the "Vorschau" Pic will get rounded. -->
+                                   <app-upload-file [isUserPic]=false (selectedFile)="onFileSelected($event)">
+                                   </app-upload-file>
+                                   <!-- when a file gets selected in the upload-file component, we will get that as an output emitted into the product-details component-->
+
+
+                                   <div class="divider"></div>
+
+                              </div>
+                         </div>
+                         <div class="row">
+                              <div class="col-sm-3">
+                                   <br />
+                                   <br />
+                                   <strong>{{ response }}</strong>
+                                   <strong>{{ errorMessage }}</strong>
+                              </div>
+                         </div>
                     </div>
                </div>
-               <hr class="my-2" />
-               <div class="row">
-                    <div class="col">
-                         <ul>
-                              <li><strong>Beschreibung:</strong> {{ product?.description }}</li>
-                              <li><strong>Kategorie:</strong> {{ product?.category }}</li>
-                              <li><strong>Besitzer:</strong> {{ owner?.name }}</li>
-                              <li><strong>Price:</strong> {{ product?.price }} €</li>
-                              <li><strong>Wird statt Geld auch ein Bier aktzeptiert?:</strong>
-                                   {{ (product?.isBeerOk) ? 'Bier ist auch okay.' : 'Nur Bares ist Wares.' }} €</li>
-                              <li><strong>Verfügbar?:</strong> {{ product?.available ? 'Ja' : 'Nein, gerade ausgeliehen bis: ' }}</li>
-                              <li><strong>Ausleihbar von - bis:</strong> {{ product?.startDay }}</li>
-                              <li *ngIf="user"><strong>user.id (id des gerade aktiven users):</strong> {{ user?.id }}
-                              </li>
-                              <li *ngIf="isCurrentUserOwner">
-                                   <!-- if the current user is the owner, he will see the delete and update button -->
-                                   <div class="row">
-                                        <div class="col-4">
-                                             <div class="row">
-                                                  <div class="col">
-                                                       <!-- <a mdbBtn color="danger" size="lg" class="waves-light" mdbWavesEffect data-toggle="modal"
-              data-target="#cancelModal">Abbrechen</a> -->
-                                                       <button class="btn btn-danger" data-toggle="modal"
-                                                       data-target="#cancelModal" >
-                                                            
-                                                                 <svg class="bi bi-trash" width="1.5em" height="1.5em"
-                                                                 viewBox="0 0 16 16" fill="currentColor"
-                                                                 xmlns="http://www.w3.org/2000/svg">
-                                                                 <path
-                                                                      d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
-                                                                 <path fill-rule="evenodd"
-                                                                      d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
-                                                            </svg>
-                                                            
-                                                       </button>
-                                                                            <!-- Modal -->
-      <div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-      aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">Produkt endgültig löschen?</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          
-          <div class="modal-footer">
-            <button mdbBtn type="button" size="md" color="primary" class="waves-light" mdbWavesEffect
-              data-dismiss="modal">Abbrechen</button>
-            <button mdbBtn type="button" color="danger" size="md" class="waves-light" mdbWavesEffect
-            (click)="deleteProduct(product.id)" data-dismiss="modal">Löschen</button>
-          </div>
-        </div>
-      </div>
-    </div>
-                                                  </div>
-                                                  <div class="col">
-                                                       <button class="btn btn-primary">update</button>
-                                                  </div>
-                                             </div>
-                                        </div>
-                                        <div class="col-8"></div>
-                                   </div>
-                              </li>
-                         </ul>
 
-     
-
-                         <div >
-                              <div style="display: inline-block">
-                                   <!-- https://malcoded.com/posts/angular-async-pipe/ -->
-                                   <div class="row"
-                                        *ngIf="imagesLoaded | async">
-                                        <!-- deferload ist für das lazy loading zuständig, bin aber nicht sicher ob es überhaupt funktioniert.-->
-                                        <!-- loads the product image. If no image is available, a default pic gets shown -->
-                                        <div *ngFor="let image of imagesToShow; let i = index"
-                                             (deferLoad)="image.show = true">
-                                             <div class="col" style="margin: 1.5rem 0rem 1.5rem 0rem" align="center">
-                                                  <ng-container *ngIf="image.show">
-                                                       <div class="container">
-                                                            <img [src]="image" class="images img-thumbnail"
-                                                                 alt="Product Picture" *ngIf="image; else noImageFound">
-                                                            <button class="delete-btn btn" *ngIf="isCurrentUserOwner"
-                                                                 (click)="deleteProductImage(i)">x</button>
-                                                            <!-- if the currect user is the owner, we show a delete button in the top right corner of the image-->
-                                                       </div>
-                                                  </ng-container>
-                                                  <ng-template #noImageFound>
-                                                       <img src="https://cdn-0.askleo.com/wp-content/uploads/2013/07/image_not_found.png"
-                                                            alt="Fallbackimage">
-                                                       <!-- <= default picture -->
-                                                  </ng-template>
-
-                                             </div>
-                                        </div>
-                                   </div>
-                                   <div class="row">
-                                        <div class="col-sm-12">
-                                             <div *ngIf="isCurrentUserOwner" >
-                                                  <button *ngIf="deletedImages.length != 0" style="position: relative; left: 1rem;"
-                                                       (click)="restoreLastImage()"
-                                                        mdbBtn color="secondary" class="waves-light"
-                                                       mdbWavesEffect>Letztes Foto zurückholen</button>
-                                                       <!-- [...] = input that gets passed into the child. (...) = output from the child. If isUserPic = true the "Vorschau" Pic will get rounded. -->
-                                                       <app-upload-file [isUserPic]=false (selectedFile)="onFileSelected($event)">
-                                                       </app-upload-file>
-                                                       <!-- when a file gets selected in the upload-file component, we will get that as an output emitted into the product-details component-->
-                                                 
-                                                  
-                                                  <div class="divider"></div>
-                                                  
-                                             </div>
-                                        </div>
-                                        <div class="row">
-                                             <div class="col-sm-3">
-                                                  <br />
-                                                  <br />
-                                                  <strong>{{ response }}</strong>
-                                                  <strong>{{ errorMessage }}</strong>
-                                             </div>
-                                        </div>
-                                   </div>
-
-
-                                   <!-- Date picker: das ist eine UI Komponente von Angular Material.
+                    <!-- Date picker: das ist eine UI Komponente von Angular Material.
 Um das zum laufen zu kriegen müsst ihr wahrscheinlich folgende Befehle im Terminal abschicken:
 ng update @angular/cli @angular/core    <- updated auf das neue Angular 10
 npm install @angular/cdk
@@ -149,55 +166,51 @@ https://next.material.angular.io/components/datepicker/overview
 https://stackoverflow.com/questions/62615428/angular-10-date-range-picker-calender-opens-at-wrong-place/62615566#62615566
 https://blog.angular.io/version-10-of-angular-now-available-78960babd41
 -->
-                                   <div *ngIf="!isCurrentUserOwner">
-                                        <!-- only show the date picker, if the user is not the owner of the product. The owner can't rent his own product, so he doesn't need the date picker to chose when he wants to rent it.-->
-                                        <div class="row">
-                                             <div class="col">
-                                                  <h1 class="display-3">Ausleihen</h1>
-                                             </div>
-                                        </div>
-                                        <hr class="my-2" />
-                                        <div class="row">
-                                             <div class="col-sm-3">
-                                                  <mat-form-field appearance="fill">
-                                                       <mat-label>Von wann bis wann?</mat-label>
+                    <div *ngIf="!isCurrentUserOwner">
+                         <!-- only show the date picker, if the user is not the owner of the product. The owner can't rent his own product, so he doesn't need the date picker to chose when he wants to rent it.-->
+                         <div class="row">
+                              <div class="col">
+                                   <h1 class="display-3">Ausleihen</h1>
+                              </div>
+                         </div>
+                         <hr class="my-2" />
+                         <div class="row justify-content-between">
+                              <div class="col-3">
+                                   <mat-form-field appearance="fill">
+                                        <mat-label style="font-size: 17px;">Von wann bis wann?</mat-label>
 
-                                                       <mat-date-range-input [rangePicker]="picker">
-                                                            <input matStartDate matInput placeholder="Anfangsdatum"
-                                                                 [(ngModel)]="startDate">
-                                                            <input matEndDate matInput placeholder="Enddatum"
-                                                                 [(ngModel)]="endDate">
-                                                       </mat-date-range-input>
-                                                       <mat-datepicker-toggle matSuffix [for]="picker">
-                                                       </mat-datepicker-toggle>
-                                                       <mat-date-range-picker #picker></mat-date-range-picker>
-                                                  </mat-form-field>
-                                             </div>
-                                             <div class="col-sm-3">
-                                                  <div class="md-form">
-                                                       <input type="time" id="input" class="form-control" value="13:00"
-                                                            placeholder="13:00" mdbInput [(ngModel)]="pickUpTime" />
-                                                       <label for="input">Abholzeit am
-                                                            {{ startDate.toLocaleDateString() }} um: </label>
-                                                  </div>
-                                             </div>
-                                             <div class="col-sm-3">
-                                                  <div class="md-form">
-                                                       <input type="time" id="input" class="form-control" value="13:00"
-                                                            placeholder="13:00" mdbInput [(ngModel)]="returnTime" />
-                                                       <label for="input">Rückgabe am {{ endDate.toLocaleDateString() }}
-                                                            um: </label>
-                                                  </div>
-                                             </div>
-                                             <div class="col-sm-3">
-                                                  <button class="button" type="submit" mdbBtn color="primary"
-                                                       class="waves-light" mdbWavesEffect
-                                                       (click)="onAnfrageSubmit()">Anfragen</button>
-                                             </div>
-                                        </div>
+                                        <mat-date-range-input [rangePicker]="picker">
+                                             <input matStartDate matInput placeholder="Anfangsdatum"
+                                                  [(ngModel)]="startDate">
+                                             <input matEndDate matInput placeholder="Enddatum" [(ngModel)]="endDate">
+                                        </mat-date-range-input>
+                                        <mat-datepicker-toggle matSuffix [for]="picker">
+                                        </mat-datepicker-toggle>
+                                        <mat-date-range-picker #picker></mat-date-range-picker>
+                                   </mat-form-field>
+                              </div>
+                              <div class="col-3">
+                                   <div class="md-form" style="position: relative; top: -0.4rem;">
+                                        <input type="time" id="input" class="form-control" value="13:00"
+                                             placeholder="13:00" mdbInput [(ngModel)]="pickUpTime" />
+                                        <label for="input">Abholzeit am
+                                             {{ startDate.toLocaleDateString() }} um: </label>
                                    </div>
+                              </div>
+                              <div class="col-3">
+                                   <div class="md-form" style="position: relative; top: -0.4rem;">
+                                        <input type="time" id="input" class="form-control" value="13:00"
+                                             placeholder="13:00" mdbInput [(ngModel)]="returnTime" />
+                                        <label for="input">Rückgabe am {{ endDate.toLocaleDateString() }}
+                                             um: </label>
+                                   </div>
+                              </div>
+                              <div class="col-sm-3">
+                                   <button class="button" type="submit" mdbBtn color="primary" class="waves-light"
+                                        mdbWavesEffect (click)="onAnfrageSubmit()">Anfragen</button>
                               </div>
                          </div>
                     </div>
-               </div>
-          </div>
+            
+     </div>
+</div>
