@@ -52,6 +52,7 @@ export class ProductDetailsComponent implements OnInit {
   // serializedDate = new FormControl((new Date()).toISOString());
 
   response: string;
+  isEditingActivated: boolean = false;
 
   
 
@@ -77,6 +78,10 @@ export class ProductDetailsComponent implements OnInit {
     this._update.currentUser
     .pipe(takeUntil(this.destroy$))
     .subscribe(user => this.user = user)
+  }
+
+  saveChanges() {
+    alert("not implemented yet")
   }
 
   // https://angular.io/guide/component-interaction
