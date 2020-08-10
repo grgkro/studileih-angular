@@ -37,6 +37,7 @@ import {MatCardModule} from '@angular/material/card';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatIconModule} from '@angular/material/icon';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 
@@ -98,6 +99,7 @@ HttpClientModule
     MatTooltipModule,
     MatChipsModule,
     MatIconModule,
+    MatExpansionModule,
 
     MDBBootstrapModule,
 

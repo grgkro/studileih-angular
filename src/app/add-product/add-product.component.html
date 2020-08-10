@@ -14,7 +14,7 @@
             [ngClass]="{'is-invalid': addForm.get('title').errors && (addForm.get('title').touched || addForm.get('title').dirty), 'is-valid':addForm.get('title').valid}">
           <div class="alert alert-danger" role="alert"
             *ngIf="addForm.get('title').invalid && (addForm.get('title').touched || addForm.get('title').dirty)">
-            Bitte einen Title eingeben.
+            Bitte einen Titel eingeben.
           </div>
         </div>
 
@@ -31,6 +31,15 @@
         </div>
 
         <br>
+        <mat-accordion>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title style="text-align: center; display: block;
+            margin-left: auto;
+            margin-right: auto;">
+              Bitte wähle eine Kategorie: (optional):
+            </mat-panel-title>
+          </mat-expansion-panel-header>
         <!-- here the user can chose one product category-->
         <!-- https://material.angular.io/components/chips/overview-->
         <div>
@@ -75,74 +84,113 @@
             </mat-chip>
           </mat-chip-list>
         </div>
+      </mat-expansion-panel>
 
         <br>
-        <div class="form-group">
-          <label for="price">Preis in €:</label>
-          <input type="number" formControlName="price" value="0" name="price" class="form-control" id="price"
-            (input)="inputValidator($event)" />
-          <br>
-          <div *ngIf="showOnlyNumbersMessage" class="alert alert-danger">
-            {{ onlyNumbersMessage }}
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title style="text-align: center; display: block;
+            margin-left: auto;
+            margin-right: auto;">
+              Preis angeben (optional):
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <p>Hier kannst du einen Preis angeben, falls du für das Ausleihen etwas Geld möchtest (du kannst auch als Gegenleistung nur ein Bier akzeptieren):</p>
+          <div class="form-group">
+            <label for="price">Preis in €:</label>
+            <input type="number" formControlName="price" value="0" name="price" class="form-control" id="price"
+              (input)="inputValidator($event)" />
+            <br>
+            <div *ngIf="showOnlyNumbersMessage" class="alert alert-danger">
+              {{ onlyNumbersMessage }}
+            </div>
+            <div *ngIf="priceTooHigh" class="alert alert-danger">
+              {{ priceTooHighMessage }}
+            </div>
+            <br>
+            <input type="checkbox" id="beerCheckbox" checked formControlName="isBeerOk">
+            <label for="beerCheckbox">Oder ein Bier.</label><br>
           </div>
-          <div *ngIf="priceTooHigh" class="alert alert-danger">
-            {{ priceTooHighMessage }}
-          </div>
-          <br>
-          <input type="checkbox" id="beerCheckbox" checked formControlName="isBeerOk">
-          <label for="beerCheckbox">Oder ein Bier.</label><br>
-        </div>
+        </mat-expansion-panel>
+
+        
+<br>
+
+
 
         <div class="row">
           <div class="col">
-            <h1 class="display-3">Du kannst hier einen Zeitraum angeben, von wann bis wann das Produkt bevorzugt
-              ausgeliehen werden kann (Bedeutet nicht, dass es auch über die gesamte Dauer ausgeliehen werden muss).
-              Oder einfach freilassen, falls der Zeitraum egal ist:</h1>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title style="text-align: center; display: block;
+                margin-left: auto;
+                margin-right: auto;">
+                  Zeitraum hinzufügen, an dem das Produkt bevorzugt ausgeliehen werden kann (optional):
+                </mat-panel-title>
+
+              </mat-expansion-panel-header>
+
+              <p>Du kannst hier einen Zeitraum angeben, von wann bis wann das Produkt bevorzugt
+                ausgeliehen werden kann (Bedeutet nicht, dass es auch über die gesamte Dauer ausgeliehen werden muss).
+                Oder einfach freilassen, falls der Zeitraum egal ist:</p>
+                <div class="row justify-content-between">
+                  <div class="col-3">
+                    <mat-form-field appearance="fill">
+                      <mat-label style="font-size: 17px;">Verfügbar von bis:</mat-label>
+                      <mat-date-range-input [rangePicker]="picker">
+                        <input matStartDate matInput placeholder="Startdatum" formControlName="startDate">
+                        <input matEndDate matInput placeholder="Enddatum" formControlName="endDate">
+                      </mat-date-range-input>
+                      <mat-datepicker-toggle matSuffix [for]="picker">
+                      </mat-datepicker-toggle>
+                      <mat-date-range-picker #picker></mat-date-range-picker>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-3">
+                    <div class="md-form" style="position: relative; top: -0.4rem;">
+                      <input type="time" id="startTimeInput" class="form-control" placeholder="" mdbInput
+                        formControlName="pickUpTime" />
+                      <label for="startTimeInput">Abholbar ab: </label>
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="md-form" style="position: relative; top: -0.4rem;">
+                      <input type="time" id="returnTimeInput" class="form-control" placeholder="13:00" mdbInput
+                        formControlName="returnTime" />
+                      <label for="returnTimeInput">Rückgabe bis: </label>
+                    </div>
+                  </div>
+        
+        
+                </div>
+            </mat-expansion-panel>
+
           </div>
         </div>
-        <hr class="my-2" />
-        <div class="row">
-          <div class="col-sm-3">
-            <mat-form-field appearance="fill">
-              <mat-label style="font-size: 17px;">Verfügbar von bis:</mat-label>
-              <mat-date-range-input [rangePicker]="picker">
-                <input matStartDate matInput placeholder="Startdatum" formControlName="startDate">
-                <input matEndDate matInput placeholder="Enddatum" formControlName="endDate">
-              </mat-date-range-input>
-              <mat-datepicker-toggle matSuffix [for]="picker">
-              </mat-datepicker-toggle>
-              <mat-date-range-picker #picker></mat-date-range-picker>
-            </mat-form-field>
-          </div>
-          <div class="col-sm-3">
-            <div class="md-form" style="position: relative; top: -0.4rem;">
-              <input type="time" id="startTimeInput" class="form-control" placeholder="" mdbInput
-                formControlName="pickUpTime" />
-              <label for="startTimeInput">Abholbar ab: </label>
-            </div>
-          </div>
-          <div class="col-sm-3">
-            <div class="md-form" style="position: relative; top: -0.4rem;">
-              <input type="time" id="returnTimeInput" class="form-control" placeholder="13:00" mdbInput
-                formControlName="returnTime" />
-              <label for="returnTimeInput">Rückgabe bis: </label>
-            </div>
-          </div>
-
-
-        </div>
+    
+        <br>
+        
 
         <div class="row">
           <div class="col-sm-12">
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title style="text-align: center; display: block;
+                margin-left: auto;
+                margin-right: auto;">
+                  Fotos hinzufügen (empfohlen):
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <app-upload-multiple-files (selectedFile)="onFileSelected($event)"></app-upload-multiple-files>
+              <!-- when a file gets selected in the upload-file component, we will get that as an output emitted into the add-product component-->  
+            </mat-expansion-panel>
 
 
-            <app-upload-multiple-files (selectedFile)="onFileSelected($event)"></app-upload-multiple-files>
-            <!-- when a file gets selected in the upload-file component, we will get that as an output emitted into the add-product component-->
-
+           
           </div>
 
         </div>
-
+      </mat-accordion>
 
 
         <!-- <div class="form-group">
