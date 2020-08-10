@@ -2,19 +2,21 @@
 .circular--landscape {
     display: inline-block;
     position: relative;
-    width: 100px;
-    height: 100px;
+    margin: 0.4rem;
+    width: 90px;
+    height: 90px;
     overflow: hidden;
     border-radius: 50%;
   }
   
   .circular--landscape img {
     width: 100%;
-    height: auto;
+    // height: auto;
     // margin-left: -25px;
+   
+      height: 15vh;
+      object-fit: cover;
+      
   }
 
-  #mydiv{
-    width:500px;
-    height:500px;
-    }
+  

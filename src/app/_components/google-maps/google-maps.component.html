@@ -47,6 +47,7 @@
     <div class="col" style="padding: 0px;">
         <!-- loads the google maps and centers it at Stuttgart (lat = 48, lng = 9) -->
         <div *ngIf="selectedDorm == null" >
+           
             <agm-map [latitude]=dormsToShow[0].lat [longitude]=dormsToShow[0].lng [fitBounds]="true" >
                 <div *ngFor="let dorm of dormsToShow">
                     <agm-marker [latitude]="dorm.lat" [longitude]="dorm.lng"
@@ -72,6 +73,7 @@
                 </div>
 
             </agm-map>
+
         </div>
         <div *ngIf="selectedDorm != null">
             <agm-map [latitude]=selectedDorm.lat [longitude]=selectedDorm.lng [zoom]="currZoom">

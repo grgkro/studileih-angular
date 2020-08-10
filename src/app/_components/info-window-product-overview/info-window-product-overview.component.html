@@ -1,11 +1,28 @@
-<div id="mydiv" *ngIf="dormProducts && selectedDorm">
-  
-<p>Im Wohnheim {{ selectedDorm.name }} kannst du folgendes ausleihen:</p>
+<div *ngIf="dormProducts && selectedDorm">
+
+  <p>Im Wohnheim {{ selectedDorm.name }} kannst du folgendes ausleihen:</p>
   <div *ngFor="let product of dormProducts">
-    <a routerLink="/product-details/{{ product.id }}">{{product.title}}</a>
-    <div *ngIf="(imagesLoaded | async) && productImagesMap.get(product.id) !== undefined" class="circular--landscape" >
-      <img [src]="productImagesMap.get(product.id)" alt="Product Picture"
-        *ngIf="productImagesMap.get(product.id)">
-    </div>
+    <a routerLink="/product-details/{{ product.id }}">
+      <div class="card mb-3" style="max-width: 480px;">
+        <div class="row no-gutters">
+          <div class="col-md-4">
+          <div *ngIf="(imagesLoaded | async)" class="circular--landscape">
+              <img [src]="productImagesMap.get(product.id)" alt="Product Picture" *ngIf="productImagesMap.get(product.id); else noImageFound">
+              <ng-template #noImageFound>
+                <img class="cardImage" src="../../../assets/images/noImage.JPG" alt="Fallbackimage">
+                <!-- <= default picture -->
+              </ng-template>
+            </div>
+          </div>
+
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">{{product.title}}</h5>
+              <p class="card-text">{{product.description}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </a>
   </div>
 </div>
