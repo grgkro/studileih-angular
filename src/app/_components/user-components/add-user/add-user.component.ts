@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl, FormGroupDirective, NgForm } from "@angular/forms";
 import { Router } from '@angular/router';
-import { DataService } from '../data.service';
+import { DataService } from '../../../data.service';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { UploadFileService } from '../_services/upload-file.service';
-import { UpdateService } from '../_services/update.service';
-import { DormGroup } from '../_models/dormGroup';
-import { Dorm } from '../_models/dorm';
+import { UploadFileService } from '../../../_services/upload-file.service';
+import { UpdateService } from '../../../_services/update.service';
+import { DormGroup } from '../../../_models/dormGroup';
+import { Dorm } from '../../../_models/dorm';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 

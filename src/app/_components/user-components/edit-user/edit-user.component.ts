@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { User } from '../_models/user';
+import { User } from '../../../_models/user';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DataService } from '../data.service';
+import { DataService } from '../../../data.service';
 import { switchMap, first } from 'rxjs/operators';
 import { FormGroup, FormBuilder } from '@angular/forms';
 

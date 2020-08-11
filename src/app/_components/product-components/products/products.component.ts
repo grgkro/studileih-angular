@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { DataService } from '../data.service';
+import { DataService } from '../../../data.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Product } from '../_models/product';
+import { Product } from '../../../_models/product';
 import { trigger, style, transition, animate, query, stagger } from '@angular/animations';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DomSanitizer } from '@angular/platform-browser';
-import { UpdateService } from '../_services/update.service';
-import { Dorm } from '../_models/dorm';
+import { UpdateService } from '../../../_services/update.service';
+import { Dorm } from '../../../_models/dorm';
 import { Subject } from 'rxjs/internal/Subject';
 import { takeUntil } from 'rxjs/internal/operators/takeUntil';
 import { Observable } from 'rxjs';
-import { User } from '../_models/user';
-import { HelperService } from '../_services/helper.service';
+import { User } from '../../../_models/user';
+import { HelperService } from '../../../_services/helper.service';
 
 
 

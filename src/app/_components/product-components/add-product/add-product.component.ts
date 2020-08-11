@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, } from '@angular/router';
-import { UploadFileService } from '../_services/upload-file.service';
-import { UpdateService } from '../_services/update.service';
-import { User } from '../_models/user';
+import { UploadFileService } from '../../../_services/upload-file.service';
+import { UpdateService } from '../../../_services/update.service';
+import { User } from '../../../_models/user';
 import { HttpErrorResponse } from '@angular/common/http';
-import { DataService } from '../data.service';
+import { DataService } from '../../../data.service';
 
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatChipInputEvent} from '@angular/material/chips';

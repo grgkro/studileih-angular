@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Product } from '../_models/product';
+import { Product } from '../../../_models/product';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { DataService } from '../data.service';
+import { DataService } from '../../../data.service';
 import { first } from 'rxjs/operators';
 
 

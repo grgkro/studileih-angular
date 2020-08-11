@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { DataService } from '../data.service';
+import { DataService } from '../../../data.service';
 import { trigger,style,transition,animate,query,stagger } from '@angular/animations';
-import { User } from '../_models/user';
+import { User } from '../../../_models/user';
 import { Observable, asyncScheduler, Subject } from 'rxjs';
-import { UpdateService } from '../_services/update.service';
+import { UpdateService } from '../../../_services/update.service';
 import { takeUntil, take } from 'rxjs/operators';
-import { Dorm } from '../_models/dorm';
-import { UploadFileService } from '../_services/upload-file.service';
+import { Dorm } from '../../../_models/dorm';
+import { UploadFileService } from '../../../_services/upload-file.service';
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({

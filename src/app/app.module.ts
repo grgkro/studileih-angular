@@ -3,24 +3,24 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { SidebarComponent } from './sidebar/sidebar.component';
+import { SidebarComponent } from './_components/sidebar/sidebar.component';
 import { PostsComponent } from './_components/posts/posts.component';
-import { UsersComponent } from './users/users.component';
-import { DetailsComponent } from './_components/details/details.component';
+import { UsersComponent } from './_components/user-components/users/users.component';
+import { DetailsComponent } from './_components/user-components/details/details.component';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { AgmCoreModule } from '@agm/core'
-import { ProductsComponent } from './products/products.component';
+import { ProductsComponent } from './_components/product-components/products/products.component';
 import { UploadFileService } from './_services/upload-file.service';
 import { UploadFileComponent } from './_components/upload-file/upload-file.component';
 import { GoogleMapsComponent } from './_components/google-maps/google-maps.component';
 import { gmaps_environment } from '../environments/gmaps_environment';
-import { AddUserComponent } from './add-user/add-user.component';
+import { AddUserComponent } from './_components/user-components/add-user/add-user.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AddProductComponent } from './add-product/add-product.component';
-import { EditProductComponent } from './edit-product/edit-product.component';
-import { UserLoginComponent } from './user-login/user-login.component';
-import { EditUserComponent } from './edit-user/edit-user.component';
+import { AddProductComponent } from './_components/product-components/add-product/add-product.component';
+import { EditProductComponent } from './_components/product-components/edit-product/edit-product.component';
+import { UserLoginComponent } from './_components/user-components/user-login/user-login.component';
+import { EditUserComponent } from './_components/user-components/edit-user/edit-user.component';
 
 
 import {MatDatepickerModule} from '@angular/material/datepicker';
@@ -28,7 +28,7 @@ import {MatInputModule} from '@angular/material/input';
 import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
 
 import { DeferLoadModule } from '@trademe/ng-defer-load';
-import { ProductDetailsComponent } from './_components/product-details/product-details.component';
+import { ProductDetailsComponent } from './_components/product-components/product-details/product-details.component';
 
 import { MatSliderModule } from '@angular/material/slider';
 import {MatSnackBarModule} from '@angular/material/snack-bar';

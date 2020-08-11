@@ -1,6 +1,6 @@
 import { Component, OnInit, NgModule } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DataService } from '../../data.service';
+import { DataService } from '../../../data.service';
 import { switchMap, takeUntil } from 'rxjs/operators';
 import { Product } from 'src/app/_models/product';
 import { UpdateService } from 'src/app/_services/update.service';
