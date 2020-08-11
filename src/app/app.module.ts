@@ -4,7 +4,6 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SidebarComponent } from './_components/sidebar/sidebar.component';
-import { PostsComponent } from './_components/posts/posts.component';
 import { UsersComponent } from './_components/user-components/users/users.component';
 import { DetailsComponent } from './_components/user-components/details/details.component';
 import { HttpClientModule } from '@angular/common/http';
@@ -55,7 +54,6 @@ HttpClientModule
   declarations: [
     AppComponent,
     SidebarComponent,
-    PostsComponent,
     UsersComponent,
     DetailsComponent,
     ProductsComponent,
