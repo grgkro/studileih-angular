@@ -16,8 +16,7 @@ import { GoogleMapsComponent } from './_components/google-maps/google-maps.compo
 import { gmaps_environment } from '../environments/gmaps_environment';
 import { AddUserComponent } from './_components/user-components/add-user/add-user.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AddProductComponent } from './_components/product-components/add-product/add-product.component';
-import { EditProductComponent } from './_components/product-components/edit-product/edit-product.component';
+import { ProductFormComponent } from './_components/product-components/product-form/product-form.component';
 import { UserLoginComponent } from './_components/user-components/user-login/user-login.component';
 import { EditUserComponent } from './_components/user-components/edit-user/edit-user.component';
 
@@ -47,6 +46,7 @@ import { UploadMultipleFilesComponent } from './_components/upload-multiple-file
 import { InfoWindowProductOverviewComponent } from './_components/info-window-product-overview/info-window-product-overview.component';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { AddDormComponent } from './_components/add-dorm/add-dorm.component';
+import { AddProductComponent } from './_components/product-components/add-product/add-product.component';
 
 
 HttpClientModule
@@ -60,8 +60,7 @@ HttpClientModule
     UploadFileComponent,
     GoogleMapsComponent,
     AddUserComponent,
-    AddProductComponent,
-    EditProductComponent,
+    ProductFormComponent,
     UserLoginComponent,
     EditUserComponent,
     ProductDetailsComponent,
@@ -71,6 +70,7 @@ HttpClientModule
     UploadMultipleFilesComponent,
     InfoWindowProductOverviewComponent,
     AddDormComponent,
+    AddProductComponent,
     
     
   ],

@@ -320,4 +320,8 @@ this.uploadFileService.pushFileToStorage(selectedFile, this.user.id, this.produc
       console.log('Response body:', err.error);
     }
   }
+
+  cancelEditingClick = function(isEditingActivatedInChild) {
+    this.isEditingActivated = isEditingActivatedInChild;
+  }
 }

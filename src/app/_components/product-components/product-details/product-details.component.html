@@ -5,16 +5,20 @@
           <!-- Falls das Product schon geladen ist, dann führe das Folgende aus-->
           <div *ngIf="isCurrentUserOwner">
                <div class="row">
-                    <div class="col">
+                    <!-- If editing is activated, the editing button ("Bearbeiten") will disappear -> the titel needs to take 2 col more, otherwise the delete button will move 2 columns to the left after the editing button dissapears. -->
+                    <div [ngClass]="(!isEditingActivated)?'col-8':'col-10'" >
                          <h1 class="display-3">{{ product?.title }}</h1>
                     </div>
 
-                    <!-- if the current user is the owner, he will see the delete and update button -->
-                    
-                         <div class="col">
+                    <!-- if the current user is the owner, he will see the edit and delete and update button -->             
+                         <div class="col-2" *ngIf="!isEditingActivated">
+                              <button class="btn btn-primary" (click)="isEditingActivated = true">Bearbeiten</button>
+                         </div>
+
+                         <div class="col-1">
                               <!-- <a mdbBtn color="danger" size="lg" class="waves-light" mdbWavesEffect data-toggle="modal"
 data-target="#cancelModal">Abbrechen</a> -->
-                              <button class="btn btn-danger" data-toggle="modal" data-target="#cancelModal">
+                              <button class="btn btn-danger" data-toggle="modal" data-target="#deleteProductModal">
 
                                    <svg class="bi bi-trash" width="1.5em" height="1.5em" viewBox="0 0 16 16"
                                         fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -28,7 +32,7 @@ data-target="#cancelModal">Abbrechen</a> -->
 
 
                               <!-- Modal -->
-                              <div class="modal fade" id="cancelModal" tabindex="-1" role="dialog"
+                              <div class="modal fade" id="deleteProductModal" tabindex="-1" role="dialog"
                                    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                    <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
@@ -55,21 +59,6 @@ data-target="#cancelModal">Abbrechen</a> -->
                                    </div>
                               </div>
                          </div>
-                         <div class="col" *ngIf="!isEditingActivated">
-                              <button class="btn btn-primary" (click)="isEditingActivated = true">Bearbeiten</button>
-                         </div>
-                         <div class="col" *ngIf="isEditingActivated">
-                              <button class="btn btn-primary" (click)="saveChanges()">Änderungen
-                                   speichern</button>
-                         </div>
-                         <div class="col" *ngIf="isEditingActivated">
-                              <button class="btn btn-danger" (click)="isEditingActivated = false">Änderungen
-                                   verwerfen</button>
-                         </div>
-                  
-
-
-
                </div>
           </div>
           <hr class="my-2" />
@@ -101,14 +90,11 @@ data-target="#cancelModal">Abbrechen</a> -->
 
                     </ul>
                </div>
-
-
-              
-
           </div>
+
           <div *ngIf="isEditingActivated">
-               <!-- <input class="form-control" id="focusedInput" type="text" placeholder="{{ product?.description }}"> -->
-               <app-edit-product [product]=product></app-edit-product>
+               <app-product-form [product]="product" [isEditingActivated]="true" (cancelEditingClick)="cancelEditingClick($event)"></app-product-form> 
+
           </div>
      </div>
 
@@ -148,14 +134,6 @@ data-target="#cancelModal">Abbrechen</a> -->
                               mdbWavesEffect>Letztes
                               Foto zurückholen</button>
                          <!-- [...] = input that gets passed into the child. (...) = output from the child. If isUserPic = true the "Vorschau" Pic will get rounded. -->
-                         <div *ngIf="isEditingActivated">
-                              <app-upload-file [isUserPic]=false (selectedFile)="onFileSelected($event)">
-                              </app-upload-file>
-                              <!-- when a file gets selected in the upload-file component, we will get that as an output emitted into the product-details component-->
-     
-                         </div>
-                         
-
                          <div class="divider"></div>
 
                     </div>

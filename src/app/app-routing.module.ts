@@ -10,14 +10,13 @@ import { UploadFileComponent } from './_components/upload-file/upload-file.compo
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserLoginComponent } from './_components/user-components/user-login/user-login.component';
-import { EditProductComponent } from './_components/product-components/edit-product/edit-product.component';
 import { AddProductComponent } from './_components/product-components/add-product/add-product.component';
+import { ProductFormComponent } from './_components/product-components/product-form/product-form.component';
 
 import { EditUserComponent } from './_components/user-components/edit-user/edit-user.component';
 
 import { ProductResolverService } from 'src/app/_services/product-resolver.service';
 import { MessagesComponent } from './_components/messages/messages.component';
-import { MessageDetailsComponent } from './_components/message-details/message-details.component';
 import { ChatComponent } from './_components/chat/chat.component';
 
 const routes: Routes = [
@@ -29,10 +28,7 @@ const routes: Routes = [
     path: 'product-details/:id',
     component: ProductDetailsComponent
   },
-  {
-    path: 'edit-product/:id',
-    component: EditProductComponent
-  },
+
   {
     path: 'users',
     component: UsersComponent
@@ -61,11 +57,6 @@ const routes: Routes = [
     path: 'chat/:id',
     component: ChatComponent
   },
-  {
-    path: 'add-product',
-    component: AddProductComponent
-  },
-  
   {
     path: 'upload-userPic',
     component: UploadFileComponent
