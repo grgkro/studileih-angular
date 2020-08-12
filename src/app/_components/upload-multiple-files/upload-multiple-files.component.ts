@@ -8,6 +8,7 @@ import { Product } from 'src/app/_models/product';
 import { HelperService } from 'src/app/_services/helper.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -27,15 +28,17 @@ export class UploadMultipleFilesComponent implements OnInit {
   user: User = { id: 1 };
   imgType: string = "userPic";
   product: Product = { id: 1 };  // we need a default value, otherwise you can't upload a user profile pic before clicking on a product (unclean solution, better solution would be nice)
+  errorMessage: string = "";
+
 
   // Angular takes care of unsubscribing from many observable subscriptions like those returned from the Http service or when using the async pipe. But the routeParam$ and the _update.currentShowUploadComponent needs to be unsubscribed by hand on ngDestroy. Otherwise, we risk a memory leak when the component is destroyed. https://malcoded.com/posts/angular-async-pipe/   https://www.digitalocean.com/community/tutorials/angular-takeuntil-rxjs-unsubscribe
   destroy$: Subject<boolean> = new Subject<boolean>();
 
   base64textString: String = "";
   croppedImage: any = '';   // the croppedImage is in base64 and is only used as the preview image of how the cropped image will look like.
- imagesToShow: String[] = [];
+  imagesToShow: String[] = [];
 
-  constructor(private uploadFileService: UploadFileService, private _update: UpdateService) { }
+  constructor(private uploadFileService: UploadFileService, private _update: UpdateService, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.updateUser();   //  if the user changes, this will get updated
@@ -63,32 +66,71 @@ export class UploadMultipleFilesComponent implements OnInit {
       .subscribe(imgType => this.imgType = imgType)
   }
 
-
-  // this function checks if the selected file is an image filetype (.jpg, .png, ...)
   selectFile(event) {
-    const file = event.target.files[0];
-    if (file.type.match('image.*')) {
-      this.selectedFiles = event.target.files;
-      if (this.selectedFiles) {
-        for (let i = 0; i < this.selectedFiles.length; i++) {
+    let filesUpload: File[] = Array.from(event.target.files); 
+    //filter the selected file by filetype (.jpg, .png, ...) and size < 512KB + sum of files < 512KB. Then create + show Error message if at least one is invalid 
+    filesUpload = this.checkImages(Array.from(event.target.files)) // https://stackoverflow.com/questions/25333488/why-isnt-the-filelist-object-an-array
+
+    this.preshowValidImages(filesUpload);
+    // we transfer the imageList into an array, filter it again for the valid images and emit them to the parent component.
+     //emit the valid images to the parent component (which then sends them to backend)
+     this.selectedFile.emit(filesUpload);
+  }
+
+  checkImages(files: File[]): File[] {
+    let sumImagesSize = 0;
+    let maxSumImagesSize = 512000;
+    let validFiles: File[] = [];
+    let errorMessage = ""
+    
+    let wrongFiletypeFiles: File[] = files.filter(element => !element.type.match('image.*'));
+    let tooLargeFiles: File[] = files.filter(element => element.size > maxSumImagesSize);
+    //filter the files for the valid ones
+    validFiles = files.filter(element => (element.size < maxSumImagesSize && element.type.match('image.*')));
+   
+    //Also the sum of the remaining images can't be > 512 KB -> chose from the remaining images, until the sum is too high:
+   
+    for (let i = 0; i < files.length; i++) {
+      if ((sumImagesSize + files[i].size) < maxSumImagesSize) {
+        sumImagesSize += files[i].size;
+        validFiles.push(files[i])  
+      } else {
+        //we also add this file to the filesTooLarge array (even if itself wasn't too large)
+        tooLargeFiles.push(files[i]);
+      } 
+    }
+   
+    if (tooLargeFiles.length > 0) {
+      errorMessage = "Die Gesamtgröße der Bilder war > 500KB. Folgende Bilder wurden entfernt: "
+      tooLargeFiles.forEach(element => {errorMessage += element.name + "(" + element.size / 1000 + "KB) "})
+      if (errorMessage.length > 50) {
+        errorMessage = errorMessage.substring(0, 150) + "...";
+      }
+      this._snackBar.open(errorMessage, "", { duration: 3000 });
+    }
+
+    if (wrongFiletypeFiles.length > 0) {
+      errorMessage = "Folgende Dateien hatten einen unerlaubten Dateityp: "
+      wrongFiletypeFiles.forEach(element => {errorMessage += element.name + "(" + element.size / 1000 + "KB) "})
+      if (errorMessage.length > 50) {
+        errorMessage = errorMessage.substring(0, 150) + "...";
+      }
+      this._snackBar.open(errorMessage, "", { duration: 3000 });
+    }
+   
+    return validFiles;
+  }
+
+  preshowValidImages(files) {
+    for (let i = 0; i < files.length; i++) {
+      if (files[i].type.match('image.*') && files[i].size < 512000) {
         var reader = new FileReader();
 
         reader.onload = this._handleReaderLoaded.bind(this);
-        
-          reader.readAsBinaryString(this.selectedFiles[i]);
-        }
-      }
-      if (this.checkBeforeUpload()) {
-        // we only allow one file to be uploaded -> item(0) - without the 0 in item(0), you could upload many files at once (which would break the backend code).
-        this.currentFileUpload = this.selectedFiles.item(0);
-  
-        this.currentFilesUpload = Array.from(this.selectedFiles); // https://stackoverflow.com/questions/25333488/why-isnt-the-filelist-object-an-array
-        this.selectedFile.emit(this.currentFilesUpload);
+
+        reader.readAsBinaryString(files[i]);
       }
 
-    } else {
-      alert('Invalid format! Only images allowed');     // ... when user tries uploading a .pdf etc 
-      this.selectedFiles = undefined;                   // sets back this.selectedFiles to undefined, thus the user can't upload the file. Without this line it was still possible to upload a pdf.
     }
   }
 
@@ -97,20 +139,6 @@ export class UploadMultipleFilesComponent implements OnInit {
     this.base64textString = btoa(binaryString);
     console.log(btoa(binaryString));
     this.imagesToShow.push("data:image\/png;base64," + this.base64textString);    // we need to add the filetype to the base64 code before we can display it.
-  }
-
-  // checks, if at least one file was selected for upload and if a user is logged in
-  checkBeforeUpload(): boolean {
-    if (this.selectedFiles == undefined || this.user.id == 0) {
-      if (this.selectedFiles == undefined) {
-        this.response = "Please select an image.";
-        return false;
-      } else {
-        this.response = "No user / product was selected before, userId = 0, please click on one user before uploading a profile pic."
-        return false;
-      }
-    }
-    return true;
   }
 
   // takes the error and then displays a response to the user or only logs the error on the console (depending on if the error is useful for the user)
