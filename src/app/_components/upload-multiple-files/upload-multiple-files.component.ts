@@ -85,19 +85,21 @@ export class UploadMultipleFilesComponent implements OnInit {
     
     let wrongFiletypeFiles: File[] = files.filter(element => !element.type.match('image.*'));
     let tooLargeFiles: File[] = files.filter(element => element.size > maxSumImagesSize);
-    //filter the files for the valid ones
-    validFiles = files.filter(element => (element.size < maxSumImagesSize && element.type.match('image.*')));
-   
+    //filter the files that are larger than 512KB or not images
+    files = files.filter(element => (element.size < maxSumImagesSize && element.type.match('image.*')));
+   console.log("1.Filterung", files)
     //Also the sum of the remaining images can't be > 512 KB -> chose from the remaining images, until the sum is too high:
    
     for (let i = 0; i < files.length; i++) {
-      if ((sumImagesSize + files[i].size) < maxSumImagesSize) {
+      if ((sumImagesSize + files[i].size) < maxSumImagesSize && files[i].type.match('image.*')) {
         sumImagesSize += files[i].size;
         validFiles.push(files[i])  
-      } else {
+      } else if ((sumImagesSize + files[i].size) < maxSumImagesSize) {
         //we also add this file to the filesTooLarge array (even if itself wasn't too large)
         tooLargeFiles.push(files[i]);
-      } 
+      } else {
+        wrongFiletypeFiles.push(files[i]);
+      }
     }
    
     if (tooLargeFiles.length > 0) {
