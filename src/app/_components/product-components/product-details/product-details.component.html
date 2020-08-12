@@ -103,10 +103,12 @@ data-target="#cancelModal">Abbrechen</a> -->
                </div>
 
 
-               <div *ngIf="isEditingActivated">
-                    <input class="form-control" id="focusedInput" type="text" placeholder="{{ product?.description }}">
-               </div>
+              
 
+          </div>
+          <div *ngIf="isEditingActivated">
+               <!-- <input class="form-control" id="focusedInput" type="text" placeholder="{{ product?.description }}"> -->
+               <app-edit-product [product]=product></app-edit-product>
           </div>
      </div>
 

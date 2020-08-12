@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Product } from '../../../_models/product';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -13,7 +13,8 @@ import { first } from 'rxjs/operators';
 })
 export class EditProductComponent implements OnInit {
 
-  product: Product;
+  @Input() product: Product;   
+
   editForm: FormGroup;
 
     id = ''; 
@@ -33,15 +34,14 @@ export class EditProductComponent implements OnInit {
 
 
   ngOnInit(): void {
-    let productId = window.localStorage.getItem("id");
-    if(!productId){
+    
+    if(!this.product.id){
       alert("Invalid action.")
       this.router.navigate(['products']);
       return;
     }
     this.editForm = this.formBuilder.group({
       
-      name: [null, Validators.required],
       title:[null, Validators.required],
       price: [null, Validators.required],
       views: [null, Validators.required],
@@ -50,63 +50,42 @@ export class EditProductComponent implements OnInit {
       updatedAt: [null, Validators.required],
       picPaths: [null, Validators.required]
     });
-    this.dataService.getProduct(+productId)
-    .subscribe(data => {
-      this.editForm.setValue(data.result)
-    });
-  }
+    // https://stackoverflow.com/questions/55275025/how-to-set-value-to-form-control-in-reactive-forms-in-angular
+      this.editForm.patchValue({
+        title: this.product.title,
+        price: this.product.price,
+  })
+}
 
-  getProduct(id: any) {
-    this.dataService.getProduct(id).subscribe((data: any) => {
-      this.id = data.id;
-      this.userId = data.userId;
-      this.editForm.setValue({
-      name: ['',Validators.required],
-      title: ['',Validators.required],
-      price: ['',Validators.required],
-      views: ['',Validators.required],
-      available: ['',Validators.required],
-      createdAt: ['',Validators.required],
-      updatedAt: ['',Validators.required],
-      picPaths: ['',Validators.required]
-      });
-    });
-  }
+  
 
- onSubmit() {
-    this.dataService.updateProduct(this.editForm.value)
-    .pipe(first()).subscribe(
-      data => {
-        if(data.status === 200) {
-          alert('Product updated successfully');
-          this.router.navigate(['products']);
-        } else {
-          alert(data.message);
-        }
-      },
-      (error: any) => {
-        alert(error);
-      });
+//  onSubmit() {
+//     this.dataService.updateProduct(this.editForm.value)
+//     .pipe(first()).subscribe(
+//       data => {
+//         if(data.status === 200) {
+//           alert('Product updated successfully');
+//           this.router.navigate(['products']);
+//         } else {
+//           alert(data.message);
+//         }
+//       },
+//       (error: any) => {
+//         alert(error);
+//       });
       
-  } 
+//   } 
 
   onFormSubmit() {
     this.dataService.updateProduct(this.editForm.value)
       .subscribe((res: any) => {
-          const id = res._id;
-          this.router.navigate(['/cases-details', id]);
+          console.log("onFomrSubmit", res)
         }, (err: any) => {
           console.log(err);
         }
       );
   }
 
-  productDetails() {
-    this.router.navigate(['/cases-details', this.id]);
-  }
-
-  get f(){
-    return this.editForm.controls;
-  }
+  
 
 }
