@@ -280,13 +280,7 @@ export class ProductFormComponent implements OnInit {
   }
 
   onSubmit() {
-    /*  console.log(this.addForm.value);
-     this.dataService.addProduct(this.addForm.value)
-       .subscribe(data => {
-         console.log('Product created successfully!')
-         this.router.navigate(['products']);
-       }); */
-
+   
     console.log(this.addForm.value);
 
     var formData: any = new FormData();
@@ -317,15 +311,28 @@ export class ProductFormComponent implements OnInit {
       formData.append("imageFiles", file);
     });
 
-    //adds or updates the product
-    this._data.addProduct(formData)
-      .subscribe((res: any) => {
-        console.log(res);
-        this.router.navigate(['products']);
-      }, (err: any) => {
-        console.log(err);
-      }
-      );
+    if (!this.isEditingActivated) {
+ //adds the product
+ this._data.addProduct(formData)
+ .subscribe((res: any) => {
+   console.log(res);
+   this.router.navigate(['products']);
+ }, (err: any) => {
+   console.log(err);
+ }
+ );
+    } else {
+       // updates the product
+    this._data.editProduct(formData)
+    .subscribe((res: any) => {
+      console.log(res);
+      this.router.navigate(['products']);
+    }, (err: any) => {
+      console.log(err);
+    }
+    );
+    }
+   
 
     // we empty the selected Files array after uploading the pictures.
     this.selectedFiles = [];

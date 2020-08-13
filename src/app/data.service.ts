@@ -54,6 +54,11 @@ export class DataService {
       formData, { responseType: 'text' })
   }
 
+  editProduct(formData: any) : Observable<any> {
+    return this.http.put(this.productsPath,
+      formData, { responseType: 'text' })
+  }
+
   deleteProduct(id: number): Observable<any> {
     const formdata: FormData = new FormData();
     formdata.append('id', id.toString());
