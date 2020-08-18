@@ -19,7 +19,8 @@ export class DataService {
   serverPath = 'http://localhost:8090';
   productsPath = 'http://localhost:8090/products';
   imagesPath = 'http://localhost:8090/images';
-  usersPath = 'http://localhost:8090/users'
+  usersPath = 'http://localhost:8090/users';
+  // usersPath = 'Studileih-env.eba-egt6g3pv.eu-central-1.elasticbeanstalk.com/users'
   
 
   httpOptions = {
@@ -35,8 +36,17 @@ export class DataService {
   }
 
 
-  login(loginPayload): Observable<User> {
-    return this.http.post<User>(this.serverPath + '/token/generate-token', loginPayload);
+  login(username: string, password: string) {
+    const formdata: FormData = new FormData();
+    formdata.append('username', username);
+    formdata.append('password', password);
+    return this.http.post(this.serverPath + '/authenticate', formdata, { responseType: `text` as `json` });
+  }
+
+  welcome(token) {
+    let tokenStr= `Bearer` + token;
+    const headers = new HttpHeaders().set("Authorization",tokenStr);
+    return this.http.get(this.serverPath + '/', {headers, responseType: `text` as `json`})
   }
 
   getProducts(): Observable<Product[]> {

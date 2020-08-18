@@ -12,6 +12,7 @@ export class UserLoginComponent implements OnInit {
 
   loginForm: FormGroup;
   invalidLogin: boolean = false;
+  response: any;
 
   constructor(private formBuilder: FormBuilder,
     private router: Router,
@@ -26,16 +27,27 @@ export class UserLoginComponent implements OnInit {
       username: this.loginForm.controls.username.value,
       password: this.loginForm.controls.password.value
     }
-    this.dataService.login(loginPayload).subscribe(data => {
-      debugger;
-      if (data.status === 200) {
-        window.localStorage.setItem('token', data.result.token);
-        this.router.navigate(['list-user']);
-      } else {
-        this.invalidLogin = true;
-        alert(data.message);
-      }
+    console.log(loginPayload.username)
+    this.dataService.login(this.loginForm.controls.username.value, this.loginForm.controls.password.value).subscribe(data => {
+      console.log(data);
+     this.accessAPI(data)
+
+
+      // debugger;
+      // if (data.status === 200) {
+      //   window.localStorage.setItem('token', data.result.token);
+      //   this.router.navigate(['list-user']);
+      // } else {
+      //   this.invalidLogin = true;
+      //   alert(data.message);
+      // }
     });
+  }
+
+  accessAPI(token) {
+let resp = this.dataService.welcome(token);
+resp.subscribe(data=>{this.response=data; 
+  console.log(this.response)})
   }
 
   ngOnInit() {
