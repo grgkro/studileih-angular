@@ -9,6 +9,7 @@ import { catchError } from 'rxjs/operators';
 import { Dorm } from './_models/dorm';
 import { Message } from './_models/message';
 import { Chat } from './_models/chat';
+import { AuthRequest } from './_models/authRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -36,18 +37,9 @@ export class DataService {
   }
 
 
-  login(username: string, password: string) {
-    const formdata: FormData = new FormData();
-    formdata.append('username', username);
-    formdata.append('password', password);
-    return this.http.post(this.serverPath + '/authenticate', formdata, { responseType: `text` as `json` });
-  }
+ 
 
-  welcome(token) {
-    let tokenStr= `Bearer` + token;
-    const headers = new HttpHeaders().set("Authorization",tokenStr);
-    return this.http.get(this.serverPath + '/', {headers, responseType: `text` as `json`})
-  }
+  
 
   getProducts(): Observable<Product[]> {
     return this.http.get<Product[]>(this.productsPath);
@@ -226,6 +218,7 @@ export class DataService {
     }
     return throwError(errorMessage);
   }
+
 
 
 }

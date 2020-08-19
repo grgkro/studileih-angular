@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DataService } from '../../../data.service';
+import { TokenStorageService } from '../../../_services/token-storage.service';
+import { AuthenticationService } from '../../../_services/authentication.service';
 import { Router } from '@angular/router';
+import { AuthRequest } from '../../../_models/authRequest';
+import { error } from '@angular/compiler/src/util';
 
 @Component({
   selector: 'app-user-login',
@@ -13,41 +17,42 @@ export class UserLoginComponent implements OnInit {
   loginForm: FormGroup;
   invalidLogin: boolean = false;
   response: any;
+  authRequest: AuthRequest;
 
   constructor(private formBuilder: FormBuilder,
     private router: Router,
-    private dataService: DataService) { }
+    private dataService: DataService, 
+    private tokenStorage: TokenStorageService,
+    private authService: AuthenticationService) { }
 
 
   onSubmit() {
     if (this.loginForm.invalid) {
       return;
     }
-    const loginPayload = {
-      username: this.loginForm.controls.username.value,
+    
+    this.authService.login({ 
+      userName: this.loginForm.controls.username.value, 
       password: this.loginForm.controls.password.value
-    }
-    console.log(loginPayload.username)
-    this.dataService.login(this.loginForm.controls.username.value, this.loginForm.controls.password.value).subscribe(data => {
-      console.log(data);
-     this.accessAPI(data)
-
-
-      // debugger;
-      // if (data.status === 200) {
-      //   window.localStorage.setItem('token', data.result.token);
-      //   this.router.navigate(['list-user']);
-      // } else {
-      //   this.invalidLogin = true;
-      //   alert(data.message);
-      // }
+    } )
+    .subscribe(data => {  
+      if (data.status === 200) {
+        this.tokenStorage.saveToken(data.body)
+        console.log("token from storage", this.tokenStorage.getToken())
+        this.accessAPI(data.body)
+      } 
+    },
+    error => {
+      if (error.status === 401) {
+        this.response = error.error;
+      } 
     });
   }
 
   accessAPI(token) {
-let resp = this.dataService.welcome(token);
-resp.subscribe(data=>{this.response=data; 
-  console.log(this.response)})
+this.authService.welcome(token).subscribe((response) =>{this.response=response; 
+    console.log(this.response)});
+
   }
 
   ngOnInit() {

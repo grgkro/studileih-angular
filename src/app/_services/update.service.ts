@@ -17,10 +17,15 @@ import { Marker } from '@agm/core';
 })
 export class UpdateService {
   
+  
 
   user: User = {id: 1, name: "HaraldTest", dormId: 1};   //the default user is Harald, so that we dont always need to first click on the user before we can see the isOwner functions
   private userSource = new BehaviorSubject(this.user);  // BehaviorSubject = Subject / Observable, das immer noch den letzten Wert bei Subscription ausgibt. Ein Subject sendet bei Subscription direkt noch keinen Wert, sondern erst, wenn nach der Subscription ein neuer Wert vorliegt. Ein Observable gibt bei Subscription alle vorherigen Werte an den neuen Subscribor aus, die seit der Erzeugung des Observables genexted / erzeugt wurden. D.h. nur ein BehaviorSubject gibt bei Subscription direkt den letzten, aktuellen Wert aus.Deshalb braucht BehaviorSubject auch einen Wert direkt beim Erzeugen -> new BehaviorSubject(Anfangswert)
   currentUser = this.userSource.asObservable();
+
+  token: String = '';   
+  private tokenSource = new BehaviorSubject(this.token);  
+  currentToken = this.tokenSource.asObservable();
 
   users: User[] = [];
   private usersSource$ = new BehaviorSubject(this.users);   
