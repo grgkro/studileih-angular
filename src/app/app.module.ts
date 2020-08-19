@@ -6,11 +6,12 @@ import { AppComponent } from './app.component';
 import { SidebarComponent } from './_components/sidebar/sidebar.component';
 import { UsersComponent } from './_components/user-components/users/users.component';
 import { DetailsComponent } from './_components/user-components/details/details.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { AgmCoreModule } from '@agm/core'
 import { ProductsComponent } from './_components/product-components/products/products.component';
 import { UploadFileService } from './_services/upload-file.service';
+import { BasicAuthHttpInterceptorService } from './_services/basic-auth-http-interceptor.service';
 import { UploadFileComponent } from './_components/upload-file/upload-file.component';
 import { GoogleMapsComponent } from './_components/google-maps/google-maps.component';
 import { gmaps_environment } from '../environments/gmaps_environment';
@@ -106,7 +107,9 @@ HttpClientModule
       //-> Therefore it's loaded as a variable from the file gmaps_environment.ts in folder environments. gmaps_environment.ts is in .gitignore, so it won't get pushed to git
     })
   ],
-  providers: [UploadFileService, 
+  providers: [
+    UploadFileService, 
+    {provide:HTTP_INTERCEPTORS, useClass:BasicAuthHttpInterceptorService, multi:true},
     {provide: MAT_DATE_LOCALE, useValue: 'de-DE'}   // without this line the date-picker in product-details would be in US format: 07/20/2020 - https://stackoverflow.com/questions/55721254/how-to-change-mat-datepicker-date-format-to-dd-mm-yyyy-in-simplest-way    https://material.angular.io/components/datepicker/overview 
   ], 
   
