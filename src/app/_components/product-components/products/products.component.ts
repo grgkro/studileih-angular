@@ -70,7 +70,6 @@ export class ProductsComponent implements OnInit {
     // TODO: if the current dorm has products -> show those products first. Underneath that list show all products of that city. Underneath that show a list of all products.
     this.getSelectedDorm();  // get the currently selected dorm by subscribing to the currentSelectedDorm Observable
     this.loadProductImages();
-    this.updateUser();   //  we need to know which user is currently logged in, because if he's the owner of a product, he will not see the "Ausleih" button, and instead he will see the "Edit" and "Delete" buttons. 
    
   }
 
@@ -82,17 +81,17 @@ export class ProductsComponent implements OnInit {
 
 
 
-  updateUser(): void {
-    this._update.currentUser.subscribe(user => {
-      this.user = user;
-      console.log(user)})   //If the user changes, this will get updated
-  }
+  // updateUser(): void {
+  //   this._update.currentUser.subscribe(user => {
+  //     this.user = user;
+  //     console.log(user)})   //If the user changes, this will get updated
+  // }
 
-  checkIsUserOwner(productUserId: number) {
-    if (productUserId == this.user.id) {
-      return true;
-    } else return false;
-  }
+  // checkIsUserOwner(productUserId: number) {
+  //   if (productUserId == this.user.id) {
+  //     return true;
+  //   } else return false;
+  // }
 
 
 

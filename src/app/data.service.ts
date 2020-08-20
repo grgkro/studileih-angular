@@ -67,12 +67,12 @@ export class DataService {
     return this.http.post(this.productsPath + '/delete/' + id, formdata, { responseType: 'text' });
   }
 
-  updateProduct(product: Product): Observable<Product> {
-    return this.http.put<Product>(this.productsPath + '/' + product.id,
-      JSON.stringify(product), this.httpOptions)
-      .pipe(catchError(this.errorHandler)
-      )
-  }
+  // updateProduct(product: Product): Observable<Product> {
+  //   return this.http.put<Product>(this.productsPath + '/' + product.id,
+  //     JSON.stringify(product), this.httpOptions)
+  //     .pipe(catchError(this.errorHandler)
+  //     )
+  // }
 
   loadProductPicByFilename(filename: string, productId: number): Observable<Blob> {
     const formdata: FormData = new FormData();
