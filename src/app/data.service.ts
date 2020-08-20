@@ -17,6 +17,18 @@ import { AuthRequest } from './_models/authRequest';
 
 export class DataService {
   
+  getProductsByDorm(id: number): Observable<Product[]> {
+    return this.http.get<Product[]>(this.serverPath + '/productsByDorm' + '/' + id).pipe(
+      catchError(this.errorHandler)
+    );
+  }
+
+  getProductsWithoutDormProducts(id: number): Observable<Product[]> {
+    return this.http.get<Product[]>(this.serverPath + '/productsWithouthDormProducts' + '/' + id).pipe(
+      catchError(this.errorHandler)
+    );
+  }
+  
   serverPath = 'http://localhost:8090';
   productsPath = 'http://localhost:8090/products';
   imagesPath = 'http://localhost:8090/images';

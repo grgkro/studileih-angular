@@ -52,7 +52,6 @@ export class UserLoginComponent implements OnInit {
   accessAPI(token) {
 this.authService.welcome(token).subscribe((response) =>{this.response=response; 
     console.log(this.response)});
-
   }
 
   ngOnInit() {

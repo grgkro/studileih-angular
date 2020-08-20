@@ -48,7 +48,7 @@ export class ProductsComponent implements OnInit {
   startAt = performance.now();  // how to check how long it took to execute code -> https://www.youtube.com/watch?v=mNJ06S60B9k - 15:30 min
  
   products: Product[];
-  productsWithoutDormProducts: Product[];
+  productsWithoutDormProducts: Product[] = [];
   dormProducts: Product[] = [];   // will contain all products of the dorm that is currently selected (selectedDorm) 
   dormImages = new Map();
   usersFromSelectedDorm: User[] = [];
@@ -79,22 +79,6 @@ export class ProductsComponent implements OnInit {
     this.destroy$.unsubscribe();
   }
 
-
-
-  // updateUser(): void {
-  //   this._update.currentUser.subscribe(user => {
-  //     this.user = user;
-  //     console.log(user)})   //If the user changes, this will get updated
-  // }
-
-  // checkIsUserOwner(productUserId: number) {
-  //   if (productUserId == this.user.id) {
-  //     return true;
-  //   } else return false;
-  // }
-
-
-
   getSelectedDorm(): void {
     // clear the lists dormProducts und usersFromSelectedDorm -> without this, you would get the products from the previously selected dorm(s) too.
     this.dormProducts = [];
@@ -106,32 +90,20 @@ export class ProductsComponent implements OnInit {
         // get the selected dorm
         this.selectedDorm = selectedDorm  // when the user choses a dorm in the dropdown select menu above the google maps
 
-        // get all products from selected dorm. (ASYNC function)
-         this.getAllProductsFromSelectedDorm(this.products, this.selectedDorm);   
+        // get all products from selected dorm. 
+        this._data.getProductsByDorm(this.selectedDorm.id).subscribe(products => {
+          this.dormProducts = products;
+          // // At the bottom of the page we dont want to show all products again. We only want to show the products that are not from the selected Dorm and therefore have not been shown yet at the dormProducts section.
+          // this.productsWithoutDormProducts = this.products.filter(product => !this.dormProducts.includes(product)); 
+        });
+        // stupid solution, don't know why line two lines up doesn't work, would be much cleaner solution!
+        this._data.getProductsWithoutDormProducts(this.selectedDorm.id).subscribe(products => {this.productsWithoutDormProducts = products})
+       
+         
       })
-  } 
 
-  // when the user selects one dorm, we only want to show him the products from that dorm.
-  async getAllProductsFromSelectedDorm(products: Product[], selectedDorm: Dorm) {
-    // if the users were not previously loaded, we have to load them now.
-    if (this.users.length === 0) {
-      // we load the users from the backend and AWAIT until they are loaded. Because to contnue, we need the users list.
-      this.users = await this._data.getUsers().toPromise();
-      // now that we loaded them, we update the users list in all other components too, so that we dont need to load them again and again.
-      this._update.changeUsers(this.users);
-    }
-    if (products == null || products.length === 0) {
-      // we load the products from the backend and AWAIT until they are loaded. Because to contnue, we need the users list.
-      this.products = await this._data.getProducts().toPromise();
-    }
-    // Then we filter the users list for the ones that actually live in that dorm.
-    let usersFromSelectedDorm = this.users.filter(user => user.dormId === selectedDorm.id)
-    // and then we filter all products for the ones that are owned by one of the users from that dorm (product.userId = user.id)
-    //TODO: sehr unsauber gelöst -> im helperService gibt es die Funktion filterProductsByUsers schon, es klappt nur noch nicht die hier einzubinden.
-    this.dormProducts = this._helper.filterProductsByUsers(this.products, usersFromSelectedDorm);
-    // At the bottom of the page we dont want to show all products again. We only want to show the products that are not from the selected Dorm and therefore have not been shown yet at the dormProducts section.
-    this.productsWithoutDormProducts = this.products.filter(x => !this.dormProducts.includes(x));
-  }
+      
+  } 
 
   //load the main image for each product
   loadProductImages() {
@@ -199,6 +171,8 @@ export class ProductsComponent implements OnInit {
   //     })
   // };
 
+
+  //TODO: unsafe -> somebody could edit the id in the console, we need a check in the BE
   deleteProduct(id: number) {
     // first we delete the product from the database (optimally we would do something with the response instead of just logging it from backend)    
     this._data.deleteProduct(id).subscribe(response => console.log(response));

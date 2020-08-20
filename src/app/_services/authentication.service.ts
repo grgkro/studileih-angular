@@ -23,11 +23,12 @@ export class AuthenticationService {
   }
 
 
-welcome(token) {
+welcome(token): Observable<any> {
   
   var headers_object = new HttpHeaders().set("Authorization", "Bearer " + token);
   var httpOptions = {
     headers: headers_object,
+    observer: "response",
     withCredentials: true,
     responseType: `text` as `json`
   };
