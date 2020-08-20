@@ -5,7 +5,7 @@ import { User } from './_models/user';
 import { Product } from './_models/product';
 import { ResponseEntity } from './_models/responseEntity';
 
-import { catchError } from 'rxjs/operators';
+import { catchError, retry } from 'rxjs/operators';
 import { Dorm } from './_models/dorm';
 import { Message } from './_models/message';
 import { Chat } from './_models/chat';
@@ -16,18 +16,6 @@ import { AuthRequest } from './_models/authRequest';
 })
 
 export class DataService {
-  
-  getProductsByDorm(id: number): Observable<Product[]> {
-    return this.http.get<Product[]>(this.serverPath + '/productsByDorm' + '/' + id).pipe(
-      catchError(this.errorHandler)
-    );
-  }
-
-  getProductsWithoutDormProducts(id: number): Observable<Product[]> {
-    return this.http.get<Product[]>(this.serverPath + '/productsWithouthDormProducts' + '/' + id).pipe(
-      catchError(this.errorHandler)
-    );
-  }
   
   serverPath = 'http://localhost:8090';
   productsPath = 'http://localhost:8090/products';
@@ -44,13 +32,17 @@ export class DataService {
 
   constructor(private http: HttpClient) { }
 
+  getProductsByDorm(id: number): Observable<Product[]> {
+    return this.http.get<Product[]>(this.serverPath + '/productsByDorm' + '/' + id)
+  }
+
+  getProductsWithoutDormProducts(id: number): Observable<Product[]> {
+    return this.http.get<Product[]>(this.serverPath + '/productsWithouthDormProducts' + '/' + id)
+  }
+
   getDormLocations(): Observable<Dorm[]> {
     return this.http.get<Dorm[]>(this.serverPath +'/dorms');
   }
-
-
- 
-
   
 
   getProducts(): Observable<Product[]> {
@@ -58,9 +50,7 @@ export class DataService {
   }
 
   getProduct(id: number): Observable<Product> {
-    return this.http.get<Product>(this.productsPath + '/' + id).pipe(
-      catchError(this.errorHandler)
-    );
+    return this.http.get<Product>(this.productsPath + '/' + id)
   }
 
   addProduct(formData: any) : Observable<any> {
@@ -132,9 +122,7 @@ export class DataService {
   }
 
   getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(this.usersPath).pipe(
-      catchError(this.errorHandler)
-    )
+    return this.http.get<User[]>(this.usersPath)
   }
 
   getUser(userId): Observable<User> {
@@ -142,27 +130,19 @@ export class DataService {
   }
 
   addUser(formData: any): Observable<any> {
-    return this.http.post(this.usersPath,formData,{ responseType: 'text' }).pipe(
-      catchError(this.errorHandler)
-    )
+    return this.http.post(this.usersPath,formData,{ responseType: 'text' })
   }
 
   deleteUser(id: number): Observable<User> {
-    return this.http.delete<User>(this.usersPath + '/' + id).pipe(
-      catchError(this.errorHandler)
-    )
+    return this.http.delete<User>(this.usersPath + '/' + id)
   }
 
   updateUser(user: User): Observable<User> {
-    return this.http.put<User>(this.usersPath + '/' + user.id, user).pipe(
-      catchError(this.errorHandler)
-    )
+    return this.http.put<User>(this.usersPath + '/' + user.id, user)
   }
 
   getPosts() {
-    return this.http.get('https://jsonplaceholder.typicode.com/posts').pipe(
-      catchError(this.errorHandler)
-    )
+    return this.http.get('https://jsonplaceholder.typicode.com/posts')
   }
 
   sendEmailToOwner(formdata: FormData) {
@@ -210,26 +190,14 @@ export class DataService {
   // }
 
   loadAllChats(): Observable<Chat[]> {
-    return this.http.get<Chat[]>(this.serverPath + '/chats/chats').pipe(
-      catchError(this.errorHandler)
-    )
+    return this.http.get<Chat[]>(this.serverPath + '/chats/chats')
   }
 
   getChatsByUser(chatId: number): Observable<Chat[]> {
-    return this.http.get<Chat[]>(this.serverPath + "/chats/chatsByUser/" + chatId).pipe(
-      catchError(this.errorHandler)
-    )
+    return this.http.get<Chat[]>(this.serverPath + "/chats/chatsByUser/" + chatId)
   }
 
-  errorHandler(error) {
-    let errorMessage = '';
-    if (error.error instanceof ErrorEvent) {
-      errorMessage = error.error.message;
-    } else {
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-    }
-    return throwError(errorMessage);
-  }
+ 
 
 
 
