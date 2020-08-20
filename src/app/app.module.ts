@@ -109,8 +109,9 @@ HttpClientModule
   ],
   providers: [
     UploadFileService, 
+    
+    {provide: MAT_DATE_LOCALE, useValue: 'de-DE', },   // without this line the date-picker in product-details would be in US format: 07/20/2020 - https://stackoverflow.com/questions/55721254/how-to-change-mat-datepicker-date-format-to-dd-mm-yyyy-in-simplest-way    https://material.angular.io/components/datepicker/overview 
     {provide:HTTP_INTERCEPTORS, useClass:BasicAuthHttpInterceptorService, multi:true},
-    {provide: MAT_DATE_LOCALE, useValue: 'de-DE'}   // without this line the date-picker in product-details would be in US format: 07/20/2020 - https://stackoverflow.com/questions/55721254/how-to-change-mat-datepicker-date-format-to-dd-mm-yyyy-in-simplest-way    https://material.angular.io/components/datepicker/overview 
   ], 
   
     
