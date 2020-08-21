@@ -38,7 +38,7 @@ export class UploadMultipleFilesComponent implements OnInit {
   croppedImage: any = '';   // the croppedImage is in base64 and is only used as the preview image of how the cropped image will look like.
   imagesToShow: String[] = [];
 
-  constructor(private uploadFileService: UploadFileService, private _update: UpdateService, private _snackBar: MatSnackBar) { }
+  constructor(private _update: UpdateService, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.updateUser();   //  if the user changes, this will get updated

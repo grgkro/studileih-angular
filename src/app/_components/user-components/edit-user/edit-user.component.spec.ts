@@ -1,6 +1,16 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { EditUserComponent } from './edit-user.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import {
+  inject,
+  TestBed,
+  getTestBed,
+  async,
+  fakeAsync,
+  ComponentFixture
+} from '@angular/core/testing';
+import { FormBuilder } from '@angular/forms';
+
 
 describe('EditUserComponent', () => {
   let component: EditUserComponent;
@@ -8,7 +18,11 @@ describe('EditUserComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EditUserComponent ]
+      providers: [
+        FormBuilder
+      ],
+      declarations: [ EditUserComponent ],
+      schemas: [ NO_ERRORS_SCHEMA ]
     })
     .compileComponents();
   }));

@@ -79,6 +79,7 @@ HttpClientModule
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
