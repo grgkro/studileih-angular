@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GoogleMapsComponent } from './google-maps.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('GoogleMapsComponent', () => {
   let component: GoogleMapsComponent;
@@ -8,6 +9,9 @@ describe('GoogleMapsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [
+        HttpClientTestingModule
+     ],
       declarations: [ GoogleMapsComponent ]
     })
     .compileComponents();

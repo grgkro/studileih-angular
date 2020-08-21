@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, } from '@angular/router';
-import { UploadFileService } from '../../../_services/upload-file.service';
 import { UpdateService } from '../../../_services/update.service';
 import { User } from '../../../_models/user';
 import { HttpErrorResponse } from '@angular/common/http';

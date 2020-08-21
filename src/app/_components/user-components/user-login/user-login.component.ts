@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { DataService } from '../../../data.service';
 import { TokenStorageService } from '../../../_services/token-storage.service';
 import { AuthenticationService } from '../../../_services/authentication.service';
-import { Router } from '@angular/router';
 import { AuthRequest } from '../../../_models/authRequest';
-import { error } from '@angular/compiler/src/util';
 
 @Component({
   selector: 'app-user-login',
@@ -20,8 +17,6 @@ export class UserLoginComponent implements OnInit {
   authRequest: AuthRequest;
 
   constructor(private formBuilder: FormBuilder,
-    private router: Router,
-    private dataService: DataService, 
     private tokenStorage: TokenStorageService,
     private authService: AuthenticationService) { }
 

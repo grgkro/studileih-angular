@@ -50,7 +50,6 @@ import { AddDormComponent } from './_components/add-dorm/add-dorm.component';
 import { AddProductComponent } from './_components/product-components/add-product/add-product.component';
 
 
-HttpClientModule
 @NgModule({
   declarations: [
     AppComponent,

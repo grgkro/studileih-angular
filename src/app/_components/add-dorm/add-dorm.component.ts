@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { UpdateService } from 'src/app/_services/update.service';
-import { DataService } from 'src/app/data.service';
 
 @Component({
   selector: 'app-add-dorm',
@@ -13,7 +11,7 @@ export class AddDormComponent implements OnInit {
   dormForm: FormGroup;
  
 
-  constructor(private formBuilder: FormBuilder, private _data: DataService) { }
+  constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
     this.dormForm = this.formBuilder.group({
