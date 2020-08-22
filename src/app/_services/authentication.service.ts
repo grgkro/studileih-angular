@@ -22,6 +22,6 @@ export class AuthenticationService {
 welcome(token): Observable<any> {
   
   var headers_object = new HttpHeaders().set("Authorization", "Bearer " + token);
-  return this.http.get(serverPath + '/',  { headers: headers_object, observe: 'response', withCredentials: true, responseType: `text` as `json`})
+  return this.http.get(serverPath + '/',  { headers: headers_object, observe: 'response', withCredentials: true})
 }
 }

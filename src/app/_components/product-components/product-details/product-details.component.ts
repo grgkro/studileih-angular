@@ -283,7 +283,6 @@ this.uploadFileService.pushFileToStorage(selectedFile, this.user.id, this.produc
       formdata.append('returnTime', this.returnTime);
     }
     formdata.append('productId', this.product.id.toString());
-    formdata.append('userId', this.user.id.toString());
     formdata.append('ownerId', this.owner.id.toString());
     return formdata;
   }

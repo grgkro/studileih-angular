@@ -40,11 +40,10 @@ export class MessageDetailsComponent implements OnInit {
   ngOnInit(chatMessage = this.chatMessage, chatId = this.chatId) {
     this.user = this._token.getUser();
     this.isOwnMessage = this.user.id === this.chatMessage.sender.id;
-        console.log(this.isOwnMessage)
     this.sendetAt = new Date(chatMessage.sendetAt);
     this.messageContent = chatMessage.text;
     this.userName = chatMessage.sender.name;
-    this.userEmail = chatMessage.sender.email;
+    // this.userEmail = chatMessage.sender.email; we don't want to show the email address anymore -> security risk to even load it.
     // if the user is the receiver (not the sender) of the message and he did't open this message before, we will now add the receivedAt timestamp to it.
 
     if (chatMessage.receiver.id == this.user.id && chatMessage.receivedAt == null) {
@@ -53,7 +52,6 @@ export class MessageDetailsComponent implements OnInit {
     } else {
       this.receivedAt = new Date(chatMessage.receivedAt);
     }
-
   }
 
   ngOnChanges() {

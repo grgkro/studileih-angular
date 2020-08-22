@@ -52,7 +52,7 @@ export class UserLoginComponent implements OnInit {
   accessAPI(token) {
 this._auth.welcome(token).subscribe((response) =>{
   if (response.status === 200) {
-    this.response = response.body;
+    this.response = response.body.response;
   }  
   })
 }

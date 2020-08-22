@@ -189,12 +189,8 @@ export class DataService {
   //   )
   // }
 
-  loadAllChats(): Observable<Chat[]> {
-    return this.http.get<Chat[]>(this.serverPath + '/chats/chats')
-  }
-
-  getChatsByUser(chatId: number): Observable<Chat[]> {
-    return this.http.get<Chat[]>(this.serverPath + "/chats/chatsByUser/" + chatId)
+  getChats(): Observable<Chat[]> {
+    return this.http.get<Chat[]>(this.serverPath + "/chats/")
   }
 
  

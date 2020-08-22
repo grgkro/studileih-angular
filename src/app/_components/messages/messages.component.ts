@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../../data.service';
-import { switchMap, takeUntil } from 'rxjs/operators';
-import { Product } from 'src/app/_models/product';
 import { UpdateService } from 'src/app/_services/update.service';
 import { User } from 'src/app/_models/user';
 import { Message } from 'src/app/_models/message';
@@ -59,7 +57,6 @@ isLoggedIn: boolean = false;
 
   ngOnInit(): void {
     this.user = this._token.getUser();
-    this.getChatsByUser(this.user.id); 
     this.checkIfUserIsLoggedIn();
   }
 
@@ -74,6 +71,7 @@ isLoggedIn: boolean = false;
     this.authService.welcome(this._token.getToken()).subscribe((response) =>{
     if (response.status == 200) {
       this.isLoggedIn = true;
+      this.getChats(); 
       console.log("ISnOWlOGGEDiN", this.isLoggedIn)
     } else {
       this.isLoggedIn = false
@@ -81,15 +79,16 @@ isLoggedIn: boolean = false;
     })
   }
 
-  // loads all Chats of one user with also the messages of that chat.
-  getChatsByUser(id: number) {
-    this._data.getChatsByUser(id)
+  // loads all Chats of the logged in user with also the messages of that chat.
+  getChats() {
+    this._data.getChats()
     .subscribe(chats => {
       if (chats == null || chats.length === 0) {
         this.userHasNoChats = Promise.resolve(true);
       } else {
         this.chats = chats;
-        this.userHasChats = Promise.resolve(true);  
+        this.userHasChats = Promise.resolve(true); 
+        // we store the chats, which also contain the messages of the chats -> so we don't have to reload them in message-details component with security risk  
         this._update.changeChats(chats);
       }
 
