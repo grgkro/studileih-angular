@@ -9,9 +9,8 @@ import { ProductDetailsComponent } from './_components/product-components/produc
 import { UploadFileComponent } from './_components/upload-file/upload-file.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { UserLoginComponent } from './_components/user-components/user-login/user-login.component';
 import { AddProductComponent } from './_components/product-components/add-product/add-product.component';
-import { ProductFormComponent } from './_components/product-components/product-form/product-form.component';
+import { LoginOverviewComponent } from './_components/login-overview/login-overview.component';
 
 import { EditUserComponent } from './_components/user-components/edit-user/edit-user.component';
 
@@ -47,7 +46,7 @@ const routes: Routes = [
   },
   {
     path: 'user-login',
-    component: UserLoginComponent
+    component: LoginOverviewComponent
   },
   {
     path: 'messages',

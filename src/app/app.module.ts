@@ -48,6 +48,7 @@ import { InfoWindowProductOverviewComponent } from './_components/info-window-pr
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { AddDormComponent } from './_components/add-dorm/add-dorm.component';
 import { AddProductComponent } from './_components/product-components/add-product/add-product.component';
+import { LoginOverviewComponent } from './_components/login-overview/login-overview.component';
 
 
 @NgModule({
@@ -70,7 +71,8 @@ import { AddProductComponent } from './_components/product-components/add-produc
     UploadMultipleFilesComponent,
     InfoWindowProductOverviewComponent,
     AddDormComponent,
-    AddProductComponent
+    AddProductComponent,
+    LoginOverviewComponent
   ],
   imports: [
     BrowserModule,

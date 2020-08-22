@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { TokenStorageService } from '../../../_services/token-storage.service';
 import { AuthenticationService } from '../../../_services/authentication.service';
@@ -12,6 +12,7 @@ import { BasicAuthHttpInterceptorService } from 'src/app/_services/basic-auth-ht
   styleUrls: ['./user-login.component.scss']
 })
 export class UserLoginComponent implements OnInit {
+  @Output() isLoggedIn = new EventEmitter<boolean>();
 
   loginForm: FormGroup;
   invalidLogin: boolean = false;
@@ -39,6 +40,8 @@ export class UserLoginComponent implements OnInit {
         this._token.saveToken(this.user.token)
         this._token.saveUser(this.user)
         console.log("token from storage", this._token.getToken())
+        // if the login component is included in a parent component e.g. message component, we need to tell the parent that the user is now logged in.
+        this.isLoggedIn.emit(true);
         this.accessAPI(data.body)
       } 
     },

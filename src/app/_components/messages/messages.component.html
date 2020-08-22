@@ -1,8 +1,11 @@
 <div class="container">
 
   <div class="row">
-    <div class="col">
-      <h1 class="display-3">Nachrichten</h1>
+    <div class="col" *ngIf="isLoggedIn">
+      <h1 class="display-3" >Nachrichten</h1>
+    </div>
+    <div class="col" *ngIf="!isLoggedIn">
+      <h1 class="display-3" >Nachrichten: Bitte einloggen oder registrieren</h1>
     </div>
 
   </div>
@@ -10,8 +13,39 @@
   <hr class="my-2" />
 
   <div *ngIf="!isLoggedIn">
-    <p>Please log in or register:</p>
-    <app-user-login></app-user-login>
+    <mat-accordion>
+      <div class="row">
+          <div class="col user-container">
+              
+  <mat-expansion-panel [expanded]="true" >
+      <mat-expansion-panel-header>
+        <mat-panel-title style="text-align: center; display: block;
+        margin-left: auto;
+        margin-right: auto;">
+          Login
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <app-user-login (isLoggedIn)="loginButtonClickedInChildComp($event)"></app-user-login>
+      
+  </mat-expansion-panel>
+          </div>
+      </div>
+  <br>
+  <div class="row">
+      <div class="col user-container">
+  <mat-expansion-panel >
+      <mat-expansion-panel-header>
+        <mat-panel-title style="text-align: center; display: block;
+        margin-left: auto;
+        margin-right: auto;">
+          Registrieren
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+  <app-add-user></app-add-user>
+  </mat-expansion-panel>
+  </div>
+  </div>
+  </mat-accordion>
   </div>
 
   <div *ngIf="isLoggedIn && userHasChats | async">
