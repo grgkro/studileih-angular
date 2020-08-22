@@ -9,6 +9,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { DataService } from 'src/app/data.service';
 import { ViewChild} from '@angular/core';
 import {ModalDirective} from 'angular-bootstrap-md';
+import { TokenStorageService } from 'src/app/_services/token-storage.service';
 
 @Component({
   selector: 'app-chat',
@@ -34,14 +35,15 @@ export class ChatComponent implements OnInit {
 });
   
 
-  constructor(private _data: DataService, private _update: UpdateService, private route: ActivatedRoute,) { }
+  constructor(private _data: DataService, private _update: UpdateService, private route: ActivatedRoute, private _token: TokenStorageService) { }
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       this.chatId = parseInt(params.get("id"))
     })
     this.getChatById(this.chatId);
-    this.updateUser();
+    this.user = this._token.getUser();
+    
   }
 
   ngOnChanges() {
@@ -63,13 +65,13 @@ export class ChatComponent implements OnInit {
     });
   }
 
-  updateUser(): void {
-    this._update.currentUser
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(user => {
-        this.user = user;
-      });
-}
+//   updateUser(): void {
+//     this._update.currentUser
+//       .pipe(takeUntil(this.destroy$))
+//       .subscribe(user => {
+//         this.user = user;
+//       });
+// }
 
 getOtherUserFromChat(chat: Chat) {
   if(chat.user1.id === this.user.id) {

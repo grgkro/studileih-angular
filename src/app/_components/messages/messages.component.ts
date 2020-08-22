@@ -8,6 +8,8 @@ import { Message } from 'src/app/_models/message';
 import { trigger, style, transition, animate, query, stagger } from '@angular/animations';
 import { Chat } from 'src/app/_models/chat';
 import { Subject, Observable } from 'rxjs';
+import { AuthenticationService } from 'src/app/_services/authentication.service';
+import { TokenStorageService } from 'src/app/_services/token-storage.service';
 
 @Component({
   selector: 'app-messages',
@@ -47,14 +49,18 @@ export class MessagesComponent implements OnInit {
   noChatsYet: string = "Du hast noch keine Nachrichten. Stell eine Ausleihanfrage an einen anderen User, um hier deine Anfragen und Nachrichten zu sehen."
   userHasChats: Promise<boolean>;  // this boolean gets to set to true when all chats are loaded
   userHasNoChats: Promise<boolean>;  // this boolean gets to set to true if the backend returns null 
+isLoggedIn: boolean = false;
 
   // Angular takes care of unsubscribing from many observable subscriptions like those returned from the Http service or when using the async pipe. But the routeParam$ and the _update.currentShowUploadComponent needs to be unsubscribed by hand on ngDestroy. Otherwise, we risk a memory leak when the component is destroyed. https://malcoded.com/posts/angular-async-pipe/   https://www.digitalocean.com/community/tutorials/angular-takeuntil-rxjs-unsubscribe
   destroy$: Subject<boolean> = new Subject<boolean>();
 
-  constructor(private _data: DataService, private _update: UpdateService,) { }
+  constructor(private _data: DataService, private _update: UpdateService, private _token: TokenStorageService,
+    private authService: AuthenticationService) { }
 
   ngOnInit(): void {
-    this.getUserChats();   //  first loads the user and then loads his chats. if the user changes, this will get updated 
+    this.user = this._token.getUser();
+    this.getChatsByUser(this.user.id); 
+    this.checkIfUserIsLoggedIn();
   }
 
   
@@ -64,12 +70,15 @@ export class MessagesComponent implements OnInit {
     this.destroy$.unsubscribe();
   }
 
-  getUserChats(): void {
-    this._update.currentUser
-    .pipe(takeUntil(this.destroy$))
-    .subscribe(user => {
-      this.user = user;
-      this.getChatsByUser(user.id); })
+  checkIfUserIsLoggedIn() {
+    this.authService.welcome(this._token.getToken()).subscribe((response) =>{
+    if (response.status == 200) {
+      this.isLoggedIn = true;
+      console.log("ISnOWlOGGEDiN", this.isLoggedIn)
+    } else {
+      this.isLoggedIn = false
+    }
+    })
   }
 
   // loads all Chats of one user with also the messages of that chat.
@@ -95,10 +104,3 @@ export class MessagesComponent implements OnInit {
 
 }
 
-
-
-
-
-// loadAllMessages(): void {
-  //   this._data.loadAllMessages().subscribe(messages => {console.log(messages); this.messages = messages})
-  // }

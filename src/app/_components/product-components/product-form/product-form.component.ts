@@ -9,6 +9,7 @@ import { DataService } from '../../../data.service';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { Product } from 'src/app/_models/product';
+import { TokenStorageService } from 'src/app/_services/token-storage.service';
 
 export interface Category {
   name: string;
@@ -159,7 +160,7 @@ export class ProductFormComponent implements OnInit {
   checked: boolean = false;
 
   constructor(private formBuilder: FormBuilder,
-    private _update: UpdateService,
+    private _token: TokenStorageService,
     private _data: DataService,
     private router: Router) { }
 
@@ -167,7 +168,7 @@ export class ProductFormComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.updateUser();   //  if the user changes, this will get updated
+    this.user = this._token.getUser();  
     this.addForm = this.formBuilder.group({            //https://angular.io/guide/reactive-forms
       description: ['', Validators.required],
       title: ['', Validators.required],
@@ -187,11 +188,6 @@ export class ProductFormComponent implements OnInit {
       })
     }
   }
-
-  updateUser(): void {
-    this._update.currentUser.subscribe(user => this.user = user)
-  }
-
 
   pickedCategory(category: Category) {
     console.log("PICKED: ", category);

@@ -9,6 +9,7 @@ import { HelperService } from 'src/app/_services/helper.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { TokenStorageService } from 'src/app/_services/token-storage.service';
 
 
 @Component({
@@ -38,10 +39,10 @@ export class UploadMultipleFilesComponent implements OnInit {
   croppedImage: any = '';   // the croppedImage is in base64 and is only used as the preview image of how the cropped image will look like.
   imagesToShow: String[] = [];
 
-  constructor(private _update: UpdateService, private _snackBar: MatSnackBar) { }
+  constructor(private _update: UpdateService, private _token: TokenStorageService, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
-    this.updateUser();   //  if the user changes, this will get updated
+    this.user = this._token.getUser();   //  if the user changes, this will get updated
     this.updateProduct();  //  if the product is undefined (which will happen if you upload a user before clicking on one of the products), this would cause an error even if you dont need a product id to upload a user profile pic. So we catch that with the if command. If the product later changes and someone wants to upload a product pic, this line will get the product updated so that we know which product belongs to that product pic
     this.updateImgType(); // if the imgType changes, this will get updated (for example, if you upload a product pic from the product-details componente, the component just needs to set the imageType to productPic before uploading the photo.)
   }
@@ -52,9 +53,6 @@ export class UploadMultipleFilesComponent implements OnInit {
     this.destroy$.unsubscribe();
   }
 
-  updateUser(): void {
-    this._update.currentUser.subscribe(user => this.user = user)
-  }
 
   updateProduct(): void {
     this._update.currentProduct.subscribe(product => { if (product) this.product = product })

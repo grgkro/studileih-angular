@@ -29,6 +29,11 @@ export class TokenStorageService {
   }
 
   public getUser(): any {
-    return JSON.parse(sessionStorage.getItem(USER_KEY));
+    if (sessionStorage.getItem(USER_KEY)) {
+      return JSON.parse(sessionStorage.getItem(USER_KEY));
+    } else {
+      return {"id": 0, "name": "Anonymous", "dormId": 1}
+    }
+    
   }
 }

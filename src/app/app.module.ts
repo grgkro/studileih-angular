@@ -70,22 +70,16 @@ import { AddProductComponent } from './_components/product-components/add-produc
     UploadMultipleFilesComponent,
     InfoWindowProductOverviewComponent,
     AddDormComponent,
-    AddProductComponent,
-    
-    
+    AddProductComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule,
-    
+    HttpClientModule, 
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-
     ImageCropperModule,
-   
-
     DeferLoadModule,
     //Angular Material inputs (spezielle UI Elemente)
     MatDatepickerModule,
@@ -99,9 +93,7 @@ import { AddProductComponent } from './_components/product-components/add-produc
     MatChipsModule,
     MatIconModule,
     MatExpansionModule,
-
     MDBBootstrapModule,
-
     AgmCoreModule.forRoot({
       apiKey: gmaps_environment.GMAPS_API_KEY // The API KEY belongs to Georg and can't be exposed on GITHUB (Hackers are crazy) 
       //-> Therefore it's loaded as a variable from the file gmaps_environment.ts in folder environments. gmaps_environment.ts is in .gitignore, so it won't get pushed to git
@@ -109,13 +101,9 @@ import { AddProductComponent } from './_components/product-components/add-produc
   ],
   providers: [
     UploadFileService, 
-    
-    {provide: MAT_DATE_LOCALE, useValue: 'de-DE', },   // without this line the date-picker in product-details would be in US format: 07/20/2020 - https://stackoverflow.com/questions/55721254/how-to-change-mat-datepicker-date-format-to-dd-mm-yyyy-in-simplest-way    https://material.angular.io/components/datepicker/overview 
+    {provide: MAT_DATE_LOCALE, useValue: 'de-DE' },   // without this line the date-picker in product-details would be in US format: 07/20/2020 - https://stackoverflow.com/questions/55721254/how-to-change-mat-datepicker-date-format-to-dd-mm-yyyy-in-simplest-way    https://material.angular.io/components/datepicker/overview 
     {provide:HTTP_INTERCEPTORS, useClass:BasicAuthHttpInterceptorService, multi:true},
-  ], 
-  
-    
+  ],   
   bootstrap: [AppComponent],
-  
 })
 export class AppModule { }

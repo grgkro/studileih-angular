@@ -8,6 +8,7 @@ import { takeUntil, take } from 'rxjs/operators';
 import { Dorm } from '../../../_models/dorm';
 import { UploadFileService } from '../../../_services/upload-file.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { TokenStorageService } from 'src/app/_services/token-storage.service';
 
 @Component({
   selector: 'app-users',
@@ -51,11 +52,15 @@ export class UsersComponent implements OnInit {
    // Angular takes care of unsubscribing from many observable subscriptions like those returned from the Http service or when using the async pipe. But the routeParam$ and the _update.currentShowUploadComponent needs to be unsubscribed by hand on ngDestroy. Otherwise, we risk a memory leak when the component is destroyed. https://malcoded.com/posts/angular-async-pipe/   https://www.digitalocean.com/community/tutorials/angular-takeuntil-rxjs-unsubscribe
    destroy$: Subject<boolean> = new Subject<boolean>();
 
-  constructor(private _data: DataService, private _update: UpdateService, private uploadFileService: UploadFileService, private sanitizer: DomSanitizer,) { }
+  constructor(private _data: DataService, private _update: UpdateService, private _token: TokenStorageService, private uploadFileService: UploadFileService, private sanitizer: DomSanitizer,) { }
+  
+  
 
   ngOnInit(): void {
     this.users$ = this._data.getUsers();   // we dont subscribe here, bc we also need the Observable users$ on the HTML side.
-    this.updateUser();
+    this.getCurrentUser();
+    console.log("CURRENT USER", this.currentUser)
+
     this.loadUsersAndProfileImages();
     this.updateDorms();
   }
@@ -66,11 +71,15 @@ export class UsersComponent implements OnInit {
     this.destroy$.unsubscribe();
   }
 
-  updateUser(): void {
-    this._update.currentUser
-    .pipe(takeUntil(this.destroy$))
-    .subscribe(user => this.currentUser = user)
+  getCurrentUser() {
+    this.currentUser = this._token.getUser();
   }
+
+  // updateUser(): void {
+  //   this._update.currentUser
+  //   .pipe(takeUntil(this.destroy$))
+  //   .subscribe(user => this.currentUser = user)
+  // }
 
   updateDorms(): void {
    // https://stackoverflow.com/questions/63314366/code-in-if-and-else-statement-get-both-executed/63314462#63314462

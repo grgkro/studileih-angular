@@ -6,6 +6,7 @@ import { UpdateService } from 'src/app/_services/update.service';
 import { takeUntil } from 'rxjs/operators';
 import { Message } from 'src/app/_models/message';
 import { DataService } from 'src/app/data.service';
+import { TokenStorageService } from 'src/app/_services/token-storage.service';
 
 @Component({
   selector: 'app-message-details',
@@ -34,10 +35,12 @@ export class MessageDetailsComponent implements OnInit {
 
 
 
-  constructor(private _data: DataService, private _update: UpdateService) { }
+  constructor(private _data: DataService, private _update: UpdateService, private _token: TokenStorageService) { }
 
   ngOnInit(chatMessage = this.chatMessage, chatId = this.chatId) {
-    this.updateUser();
+    this.user = this._token.getUser();
+    this.isOwnMessage = this.user.id === this.chatMessage.sender.id;
+        console.log(this.isOwnMessage)
     this.sendetAt = new Date(chatMessage.sendetAt);
     this.messageContent = chatMessage.text;
     this.userName = chatMessage.sender.name;
@@ -63,13 +66,4 @@ export class MessageDetailsComponent implements OnInit {
     this.destroy$.unsubscribe();
   }
 
-  updateUser(): void {
-    this._update.currentUser
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(user => {
-        this.user = user;
-        this.isOwnMessage = this.user.id === this.chatMessage.sender.id;
-        console.log(this.isOwnMessage)
-      });
-  }
 }

@@ -3,6 +3,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { TokenStorageService } from '../../../_services/token-storage.service';
 import { AuthenticationService } from '../../../_services/authentication.service';
 import { AuthRequest } from '../../../_models/authRequest';
+import { User } from 'src/app/_models/user';
+import { BasicAuthHttpInterceptorService } from 'src/app/_services/basic-auth-http-interceptor.service';
 
 @Component({
   selector: 'app-user-login',
@@ -15,25 +17,28 @@ export class UserLoginComponent implements OnInit {
   invalidLogin: boolean = false;
   response: any;
   authRequest: AuthRequest;
+  user: User;
 
   constructor(private formBuilder: FormBuilder,
-    private tokenStorage: TokenStorageService,
-    private authService: AuthenticationService) { }
+    private _token: TokenStorageService,
+    private _auth: AuthenticationService) { }
 
 
   onSubmit() {
     if (this.loginForm.invalid) {
       return;
     }
-    
-    this.authService.login({ 
+    this._token.signOut();
+    this._auth.login({ 
       userName: this.loginForm.controls.username.value, 
       password: this.loginForm.controls.password.value
     } )
     .subscribe(data => {  
       if (data.status === 200) {
-        this.tokenStorage.saveToken(data.body)
-        console.log("token from storage", this.tokenStorage.getToken())
+        this.user = data.body;
+        this._token.saveToken(this.user.token)
+        this._token.saveUser(this.user)
+        console.log("token from storage", this._token.getToken())
         this.accessAPI(data.body)
       } 
     },
@@ -45,9 +50,12 @@ export class UserLoginComponent implements OnInit {
   }
 
   accessAPI(token) {
-this.authService.welcome(token).subscribe((response) =>{this.response=response; 
-    console.log(this.response)});
-  }
+this._auth.welcome(token).subscribe((response) =>{
+  if (response.status === 200) {
+    this.response = response.body;
+  }  
+  })
+}
 
   ngOnInit() {
     window.localStorage.removeItem('token');

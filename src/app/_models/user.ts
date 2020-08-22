@@ -17,4 +17,5 @@ export interface User {
     createdAt?: string;
     updatedAt?: string;
     hasProfilePic?: boolean;
+    token?: string;
 }

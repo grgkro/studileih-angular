@@ -19,6 +19,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { HttpErrorResponse } from '@angular/common/http';
 import { HelperService } from 'src/app/_services/helper.service';
 import { User } from 'src/app/_models/user';
+import { TokenStorageService } from 'src/app/_services/token-storage.service';
 
 
 
@@ -41,15 +42,11 @@ export class DetailsComponent implements OnInit {
   response: string;
   userId: number;
 
-  constructor(private route: ActivatedRoute, private data: DataService, private _update: UpdateService, private _helper: HelperService, private uploadFileService: UploadFileService, private sanitizer: DomSanitizer, private router: Router) { }
-
-
+  constructor(private route: ActivatedRoute, private data: DataService, private _update: UpdateService, private uploadFileService: UploadFileService, private sanitizer: DomSanitizer, private router: Router) { }
 
   ngOnInit() {
-    
     this.loadUserWithUserPic();
     this.subscribeTriggeringObservable();
-    
   }
 
   // This function gets called when the user clicks on "Foto hochladen": https://angular.io/guide/component-interaction
@@ -80,7 +77,6 @@ export class DetailsComponent implements OnInit {
             this.user = user;    
             console.log(this.user)                         // user is the user that was just loaded from the database. this.user is the variable, that we store the user in, so that we can access it outside of the scope of the Observable.
             console.log(this.user.id)                         // user is the user that was just loaded from the database. this.user is the variable, that we store the user in, so that we can access it outside of the scope of the Observable.
-            this._update.changeUser(this.user);           // change the user in all components that are subscribed to dataService.currentUser
             this._update.changeImgType("userPic");   // ohne die Zeile, würde bei "upload new Photo" das Photo als PRODUCT pic behandelt werden. Wir wollen es aber als USER profile pic speichern. (Ist etwas ungeschickt gelöst...) 
             this.loadUserProfilePic();
           },

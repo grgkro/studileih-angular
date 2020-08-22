@@ -5,13 +5,14 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 
 
-const TOKEN_HEADER_KEY = 'Authorization';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class BasicAuthHttpInterceptorService implements HttpInterceptor {
 
+  responseMessage: string = 'jvjhvhjhj';
 
   constructor(private token: TokenStorageService) { }
 
@@ -34,14 +35,15 @@ export class BasicAuthHttpInterceptorService implements HttpInterceptor {
       // every failing request will be retried once and if it fails agin, the error will get handled. https://www.youtube.com/watch?v=-G7kStvqgcg
       retry(1),
       catchError(this.errorHandler));
-
   }
 
   errorHandler(error: HttpErrorResponse) {
     if (error.status === 401) {
-      console.log("Username oder Passwort nicht korrekt.")
+      this.responseMessage = "Username oder Passwort nicht korrekt."
+      console.log(this.responseMessage)
     }
     else if (error.status === 403) {
+      this.responseMessage = "Bitte einloggen"
       console.log("Bitte einloggen")
     } 
     else if (error.status === 404) {
