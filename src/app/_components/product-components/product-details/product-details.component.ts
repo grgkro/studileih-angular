@@ -64,7 +64,8 @@ export class ProductDetailsComponent implements OnInit {
     this.loadProductWithProductPictures(); // load the product with the main product picture - get the productId from the URL parameter /{id}
     this.user = this._token.getUser();   //  if the user changes, this will get updated
     this.subscribeTriggeringObservable();
-    this.loadOwner(); 
+    // this.loadOwner(); 
+    
     
   }
 
@@ -99,12 +100,12 @@ this.uploadFileService.pushFileToStorage(selectedFile, this.user.id, this.produc
   
 
 
-  loadUsersFromBackend() {
-    this._data.getUsers().subscribe(users => {      // HTTP Observable (no unsubscribe needed)
-      this.users = users;
-      this._update.changeUsers(this.users);   // we update the users in all components, so that we dont need to load them again from the backend.
-    })
-  }
+  // loadUsersFromBackend() {
+  //   this._data.getUsers().subscribe(users => {      // HTTP Observable (no unsubscribe needed)
+  //     this.users = users;
+  //     this._update.changeUsers(this.users);   // we update the users in all components, so that we dont need to load them again from the backend.
+  //   })
+  // }
 
   // when a new photo gets uploaded, the triggeringObservable will be triggered and the following code will be excecuted (to refresh the photots, so that it immediately shows the newly uploaded photo.)
   subscribeTriggeringObservable() {
@@ -134,7 +135,9 @@ this.uploadFileService.pushFileToStorage(selectedFile, this.user.id, this.produc
     this.routeParam$
       .pipe(takeUntil(this.destroy$))           // We need to unsubscribe from this Observable by hand, because its not an observable returned by a http request
       .subscribe(product => {
-        this.product = product;                    
+        this.product = product;  
+        // load the owner of the product:
+        this._data.getOwner(this.product.id).subscribe((owner => this.owner = owner));                  
         this._update.changeProduct(this.product);    // we change the product in the data service so that if a picture for this product get's uploaded with the upload-file component, the upload-component knows witch is the current product and the image can be stored under the right productId.
         // is the user who looks at the details of this product also the owner of the product? if he is the owner -> show "delete", "update" and "Upload new Photo" button
         if (this.user != undefined && this.product.userId == this.user.id) {
@@ -149,19 +152,20 @@ this.uploadFileService.pushFileToStorage(selectedFile, this.user.id, this.produc
       );
   }
      
-// I didn't want to nest the loadOwner() inside the loadProductWithProductPictures() -> It's best to load the owner onInit, and make it await loading the users AND the product, because the problem is that only when we have the productId, we can load the owner. But right now, the code is already a bit to much grown to make it await loadproduct 
-  async loadOwner() {
-    await this.loadUsers()  
-   // await this.loadProductWithProductPictures()   // <- this would load the product again!
-    // do something else here after firstFunctions complete
-    this.owner = this.users.filter(user => user.id === this.product.userId)[0]  // das filtern gibt ein neues array zurück. Da es aber immer nur einen user mit der passenden id geben kann, wird das array immer max. 1 element enthalten. daher nehmen wir uns element [0] direkt aus dem gefilterten array.
-  }
+// // I didn't want to nest the loadOwner() inside the loadProductWithProductPictures() -> It's best to load the owner onInit, and make it await loading the users AND the product, because the problem is that only when we have the productId, we can load the owner. But right now, the code is already a bit to much grown to make it await loadproduct 
+//   async loadOwner() {
 
-  // https://stackoverflow.com/questions/62819495/js-async-await-second-function-doesnt-wait-for-first-function-to-complete/62819532#62819532
-  async loadUsers(): Promise<any> {
-    this.users = await this._data.getUsers().toPromise();
-    return Promise.resolve();
-  }
+//     await this.loadUsers()  
+//    // await this.loadProductWithProductPictures()   // <- this would load the product again!
+//     // do something else here after firstFunctions complete
+//     this.owner = this.users.filter(user => user.id === this.product.userId)[0]  // das filtern gibt ein neues array zurück. Da es aber immer nur einen user mit der passenden id geben kann, wird das array immer max. 1 element enthalten. daher nehmen wir uns element [0] direkt aus dem gefilterten array.
+//   }
+
+//   // https://stackoverflow.com/questions/62819495/js-async-await-second-function-doesnt-wait-for-first-function-to-complete/62819532#62819532
+//   async loadUsers(): Promise<any> {
+//     this.users = await this._data.getUsers().toPromise();
+//     return Promise.resolve();
+//   }
 
   // we only load the first poduct pic (testing)
   loadProductPics() {

@@ -57,8 +57,9 @@ export class UsersComponent implements OnInit {
   
 
   ngOnInit(): void {
-    this.users$ = this._data.getUsers();   // we dont subscribe here, bc we also need the Observable users$ on the HTML side.
-    this.getCurrentUser();
+    this.currentUser = this._token.getUser();
+    this.users$ = this._data.getUsersByDorm();   // we dont subscribe here, bc we also need the Observable users$ on the HTML side.
+    
     console.log("CURRENT USER", this.currentUser)
 
     this.loadUsersAndProfileImages();
@@ -71,9 +72,6 @@ export class UsersComponent implements OnInit {
     this.destroy$.unsubscribe();
   }
 
-  getCurrentUser() {
-    this.currentUser = this._token.getUser();
-  }
 
   // updateUser(): void {
   //   this._update.currentUser

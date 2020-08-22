@@ -163,7 +163,7 @@ export class GoogleMapsComponent implements OnInit {
   markerClicked(dormClicked: Dorm, infoWindow) {
     // tell the info-window component which marker was clicked
     this._update.changeMarkerClicked(dormClicked)
-    this._helper.getAllProductsFromSelectedDorm([], dormClicked).then((products => this.dormProducts = products));
+    this._data.getProductsByDorm(dormClicked).subscribe((products => this.dormProducts = products));
    //TODO
     // this._update.changeDormProducts(dormClicked)
    // this._update.changeProductImages(dormClicked)

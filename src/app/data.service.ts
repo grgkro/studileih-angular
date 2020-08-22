@@ -16,6 +16,7 @@ import { AuthRequest } from './_models/authRequest';
 })
 
 export class DataService {
+ 
   
   serverPath = 'http://localhost:8090';
   productsPath = 'http://localhost:8090/products';
@@ -121,8 +122,12 @@ export class DataService {
     return this.http.post(this.imagesPath + '/deleteProductPicByFilename', formdata, {responseType: 'text' });
   }
 
-  getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(this.usersPath)
+  getOwner(productId: number): Observable<User> {
+    return this.http.get<User>(this.usersPath + '/owner' + productId)
+  }
+
+  getUsersByDorm(): Observable<User[]> {
+    return this.http.get<User[]>(this.usersPath + '/usersByDorm')
   }
 
   getUser(userId): Observable<User> {
