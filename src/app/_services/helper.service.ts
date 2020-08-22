@@ -1,10 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { User } from '../_models/user';
-import { Product } from '../_models/product';
-import { Dorm } from '../_models/dorm';
-import { DataService } from '../data.service';
-import { UpdateService } from './update.service';
+
 
 @Injectable({
   providedIn: 'root'
