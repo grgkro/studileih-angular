@@ -8,31 +8,22 @@
           <label for="name">Benutzername*:</label>
           <input required type="text" formControlName="name" placeholder="Benutzername" name="Name" class="form-control"
             id="name"
-            [ngClass]="{'is-invalid': addForm.get('name').errors && (addForm.get('name').touched || addForm.get('name').dirty), 'is-valid':addForm.get('name').valid}">
-          <div class="alert alert-danger" role="alert"
-            *ngIf="addForm.get('name').invalid && (addForm.get('name').touched || addForm.get('name').dirty)">
-            Bitte Namen eingeben.
-          </div>
+            [ngClass]="{'is-invalid': name.errors && (name.touched || name.dirty), 'is-valid':name.valid}">
+            <small *ngIf="name.invalid && (name.touched || name.dirty)" class="text-danger">Bitte einen Namen eingeben.</small>
         </div>
     
         <div class="form-group">
           <label for="email">Email*:</label>
           <input required formControlName="email" placeholder="email@gmail.com" name="Email" class="form-control" id="email"
-            [ngClass]="{'is-invalid': addForm.get('email').errors && (addForm.get('email').touched || addForm.get('email').dirty), 'is-valid':addForm.get('email').valid}">
-          <div class="alert alert-danger" role="alert"
-            *ngIf="addForm.get('email').invalid && (addForm.get('email').touched || addForm.get('email').dirty)">
-            Bitte eine gültige Email Adresse eingeben.
-          </div>
+            [ngClass]="{'is-invalid': email.errors && (email.touched || email.dirty), 'is-valid': email.valid}">
+            <small *ngIf="email.errors?.required && (email.touched || email.dirty)" class="text-danger">Bitte eine Email Adresse eingeben.</small>
+            <small *ngIf="email.errors?.pattern && (email.touched || email.dirty)" class="text-danger">Bitte eine gültige Email Adresse eingeben.</small>
         </div>
         <div class="form-group">
           <label for="password">Passwort*:</label>
-          <input required type="text" formControlName="password" placeholder="1234" name="password" class="form-control"
-            id="password"
-            [ngClass]="{'is-invalid': addForm.get('password').errors && (addForm.get('password').touched || addForm.get('password').dirty), 'is-valid':addForm.get('password').valid}">
-          <div class="alert alert-danger" role="alert"
-            *ngIf="addForm.get('password').invalid && (addForm.get('password').touched || addForm.get('password').dirty)">
-            Bitte deine Email Adresse eingeben.
-          </div>
+          <input required type="text" formControlName="password" placeholder="1234" name="password" class="form-control" id="password"
+            [ngClass]="{'is-invalid': password.errors && (password.touched || password.dirty), 'is-valid':password.valid}">
+            <small *ngIf="password.invalid && (password.touched || password.dirty)" class="text-danger">Bitte ein Passwort eingeben.</small>
         </div>
     
         <label>Bitte wähle dein Wohnheim aus:</label>
@@ -58,7 +49,7 @@
                   </mat-option>
                 </mat-optgroup>
               </mat-select>
-              <mat-error *ngIf="addForm.get('dorm').hasError('required')">Du musst ein Wohnheim auswählen.</mat-error>
+              <mat-error *ngIf="dorm.hasError('required')">Du musst ein Wohnheim auswählen.</mat-error>
             </mat-form-field>
           </div>
         </div>

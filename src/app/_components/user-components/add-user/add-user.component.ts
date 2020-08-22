@@ -47,7 +47,7 @@ export class AddUserComponent implements OnInit {
   ngOnInit(): void {
     this.addForm = this.formBuilder.group({
       name: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
+      email: ['', [Validators.required, Validators.email, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")]],
       password: ['', Validators.required],
       city: [''],
       dorm: ['', Validators.required],
@@ -203,5 +203,23 @@ export class AddUserComponent implements OnInit {
       }
     }
   }
+
+
+  // getter for form fields with validators -> so that we dont have to write addUser.get('name').value all the time.
+  get name(){
+    return this.addForm.get('name');
+    }
+
+  get email(){
+    return this.addForm.get('email');
+    }
+
+    get password(){
+      return this.addForm.get('password');
+      }
+
+      get dorm(){
+        return this.addForm.get('dorm');
+        }
 
 }
