@@ -214,11 +214,6 @@ loginSuccessfullInChildComp(isLoggedIn: any) {
     })
   }
 
-  toggle() {
-    console.log("close clicked")
-      this.state.modal = !this.state.modal;
-    
-  }
 
   pickedCategory(category: Category) {
     console.log("PICKED: ", category);

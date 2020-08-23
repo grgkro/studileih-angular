@@ -1,284 +1,285 @@
+<form [formGroup]="addForm" (ngSubmit)="onSubmit()">
 
-      <form [formGroup]="addForm" (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label for="email">Knackiger Titel*:</label>
+    <input required formControlName="title" placeholder="Bohrmaschine mit Metall-Bohrerset" name="title"
+      class="form-control" id="title"
+      [ngClass]="{'is-invalid': addForm.get('title').errors && (addForm.get('title').touched || addForm.get('title').dirty), 'is-valid':addForm.get('title').valid}">
+    <div class="alert alert-danger" role="alert"
+      *ngIf="addForm.get('title').invalid && (addForm.get('title').touched || addForm.get('title').dirty)">
+      Bitte einen Titel eingeben.
+    </div>
+  </div>
 
-        <div class="form-group">
-          <label for="email">Knackiger Titel*:</label>
-          <input required formControlName="title" placeholder="Bohrmaschine mit Metall-Bohrerset" name="title"
-            class="form-control" id="title"
-            [ngClass]="{'is-invalid': addForm.get('title').errors && (addForm.get('title').touched || addForm.get('title').dirty), 'is-valid':addForm.get('title').valid}">
-          <div class="alert alert-danger" role="alert"
-            *ngIf="addForm.get('title').invalid && (addForm.get('title').touched || addForm.get('title').dirty)">
-            Bitte einen Titel eingeben.
-          </div>
-        </div>
+  <div class="form-group">
+    <label for="description">Kurze Beschreibung*:</label>
+    <input required type="text" formControlName="description"
+      placeholder="Gerne kann meine Bohrmaschine hier für 2-3 Tage ausgeleihen werden." name="description"
+      class="form-control" id="description"
+      [ngClass]="{'is-invalid': addForm.get('description').errors && (addForm.get('description').touched || addForm.get('description').dirty), 'is-valid':addForm.get('description').valid}">
+    <div class="alert alert-danger" role="alert"
+      *ngIf="addForm.get('description').invalid && (addForm.get('description').touched || addForm.get('description').dirty)">
+      Bitte eine kurze Beschreibung eingeben.
+    </div>
+  </div>
 
-        <div class="form-group">
-          <label for="description">Kurze Beschreibung*:</label>
-          <input required type="text" formControlName="description"
-            placeholder="Gerne kann meine Bohrmaschine hier für 2-3 Tage ausgeleihen werden." name="description"
-            class="form-control" id="description"
-            [ngClass]="{'is-invalid': addForm.get('description').errors && (addForm.get('description').touched || addForm.get('description').dirty), 'is-valid':addForm.get('description').valid}">
-          <div class="alert alert-danger" role="alert"
-            *ngIf="addForm.get('description').invalid && (addForm.get('description').touched || addForm.get('description').dirty)">
-            Bitte eine kurze Beschreibung eingeben.
-          </div>
-        </div>
-
-        <br>
-        <mat-accordion>
-          <div class="row">
-            <div class="col-sm-12">
-              <mat-expansion-panel [expanded]="true">
-                <mat-expansion-panel-header>
-                  <mat-panel-title style="text-align: center; display: block;
-                  margin-left: auto;
-                  margin-right: auto;">
-                    Fotos hinzufügen (empfohlen):
-                  </mat-panel-title>
-                </mat-expansion-panel-header>
-                
-                <app-upload-multiple-files (selectedFile)="onFileSelected($event)"></app-upload-multiple-files>
-              
-                <!-- when a file gets selected in the upload-file component, we will get that as an output emitted into the add-product component-->  
-              </mat-expansion-panel>
-  
-  
-             
-            </div>
-  
-          </div>
-          <br>
-
-        <mat-expansion-panel >
+  <br>
+  <mat-accordion>
+    <div class="row">
+      <div class="col-sm-12">
+        <mat-expansion-panel [expanded]="true">
           <mat-expansion-panel-header>
             <mat-panel-title style="text-align: center; display: block;
-            margin-left: auto;
-            margin-right: auto;">
-              Bitte wähle eine Kategorie: (optional):
+                  margin-left: auto;
+                  margin-right: auto;">
+              Fotos hinzufügen (empfohlen):
             </mat-panel-title>
           </mat-expansion-panel-header>
-        <!-- here the user can chose one product category-->
-        <!-- https://material.angular.io/components/chips/overview-->
-        <div>
-          <div *ngIf="hasSelectedCategory">
-            <label  for="categoryList">Gewählte Kategorie:</label>
-          </div>
-          
-          
-          <div>
-            <!-- this chip-list will only contain one chip (the selected Category). But we still need a list, because otherwise you cant let the user generate a chip in the #chipInput input field further down => <input ... [matChipInputFor]="categoryList" -->
-            <mat-chip-list #categoryList class="chip-list" aria-label="Gewählte Kategorie">
-              <div *ngFor="let category of categories">
-                <div *ngIf="category.selected">
-                  <mat-chip #selectedCat [removable]="removable" (removed)="category.selected = false;">
-                    {{ category.name }}
-                    <mat-icon matChipRemove *ngIf="removable" (click)="hasSelectedCategory = false">cancel</mat-icon>
-                  </mat-chip>
-                </div>
-              </div>
-            </mat-chip-list>
-            <br>
 
-            <!-- [matChipInputSeparatorKeyCodes] = when the user presses COMMA or ENTER a new chip will get generated -->
-            <!-- [matChipInputAddOnBlur] = if the input field loses focus, the chip gets generated-->
-            <label for="chipInput">Eigene Kategorie eingeben:</label>
-            <br>
-            <input #chipInput placeholder="z.B. Boombox" [matChipInputFor]="categoryList"
-              [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
-              (matChipInputTokenEnd)="add($event)" style="border: 1px solid rgb(204, 203, 203);
+          <app-upload-multiple-files (selectedFile)="onFileSelected($event)"></app-upload-multiple-files>
+
+          <!-- when a file gets selected in the upload-file component, we will get that as an output emitted into the add-product component-->
+        </mat-expansion-panel>
+
+
+
+      </div>
+
+    </div>
+    <br>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title style="text-align: center; display: block;
+            margin-left: auto;
+            margin-right: auto;">
+          Bitte wähle eine Kategorie: (optional):
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <!-- here the user can chose one product category-->
+      <!-- https://material.angular.io/components/chips/overview-->
+      <div>
+        <div *ngIf="hasSelectedCategory">
+          <label for="categoryList">Gewählte Kategorie:</label>
+        </div>
+
+
+        <div>
+          <!-- this chip-list will only contain one chip (the selected Category). But we still need a list, because otherwise you cant let the user generate a chip in the #chipInput input field further down => <input ... [matChipInputFor]="categoryList" -->
+          <mat-chip-list #categoryList class="chip-list" aria-label="Gewählte Kategorie">
+            <div *ngFor="let category of categories">
+              <div *ngIf="category.selected">
+                <mat-chip #selectedCat [removable]="removable" (removed)="category.selected = false;">
+                  {{ category.name }}
+                  <mat-icon matChipRemove *ngIf="removable" (click)="hasSelectedCategory = false">cancel</mat-icon>
+                </mat-chip>
+              </div>
+            </div>
+          </mat-chip-list>
+          <br>
+
+          <!-- [matChipInputSeparatorKeyCodes] = when the user presses COMMA or ENTER a new chip will get generated -->
+          <!-- [matChipInputAddOnBlur] = if the input field loses focus, the chip gets generated-->
+          <label for="chipInput">Eigene Kategorie eingeben:</label>
+          <br>
+          <input #chipInput placeholder="z.B. Boombox" [matChipInputFor]="categoryList"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+            (matChipInputTokenEnd)="add($event)" style="border: 1px solid rgb(204, 203, 203);
                   border-radius: 5px;
                   transition: border-color .5s ease-out;
                   height: 2.3rem;
                   padding: 0.7rem;
                   position: relative; 
                   left: -0.25rem;">
-          </div>
-          <br>
-
-          <label for="preDefinedList">Oder wähle eine Kategorie aus der Liste:</label>
-          <br>
-          <mat-chip-list #preDefinedList aria-label="Produkt Kategorien">
-            <mat-chip *ngFor="let category of categories" multiple="false" [selectable]="false"
-              (click)="pickedCategory(category)">
-              {{category.name}}
-            </mat-chip>
-          </mat-chip-list>
         </div>
-      </mat-expansion-panel>
-
         <br>
+
+        <label for="preDefinedList">Oder wähle eine Kategorie aus der Liste:</label>
+        <br>
+        <mat-chip-list #preDefinedList aria-label="Produkt Kategorien">
+          <mat-chip *ngFor="let category of categories" multiple="false" [selectable]="false"
+            (click)="pickedCategory(category)">
+            {{category.name}}
+          </mat-chip>
+        </mat-chip-list>
+      </div>
+    </mat-expansion-panel>
+
+    <br>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title style="text-align: center; display: block;
+            margin-left: auto;
+            margin-right: auto;">
+          Preis angeben (optional):
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <p>Hier kannst du einen Preis angeben, falls du für das Ausleihen etwas Geld möchtest (du kannst auch als
+        Gegenleistung nur ein Bier akzeptieren):</p>
+      <div class="form-group">
+        <label for="price">Preis in €:</label>
+        <input type="number" formControlName="price" value="0" name="price" class="form-control" id="price"
+          (input)="inputValidator($event)" />
+        <br>
+        <div *ngIf="showOnlyNumbersMessage" class="alert alert-danger">
+          {{ onlyNumbersMessage }}
+        </div>
+        <div *ngIf="priceTooHigh" class="alert alert-danger">
+          {{ priceTooHighMessage }}
+        </div>
+        <br>
+        <input type="checkbox" id="beerCheckbox" checked formControlName="isBeerOk"> Oder ein Bier.<br>
+
+      </div>
+    </mat-expansion-panel>
+
+
+    <br>
+
+    <div class="row">
+      <div class="col">
         <mat-expansion-panel>
           <mat-expansion-panel-header>
             <mat-panel-title style="text-align: center; display: block;
-            margin-left: auto;
-            margin-right: auto;">
-              Preis angeben (optional):
+                margin-left: auto;
+                margin-right: auto;">
+              Zeitraum hinzufügen, an dem das Produkt bevorzugt ausgeliehen werden kann (optional):
             </mat-panel-title>
+
           </mat-expansion-panel-header>
-          <p>Hier kannst du einen Preis angeben, falls du für das Ausleihen etwas Geld möchtest (du kannst auch als Gegenleistung nur ein Bier akzeptieren):</p>
-          <div class="form-group">
-            <label for="price">Preis in €:</label>
-            <input type="number" formControlName="price" value="0" name="price" class="form-control" id="price"
-              (input)="inputValidator($event)" />
-            <br>
-            <div *ngIf="showOnlyNumbersMessage" class="alert alert-danger">
-              {{ onlyNumbersMessage }}
+
+          <p>Du kannst hier einen Zeitraum angeben, von wann bis wann das Produkt bevorzugt
+            ausgeliehen werden kann (Bedeutet nicht, dass es auch über die gesamte Dauer ausgeliehen werden muss).
+            Oder einfach freilassen, falls der Zeitraum egal ist:</p>
+          <div class="row justify-content-between">
+            <div class="col-3">
+              <mat-form-field appearance="fill">
+                <mat-label style="font-size: 17px;">Verfügbar von bis:</mat-label>
+                <mat-date-range-input [rangePicker]="picker">
+                  <input matStartDate matInput placeholder="Startdatum" formControlName="startDate">
+                  <input matEndDate matInput placeholder="Enddatum" formControlName="endDate">
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]="picker">
+                </mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+              </mat-form-field>
             </div>
-            <div *ngIf="priceTooHigh" class="alert alert-danger">
-              {{ priceTooHighMessage }}
+            <div class="col-3">
+              <div class="md-form" style="position: relative; top: -0.4rem;">
+                <input type="time" id="startTimeInput" class="form-control" placeholder="" mdbInput
+                  formControlName="pickUpTime" />
+                <label for="startTimeInput">Abholbar ab: </label>
+              </div>
             </div>
-            <br>
-            <input type="checkbox" id="beerCheckbox" checked formControlName="isBeerOk"> Oder ein Bier.<br>
-            
+            <div class="col-3">
+              <div class="md-form" style="position: relative; top: -0.4rem;">
+                <input type="time" id="returnTimeInput" class="form-control" placeholder="13:00" mdbInput
+                  formControlName="returnTime" />
+                <label for="returnTimeInput">Rückgabe bis: </label>
+              </div>
+            </div>
+
+
           </div>
         </mat-expansion-panel>
 
-        
-<br>
+      </div>
+    </div>
 
-        <div class="row">
-          <div class="col">
-            <mat-expansion-panel>
-              <mat-expansion-panel-header>
-                <mat-panel-title style="text-align: center; display: block;
-                margin-left: auto;
-                margin-right: auto;">
-                  Zeitraum hinzufügen, an dem das Produkt bevorzugt ausgeliehen werden kann (optional):
-                </mat-panel-title>
 
-              </mat-expansion-panel-header>
+  </mat-accordion>
 
-              <p>Du kannst hier einen Zeitraum angeben, von wann bis wann das Produkt bevorzugt
-                ausgeliehen werden kann (Bedeutet nicht, dass es auch über die gesamte Dauer ausgeliehen werden muss).
-                Oder einfach freilassen, falls der Zeitraum egal ist:</p>
-                <div class="row justify-content-between">
-                  <div class="col-3">
-                    <mat-form-field appearance="fill">
-                      <mat-label style="font-size: 17px;">Verfügbar von bis:</mat-label>
-                      <mat-date-range-input [rangePicker]="picker">
-                        <input matStartDate matInput placeholder="Startdatum" formControlName="startDate">
-                        <input matEndDate matInput placeholder="Enddatum" formControlName="endDate">
-                      </mat-date-range-input>
-                      <mat-datepicker-toggle matSuffix [for]="picker">
-                      </mat-datepicker-toggle>
-                      <mat-date-range-picker #picker></mat-date-range-picker>
-                    </mat-form-field>
-                  </div>
-                  <div class="col-3">
-                    <div class="md-form" style="position: relative; top: -0.4rem;">
-                      <input type="time" id="startTimeInput" class="form-control" placeholder="" mdbInput
-                        formControlName="pickUpTime" />
-                      <label for="startTimeInput">Abholbar ab: </label>
-                    </div>
-                  </div>
-                  <div class="col-3">
-                    <div class="md-form" style="position: relative; top: -0.4rem;">
-                      <input type="time" id="returnTimeInput" class="form-control" placeholder="13:00" mdbInput
-                        formControlName="returnTime" />
-                      <label for="returnTimeInput">Rückgabe bis: </label>
-                    </div>
-                  </div>
-        
-        
-                </div>
-            </mat-expansion-panel>
+  <br>
 
-          </div>
-        </div>
-    
-      
-      </mat-accordion>
-
-                <br>
-
-        <div class="row justify-content-space-around" style="display: flex;
+  <div class="row justify-content-space-around" style="display: flex;
         justify-content: space-between; margin: 2rem 15rem;">
-          <div class="col-4">
-            <button *ngIf="!isLoggedIn" mdbBtn type="button" size="lg" class="waves-light" mdbWavesEffect
-              class="btn btn-success" data-toggle="modal" data-target="#loginRegisterModal" [disabled]="!addForm.valid">Speichern(mitLogin)</button>
+    <div class="col-4">
+      <button *ngIf="!isLoggedIn" mdbBtn type="button" size="lg" class="waves-light" mdbWavesEffect
+        class="btn btn-success" data-toggle="modal" data-target="#loginRegisterModal"
+        [disabled]="!addForm.valid">Speichern(mitLogin)</button>
 
-              <button *ngIf="isLoggedIn" mdbBtn type="submit" size="lg" class="waves-light" mdbWavesEffect
-              class="btn btn-success" [disabled]="!addForm.valid">Speichern</button>
-          </div>
-          <div class="col-4" *ngIf="!isEditingActivated">
-            <a mdbBtn color="danger" size="lg" class="waves-light" mdbWavesEffect data-toggle="modal"
-              data-target="#cancelAddingProductModal">Abbrechen</a>
-          </div>
-          <div class="col-4" *ngIf="isEditingActivated">
-            <a mdbBtn color="danger" size="lg" class="waves-light" mdbWavesEffect data-toggle="modal"
-              data-target="#cancelEditingProductModal">Abbrechen</a>
-          </div>
+      <button *ngIf="isLoggedIn" mdbBtn type="submit" size="lg" class="waves-light" mdbWavesEffect
+        class="btn btn-success" [disabled]="!addForm.valid">Speichern</button>
+    </div>
+    <div class="col-4" *ngIf="!isEditingActivated">
+      <a mdbBtn color="danger" size="lg" class="waves-light" mdbWavesEffect data-toggle="modal"
+        data-target="#cancelAddingProductModal">Abbrechen</a>
+    </div>
+    <div class="col-4" *ngIf="isEditingActivated">
+      <a mdbBtn color="danger" size="lg" class="waves-light" mdbWavesEffect data-toggle="modal"
+        data-target="#cancelEditingProductModal">Abbrechen</a>
+    </div>
 
 
-        </div>
-      </form>
+  </div>
+</form>
 
-      <!-- Modal #loginRegisterModal-->
-        <div class="modal fade" id="loginRegisterModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-        aria-hidden="true" >
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-          <div class="modal-content" >
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <app-login-registration-accordion (isLoggedIn)="loginSuccessfullInChildComp($event)"></app-login-registration-accordion>
-            </div>
-           
-          </div>
-        </div>
+<!-- Modal #loginRegisterModal-->
+<div class="modal fade" id="loginRegisterModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-
-      <!-- Modal #cancelAddingProductModal-->
-      <div class="modal fade" id="cancelAddingProductModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Abbrechen</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              Abbrechen und zurück zur Startseite (Änderungen gehen verloren)?
-            </div>
-            <div class="modal-footer">
-              <button mdbBtn type="button" size="md" color="primary" class="waves-light" mdbWavesEffect
-                data-dismiss="modal">Bleiben</button>
-              <button mdbBtn type="button" color="danger" size="md" class="waves-light" mdbWavesEffect
-                (click)="cancel()" data-dismiss="modal">Zurück zur Startseite</button>
-            </div>
-          </div>
-        </div>
+      <div class="modal-body">
+        <app-login-registration-accordion (isLoggedIn)="loginSuccessfullInChildComp($event)">
+        </app-login-registration-accordion>
       </div>
+    </div>
+  </div>
+</div>
 
-      <!-- Modal #cancelEditingProductModal-->
-      <div class="modal fade" id="cancelEditingProductModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Abbrechen</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              Bearbeiten abbrechen (Änderungen gehen verloren)?
-            </div>
-            <div class="modal-footer">
-              <button mdbBtn type="button" size="md" color="primary" class="waves-light" mdbWavesEffect
-                data-dismiss="modal">Bleiben</button>
-              <button mdbBtn type="button" color="danger" size="md" class="waves-light" mdbWavesEffect
-                (click)="cancelEditing()" data-dismiss="modal">Abbrechen</button>
-            </div>
-          </div>
-        </div>
+<!-- Modal #cancelAddingProductModal-->
+<div class="modal fade" id="cancelAddingProductModal" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Abbrechen</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
+      <div class="modal-body">
+        Abbrechen und zurück zur Startseite (Änderungen gehen verloren)?
+      </div>
+      <div class="modal-footer">
+        <button mdbBtn type="button" size="md" color="primary" class="waves-light" mdbWavesEffect
+          data-dismiss="modal">Bleiben</button>
+        <button mdbBtn type="button" color="danger" size="md" class="waves-light" mdbWavesEffect (click)="cancel()"
+          data-dismiss="modal">Zurück zur Startseite</button>
+      </div>
+    </div>
+  </div>
+</div>
 
-      <br />
-      <br />
-      <strong>{{ response }}</strong>
+<!-- Modal #cancelEditingProductModal-->
+<div class="modal fade" id="cancelEditingProductModal" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Abbrechen</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Bearbeiten abbrechen (Änderungen gehen verloren)?
+      </div>
+      <div class="modal-footer">
+        <button mdbBtn type="button" size="md" color="primary" class="waves-light" mdbWavesEffect
+          data-dismiss="modal">Bleiben</button>
+        <button mdbBtn type="button" color="danger" size="md" class="waves-light" mdbWavesEffect
+          (click)="cancelEditing()" data-dismiss="modal">Abbrechen</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<br />
+<br />
+<strong>{{ response }}</strong>

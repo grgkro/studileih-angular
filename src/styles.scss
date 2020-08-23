@@ -148,3 +148,6 @@ body { margin: 0;
     -webkit-transform-origin: 55% 50% 0;
     transform-origin: 55% 50% 0;
   }
+
+  // https://stackoverflow.com/questions/48352238/why-mat-select-not-working-inside-the-modal-onclick-it-shows-options-behind-th -> necessary for add-product login/register modal (mat select city & dorm appears behind modal without this.)
+  .cdk-global-overlay-wrapper, .cdk-overlay-container { z-index: 9999!important; }

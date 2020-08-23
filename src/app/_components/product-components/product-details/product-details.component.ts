@@ -11,7 +11,6 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Observable } from 'rxjs/internal/Observable';  // Don't make general imports like this: import { Observable, Subject } from 'rxjs'; -> You have now all of rxjs imported and that will slow down your app.
 import { Subject } from 'rxjs/internal/Subject';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import {FormControl} from '@angular/forms';
 import { UploadFileService } from 'src/app/_services/upload-file.service';
 import { TokenStorageService } from 'src/app/_services/token-storage.service';
 import { AuthenticationService } from 'src/app/_services/authentication.service';
@@ -32,7 +31,7 @@ export class ProductDetailsComponent implements OnInit {
   owner: User = {};   // the user who is the owner of the product
   users: User[] = []; // list of all users, from which we take the owner and user variable. 
   isCurrentUserOwner: boolean = false;
-  
+
   errorMessage: string;
   imagesList = []; //var array = new Array();   is similar to:    var array = [];
   routeParam$: Observable<Product>;
@@ -58,7 +57,7 @@ export class ProductDetailsComponent implements OnInit {
   isAnfragenClicked: boolean = false;
   isLoggedIn: boolean;
 
-  
+
 
   constructor(private route: ActivatedRoute, private router: Router, private authService: AuthenticationService, private uploadFileService: UploadFileService, private _data: DataService, private _update: UpdateService, private _token: TokenStorageService, private _helper: HelperService, private sanitizer: DomSanitizer, private _snackBar: MatSnackBar) { }
 
@@ -69,8 +68,8 @@ export class ProductDetailsComponent implements OnInit {
     this.checkIfUserIsLoggedIn();
     this.subscribeTriggeringObservable();
     // this.loadOwner(); 
-    
-    
+
+
   }
 
   ngOnDestroy() {            // Angular takes care of unsubscribing from many observable subscriptions like those returned from the Http service or when using the async pipe. But the routeParam$ and the _update.currentShowUploadComponent needs to be unsubscribed by hand on ngDestroy. Otherwise, we risk a memory leak when the component is destroyed. https://malcoded.com/posts/angular-async-pipe/   https://www.digitalocean.com/community/tutorials/angular-takeuntil-rxjs-unsubscribe
@@ -82,13 +81,13 @@ export class ProductDetailsComponent implements OnInit {
 
   // we check if a token exists and if the token is still valid by accessing the dummy controller method welcome
   checkIfUserIsLoggedIn() {
-    this.authService.welcome().subscribe((response) =>{
-    if (response.status == 200) {
-      this.isLoggedIn = true;
-      console.log("Is User Logged In?", this.isLoggedIn)
-    } else {
-      this.isLoggedIn = false
-    }
+    this.authService.welcome().subscribe((response) => {
+      if (response.status == 200) {
+        this.isLoggedIn = true;
+        console.log("Is User Logged In?", this.isLoggedIn)
+      } else {
+        this.isLoggedIn = false
+      }
     })
   }
 
@@ -102,18 +101,18 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   saveFile(selectedFile: File) {
-// This uploadfunction is responsible for handling uploads of user profile images and product pics. (Unecessary complicated, splitting it in two functions would be better for seperation of concerns)
-this.uploadFileService.pushFileToStorage(selectedFile, this.user.id, this.product.id, "productPic").subscribe((response: any) => {
-  if (response == "Dein Foto wurde gespeichert.")   //it would be better to check the response status == 200, but I dont know how
-    this.response = response;
- // this._update.changeNewPhotoWasUploaded();
-   this._update.changeShowUploadComponent(false);  // if the user uploaded a product photo, we want do not show the upload component anymore in the productdetails component. But therefore we need the information in the productdetails component. -> If a user successfully uploads a product photo (status 200), the upload component changes showUploadComponent to false here. The _update service then updates this value for all subscribes.
-  // setTimeout(() => { this.router.navigate(['']); }, 700);  // after uploading a photo we go back to the main page immediatly -> could be changed, maybe better show a success message and stay on the current page...
-},
-  (err: HttpErrorResponse) => this.processError(err)    // if the image could not be loaded, this part will be executed instead
-);
+    // This uploadfunction is responsible for handling uploads of user profile images and product pics. (Unecessary complicated, splitting it in two functions would be better for seperation of concerns)
+    this.uploadFileService.pushFileToStorage(selectedFile, this.user.id, this.product.id, "productPic").subscribe((response: any) => {
+      if (response == "Dein Foto wurde gespeichert.")   //it would be better to check the response status == 200, but I dont know how
+        this.response = response;
+      // this._update.changeNewPhotoWasUploaded();
+      this._update.changeShowUploadComponent(false);  // if the user uploaded a product photo, we want do not show the upload component anymore in the productdetails component. But therefore we need the information in the productdetails component. -> If a user successfully uploads a product photo (status 200), the upload component changes showUploadComponent to false here. The _update service then updates this value for all subscribes.
+      // setTimeout(() => { this.router.navigate(['']); }, 700);  // after uploading a photo we go back to the main page immediatly -> could be changed, maybe better show a success message and stay on the current page...
+    },
+      (err: HttpErrorResponse) => this.processError(err)    // if the image could not be loaded, this part will be executed instead
+    );
   }
-  
+
 
 
   // loadUsersFromBackend() {
@@ -139,7 +138,7 @@ this.uploadFileService.pushFileToStorage(selectedFile, this.user.id, this.produc
         //     });
         //   }
         // }
-        
+
         console.log(" to show emptied");
         this.imagesToShow = [];   // we clear the imagesToShow and refill it in the next step (if you dont clear it first, the old photos will appear twice in the array)
         this.loadProductWithProductPictures();  // we load all photos again. (maybe in the future find a way to only load the new photo and not clear the array before)
@@ -151,9 +150,9 @@ this.uploadFileService.pushFileToStorage(selectedFile, this.user.id, this.produc
     this.routeParam$
       .pipe(takeUntil(this.destroy$))           // We need to unsubscribe from this Observable by hand, because its not an observable returned by a http request
       .subscribe(product => {
-        this.product = product;  
+        this.product = product;
         // load the owner of the product:
-        this._data.getOwner(this.product.id).subscribe((owner => this.owner = owner));                  
+        this._data.getOwner(this.product.id).subscribe((owner => this.owner = owner));
         this._update.changeProduct(this.product);    // we change the product in the data service so that if a picture for this product get's uploaded with the upload-file component, the upload-component knows witch is the current product and the image can be stored under the right productId.
         // is the user who looks at the details of this product also the owner of the product? if he is the owner -> show "delete", "update" and "Upload new Photo" button
         if (this.user != undefined && this.product.userId == this.user.id) {
@@ -167,21 +166,21 @@ this.uploadFileService.pushFileToStorage(selectedFile, this.user.id, this.produc
         }
       );
   }
-     
-// // I didn't want to nest the loadOwner() inside the loadProductWithProductPictures() -> It's best to load the owner onInit, and make it await loading the users AND the product, because the problem is that only when we have the productId, we can load the owner. But right now, the code is already a bit to much grown to make it await loadproduct 
-//   async loadOwner() {
 
-//     await this.loadUsers()  
-//    // await this.loadProductWithProductPictures()   // <- this would load the product again!
-//     // do something else here after firstFunctions complete
-//     this.owner = this.users.filter(user => user.id === this.product.userId)[0]  // das filtern gibt ein neues array zurück. Da es aber immer nur einen user mit der passenden id geben kann, wird das array immer max. 1 element enthalten. daher nehmen wir uns element [0] direkt aus dem gefilterten array.
-//   }
+  // // I didn't want to nest the loadOwner() inside the loadProductWithProductPictures() -> It's best to load the owner onInit, and make it await loading the users AND the product, because the problem is that only when we have the productId, we can load the owner. But right now, the code is already a bit to much grown to make it await loadproduct 
+  //   async loadOwner() {
 
-//   // https://stackoverflow.com/questions/62819495/js-async-await-second-function-doesnt-wait-for-first-function-to-complete/62819532#62819532
-//   async loadUsers(): Promise<any> {
-//     this.users = await this._data.getUsers().toPromise();
-//     return Promise.resolve();
-//   }
+  //     await this.loadUsers()  
+  //    // await this.loadProductWithProductPictures()   // <- this would load the product again!
+  //     // do something else here after firstFunctions complete
+  //     this.owner = this.users.filter(user => user.id === this.product.userId)[0]  // das filtern gibt ein neues array zurück. Da es aber immer nur einen user mit der passenden id geben kann, wird das array immer max. 1 element enthalten. daher nehmen wir uns element [0] direkt aus dem gefilterten array.
+  //   }
+
+  //   // https://stackoverflow.com/questions/62819495/js-async-await-second-function-doesnt-wait-for-first-function-to-complete/62819532#62819532
+  //   async loadUsers(): Promise<any> {
+  //     this.users = await this._data.getUsers().toPromise();
+  //     return Promise.resolve();
+  //   }
 
   // we only load the first poduct pic (testing)
   loadProductPics() {
@@ -273,7 +272,7 @@ this.uploadFileService.pushFileToStorage(selectedFile, this.user.id, this.produc
     }
   }
 
-  
+
   deleteProduct(id: number) {
     this._data.deleteProduct(id)
       .subscribe(data => {
@@ -286,8 +285,8 @@ this.uploadFileService.pushFileToStorage(selectedFile, this.user.id, this.produc
       })
   };
 
-  
-  onAnfrageSubmit() { 
+
+  onAnfrageSubmit() {
     this.sendEmailToOwner(this.createFormdata());
     this.sendMessageToOwner(this.createFormdata());
   }
@@ -305,7 +304,7 @@ this.uploadFileService.pushFileToStorage(selectedFile, this.user.id, this.produc
     formdata.append('productId', this.product.id.toString());
     return formdata;
   }
-  
+
 
   sendEmailToOwner(formdata: FormData) {
     this._data.sendEmailToOwner(formdata).subscribe(data => console.log(data));
@@ -334,11 +333,18 @@ this.uploadFileService.pushFileToStorage(selectedFile, this.user.id, this.produc
     }
   }
 
-  cancelEditingClick = function(isEditingActivatedInChild) {
+  cancelEditingClick = function (isEditingActivatedInChild) {
     this.isEditingActivated = isEditingActivatedInChild;
   }
 
   showLoginPopup() {
     this.isAnfragenClicked = !this.isAnfragenClicked;
+  }
+
+  loginSuccessfullInChildComp(isLoggedIn: any) {
+    this.isLoggedIn = isLoggedIn;
+    this.ngOnInit();
+    console.log(isLoggedIn)
+    console.log(`User is ${isLoggedIn}ly logged in now`)
   }
 }

@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { DataService } from '../../../data.service';
 import { trigger,style,transition,animate,query,stagger } from '@angular/animations';
 import { User } from '../../../_models/user';
-import { Observable, asyncScheduler, Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { UpdateService } from '../../../_services/update.service';
-import { takeUntil, take } from 'rxjs/operators';
+import {  take } from 'rxjs/operators';
 import { Dorm } from '../../../_models/dorm';
 import { UploadFileService } from '../../../_services/upload-file.service';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -132,8 +132,22 @@ export class UsersComponent implements OnInit {
 
   //sorts the array users by the number of products they offer. If both offer the same number of products, the user with profile Pic gets picked first. => This way the more active users appear first in the users overview.
   sortUsersByProductsAndProfilePic(users) {
+    console.log(this.currentUser)
     users.forEach((user) => {if (user.profilePic) {user.hasProfilePic = true;} else { user.hasProfilePic = false}})
-    return users.sort((a, b) => (a.products.length < b.products.length) ? 1 : (a.products.length === b.products.length) ? ((a.hasProfilePic < b.hasProfilePic) ? 1 : -1) : -1)
+     users.sort((a, b) => (a.products.length < b.products.length) ? 1 : (a.products.length === b.products.length) ? ((a.hasProfilePic < b.hasProfilePic) ? 1 : -1) : -1)
+    //  users = this.removeItem(users, this.currentUser)
+    users = users.filter(item => item.id !== this.currentUser.id); 
+    console.log(users)
+     console.log("--------------------------------------", users)
+     users.splice(0,0,this.currentUser)
+     console.log(users)
+     return users;
+    }
+
+  removeItem(arr, element){
+    const index: number = arr.indexOf(element);
+    arr.splice(index, 1);
+    return arr;
   }
 
 

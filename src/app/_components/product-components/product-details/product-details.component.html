@@ -1,64 +1,61 @@
-
 <div class="container">
      <h1>{{errorMessage}}</h1>
      <div *ngIf="product">
           <!-- Falls das Product schon geladen ist, dann führe das Folgende aus-->
-          
-               <div class="row">
-                    <!-- If editing is activated, the editing button ("Bearbeiten") will disappear -> the titel needs to take 2 col more, otherwise the delete button will move 2 columns to the left after the editing button dissapears. -->
-                    <div [ngClass]="(!isEditingActivated)?'col-8':'col-10'" >
-                         <h1 class="display-3">{{ product?.title }}</h1>
+
+          <div class="row">
+               <!-- If editing is activated, the editing button ("Bearbeiten") will disappear -> the titel needs to take 2 col more, otherwise the delete button will move 2 columns to the left after the editing button dissapears. -->
+               <div [ngClass]="(!isEditingActivated)?'col-8':'col-10'">
+                    <h1 class="display-3">{{ product?.title }}</h1>
+               </div>
+               <div *ngIf="isCurrentUserOwner">
+                    <!-- if the current user is the owner, he will see the edit and delete and update button -->
+                    <div class="col-2" *ngIf="!isEditingActivated">
+                         <button class="btn btn-primary" (click)="isEditingActivated = true">Bearbeiten</button>
                     </div>
-                    <div *ngIf="isCurrentUserOwner">
-                    <!-- if the current user is the owner, he will see the edit and delete and update button -->             
-                         <div class="col-2" *ngIf="!isEditingActivated">
-                              <button class="btn btn-primary" (click)="isEditingActivated = true">Bearbeiten</button>
-                         </div>
 
-                         <div class="col-1">
-                              <!-- <a mdbBtn color="danger" size="lg" class="waves-light" mdbWavesEffect data-toggle="modal"
+                    <div class="col-1">
+                         <!-- <a mdbBtn color="danger" size="lg" class="waves-light" mdbWavesEffect data-toggle="modal"
 data-target="#cancelModal">Abbrechen</a> -->
-                              <button class="btn btn-danger" data-toggle="modal" data-target="#deleteProductModal">
+                         <button class="btn btn-danger" data-toggle="modal" data-target="#deleteProductModal">
 
-                                   <svg class="bi bi-trash" width="1.5em" height="1.5em" viewBox="0 0 16 16"
-                                        fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                             d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
-                                        <path fill-rule="evenodd"
-                                             d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
-                                   </svg>
+                              <svg class="bi bi-trash" width="1.5em" height="1.5em" viewBox="0 0 16 16"
+                                   fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                   <path
+                                        d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                   <path fill-rule="evenodd"
+                                        d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                              </svg>
 
-                              </button>
+                         </button>
 
 
-                              <!-- Modal -->
-                              <div class="modal fade" id="deleteProductModal" tabindex="-1" role="dialog"
-                                   aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                   <div class="modal-dialog modal-dialog-centered" role="document">
-                                        <div class="modal-content">
-                                             <div class="modal-header">
-                                                  <h5 class="modal-title" id="exampleModalLongTitle">Produkt
-                                                       endgültig
-                                                       löschen?</h5>
-                                                  <button type="button" class="close" data-dismiss="modal"
-                                                       aria-label="Close">
-                                                       <span aria-hidden="true">&times;</span>
-                                                  </button>
-                                             </div>
+                         <!-- Modal -->
+                         <div class="modal fade" id="deleteProductModal" tabindex="-1" role="dialog"
+                              aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                              <div class="modal-dialog modal-dialog-centered" role="document">
+                                   <div class="modal-content">
+                                        <div class="modal-header">
+                                             <h5 class="modal-title" id="exampleModalLongTitle">Produkt
+                                                  endgültig
+                                                  löschen?</h5>
+                                             <button type="button" class="close" data-dismiss="modal"
+                                                  aria-label="Close">
+                                                  <span aria-hidden="true">&times;</span>
+                                             </button>
+                                        </div>
 
-                                             <div class="modal-footer">
-                                                  <button mdbBtn type="button" size="md" color="primary"
-                                                       class="waves-light" mdbWavesEffect
-                                                       data-dismiss="modal">Abbrechen</button>
-                                                  <button mdbBtn type="button" color="danger" size="md"
-                                                       class="waves-light" mdbWavesEffect
-                                                       (click)="deleteProduct(product.id)"
-                                                       data-dismiss="modal">Löschen</button>
-                                             </div>
+                                        <div class="modal-footer">
+                                             <button mdbBtn type="button" size="md" color="primary" class="waves-light"
+                                                  mdbWavesEffect data-dismiss="modal">Abbrechen</button>
+                                             <button mdbBtn type="button" color="danger" size="md" class="waves-light"
+                                                  mdbWavesEffect (click)="deleteProduct(product.id)"
+                                                  data-dismiss="modal">Löschen</button>
                                         </div>
                                    </div>
                               </div>
                          </div>
+                    </div>
                </div>
           </div>
           <hr class="my-2" />
@@ -93,7 +90,8 @@ data-target="#cancelModal">Abbrechen</a> -->
           </div>
 
           <div *ngIf="isEditingActivated">
-               <app-product-form [product]="product" [isEditingActivated]="true" (cancelEditingClick)="cancelEditingClick($event)"></app-product-form> 
+               <app-product-form [product]="product" [isEditingActivated]="true"
+                    (cancelEditingClick)="cancelEditingClick($event)"></app-product-form>
 
           </div>
      </div>
@@ -202,27 +200,29 @@ https://blog.angular.io/version-10-of-angular-now-available-78960babd41
                               um: </label>
                     </div>
                </div>
-               
-               
+
+
                <div *ngIf="isLoggedIn" class="col-sm-3">
                     <button class="button" type="submit" mdbBtn color="primary" class="waves-light" mdbWavesEffect
                          (click)="onAnfrageSubmit()">Anfragen</button>
                </div>
+
                <!-- if user is not logged in but wants to "Anfragen" -> show normal login if window >= 768px-->
                <div id="normalLogin">
                     <div *ngIf="!isLoggedIn" class="col-sm-3">
-                         <button class="button" type="submit" mdbBtn color="primary" class="waves-light" mdbWavesEffect
-                              (click)="showLoginPopup()">Anfragen(mitNormalLogin)</button>
+
+                         <button mdbBtn type="button" size="lg" color="primary" class="waves-light" mdbWavesEffect
+                              class="btn btn-success" data-toggle="modal" data-target="#loginRegisterModal"
+                              >Anfragen(mitNormalLogin)</button>
                     </div>
                     <div *ngIf="!isLoggedIn && isAnfragenClicked" class="col-sm-3">
                          <app-login-popup></app-login-popup>
                     </div>
                </div>
-              
+
                <!-- if user is not logged in but wants to "Anfragen" -> show login as a popup if on screens smaller 768px-->
                <div id="loginAsPopup">
-                    <div  *ngIf="!isLoggedIn" class="col-sm-3">
-                    
+                    <div *ngIf="!isLoggedIn" class="col-sm-3"> 
                          <button class="button" type="submit" mdbBtn color="primary" class="waves-light" mdbWavesEffect
                               (click)="showLoginPopup()">Anfragen(LoginAsPopup)</button>
                     </div>
@@ -230,9 +230,26 @@ https://blog.angular.io/version-10-of-angular-now-available-78960babd41
                          <app-login-popup></app-login-popup>
                     </div>
                </div>
-               
+
+               <!-- Modal #loginRegisterModal-->
+               <div class="modal fade" id="loginRegisterModal" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                         <div class="modal-content">
+                              <div class="modal-header">
+                                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                   </button>
+                              </div>
+                              <div class="modal-body">
+                                   <app-login-registration-accordion (isLoggedIn)="loginSuccessfullInChildComp($event)">
+                                   </app-login-registration-accordion>
+                              </div>
+                         </div>
+                    </div>
+               </div>
+
           </div>
      </div>
 
 </div>
-
