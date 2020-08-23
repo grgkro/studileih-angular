@@ -87,7 +87,7 @@ export class UsersComponent implements OnInit {
     })
   }
 
-  loginButtonClickedInChildComp(isLoggedIn: any) {
+  loginSuccessfullInChildComp(isLoggedIn: any) {
     this.isLoggedIn = isLoggedIn;
     this.ngOnInit();
     console.log(isLoggedIn)

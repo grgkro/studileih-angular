@@ -23,4 +23,6 @@ export class AuthenticationService {
   register(formData: FormData): Observable<any> {
     return this.http.post(serverPath + 'users/register', formData, { observe: 'response', responseType: 'text'})
   }
+
+  
 }

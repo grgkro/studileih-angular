@@ -28,14 +28,17 @@ export class UserLoginComponent implements OnInit {
     if (this.loginForm.invalid) {
       return;
     }
-    this._token.signOut();
+    
     this._auth.login({ 
       userName: this.loginForm.controls.username.value, 
       password: this.loginForm.controls.password.value
     } )
     .subscribe(data => {  
       if (data.status === 200) {
+        // first we logout the user
+        this._token.signOut(); 
         this.user = data.body;
+        //this logs the user in:
         this._token.saveToken(this.user.token)
         this._token.saveUser(this.user)
         console.log("token from storage", this._token.getToken())
@@ -55,7 +58,6 @@ this._auth.welcome().subscribe((response) =>{
 }
 
   ngOnInit() {
-   
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.compose([Validators.required])],
       password: ['', Validators.required]

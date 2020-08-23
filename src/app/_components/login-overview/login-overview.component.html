@@ -1,37 +1,12 @@
 <div class="container">
 
-  <mat-accordion>
-    <div class="row">
-      <div class="col ">
+  <div *ngIf="!isLoggedIn">
+    <app-login-registration-accordion (isLoggedIn)="loginSuccessfullInChildComp($event)"></app-login-registration-accordion>
+  </div>
 
-        <mat-expansion-panel [expanded]="true">
-          <mat-expansion-panel-header>
-            <mat-panel-title style="text-align: center; display: block;
-      margin-left: auto;
-      margin-right: auto;">
-              Login
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-          <app-user-login></app-user-login>
-
-        </mat-expansion-panel>
-      </div>
-    </div>
-    <br>
-    <div class="row">
-      <div class="col">
-        <mat-expansion-panel>
-          <mat-expansion-panel-header>
-            <mat-panel-title style="text-align: center; display: block;
-      margin-left: auto;
-      margin-right: auto;">
-              Registrieren
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-          <app-add-user></app-add-user>
-        </mat-expansion-panel>
-      </div>
-    </div>
-  </mat-accordion>
+  <div *ngIf="isLoggedIn">
+    <button id="addDorm" type="button" (click)="logout()" mdbBtn color="secondary" class="waves-light"
+      cmdbWavesEffect>Logout</button>
+  </div>
 
 </div>

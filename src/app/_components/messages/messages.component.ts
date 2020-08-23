@@ -80,7 +80,7 @@ isLoggedIn: boolean = false;
     })
   }
 
-  loginButtonClickedInChildComp(isLoggedIn: any) {
+  loginSuccessfullInChildComp(isLoggedIn: any) {
     this.isLoggedIn = isLoggedIn;
     this.ngOnInit();
     console.log(isLoggedIn)

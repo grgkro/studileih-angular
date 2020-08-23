@@ -10,7 +10,7 @@
               Login
             </mat-panel-title>
           </mat-expansion-panel-header>
-          <app-user-login (isLoggedIn)="loginButtonClickedInChildComp($event)"></app-user-login>
+          <app-user-login (isLoggedIn)="loginSuccessfullInChildComp($event)"></app-user-login>
 
         </mat-expansion-panel>
       </div>
@@ -26,7 +26,7 @@
               Registrieren
             </mat-panel-title>
           </mat-expansion-panel-header>
-          <app-add-user></app-add-user>
+          <app-add-user (isLoggedIn)="loginSuccessfullInChildComp($event)"></app-add-user>
         </mat-expansion-panel>
       </div>
     </div>

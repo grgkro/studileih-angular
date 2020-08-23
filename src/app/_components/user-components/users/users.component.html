@@ -17,41 +17,9 @@
         </div>
 
         <div *ngIf="!isLoggedIn">
-            <mat-accordion>
-                <div class="row">
-                    <div class="col user-container">
-
-                        <mat-expansion-panel [expanded]="true">
-                            <mat-expansion-panel-header>
-                                <mat-panel-title style="text-align: center; display: block;
-                margin-left: auto;
-                margin-right: auto;">
-                                    Login
-                                </mat-panel-title>
-                            </mat-expansion-panel-header>
-                            <app-user-login (isLoggedIn)="loginButtonClickedInChildComp($event)"></app-user-login>
-
-                        </mat-expansion-panel>
-                    </div>
-                </div>
-                <br>
-                <div class="row">
-                    <div class="col user-container">
-                        <mat-expansion-panel>
-                            <mat-expansion-panel-header>
-                                <mat-panel-title style="text-align: center; display: block;
-                margin-left: auto;
-                margin-right: auto;">
-                                    Registrieren
-                                </mat-panel-title>
-                            </mat-expansion-panel-header>
-                            <app-add-user></app-add-user>
-                        </mat-expansion-panel>
-                    </div>
-                </div>
-            </mat-accordion>
-        </div>
-
+            <app-login-registration-accordion (isLoggedIn)="loginSuccessfullInChildComp($event)"></app-login-registration-accordion>
+          </div>
+          
         <div *ngIf="isLoggedIn">
             <div class="row justify-content-center ">
                 <div class="col">
