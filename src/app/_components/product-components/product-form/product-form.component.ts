@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, } from '@angular/router';
-import { UpdateService } from '../../../_services/update.service';
 import { User } from '../../../_models/user';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DataService } from '../../../data.service';
@@ -11,7 +10,6 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { Product } from 'src/app/_models/product';
 import { TokenStorageService } from 'src/app/_services/token-storage.service';
 import { AuthenticationService } from 'src/app/_services/authentication.service';
-import * as $ from 'jquery';
 
 export interface Category {
   name: string;
@@ -42,7 +40,6 @@ export class ProductFormComponent implements OnInit {
   selectedFile: File;
   selectedFiles: File[] = [];
   isLoggedIn: boolean;
-
 
   visible = true;
   selectable = true;
@@ -162,6 +159,10 @@ export class ProductFormComponent implements OnInit {
   test: boolean = false;
   checked: boolean = false;
 
+  state = {
+    modal: false
+  }
+
   constructor(private formBuilder: FormBuilder,
     private _token: TokenStorageService,
     private authService: AuthenticationService,
@@ -194,9 +195,11 @@ export class ProductFormComponent implements OnInit {
     }
   }
 
-testing() {
-  var name = $('#txtName').val();
-  alert(name)
+loginSuccessfullInChildComp(isLoggedIn: any) {
+  this.isLoggedIn = isLoggedIn;
+  this.ngOnInit();
+  console.log(isLoggedIn)
+  console.log(`User is ${isLoggedIn }ly logged in now`)
 }
 
   // we check if a token exists and if the token is still valid by accessing the dummy controller method welcome
@@ -211,12 +214,10 @@ testing() {
     })
   }
 
-  // maybe not needed
-  loginButtonClickedInChildComp(isLoggedIn: any) {
-    this.isLoggedIn = isLoggedIn;
-    this.ngOnInit();
-    console.log(isLoggedIn)
-    console.log(`${isLoggedIn } milliseconds to start gMpas`)
+  toggle() {
+    console.log("close clicked")
+      this.state.modal = !this.state.modal;
+    
   }
 
   pickedCategory(category: Category) {

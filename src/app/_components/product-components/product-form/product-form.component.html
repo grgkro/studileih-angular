@@ -1,8 +1,6 @@
 
       <form [formGroup]="addForm" (ngSubmit)="onSubmit()">
 
-        <button (click)="testing()">Test</button>
-        <input id="txtName" type="text" />
         <div class="form-group">
           <label for="email">Knackiger Titel*:</label>
           <input required formControlName="title" placeholder="Bohrmaschine mit Metall-Bohrerset" name="title"
@@ -138,8 +136,6 @@
         
 <br>
 
-
-
         <div class="row">
           <div class="col">
             <mat-expansion-panel>
@@ -199,9 +195,10 @@
         justify-content: space-between; margin: 2rem 15rem;">
           <div class="col-4">
             <button *ngIf="!isLoggedIn" mdbBtn type="button" size="lg" class="waves-light" mdbWavesEffect
-              class="btn btn-success" data-toggle="modal" data-target="#loginRegisterModal">Speichern(mitLogin)</button>
+              class="btn btn-success" data-toggle="modal" data-target="#loginRegisterModal" [disabled]="!addForm.valid">Speichern(mitLogin)</button>
+
               <button *ngIf="isLoggedIn" mdbBtn type="submit" size="lg" class="waves-light" mdbWavesEffect
-              class="btn btn-success">Speichern</button>
+              class="btn btn-success" [disabled]="!addForm.valid">Speichern</button>
           </div>
           <div class="col-4" *ngIf="!isEditingActivated">
             <a mdbBtn color="danger" size="lg" class="waves-light" mdbWavesEffect data-toggle="modal"
@@ -217,25 +214,19 @@
       </form>
 
       <!-- Modal #loginRegisterModal-->
-      <div class="modal fade" id="cancelEditingProductModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
+        <div class="modal fade" id="loginRegisterModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true" >
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+          <div class="modal-content" >
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle">Login/Registrieren</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
-              <app-user-login></app-user-login>
+              <app-login-registration-accordion (isLoggedIn)="loginSuccessfullInChildComp($event)"></app-login-registration-accordion>
             </div>
-            <div class="modal-footer">
-              <button mdbBtn type="button" size="md" color="primary" class="waves-light" mdbWavesEffect
-                data-dismiss="modal">Login</button>
-              <button mdbBtn type="button" color="danger" size="md" class="waves-light" mdbWavesEffect
-                (click)="cancelEditing()" data-dismiss="modal">Abbrechen</button>
-            </div>
+           
           </div>
         </div>
       </div>
