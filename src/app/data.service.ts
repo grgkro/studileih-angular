@@ -123,7 +123,7 @@ export class DataService {
   }
 
   getOwner(productId: number): Observable<User> {
-    return this.http.get<User>(this.usersPath + '/owner' + productId)
+    return this.http.get<User>(this.usersPath + '/owner/' + productId)
   }
 
   getUsersByDorm(): Observable<User[]> {

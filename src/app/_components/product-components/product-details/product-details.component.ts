@@ -14,6 +14,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import {FormControl} from '@angular/forms';
 import { UploadFileService } from 'src/app/_services/upload-file.service';
 import { TokenStorageService } from 'src/app/_services/token-storage.service';
+import { AuthenticationService } from 'src/app/_services/authentication.service';
 
 
 
@@ -54,15 +55,18 @@ export class ProductDetailsComponent implements OnInit {
 
   response: string;
   isEditingActivated: boolean = false;
+  isAnfragenClicked: boolean = false;
+  isLoggedIn: boolean;
 
   
 
-  constructor(private route: ActivatedRoute, private router: Router, private uploadFileService: UploadFileService, private _data: DataService, private _update: UpdateService, private _token: TokenStorageService, private _helper: HelperService, private sanitizer: DomSanitizer, private _snackBar: MatSnackBar) { }
+  constructor(private route: ActivatedRoute, private router: Router, private authService: AuthenticationService, private uploadFileService: UploadFileService, private _data: DataService, private _update: UpdateService, private _token: TokenStorageService, private _helper: HelperService, private sanitizer: DomSanitizer, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.routeParam$ = this.route.params.pipe(switchMap(params => this._data.getProduct(params['id'])))  // get the productId from the URL parameter /{id}. pipe & switchMap take care that if the userId changes for some reason, the following process gets stopped: https://www.concretepage.com/angular/angular-switchmap-example (not necessary yet, because the user profile image loads pretty fast, but if that takes longer and the user switches to another site, it's better to stop the process)
     this.loadProductWithProductPictures(); // load the product with the main product picture - get the productId from the URL parameter /{id}
     this.user = this._token.getUser();   //  if the user changes, this will get updated
+    this.checkIfUserIsLoggedIn();
     this.subscribeTriggeringObservable();
     // this.loadOwner(); 
     
@@ -74,6 +78,18 @@ export class ProductDetailsComponent implements OnInit {
     // Now let's also unsubscribe from the subject itself:
     this.destroy$.unsubscribe();
     this._data.deleteArchive("product", this.product.id).subscribe(() => console.log("archive destroyed"));  // wenn der user die seite wechselt (z.b. wieder zur Produktübersicht), wird das Archiv im Backend gelöscht. Damit lassen sich die Fotos nicht mehr wiederherstellen danach. Wenn das Archiv nicht gelöscht wird, könnte man Probleme bekommen, wenn der User das gleiche Bild nochmal hochlädt und dann wieder löscht, da es dann schon im Archiv liegt... am besten wäre es das Archiv erst zu löschen, wenn der User die Seite ganz verlässt. Oder das Archiv nur alle 2 Wochen zu löschen und dafür die Fehlermeldung bei doppelter Löschung abzufangen...
+  }
+
+  // we check if a token exists and if the token is still valid by accessing the dummy controller method welcome
+  checkIfUserIsLoggedIn() {
+    this.authService.welcome().subscribe((response) =>{
+    if (response.status == 200) {
+      this.isLoggedIn = true;
+      console.log("Is User Logged In?", this.isLoggedIn)
+    } else {
+      this.isLoggedIn = false
+    }
+    })
   }
 
   saveChanges() {
@@ -287,7 +303,6 @@ this.uploadFileService.pushFileToStorage(selectedFile, this.user.id, this.produc
       formdata.append('returnTime', this.returnTime);
     }
     formdata.append('productId', this.product.id.toString());
-    formdata.append('ownerId', this.owner.id.toString());
     return formdata;
   }
   
@@ -321,5 +336,9 @@ this.uploadFileService.pushFileToStorage(selectedFile, this.user.id, this.produc
 
   cancelEditingClick = function(isEditingActivatedInChild) {
     this.isEditingActivated = isEditingActivatedInChild;
+  }
+
+  showLoginPopup() {
+    this.isAnfragenClicked = !this.isAnfragenClicked;
   }
 }

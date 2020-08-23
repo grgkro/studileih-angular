@@ -35,6 +35,8 @@
     display: inline-block;
 }
   
+.carousel-multi-item-2 .card img {
+  border-radius: 2px; }
 
 @media (min-width: 768px) {
     .carousel-multi-item-2 .col-md-3 {
@@ -42,5 +44,18 @@
     width: 25%;
     max-width: 100%; } }
     
-    .carousel-multi-item-2 .card img {
-    border-radius: 2px; }
+
+
+
+    @media only screen and (min-width: 769px) {
+      #loginAsPopup {
+          display: none;
+      }
+    }
+
+    @media (max-width: 768px) {
+      #normalLogin {
+          display: none;
+      }
+    }
+    

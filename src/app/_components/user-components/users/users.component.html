@@ -2,7 +2,10 @@
     <div class="container">
         <div class="row justify-content-center ">
             <div class="col-11">
-                <div style="display: inline-block">
+                <div *ngIf="!isLoggedIn" style="display: inline-block" >
+                    <h1>Andere Benutzer in deinem Wohnheim: Bitte einloggen oder registrieren</h1>
+                </div>
+                <div *ngIf="isLoggedIn" style="display: inline-block" >
                     <h1>Andere Benutzer im Wohnheim {{ dorms[currentUser.dormId - 1].name }}:</h1>
                 </div>
             </div>

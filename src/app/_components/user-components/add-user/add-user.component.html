@@ -1,3 +1,4 @@
+<h2>{{response}}</h2>
 <form [formGroup]="addForm" (ngSubmit)="onFormSubmit()">
 
   <div class="form-group">
@@ -52,8 +53,6 @@
   
   <app-upload-file [isUserPic]=true (selectedFile)="onFileSelected($event)"></app-upload-file>
   <!-- when a file gets selected in the upload-file component, we will get that as an output emitted into the product-details component-->
-
-  <strong>{{ response }}</strong>
 
   <br>
 

@@ -49,6 +49,8 @@ import { ImageCropperModule } from 'ngx-image-cropper';
 import { AddDormComponent } from './_components/add-dorm/add-dorm.component';
 import { AddProductComponent } from './_components/product-components/add-product/add-product.component';
 import { LoginOverviewComponent } from './_components/login-overview/login-overview.component';
+import { LoginPopupComponent } from './_components/user-components/login-popup/login-popup.component';
+import { LoginRegistrationAccordionComponent } from './_components/login/login-registration-accordion/login-registration-accordion.component';
 
 
 @NgModule({
@@ -72,7 +74,9 @@ import { LoginOverviewComponent } from './_components/login-overview/login-overv
     InfoWindowProductOverviewComponent,
     AddDormComponent,
     AddProductComponent,
-    LoginOverviewComponent
+    LoginOverviewComponent,
+    LoginPopupComponent,
+    LoginRegistrationAccordionComponent
   ],
   imports: [
     BrowserModule,

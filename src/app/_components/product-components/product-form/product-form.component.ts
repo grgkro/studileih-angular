@@ -10,6 +10,8 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { Product } from 'src/app/_models/product';
 import { TokenStorageService } from 'src/app/_services/token-storage.service';
+import { AuthenticationService } from 'src/app/_services/authentication.service';
+import * as $ from 'jquery';
 
 export interface Category {
   name: string;
@@ -39,6 +41,7 @@ export class ProductFormComponent implements OnInit {
   response: string;
   selectedFile: File;
   selectedFiles: File[] = [];
+  isLoggedIn: boolean;
 
 
   visible = true;
@@ -161,6 +164,7 @@ export class ProductFormComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
     private _token: TokenStorageService,
+    private authService: AuthenticationService,
     private _data: DataService,
     private router: Router) { }
 
@@ -169,6 +173,7 @@ export class ProductFormComponent implements OnInit {
   ngOnInit(): void {
 
     this.user = this._token.getUser();  
+    this.checkIfUserIsLoggedIn();
     this.addForm = this.formBuilder.group({            //https://angular.io/guide/reactive-forms
       description: ['', Validators.required],
       title: ['', Validators.required],
@@ -187,6 +192,31 @@ export class ProductFormComponent implements OnInit {
         title: this.product.title
       })
     }
+  }
+
+testing() {
+  var name = $('#txtName').val();
+  alert(name)
+}
+
+  // we check if a token exists and if the token is still valid by accessing the dummy controller method welcome
+  checkIfUserIsLoggedIn() {
+    this.authService.welcome().subscribe((response) =>{
+    if (response.status == 200) {
+      this.isLoggedIn = true;
+      console.log("ISnOWlOGGEDiN", this.isLoggedIn)
+    } else {
+      this.isLoggedIn = false
+    }
+    })
+  }
+
+  // maybe not needed
+  loginButtonClickedInChildComp(isLoggedIn: any) {
+    this.isLoggedIn = isLoggedIn;
+    this.ngOnInit();
+    console.log(isLoggedIn)
+    console.log(`${isLoggedIn } milliseconds to start gMpas`)
   }
 
   pickedCategory(category: Category) {

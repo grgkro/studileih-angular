@@ -3,13 +3,13 @@
      <h1>{{errorMessage}}</h1>
      <div *ngIf="product">
           <!-- Falls das Product schon geladen ist, dann führe das Folgende aus-->
-          <div *ngIf="isCurrentUserOwner">
+          
                <div class="row">
                     <!-- If editing is activated, the editing button ("Bearbeiten") will disappear -> the titel needs to take 2 col more, otherwise the delete button will move 2 columns to the left after the editing button dissapears. -->
                     <div [ngClass]="(!isEditingActivated)?'col-8':'col-10'" >
                          <h1 class="display-3">{{ product?.title }}</h1>
                     </div>
-
+                    <div *ngIf="isCurrentUserOwner">
                     <!-- if the current user is the owner, he will see the edit and delete and update button -->             
                          <div class="col-2" *ngIf="!isEditingActivated">
                               <button class="btn btn-primary" (click)="isEditingActivated = true">Bearbeiten</button>
@@ -202,11 +202,37 @@ https://blog.angular.io/version-10-of-angular-now-available-78960babd41
                               um: </label>
                     </div>
                </div>
-               <div class="col-sm-3">
+               
+               
+               <div *ngIf="isLoggedIn" class="col-sm-3">
                     <button class="button" type="submit" mdbBtn color="primary" class="waves-light" mdbWavesEffect
                          (click)="onAnfrageSubmit()">Anfragen</button>
                </div>
+               <!-- if user is not logged in but wants to "Anfragen" -> show normal login if window >= 768px-->
+               <div id="normalLogin">
+                    <div *ngIf="!isLoggedIn" class="col-sm-3">
+                         <button class="button" type="submit" mdbBtn color="primary" class="waves-light" mdbWavesEffect
+                              (click)="showLoginPopup()">Anfragen(mitNormalLogin)</button>
+                    </div>
+                    <div *ngIf="!isLoggedIn && isAnfragenClicked" class="col-sm-3">
+                         <app-login-popup></app-login-popup>
+                    </div>
+               </div>
+              
+               <!-- if user is not logged in but wants to "Anfragen" -> show login as a popup if on screens smaller 768px-->
+               <div id="loginAsPopup">
+                    <div  *ngIf="!isLoggedIn" class="col-sm-3">
+                    
+                         <button class="button" type="submit" mdbBtn color="primary" class="waves-light" mdbWavesEffect
+                              (click)="showLoginPopup()">Anfragen(LoginAsPopup)</button>
+                    </div>
+                    <div *ngIf="!isLoggedIn && isAnfragenClicked" class="col-sm-3">
+                         <app-login-popup></app-login-popup>
+                    </div>
+               </div>
+               
           </div>
      </div>
 
 </div>
+

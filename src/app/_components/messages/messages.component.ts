@@ -69,7 +69,7 @@ isLoggedIn: boolean = false;
 
   // we check if a token exists and if the token is still valid by accessing the dummy controller method welcome
   checkIfUserIsLoggedIn() {
-    this.authService.welcome(this._token.getToken()).subscribe((response) =>{
+    this.authService.welcome().subscribe((response) =>{
     if (response.status == 200) {
       this.isLoggedIn = true;
       this.getChats(); 
@@ -84,8 +84,10 @@ isLoggedIn: boolean = false;
     this.isLoggedIn = isLoggedIn;
     this.ngOnInit();
     console.log(isLoggedIn)
-    console.log(`${isLoggedIn } milliseconds to start gMpas`)
+    console.log(`User is ${isLoggedIn }ly logged in now`)
   }
+
+
 
   // loads all Chats of the logged in user with also the messages of that chat.
   getChats() {

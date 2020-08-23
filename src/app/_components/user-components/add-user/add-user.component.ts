@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl, FormGroupDirective, NgForm } from "@angular/forms";
 import { Router } from '@angular/router';
 import { DataService } from '../../../data.service';
@@ -8,6 +8,9 @@ import { DormGroup } from '../../../_models/dormGroup';
 import { Dorm } from '../../../_models/dorm';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { AuthenticationService } from 'src/app/_services/authentication.service';
+import { User } from 'src/app/_models/user';
+import { TokenStorageService } from 'src/app/_services/token-storage.service';
 
 
 @Component({
@@ -16,11 +19,12 @@ import { Subject } from 'rxjs';
   styleUrls: ['./add-user.component.scss']
 })
 export class AddUserComponent implements OnInit {
+  @Output() isLoggedIn = new EventEmitter<boolean>();
 
   constructor(private formBuilder: FormBuilder,
-    private router: Router,
+    private _auth: AuthenticationService,
+    private _token: TokenStorageService,
     private dataService: DataService,
-    private http: HttpClient,
     private _update: UpdateService) { }
 
   addForm: FormGroup;
@@ -40,6 +44,7 @@ export class AddUserComponent implements OnInit {
   selectedDorm: Dorm = { id: 1, name: "Alexanderstraße", lat: 48.767485, lng: 9.179693, city: "Stuttgart", district: "StuttgartMitte" }; // irgendwie müssen werte in JS immer am Anfang schon initialisiert werde, das regt richtig auf, wir überschreiben das im onInit sowieso gleich wieder, gibt's da ne andere Möglichkeit?
   hasUserSubmitted: boolean = false;
   showAddDorm: boolean = false;
+  user: User;
 
   // Angular takes care of unsubscribing from many observable subscriptions like those returned from the Http service or when using the async pipe. But the routeParam$ and the _update.currentShowUploadComponent needs to be unsubscribed by hand on ngDestroy. Otherwise, we risk a memory leak when the component is destroyed. https://malcoded.com/posts/angular-async-pipe/   https://www.digitalocean.com/community/tutorials/angular-takeuntil-rxjs-unsubscribe
   destroy$: Subject<boolean> = new Subject<boolean>();
@@ -133,14 +138,40 @@ export class AddUserComponent implements OnInit {
     formData.append("city", this.addForm.get('city').value);
     formData.append("dormId", this.selectedDorm.id);   // we don't actually use the dorm value from the addForm. This is because we need the id of it and that is easier this way. But we still need the formControl dorm in addForm, to show a validation message if the formControl was left empty.
     formData.append("profilePic", this.selectedFile);
-    console.log("hello", formData);
-    console.log(this.selectedFile)
+    console.log("Profilfoto:", this.selectedFile)
 
-    this.http.post(this.dataService.usersPath, formData, { responseType: 'text' }).subscribe(
-      (response) => console.log(response),
+    this._auth.register(formData).subscribe(
+      (response) => {
+        if (response.status === 200) {
+          // when registration was successfull, we immediately log the user in too.
+          this._auth.login({ 
+            userName: this.addForm.get('name').value, 
+            password: this.addForm.get('password').value
+          }).subscribe(response => {
+            if (response.status === 200) {
+              this.user = response.body;
+              this._token.saveToken(this.user.token)
+              this._token.saveUser(this.user)
+              console.log("token from storage", this._token.getToken())
+              // if the login component is included in a parent component e.g. message component, we need to tell the parent that the user is now logged in.
+              this.isLoggedIn.emit(true);
+              this.accessAPI()
+            }
+          } )
+         
+        } 
+      },
       (error) => console.log(error)
     );
   }
+
+  accessAPI() {
+    this._auth.welcome().subscribe((response) =>{
+      if (response.status === 200) {
+        this.response = response.body.response;
+      }  
+      })
+    }
 
   // https://angular.io/guide/component-interaction
   onFileSelected(selectedFile: File) {

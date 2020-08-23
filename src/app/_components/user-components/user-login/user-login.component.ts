@@ -4,7 +4,6 @@ import { TokenStorageService } from '../../../_services/token-storage.service';
 import { AuthenticationService } from '../../../_services/authentication.service';
 import { AuthRequest } from '../../../_models/authRequest';
 import { User } from 'src/app/_models/user';
-import { BasicAuthHttpInterceptorService } from 'src/app/_services/basic-auth-http-interceptor.service';
 
 @Component({
   selector: 'app-user-login',
@@ -42,18 +41,13 @@ export class UserLoginComponent implements OnInit {
         console.log("token from storage", this._token.getToken())
         // if the login component is included in a parent component e.g. message component, we need to tell the parent that the user is now logged in.
         this.isLoggedIn.emit(true);
-        this.accessAPI(data.body)
-      } 
-    },
-    error => {
-      if (error.status === 401) {
-        this.response = error.error;
+        this.accessAPI()
       } 
     });
   }
 
-  accessAPI(token) {
-this._auth.welcome(token).subscribe((response) =>{
+  accessAPI() {
+this._auth.welcome().subscribe((response) =>{
   if (response.status === 200) {
     this.response = response.body.response;
   }  
@@ -61,7 +55,7 @@ this._auth.welcome(token).subscribe((response) =>{
 }
 
   ngOnInit() {
-    window.localStorage.removeItem('token');
+   
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.compose([Validators.required])],
       password: ['', Validators.required]

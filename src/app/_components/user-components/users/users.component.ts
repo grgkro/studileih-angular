@@ -77,7 +77,7 @@ export class UsersComponent implements OnInit {
 
   // we check if a token exists and if the token is still valid by accessing the dummy controller method welcome
   checkIfUserIsLoggedIn() {
-    this.authService.welcome(this._token.getToken()).subscribe((response) =>{
+    this.authService.welcome().subscribe((response) =>{
     if (response.status == 200) {
       this.isLoggedIn = true;
       console.log("ISnOWlOGGEDiN", this.isLoggedIn)
