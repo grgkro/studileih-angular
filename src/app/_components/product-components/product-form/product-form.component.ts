@@ -197,7 +197,7 @@ export class ProductFormComponent implements OnInit {
 
 loginSuccessfullInChildComp(isLoggedIn: any) {
   this.isLoggedIn = isLoggedIn;
-  this.ngOnInit();
+  // this.ngOnInit();
   console.log(isLoggedIn)
   console.log(`User is ${isLoggedIn }ly logged in now`)
 }
