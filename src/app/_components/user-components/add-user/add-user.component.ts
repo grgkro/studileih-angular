@@ -135,7 +135,6 @@ export class AddUserComponent implements OnInit {
     formData.append("name", this.addForm.get('name').value);
     formData.append("email", this.addForm.get('email').value);
     formData.append("password", this.addForm.get('password').value);
-    formData.append("city", this.addForm.get('city').value);
     formData.append("dormId", this.selectedDorm.id);   // we don't actually use the dorm value from the addForm. This is because we need the id of it and that is easier this way. But we still need the formControl dorm in addForm, to show a validation message if the formControl was left empty.
     formData.append("profilePic", this.selectedFile);
     console.log("Profilfoto:", this.selectedFile)

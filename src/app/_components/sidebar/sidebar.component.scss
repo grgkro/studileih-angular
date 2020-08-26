@@ -31,3 +31,34 @@ nav {
     //  color: white !important;
     border-radius: 10px !important;
 }
+
+@media (max-width: 768px) {
+  nav {
+    background: #2d2e2e;
+    height: 100%;
+  
+    ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+  
+      li {
+        a {
+          color: #fff;
+          padding: 20px;
+          display: inline;
+        }
+  
+        .activated {
+          background-color: #00a8ff;
+        }
+      }
+  
+     /*  li:hover {
+        background-color: #00a8ff;
+        color: white;
+      } */
+    }
+  }
+  
+}

@@ -1,7 +1,7 @@
 
     
       <h2>{{response}}</h2>
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <form [formGroup]="loginForm">
         <div class="form-group">
           <label for="username">UserName:</label>
           <input type="text" class="form-control" formControlName="username" id="username" autocomplete="off" />
@@ -22,7 +22,7 @@
             Password is required
           </div>
         </div>
-        <button class="btn btn-success" [disabled]="loginForm.invalid">
+        <button type="button" (click)="onSubmit()" class="btn btn-success" [disabled]="loginForm.invalid">
           Login
         </button>
         <div *ngIf="invalidLogin" class="error">
