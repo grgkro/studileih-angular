@@ -8,7 +8,7 @@ export interface Product {
     description?: string;
     title?: string;
     price?: number;
-    beerOk?: boolean;
+    isBeerOk?: boolean;
     views?: number;
     available?: boolean;
     createdAt?: string;

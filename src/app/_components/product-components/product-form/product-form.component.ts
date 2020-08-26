@@ -320,7 +320,6 @@ loginSuccessfullInChildComp(isLoggedIn: any) {
     });
     formData.append("price", this.addForm.get('price').value);
     formData.append("isBeerOk", this.addForm.get('isBeerOk').value);
-    formData.append("userId", this.user.id);
     // https://www.epochconverter.com/
     if (this.addForm.get('startDate').value) formData.append("startDate", this.addForm.get('startDate').value.getTime() / 1000.0);   // transforms the startTime to MILLISECONDS since 1970-01-01 (epoche time)
     console.log(this.addForm.get('startDate').value.getTime() / 1000.0);

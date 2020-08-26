@@ -51,6 +51,7 @@ import { AddProductComponent } from './_components/product-components/add-produc
 import { LoginOverviewComponent } from './_components/login-overview/login-overview.component';
 import { LoginPopupComponent } from './_components/user-components/login-popup/login-popup.component';
 import { LoginRegistrationAccordionComponent } from './_components/login/login-registration-accordion/login-registration-accordion.component';
+import { NavbarComponent } from './_components/sidebar-navbar/navbar/navbar.component';
 
 
 @NgModule({
@@ -76,7 +77,8 @@ import { LoginRegistrationAccordionComponent } from './_components/login/login-r
     AddProductComponent,
     LoginOverviewComponent,
     LoginPopupComponent,
-    LoginRegistrationAccordionComponent
+    LoginRegistrationAccordionComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,

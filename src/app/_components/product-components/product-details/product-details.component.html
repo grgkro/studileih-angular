@@ -65,13 +65,13 @@ data-target="#cancelModal">Abbrechen</a> -->
                          <li><strong>Beschreibung:</strong> {{ product?.description }}</li>
                          <li><strong>Kategorie:</strong> {{ product?.category }}</li>
                          <li><strong>Besitzer:</strong> {{ owner?.name }}</li>
-                         <div *ngIf="product.price == 0 && product.beerOk">
+                         <div *ngIf="product.price == 0 && product.isBeerOk">
                               <li><strong>Preis:</strong> Der Besitzer möchte statt Geld lieber ein Bier. </li>
                          </div>
                          <div *ngIf="product.price != 0">
                               <li><strong>Preis:</strong> {{ product?.price }} €</li>
                               <li><strong>Wird statt Geld auch ein Bier akzeptiert?:</strong>
-                                   {{ (product?.beerOk) ? 'Ja, der Besitzer würde sich auch mit einem Bier begnügen.' : 'Nur Bares ist Wares.' }}
+                                   {{ (product?.isBeerOk) ? 'Ja, der Besitzer würde sich auch mit einem Bier begnügen.' : 'Nur Bares ist Wares.' }}
                               </li>
                          </div>
 
@@ -216,7 +216,7 @@ https://blog.angular.io/version-10-of-angular-now-available-78960babd41
                               >Anfragen(mitNormalLogin)</button>
                     </div>
                     <div *ngIf="!isLoggedIn && isAnfragenClicked" class="col-sm-3">
-                         <app-login-popup></app-login-popup>
+                         <app-login-registration-accordion (isLoggedIn)="loginSuccessfullInChildComp($event)"></app-login-registration-accordion>
                     </div>
                </div>
 
