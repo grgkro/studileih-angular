@@ -1,3 +1,4 @@
+@media (min-width: 768px) {
 nav {
   background: #2d2e2e;
   height: 100%;
@@ -25,6 +26,7 @@ nav {
     } */
   }
 }
+}
 
 .custom-tooltip {
   font-size:1rem;
@@ -36,17 +38,43 @@ nav {
   nav {
     background: #2d2e2e;
     height: 100%;
+    border: 1px solid red;
+    margin: 0 auto;
+    
   
     ul {
       list-style-type: none;
-      padding: 0;
-      margin: 0;
+      text-align:middle;
+          vertical-align: middle;
+          text-align: center;
+          horizontal-align: middle;
+          border: 2px solid green;
+          height: 70px;
+          width: 70px;
+          margin: 0 auto;
+          
+         
   
       li {
+        text-align:left;
+          vertical-align: left;
+          horizontal-align: middle;
+          border: 1px solid yellow;
+          margin: 0 auto;
+          
         a {
           color: #fff;
-          padding: 20px;
-          display: inline;
+          height: 100%;
+          padding: 23.5px;
+          border: 1px solid white;
+          text-align:left;
+          vertical-align: middle;
+          horizontal-align: middle;
+          display: inline-flex;
+  justify-content: center;
+          
+  // align-items: ;
+  // flex: 0 0 10px;
         }
   
         .activated {
