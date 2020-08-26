@@ -307,11 +307,17 @@ export class ProductDetailsComponent implements OnInit {
 
 
   sendEmailToOwner(formdata: FormData) {
-    this._data.sendEmailToOwner(formdata).subscribe(data => console.log(data));
+    this._data.sendEmailToOwner(formdata).subscribe(res => {
+      console.log(res)
+      this._snackBar.open(res, "", { duration: 4000 });
+    });
   }
 
   sendMessageToOwner(formdata: FormData) {
-    this._data.sendMessageToOwner(formdata).subscribe(data => console.log(data));
+    this._data.sendMessageToOwner(formdata).subscribe(res => {
+      console.log(res)
+      this._snackBar.open(res, "", { duration: 4000 });
+    });
   }
 
   // takes the error and then displays a response to the user or only logs the error on the console (depending on if the error is useful for the user)

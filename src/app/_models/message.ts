@@ -2,13 +2,14 @@ import { User } from './user';
 
 export interface Message {
     id?: number;
+    chatId?: number;
     subject?: string;
     text?: string;
     sendetAt?: string;
   
     receivedAt?: string;
-    sender: User;
-    receiver: User;
+    sender?: string;
+    receiver?: string;
    
 }
 

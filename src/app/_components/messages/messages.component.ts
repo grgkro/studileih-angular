@@ -91,8 +91,9 @@ isLoggedIn: boolean = false;
 
   // loads all Chats of the logged in user with also the messages of that chat.
   getChats() {
-    this._data.getChats()
+    this._data.getChatsByLoggedInUserPrincipal()
     .subscribe(chats => {
+      console.log("CHAAAAAAAAAAAATS", chats)
       if (chats == null || chats.length === 0) {
         this.userHasNoChats = Promise.resolve(true);
       } else {
@@ -101,10 +102,27 @@ isLoggedIn: boolean = false;
         // we store the chats, which also contain the messages of the chats -> so we don't have to reload them in message-details component with security risk  
         this._update.changeChats(chats);
       }
-
       }
-
       );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
   }
 
   deleteChat(messageId: number) {

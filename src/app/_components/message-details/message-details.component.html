@@ -4,17 +4,11 @@
         [ngClass]="{'isOwnMessageData':isOwnMessage}">
         <span class="sender"
             [ngClass]="{'isOwnSender':isOwnMessage}">
-            Von: {{ chatMessage.sender.name }}
-        </span>
-        <span class="sender isOwnSender" *ngIf="isOwnMessage">      <!-- if we are not the sender of the message, we display the sender's email address. -->
-            {{ chatMessage.sender.email }}
+            Von: {{ chatMessage.sender }}
         </span>
         <span class="sender"
             [ngClass]="{'isOwnSender':isOwnMessage}">
-            An: {{ chatMessage.receiver.name }}
-        </span>
-        <span class="sender" *ngIf="!isOwnMessage">      <!-- if we are not the sender of the message, we display the sender's email address. -->
-            {{ chatMessage.receiver.email }}
+            An: {{ chatMessage.receiver }}
         </span>
         <span class="timestamp" 
             [ngClass] = "{'isOwnTimestamp':isOwnMessage}">

@@ -16,6 +16,7 @@ import { AuthRequest } from './_models/authRequest';
 })
 
 export class DataService {
+  
  
   
   serverPath = 'http://localhost:8090';
@@ -167,24 +168,12 @@ export class DataService {
     return this.http.post(this.serverPath + '/messages/updateMessage', formdata, {responseType: 'text' });
   }
 
-  sendReply(subject: string, messageText: string, sendetAt: string, chatId: number, userId: number) {
-    const formdata: FormData = new FormData();
-    formdata.append('subject', subject);
-    formdata.append('messageText', messageText);
-    formdata.append('sendetAt', sendetAt);
-    formdata.append('chatId', chatId.toString());
-    formdata.append('userId', userId.toString());
-    return this.http.post(this.serverPath + '/messages/sendReply', formdata, {responseType: 'text' });
+  sendReply(message: Message) {
+    return this.http.post(this.serverPath + '/messages/sendReply', message, {responseType: 'text' });
   }
 
-  sendEmailReply(subject: string, messageText: string, sendetAt: string, chatId: number, userId: number) {
-    const formdata: FormData = new FormData();
-    formdata.append('subject', subject);
-    formdata.append('messageText', messageText);
-    formdata.append('sendetAt', sendetAt);
-    formdata.append('chatId', chatId.toString());
-    formdata.append('userId', userId.toString());
-    return this.http.post(this.serverPath + '/messages/sendEmailReply', formdata, {responseType: 'text' });
+  sendEmailReply(message: Message) {
+    return this.http.post(this.serverPath + '/messages/sendEmailReply', message, {responseType: 'text' });
   }
 
   // works, but is not needed anymore
@@ -194,8 +183,16 @@ export class DataService {
   //   )
   // }
 
-  getChats(): Observable<Chat[]> {
+  getChatsByLoggedInUserPrincipal(): Observable<Chat[]> {
     return this.http.get<Chat[]>(this.serverPath + "/chats/")
+  }
+
+  getMessagesByChatId(id: number): Observable<any> {
+    return this.http.get(this.serverPath + '/chats/messagesByChatId/'+ id);   
+  }
+
+  getChatById(id: number): Observable<Chat> {
+    return this.http.get<Chat>(this.serverPath + "/chats/" + id)
   }
 
  
