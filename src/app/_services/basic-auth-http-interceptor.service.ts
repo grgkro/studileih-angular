@@ -33,8 +33,8 @@ export class BasicAuthHttpInterceptorService implements HttpInterceptor {
     }
     return next.handle(authReq).pipe(
       // every failing request will be retried once and if it fails agin, the error will get handled. https://www.youtube.com/watch?v=-G7kStvqgcg
-      retry(1),
-      catchError(this.errorHandler));
+      retry(1))
+      // catchError(this.errorHandler));
   }
 
   errorHandler(error: HttpErrorResponse) {
