@@ -37,7 +37,7 @@ export class UserLoginComponent implements OnInit {
       if (data.status === 200) {
         // first we logout the user
         this._token.signOut(); 
-        this.user = data.body;
+        this.user = this.loginForm.controls.username.value;
         //this logs the user in:
         this._token.saveToken(this.user.token)
         this._token.saveUser(this.user)

@@ -10,6 +10,9 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { Product } from 'src/app/_models/product';
 import { TokenStorageService } from 'src/app/_services/token-storage.service';
 import { AuthenticationService } from 'src/app/_services/authentication.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs/internal/Subject';
 
 export interface Category {
   name: string;
@@ -153,6 +156,7 @@ export class ProductFormComponent implements OnInit {
   selectedCategory: Category;
   hasSelectedCategory: boolean = false;
   timeNow = new Date().toString().split(' ')[4]   // gives us the current time in format hh:mm:ss
+  destroy$: Subject<boolean> = new Subject<boolean>();
 
   addOnBlur = true;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
@@ -167,13 +171,14 @@ export class ProductFormComponent implements OnInit {
     private _token: TokenStorageService,
     private authService: AuthenticationService,
     private _data: DataService,
-    private router: Router) { }
+    private router: Router,
+    private _snackBar: MatSnackBar) { }
 
 
 
   ngOnInit(): void {
 
-    this.user = this._token.getUser();  
+    this.user = this._token.getUser();
     this.checkIfUserIsLoggedIn();
     this.addForm = this.formBuilder.group({            //https://angular.io/guide/reactive-forms
       description: ['', Validators.required],
@@ -195,22 +200,22 @@ export class ProductFormComponent implements OnInit {
     }
   }
 
-loginSuccessfullInChildComp(isLoggedIn: any) {
-  this.isLoggedIn = isLoggedIn;
-  // this.ngOnInit();
-  console.log(isLoggedIn)
-  console.log(`User is ${isLoggedIn }ly logged in now`)
-}
+  loginSuccessfullInChildComp(isLoggedIn: any) {
+    this.isLoggedIn = isLoggedIn;
+    this.ngOnInit();
+    console.log(isLoggedIn)
+    console.log(`User is ${isLoggedIn}ly logged in now`)
+  }
 
   // we check if a token exists and if the token is still valid by accessing the dummy controller method welcome
   checkIfUserIsLoggedIn() {
-    this.authService.welcome().subscribe((response) =>{
-    if (response.status == 200) {
-      this.isLoggedIn = true;
-      console.log("ISnOWlOGGEDiN", this.isLoggedIn)
-    } else {
-      this.isLoggedIn = false
-    }
+    this.authService.welcome().subscribe((response) => {
+      if (response.status == 200) {
+        this.isLoggedIn = true;
+        console.log("ISnOWlOGGEDiN", this.isLoggedIn)
+      } else {
+        this.isLoggedIn = false
+      }
     })
   }
 
@@ -301,7 +306,7 @@ loginSuccessfullInChildComp(isLoggedIn: any) {
   }
 
   onSubmit() {
-   
+
     console.log(this.addForm.value);
 
     var formData: any = new FormData();
@@ -332,27 +337,34 @@ loginSuccessfullInChildComp(isLoggedIn: any) {
     });
 
     if (!this.isEditingActivated) {
- //adds the product
- this._data.addProduct(formData)
- .subscribe((res: any) => {
-   console.log(res);
-   this.router.navigate(['products']);
- }, (err: any) => {
-   console.log(err);
- }
- );
+      //adds the product
+      this._data.addProduct(formData)
+        .subscribe((res: any) => {
+          console.log("REEEEEEEEEEESPONSE:", res)
+          console.log("REEEEEEEEEEESPONSE:", res.body)
+          console.log(res.message);
+          this.showSnackBar(res, "Bearbeiten");
+
+          this.router.navigate(['products']);
+        }, (err: any) => {
+          console.log(err);
+          console.log(err.error);
+          this._snackBar.open(err.error, "", { duration: 2000 });
+        }
+        );
     } else {
-       // updates the product
-    this._data.editProduct(formData)
-    .subscribe((res: any) => {
-      console.log(res);
-      this.router.navigate(['products']);
-    }, (err: any) => {
-      console.log(err);
+      // updates the product
+      this._data.editProduct(formData)
+        .subscribe((res: any) => {
+          console.log(res);
+          this.router.navigate(['products']);
+        }, (err: any) => {
+          console.log(err.error);
+        }
+        );
     }
-    );
-    }
-   
+
+
 
     // we empty the selected Files array after uploading the pictures.
     this.selectedFiles = [];
@@ -364,7 +376,20 @@ loginSuccessfullInChildComp(isLoggedIn: any) {
 
   cancelEditing() {
     // this.router.navigate(['product-details/' + this.product.id]);
-   this.cancelEditingClick.emit(false); //emmiting that the editing is canceled
+    this.cancelEditingClick.emit(false); //emmiting that the editing is canceled
+  }
+
+  showSnackBar(message: string, action: string) {
+    let snackBarRef = this._snackBar.open(message, action, { duration: 2000 });   // die snackbar ist 2 Sek geöffnet
+    snackBarRef.onAction()
+      .pipe(takeUntil(this.destroy$))                                   // We need to unsubscribe from this Observable by hand
+      .subscribe(() => {                                                // Wenn der User in der Snackbar auf "Rückgängig" klickt wird das ausgeführt
+        console.log('The snack-bar action was triggered!');
+        console.log("Produkt bearbeiten ...")
+        // this.router.navigate(['/product-details/{{ product.id }}']);
+        
+      });
+
   }
 }
 
