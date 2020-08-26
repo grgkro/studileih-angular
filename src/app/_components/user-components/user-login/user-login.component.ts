@@ -4,6 +4,7 @@ import { TokenStorageService } from '../../../_services/token-storage.service';
 import { AuthenticationService } from '../../../_services/authentication.service';
 import { AuthRequest } from '../../../_models/authRequest';
 import { User } from 'src/app/_models/user';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-user-login',
@@ -15,13 +16,12 @@ export class UserLoginComponent implements OnInit {
 
   loginForm: FormGroup;
   invalidLogin: boolean = false;
-  response: any;
   authRequest: AuthRequest;
   user: User;
 
   constructor(private formBuilder: FormBuilder,
     private _token: TokenStorageService,
-    private _auth: AuthenticationService) { }
+    private _auth: AuthenticationService, private _snackBar: MatSnackBar) { }
 
 
   onSubmit() {
@@ -46,13 +46,19 @@ export class UserLoginComponent implements OnInit {
         this.isLoggedIn.emit(true);
         this.accessAPI()
       } 
+    },
+    (error) => {
+      console.log(error)
+      console.log(error.error)
+      this._snackBar.open(error.error, "", { duration: 2000 });
     });
   }
 
   accessAPI() {
 this._auth.welcome().subscribe((response) =>{
   if (response.status === 200) {
-    this.response = response.body.response;
+    // this.response = response.body.response;
+    this._snackBar.open(response.body.response, "", { duration: 2000 });
   }  
   })
 }

@@ -11,6 +11,7 @@ import { Subject } from 'rxjs';
 import { AuthenticationService } from 'src/app/_services/authentication.service';
 import { User } from 'src/app/_models/user';
 import { TokenStorageService } from 'src/app/_services/token-storage.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -25,7 +26,8 @@ export class AddUserComponent implements OnInit {
     private _auth: AuthenticationService,
     private _token: TokenStorageService,
     private dataService: DataService,
-    private _update: UpdateService) { }
+    private _update: UpdateService,
+    private _snackBar: MatSnackBar) { }
 
   addForm: FormGroup;
   
@@ -157,17 +159,20 @@ export class AddUserComponent implements OnInit {
               this.accessAPI()
             }
           } )
-         
         } 
       },
-      (error) => console.log(error)
+      (error) => {
+        console.log(error)
+        console.log(error.error)
+        this._snackBar.open(error.error, "", { duration: 2000 });
+      }
     );
   }
 
   accessAPI() {
     this._auth.welcome().subscribe((response) =>{
       if (response.status === 200) {
-        this.response = response.body.response;
+        this._snackBar.open(response.body.response, "", { duration: 2000 });
       }  
       })
     }
