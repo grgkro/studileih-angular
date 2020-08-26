@@ -13,6 +13,7 @@ export class AuthenticationService {
   constructor(private http: HttpClient) { }
 
   login(authRequest: AuthRequest): Observable<any> {
+    console.log(authRequest)
     return this.http.post(serverPath + 'authenticate', authRequest, { observe: 'response' });
   }
 

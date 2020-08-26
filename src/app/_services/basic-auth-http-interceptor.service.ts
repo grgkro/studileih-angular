@@ -12,7 +12,7 @@ import { catchError, retry } from 'rxjs/operators';
 })
 export class BasicAuthHttpInterceptorService implements HttpInterceptor {
 
-  responseMessage: string = 'jvjhvhjhj';
+  responseMessage: string = '';
 
   constructor(private token: TokenStorageService) { }
 
