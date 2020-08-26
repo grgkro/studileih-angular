@@ -341,9 +341,9 @@ export class ProductFormComponent implements OnInit {
       this._data.addProduct(formData)
         .subscribe((res: any) => {
           console.log("REEEEEEEEEEESPONSE:", res)
-          console.log("REEEEEEEEEEESPONSE:", res.body)
-          console.log(res.message);
-          this.showSnackBar(res, "Bearbeiten");
+          console.log("REEEEEEEEEEESPONSE:", res.productId)
+          console.log(res.response);
+          this.showSnackBarAddProduct(res.response, "Ansehen", res.productId);
 
           this.router.navigate(['products']);
         }, (err: any) => {
@@ -356,9 +356,12 @@ export class ProductFormComponent implements OnInit {
       // updates the product
       this._data.editProduct(formData)
         .subscribe((res: any) => {
-          console.log(res);
+          //a 200 response is given back as 'text' so we can just give that out in the snackbar. an error comes back as an object, so we have to take err.error
+          this._snackBar.open(res, "", { duration: 2000 });
           this.router.navigate(['products']);
         }, (err: any) => {
+          console.log(err)
+          this._snackBar.open(err.error, "", { duration: 2000 });
           console.log(err.error);
         }
         );
@@ -379,14 +382,14 @@ export class ProductFormComponent implements OnInit {
     this.cancelEditingClick.emit(false); //emmiting that the editing is canceled
   }
 
-  showSnackBar(message: string, action: string) {
+  showSnackBarAddProduct(message: string, action: string, productId: number) {
     let snackBarRef = this._snackBar.open(message, action, { duration: 2000 });   // die snackbar ist 2 Sek geöffnet
     snackBarRef.onAction()
       .pipe(takeUntil(this.destroy$))                                   // We need to unsubscribe from this Observable by hand
       .subscribe(() => {                                                // Wenn der User in der Snackbar auf "Rückgängig" klickt wird das ausgeführt
         console.log('The snack-bar action was triggered!');
         console.log("Produkt bearbeiten ...")
-        // this.router.navigate(['/product-details/{{ product.id }}']);
+        this.router.navigate(['/product-details/' + productId]);
         
       });
 

@@ -56,7 +56,7 @@ export class DataService {
 
   addProduct(formData: any) : Observable<any> {
     return this.http.post(this.productsPath,
-      formData, { responseType: 'text' })
+      formData)
   }
 
   editProduct(formData: any) : Observable<any> {
