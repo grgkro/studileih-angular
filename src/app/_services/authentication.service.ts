@@ -3,7 +3,7 @@ import { AuthRequest } from '../_models/authRequest';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-const serverPath = 'http://localhost:8090/';
+const serverPath = 'https://studileih-heroku.herokuapp.com/';
 
 @Injectable({
   providedIn: 'root'

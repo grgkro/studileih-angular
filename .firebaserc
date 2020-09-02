@@ -7,5 +7,8 @@
         ]
       }
     }
+  },
+  "projects": {
+    "prod": "studileih-ceb70"
   }
 }

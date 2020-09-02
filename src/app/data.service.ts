@@ -19,10 +19,10 @@ export class DataService {
   
  
   
-  serverPath = 'http://localhost:8090';
-  productsPath = 'http://localhost:8090/products';
-  imagesPath = 'http://localhost:8090/images';
-  usersPath = 'http://localhost:8090/users';
+  serverPath = 'https://studileih-heroku.herokuapp.com';
+  productsPath = 'https://studileih-heroku.herokuapp.com/products';
+  imagesPath = 'https://studileih-heroku.herokuapp.com/images';
+  usersPath = 'https://studileih-heroku.herokuapp.com/users';
   // usersPath = 'Studileih-env.eba-egt6g3pv.eu-central-1.elasticbeanstalk.com/users'
   
 

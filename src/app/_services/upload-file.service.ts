@@ -12,7 +12,7 @@ export class UploadFileService {
     return this.http.get(imageUrl, { responseType: 'blob' });
   }
 
-  serverPath = 'http://localhost:8090';
+  serverPath = 'https://studileih-heroku.herokuapp.com';
  
   constructor(private http: HttpClient) { }
  
