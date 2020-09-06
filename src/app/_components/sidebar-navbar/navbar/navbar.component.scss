@@ -122,11 +122,7 @@
 //   }
 //   }
   
-@import url('https://fonts.googleapis.com/css?family=Roboto');
 
-body{
-	font-family: 'Roboto', sans-serif;
-}
 * {
 	margin: 0;
 	padding: 0;
@@ -140,11 +136,21 @@ i {
 	color: #fff;
 }
 .navbar-mainbg{
-	background-color: #5161ce;
+	background-color: #2d2e2e;
 	padding: 0px;
 }
+// .btn {
+// 	float: right;
+// 	margin-left:auto; margin-right:0;
+// }
+.navbar-toggler {
+	padding: 20px;
+	// margin: 0 300px 0 0;
+	font-size: 30px;
+	// margin-left:auto; margin-right:0;
+}
 #navbarSupportedContent{
-	overflow: hidden;
+	overflow: visible;
 	position: relative;
 }
 #navbarSupportedContent ul{
@@ -169,8 +175,8 @@ i {
     position: relative;
 }
 #navbarSupportedContent>ul>li.active>a{
-	color: #5161ce;
-	background-color: transparent;
+	color: #2d2e2e;
+	// background-color: transparent;
 	transition: all 0.7s;
 }
 #navbarSupportedContent a:not(:only-child):after {
@@ -237,7 +243,7 @@ i {
 
 
 
-@media (max-width: 991px){
+
 	#navbarSupportedContent ul li a{
 		padding: 12px 30px;
 	}
@@ -267,4 +273,3 @@ i {
 		bottom: -25px;
 		left: -25px;
 	}
-}

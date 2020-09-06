@@ -8,7 +8,7 @@ export class ApplicationStateService {
   private isMobileResolution: boolean;
 
   constructor() {
-    if (window.innerWidth < 300) {
+    if (window.innerWidth < 415) {   // ab <415 passen nicht mehr alle menü punkte in die navbar (zb iPhone X)
       this.isMobileResolution = true;
     } else {
       this.isMobileResolution = false;
