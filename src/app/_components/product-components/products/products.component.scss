@@ -194,6 +194,14 @@ a:hover .cardText {
   border-radius: 5px;
 }
 
+@media (max-width: 768px) {
+  .section-title {
+    position:relative; 
+    top:+18px;         // damit kann h2 näher an die Linie nach oben geschoben werden (-10px relative zu der Position, wo es sonst aufgetaucht wär.)
+  }
+  
+}
+
 // -------- ---------------------------------------------------------
 
 img[src^="productImagesMap"] {

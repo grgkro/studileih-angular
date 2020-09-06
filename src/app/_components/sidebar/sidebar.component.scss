@@ -1,4 +1,17 @@
+
 @media (min-width: 768px) {
+  .parent {
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    margin: 0 auto;
+    // border: 2px solid pink;
+    // width: 100vw !important;
+//     position:absolute !important;
+// left:0 !important;
+// right:0 !important;
+  }
+
 nav {
   background: #2d2e2e;
   height: 100%;
@@ -11,7 +24,7 @@ nav {
     li {
       a {
         color: #fff;
-        padding: 20px;
+        padding: 23px;
         display: block;
       }
 
@@ -35,11 +48,31 @@ nav {
 }
 
 @media (max-width: 768px) {
+  .parent {
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    margin: 0 auto;
+    // border: 2px solid pink;
+    // width: 100vw !important;
+//     position:absolute !important;
+// left:0 !important;
+// right:0 !important;
+  }
+
+  // .child {
+  //   width: 100vw !important;
+  //   display: flex;
+  //   justify-content: center;
+  // }
+
   nav {
     background: #2d2e2e;
     height: 100%;
-    border: 1px solid red;
+    width: 100%;
+    // border: 1px solid red;
     margin: 0 auto;
+    text-align: center;
     
   
     ul {
@@ -48,8 +81,8 @@ nav {
           vertical-align: middle;
           text-align: center;
           horizontal-align: middle;
-          border: 2px solid green;
-          height: 70px;
+          // border: 2px solid green;
+          // height: 70px;
           width: 70px;
           margin: 0 auto;
           
@@ -59,14 +92,14 @@ nav {
         text-align:left;
           vertical-align: left;
           horizontal-align: middle;
-          border: 1px solid yellow;
+          // border: 1px solid yellow;
           margin: 0 auto;
           
         a {
           color: #fff;
           height: 100%;
           padding: 23.5px;
-          border: 1px solid white;
+          // border: 1px solid white;
           text-align:left;
           vertical-align: middle;
           horizontal-align: middle;
