@@ -55,6 +55,7 @@ $(window).on('resize', function(){
   setTimeout(function(){ this.test(); }, 500);
 });
 $(".navbar-toggler").click(function(){
+  alert("toggled")
   setTimeout(function(){ this.test(); });
 });
  }

@@ -1,5 +1,5 @@
 
-@media (min-width: 768px) {
+@media (min-width: 770px) {
   .parent {
     display: flex;
     justify-content: center;
@@ -47,7 +47,8 @@ nav {
     border-radius: 10px !important;
 }
 
-@media (max-width: 768px) {
+@media ( max-width: 769px) {
+// @media (min-width: 410px, max-width: 768px) {
   .parent {
     display: flex;
     justify-content: center;
@@ -73,18 +74,20 @@ nav {
     // border: 1px solid red;
     margin: 0 auto;
     text-align: center;
-    
+  
   
     ul {
+      position:relative; 
+      left:-1.3rem;  
       list-style-type: none;
-      text-align:middle;
-          vertical-align: middle;
-          text-align: center;
-          horizontal-align: middle;
+      // text-align:middle;
+      //     vertical-align: middle;
+      //     text-align: center;
+      //     horizontal-align: middle;
           // border: 2px solid green;
           // height: 70px;
-          width: 70px;
-          margin: 0 auto;
+          // width: 70px;
+          // margin: 0 auto;
           
          
   
