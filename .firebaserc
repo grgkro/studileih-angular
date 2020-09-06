@@ -9,6 +9,7 @@
     }
   },
   "projects": {
-    "prod": "studileih-ceb70"
+    "prod": "studileih-ceb70",
+    "studileih": "studileih-ceb70"
   }
 }

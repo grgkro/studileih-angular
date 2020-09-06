@@ -3,7 +3,9 @@ import { HttpClient, HttpRequest, HttpEvent } from '@angular/common/http';
 import { Observable } from 'rxjs/internal/Observable';
 import { DataService } from '../data.service';
 
- 
+const serverPath = 'http://localhost:8090';
+// const serverPath = 'https://studileih-heroku.herokuapp.com'; 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -12,7 +14,7 @@ export class UploadFileService {
     return this.http.get(imageUrl, { responseType: 'blob' });
   }
 
-  serverPath = 'https://studileih-heroku.herokuapp.com';
+  
  
   constructor(private http: HttpClient) { }
  
@@ -29,12 +31,12 @@ export class UploadFileService {
     }
     formdata.append('imgType', imgType);
     
-    return this.http.post(this.serverPath + '/postImage', formdata, {responseType: 'text' });  //ohne {responseType: 'text' } hat es auch bei Http Status: 200 einen error gegeben (Vom Backend kommt eine Response mit Text statt JSON im Body)  
+    return this.http.post(serverPath + '/postImage', formdata, {responseType: 'text' });  //ohne {responseType: 'text' } hat es auch bei Http Status: 200 einen error gegeben (Vom Backend kommt eine Response mit Text statt JSON im Body)  
     }
   
   // loads profilePic of user -> it's a post request, because we have to post the userId to Spring.
   getUserPic(userId: number): Observable<Blob> {
-    return this.http.post(this.serverPath + '/loadProfilePicByUserId', userId, { responseType: 'blob' } );
+    return this.http.post(serverPath + '/loadProfilePicByUserId', userId, { responseType: 'blob' } );
   }
 
   /* // loads profilePic of user -> Spring returns a fake userDto with the base64code as groupName

@@ -52,6 +52,7 @@ import { LoginOverviewComponent } from './_components/login-overview/login-overv
 import { LoginPopupComponent } from './_components/user-components/login-popup/login-popup.component';
 import { LoginRegistrationAccordionComponent } from './_components/login/login-registration-accordion/login-registration-accordion.component';
 import { NavbarComponent } from './_components/sidebar-navbar/navbar/navbar.component';
+import { AdminComponent } from './_components/admin/admin/admin.component';
 
 
 @NgModule({
@@ -78,7 +79,8 @@ import { NavbarComponent } from './_components/sidebar-navbar/navbar/navbar.comp
     LoginOverviewComponent,
     LoginPopupComponent,
     LoginRegistrationAccordionComponent,
-    NavbarComponent
+    NavbarComponent,
+    AdminComponent
   ],
   imports: [
     BrowserModule,
