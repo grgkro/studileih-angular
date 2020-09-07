@@ -11,9 +11,9 @@ import { Message } from './_models/message';
 import { Chat } from './_models/chat';
 import { AuthRequest } from './_models/authRequest';
 
-const serverPath = 'http://localhost:8090';
+// const serverPath = 'http://localhost:8090';
+const serverPath = 'http://studileih1.eu-central-1.elasticbeanstalk.com';
 // const serverPath = 'https://studileih-heroku.herokuapp.com';
-// const serverPath = 'Studileih-env.eba-egt6g3pv.eu-central-1.elasticbeanstalk.com'
 
 @Injectable({
   providedIn: 'root'
