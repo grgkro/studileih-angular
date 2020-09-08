@@ -29,16 +29,41 @@
 //   background-color: red !important; 
 //   font-size: 10px !important; } 
 
-// .row {
-//     border: 1px solid red;
-//   }
-//   .col {
-//     border: 1px solid #000;
-//   }
+.row {
+    border: 1px solid red;
+  }
+  .col {
+    border: 1px solid #000;
+  }
 
-  @media (max-width: 575px) {
+  @media (max-width: 768px) {
+      .showHide  { display: none; }
+  }
+  
+
+  @media (max-width: 567px) {
     .break-text {
         max-width: 100px;
+    }
+
+    .resizeMatSelect {
+      min-width: 130px;
+      align-items: left;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .break-text {
+        max-width: 100px;
+    }
+
+    .resizeMatSelect {
+      min-width: 200px;
+      align-items: right;
+      
+      // position: relative;
+      // left: -1rem;
+      // max-width: 100px;
     }
   }
 
