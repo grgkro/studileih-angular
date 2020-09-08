@@ -96,38 +96,66 @@ a{
   font-style: italic;
 }
 
-@media (min-width: 992px) {
-.cardImage {
-// height: 200px; 
-// width: 315px;
-border-radius: 15px 15px 15px 15px;
- border: 3.5px solid rgb(0, 168, 255, 0.5); 
-   box-shadow: 4px 4px 4px 0 rgba(0,0,0, 0.3);
-}
-}
+.product {
+  // height: 200px; 
+  // width: 315px;
+  border-radius: 15px 15px 15px 15px;
+  padding: 10px;
+  height: 18rem;
+  //  border: 3.5px solid rgb(0, 168, 255, 0.5); 
+    //  box-shadow: 4px 4px 4px 0 rgba(0,0,0, 0.3);
+  }
+  
+  .cardImage {
+    // height: 200px; 
+    // width: 315px;
+    border-radius: 15px 15px 15px 15px;
+    //  border: 3.5px solid rgb(0, 168, 255, 0.5); 
+      //  box-shadow: 4px 4px 4px 0 rgba(0,0,0, 0.3);
+    }
 
-// div {
-//   border: 1px solid black;
+// @media (min-width: 992px) {
+// .product {
+// // height: 200px; 
+// // width: 315px;
+// border-radius: 15px 15px 15px 15px;
+// padding: 10px;
+// height: 18rem;
+// //  border: 3.5px solid rgb(0, 168, 255, 0.5); 
+//   //  box-shadow: 4px 4px 4px 0 rgba(0,0,0, 0.3);
 // }
-@media (max-width: 991px) {
-  .cardImage {
-    // height: 200px; 
-    // width: 100%;
-    border-radius: 15px 15px 15px 15px;
-     border: 3.5px solid rgb(0, 168, 255, 0.5); 
-       box-shadow: 4px 4px 4px 0 rgba(0,0,0, 0.3);
-    }
-}
 
-@media (max-width: 857px) {
-  .cardImage {
-    // height: 200px; 
-    // width: 100%;
-    border-radius: 15px 15px 15px 15px;
-     border: 3.5px solid rgb(0, 168, 255, 0.5); 
-       box-shadow: 4px 4px 4px 0 rgba(0,0,0, 0.3);
-    }
-}
+// .cardImage {
+//   // height: 200px; 
+//   // width: 315px;
+//   border-radius: 15px 15px 15px 15px;
+//   //  border: 3.5px solid rgb(0, 168, 255, 0.5); 
+//     //  box-shadow: 4px 4px 4px 0 rgba(0,0,0, 0.3);
+//   }
+// }
+
+// // div {
+// //   border: 1px solid black;
+// // }
+// @media (max-width: 991px) {
+//   .cardImage {
+//     // height: 200px; 
+//     // width: 100%;
+//     border-radius: 15px 15px 15px 15px;
+//      border: 3.5px solid rgb(0, 168, 255, 0.5); 
+//        box-shadow: 4px 4px 4px 0 rgba(0,0,0, 0.3);
+//     }
+// }
+
+// @media (max-width: 857px) {
+//   .cardImage {
+//     // height: 200px; 
+//     // width: 100%;
+//     border-radius: 15px 15px 15px 15px;
+//      border: 3.5px solid rgb(0, 168, 255, 0.5); 
+//        box-shadow: 4px 4px 4px 0 rgba(0,0,0, 0.3);
+//     }
+// }
 
 .cardContent {
   height: 7rem;

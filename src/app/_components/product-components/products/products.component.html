@@ -120,7 +120,7 @@
     <!-- <div [@listStagger]="dormProducts" class="myCards" > -->
     <!--listStagger ist eine spezielle Animation, bei der die Liste nicht auf einmal dargestellt wird, sondern zeitlich verzögert auftaucht-->
     <div *ngFor="let product of dormProducts; let i = index">
-      <article class="product">
+      <article class="product shadow">
         <!-- wenn die produktcard irgendwo angeklickt wird, wird man weitergeleitet per routerLink zur details component.-->
         <a routerLink="/product-details/{{ product.id }}">
 
@@ -184,7 +184,7 @@
     <!-- <div [@listStagger]="productsWithoutDormProducts" class=" row myCards" style=" justify-content: left;"> -->
     <!--listStagger ist eine spezielle Animation, bei der die Liste nicht auf einmal dargestellt wird, sondern zeitlich verzögert auftaucht-->
     <div *ngFor="let product of productsWithoutDormProducts; let i = index">
-      <article class="product">
+      <article class="product shadow">
         <!-- das 1., 2. und 3. Produkt in jeder Reihe soll padding bekommen, die 4. (= jeweils letztes Produkt in jeder Reihe) soll kein padding bekommen, da der rechte Bildrand mit dem containerrand aligned sein soll. -->
         <!-- <div class="imagePaddingLeft" [ngClass]="{'imagePaddingRight': ((i+1) % 3 != 0) || (i == 0) }"> -->
         <!-- wenn die produktcard irgendwo angeklickt wird, wird man weitergeleitet per routerLink zur details component.-->
