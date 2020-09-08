@@ -136,82 +136,80 @@
 
     <br>
 
-    <div class="row">
-      <div class="col">
-        <mat-expansion-panel>
-          <mat-expansion-panel-header>
-            <mat-panel-title style="text-align: center; display: block;
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header class="increasePanelHeader">
+        <mat-panel-title style="text-align: center; display: block;
                 margin-left: auto;
-                margin-right: auto;">
-              Zeitraum hinzufügen, an dem das Produkt bevorzugt ausgeliehen werden kann (optional):
-            </mat-panel-title>
+                margin-right: auto;"
+                >
+          Zeitraum hinzufügen, an dem das Produkt bevorzugt ausgeliehen werden kann (optional):
+        </mat-panel-title>
 
-          </mat-expansion-panel-header>
+      </mat-expansion-panel-header>
 
-          <p>Du kannst hier einen Zeitraum angeben, von wann bis wann das Produkt bevorzugt
-            ausgeliehen werden kann (Bedeutet nicht, dass es auch über die gesamte Dauer ausgeliehen werden muss).
-            Oder einfach freilassen, falls der Zeitraum egal ist:</p>
-          <div class="row justify-content-between">
-            <div class="col-3">
-              <mat-form-field appearance="fill">
-                <mat-label style="font-size: 17px;">Verfügbar von bis:</mat-label>
-                <mat-date-range-input [rangePicker]="picker">
-                  <input matStartDate matInput placeholder="Startdatum" formControlName="startDate">
-                  <input matEndDate matInput placeholder="Enddatum" formControlName="endDate">
-                </mat-date-range-input>
-                <mat-datepicker-toggle matSuffix [for]="picker">
-                </mat-datepicker-toggle>
-                <mat-date-range-picker #picker></mat-date-range-picker>
-              </mat-form-field>
-            </div>
-            <div class="col-3">
-              <div class="md-form" style="position: relative; top: -0.4rem;">
-                <input type="time" id="startTimeInput" class="form-control" placeholder="" mdbInput
-                  formControlName="pickUpTime" />
-                <label for="startTimeInput">Abholbar ab: </label>
-              </div>
-            </div>
-            <div class="col-3">
-              <div class="md-form" style="position: relative; top: -0.4rem;">
-                <input type="time" id="returnTimeInput" class="form-control" placeholder="13:00" mdbInput
-                  formControlName="returnTime" />
-                <label for="returnTimeInput">Rückgabe bis: </label>
-              </div>
-            </div>
-
-
+      <p>Du kannst hier einen Zeitraum angeben, von wann bis wann das Produkt bevorzugt
+        ausgeliehen werden kann (Bedeutet nicht, dass es auch über die gesamte Dauer ausgeliehen werden muss).
+        Oder einfach freilassen, falls der Zeitraum egal ist:</p>
+      <div class="row justify-content-between">
+        <div class="col-3">
+          <mat-form-field appearance="fill">
+            <mat-label style="font-size: 17px;">Verfügbar von bis:</mat-label>
+            <mat-date-range-input [rangePicker]="picker">
+              <input matStartDate matInput placeholder="Startdatum" formControlName="startDate">
+              <input matEndDate matInput placeholder="Enddatum" formControlName="endDate">
+            </mat-date-range-input>
+            <mat-datepicker-toggle matSuffix [for]="picker">
+            </mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+          </mat-form-field>
+        </div>
+        <div class="col-3">
+          <div class="md-form" style="position: relative; top: -0.4rem;">
+            <input type="time" id="startTimeInput" class="form-control" placeholder="" mdbInput
+              formControlName="pickUpTime" />
+            <label for="startTimeInput">Abholbar ab: </label>
           </div>
-        </mat-expansion-panel>
+        </div>
+        <div class="col-3">
+          <div class="md-form" style="position: relative; top: -0.4rem;">
+            <input type="time" id="returnTimeInput" class="form-control" placeholder="13:00" mdbInput
+              formControlName="returnTime" />
+            <label for="returnTimeInput">Rückgabe bis: </label>
+          </div>
+        </div>
+
 
       </div>
-    </div>
-
+    </mat-expansion-panel>
 
   </mat-accordion>
 
   <br>
 
-  <div class="row justify-content-space-around" style="display: flex;
+  <!-- <div class="row justify-content-space-around" style="display: flex;
         justify-content: space-between; margin: 2rem 15rem;">
-    <div class="col-4">
-      <button *ngIf="!isLoggedIn" mdbBtn type="button" size="lg" class="waves-light" mdbWavesEffect
-        class="btn btn-success" data-toggle="modal" data-target="#loginRegisterModal"
-        >Speichern (Login)</button>
+    <div class="col-4"> -->
+  <div style="text-align: center; ">
+    <button style="width: 200px;" *ngIf="!isLoggedIn" mdbBtn type="button" size="lg" class="waves-light btn btn-success" mdbWavesEffect
+     data-toggle="modal" data-target="#loginRegisterModal">Speichern (Login)</button>
 
-      <button *ngIf="isLoggedIn" mdbBtn type="submit" size="lg" class="waves-light" mdbWavesEffect
-        class="btn btn-success" [disabled]="!addForm.valid">Speichern</button>
-    </div>
-    <div class="col-4" *ngIf="!isEditingActivated">
-      <a mdbBtn color="danger" size="lg" class="waves-light" mdbWavesEffect data-toggle="modal"
+    <button style="width: 200px;" *ngIf="isLoggedIn" mdbBtn type="submit" size="lg" mdbWavesEffect class="btn btn-success waves-light"
+      [disabled]="!addForm.valid">Speichern</button>
+    <!-- </div> -->
+    <div  *ngIf="!isEditingActivated">
+      <a style="width: 200px;" mdbBtn color="danger" size="lg" class="waves-light" mdbWavesEffect data-toggle="modal"
         data-target="#cancelAddingProductModal">Abbrechen</a>
     </div>
-    <div class="col-4" *ngIf="isEditingActivated">
-      <a mdbBtn color="danger" size="lg" class="waves-light" mdbWavesEffect data-toggle="modal"
+    <div *ngIf="isEditingActivated">
+      <a style="width: 200px;" mdbBtn color="danger" size="lg" class="waves-light" mdbWavesEffect data-toggle="modal"
         data-target="#cancelEditingProductModal">Abbrechen</a>
     </div>
-
-
   </div>
+
+
+
+  <!-- </div> -->
 </form>
 
 <!-- Modal #loginRegisterModal-->

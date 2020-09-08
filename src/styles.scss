@@ -43,6 +43,10 @@ body {
     display:inline-block;
 }
 
+.container {
+    border: 1px solid green;
+}
+
 // this part works and can not be changed anymore!!!
 @media (min-width: 768px) {
     #container {
