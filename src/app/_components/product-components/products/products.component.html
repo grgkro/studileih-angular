@@ -116,7 +116,7 @@
   </div> -->
   <!-- </div> -->
 
-  <div class="products-center">
+  <div class="products-center dormProducts">
     <!-- <div [@listStagger]="dormProducts" class="myCards" > -->
     <!--listStagger ist eine spezielle Animation, bei der die Liste nicht auf einmal dargestellt wird, sondern zeitlich verzögert auftaucht-->
     <div *ngFor="let product of dormProducts; let i = index">
@@ -174,11 +174,13 @@
     </div> -->
   </div>
 
-  <br>
-  <br>
-  <br>
+  <div class="row justify-content-md-center ">
+    <div class="col">
+      <br>
+      </div>
+      </div>
 
-  <div class="products-center">
+  <div class="products-center otherProducts" >
     <!-- <div [@listStagger]="productsWithoutDormProducts" class=" row myCards" style=" justify-content: left;"> -->
     <!--listStagger ist eine spezielle Animation, bei der die Liste nicht auf einmal dargestellt wird, sondern zeitlich verzögert auftaucht-->
     <div *ngFor="let product of productsWithoutDormProducts; let i = index">
