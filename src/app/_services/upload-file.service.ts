@@ -3,8 +3,8 @@ import { HttpClient, HttpRequest, HttpEvent } from '@angular/common/http';
 import { Observable } from 'rxjs/internal/Observable';
 import { DataService } from '../data.service';
 
-const serverPath = 'http://localhost:5000';
-// const serverPath = 'https://studileih1.eu-central-1.elasticbeanstalk.com';
+// const serverPath = 'http://localhost:5000';
+const serverPath = 'https://studileih1.eu-central-1.elasticbeanstalk.com';
 // const serverPath = 'https://studileih-heroku.herokuapp.com'; 
 
 @Injectable({
