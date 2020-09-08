@@ -1,3 +1,19 @@
+:root {
+    --primaryColor: #f09d51;
+    --mainWhite: #fff;
+    --mainBlack: #2d2e2e;
+    --mainBlue: #00A8FF;
+    --mainSpacing: 0.1rem;
+    --mainTransition: all 0.3s linear;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+
 body {
     margin: 0;
     // font-family:'Montserrat' !important;  //this doesnt work, it seems like it gets overwritten by bootstrap
@@ -52,7 +68,7 @@ body {
                         font-size: 1.5em;
                         text-decoration: none;
                         font-weight: bold;
-                        color:#00A8FF;
+                        color: var(--mainBlue);
                     }
             
                     ul {

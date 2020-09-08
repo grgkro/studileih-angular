@@ -136,7 +136,7 @@ i {
 	color: #fff;
 }
 .navbar-mainbg{
-	background-color: #2d2e2e;
+	background-color: var(--mainBlack);
 	padding: 0px;
 }
 
@@ -179,7 +179,7 @@ i {
     position: relative;
 }
 #navbarSupportedContent>ul>li.active>a{
-	color: #2d2e2e;
+	color: var(--mainBlack);
 	// background-color: transparent;
 	transition: all 0.7s;
 }

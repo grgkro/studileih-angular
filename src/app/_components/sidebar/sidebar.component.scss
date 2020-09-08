@@ -13,7 +13,7 @@
   }
 
 nav {
-  background: #2d2e2e;
+  background: var(--mainBlack);
   height: 100%;
 
   ul {
@@ -29,7 +29,7 @@ nav {
       }
 
       .activated {
-        background-color: #00a8ff;
+        background-color: var(--mainBlue);
       }
     }
 
@@ -68,7 +68,7 @@ nav {
   // }
 
   nav {
-    background: #2d2e2e;
+    background: var(--mainBlack);
     height: 100%;
     width: 100%;
     // border: 1px solid red;
@@ -99,7 +99,7 @@ nav {
           margin: 0 auto;
           
         a {
-          color: #fff;
+          color: var(--mainWhite);
           height: 100%;
           padding: 23.5px;
           // border: 1px solid white;
@@ -114,7 +114,7 @@ nav {
         }
   
         .activated {
-          background-color: #00a8ff;
+          background-color: var(--mainBlue);
         }
       }
   

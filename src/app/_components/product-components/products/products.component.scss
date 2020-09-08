@@ -1,7 +1,7 @@
 .line{
   width: 112px;
   height: 1px;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid var(--mainBlack);
   position: absolute;
   }
 
@@ -69,7 +69,7 @@ a{
   font-weight:300;
   // text-decoration: none solid rgb(0, 0, 0);
   font-size: 1.5rem;
-  color: black;
+  color: var(--mainBlack);
 }
 
 .cardTitle {
@@ -96,12 +96,37 @@ a{
   font-style: italic;
 }
 
+@media (min-width: 992px) {
 .cardImage {
-height: 200px; 
-width: 315px;
-border-radius: 25px 25px 25px 25px;
- border: 1.5px solid rgb(0, 168, 255, 0.5); 
-   box-shadow: 12px 12px 12px 0 rgba(0,0,0, 0.3);
+// height: 200px; 
+// width: 315px;
+border-radius: 15px 15px 15px 15px;
+ border: 3.5px solid rgb(0, 168, 255, 0.5); 
+   box-shadow: 4px 4px 4px 0 rgba(0,0,0, 0.3);
+}
+}
+
+// div {
+//   border: 1px solid black;
+// }
+@media (max-width: 991px) {
+  .cardImage {
+    // height: 200px; 
+    // width: 100%;
+    border-radius: 15px 15px 15px 15px;
+     border: 3.5px solid rgb(0, 168, 255, 0.5); 
+       box-shadow: 4px 4px 4px 0 rgba(0,0,0, 0.3);
+    }
+}
+
+@media (max-width: 857px) {
+  .cardImage {
+    // height: 200px; 
+    // width: 100%;
+    border-radius: 15px 15px 15px 15px;
+     border: 3.5px solid rgb(0, 168, 255, 0.5); 
+       box-shadow: 4px 4px 4px 0 rgba(0,0,0, 0.3);
+    }
 }
 
 .cardContent {
@@ -194,18 +219,99 @@ a:hover .cardText {
   border-radius: 5px;
 }
 
+@media (max-width: 1050px) {
+  .myCards {
+    justify-content: left; 
+    margin-top: 30px
+  }
+}
+
 @media (max-width: 768px) {
   .section-title {
     position:relative; 
     top:+18px;         // damit kann h2 näher an die Linie nach oben geschoben werden (-10px relative zu der Position, wo es sonst aufgetaucht wär.)
   }
+
+ 
   
 }
 
 // -------- ---------------------------------------------------------
+/* -------------------------------- Products ------------------------- */
 
+.products {
+  padding: 4rem 0;
+}
+
+.products-center {
+  width: 70vw;
+  margin: 0 auto;
+  max-width: 1110px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-column-gap: 1.5rem;
+  grid-row-gap: 2rem;
+  // justify-items: left;
+}
+.img-container {
+  position: relative;
+  overflow: hidden;
+}
+.bag-btn {
+  position: absolute;
+  top: 70%;
+  right: 0;
+  background: var(--primaryColor);
+  border: none;
+  text-transform: uppercase;
+  padding: 0.5rem 0.75rem;
+  letter-spacing: var(--mainSpacing);
+  font-weight: bold;
+  transition: var(--mainTransition);
+  transform: translateX(101%);
+  cursor: pointer;
+}
+.bag-btn:hover {
+  color: var(--mainWhite);
+}
+.fa-shopping-cart {
+  margin-right: 0.5rem;
+}
+.img-container:hover .bag-btn {
+  transform: translateX(0);
+}
+.product {
+  max-width: 354px;
+}
+.product-img {
+  display: block;
+  width: 100%;
+ 
+  height: 12rem;
+  transition: var(--mainTransition);
+}
+.img-container:hover .product-img {
+  opacity: 0.5;
+}
+
+.product h3 {
+  text-transform: capitalize;
+  font-size: 1.1rem;
+  margin-top: 1rem;
+  letter-spacing: var(--mainSpacing);
+  text-align: center;
+}
+
+.product h4 {
+  margin-top: 0.7rem;
+  letter-spacing: var(--mainSpacing);
+  color: var(--primaryColor);
+  text-align: center;
+}
+
+/* -------------------------------- End of Products ------------------------- */
 img[src^="productImagesMap"] {
-  border: 10px solid black;
+  border: 10px solid var(--mainBlack);
 }
 
 // .row {
