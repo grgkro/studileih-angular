@@ -12,7 +12,7 @@ import { Chat } from './_models/chat';
 import { AuthRequest } from './_models/authRequest';
 
 // const serverPath = 'http://localhost:8090';
-const serverPath = 'http://studileih1.eu-central-1.elasticbeanstalk.com';
+const serverPath = 'https://studileih1.eu-central-1.elasticbeanstalk.com';
 // const serverPath = 'https://studileih-heroku.herokuapp.com';
 
 @Injectable({
@@ -127,9 +127,9 @@ export class DataService {
     return this.http.get<User>(serverPath + '/users/dto/' + userId);
   }
 
-  addUser(formData: any): Observable<any> {
-    return this.http.post(serverPath,formData,{ responseType: 'text' })
-  }
+  // addUser(formData: any): Observable<any> {
+  //   return this.http.post(serverPath,formData,{ responseType: 'text' })
+  // }
 
   deleteUser(id: number): Observable<User> {
     return this.http.delete<User>(serverPath + '/users/' + id)

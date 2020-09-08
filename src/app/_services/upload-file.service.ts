@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { DataService } from '../data.service';
 
 // const serverPath = 'http://localhost:8090';
-const serverPath = 'http://studileih1.eu-central-1.elasticbeanstalk.com';
+const serverPath = 'https://studileih1.eu-central-1.elasticbeanstalk.com';
 // const serverPath = 'https://studileih-heroku.herokuapp.com'; 
 
 @Injectable({
