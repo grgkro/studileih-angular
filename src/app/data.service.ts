@@ -12,7 +12,8 @@ import { Chat } from './_models/chat';
 import { AuthRequest } from './_models/authRequest';
 
 // const serverPath = 'http://localhost:5000';
-const serverPath = 'https://studileih1.eu-central-1.elasticbeanstalk.com';
+const serverPath = 'https://api.studileih.de';
+// const serverPath = 'https://studileih1.eu-central-1.elasticbeanstalk.com';
 // const serverPath = 'https://studileih-heroku.herokuapp.com';
 
 @Injectable({
@@ -120,7 +121,7 @@ export class DataService {
   }
 
   getUsersByDorm(): Observable<User[]> {
-    return this.http.get<User[]>(serverPath + '/usersByDorm')
+    return this.http.get<User[]>(serverPath + '/users/usersByDorm')
   }
 
   getUser(userId): Observable<User> {

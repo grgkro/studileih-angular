@@ -4,7 +4,8 @@ import { Observable } from 'rxjs/internal/Observable';
 import { DataService } from '../data.service';
 
 // const serverPath = 'http://localhost:5000';
-const serverPath = 'https://studileih1.eu-central-1.elasticbeanstalk.com';
+const serverPath = 'https://api.studileih.de';
+// const serverPath = 'https://studileih1.eu-central-1.elasticbeanstalk.com';
 // const serverPath = 'https://studileih-heroku.herokuapp.com'; 
 
 @Injectable({

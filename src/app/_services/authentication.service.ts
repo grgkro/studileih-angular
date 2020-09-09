@@ -6,7 +6,8 @@ import { DataService } from '../data.service';
 
 // const serverPath = 'https://studileih-heroku.herokuapp.com';
 // const serverPath = 'http://localhost:5000';
-const serverPath = 'https://studileih1.eu-central-1.elasticbeanstalk.com';
+const serverPath = 'https://api.studileih.de';
+// const serverPath = 'https://studileih1.eu-central-1.elasticbeanstalk.com';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class AuthenticationService {
   }
 
   welcome(): Observable<any> {
-    return this.http.get(serverPath + '/', { observe: 'response', withCredentials: true })
+    return this.http.get(serverPath + '/welcome', { observe: 'response', withCredentials: true })
   }
 
   register(formData: FormData): Observable<any> {
