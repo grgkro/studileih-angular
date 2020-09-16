@@ -37,6 +37,8 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatIconModule} from '@angular/material/icon';
 import {MatExpansionModule} from '@angular/material/expansion';
+// For MDB Navbar
+import { NavbarModule, WavesModule, ButtonsModule } from 'angular-bootstrap-md'
 
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 
@@ -53,6 +55,7 @@ import { LoginPopupComponent } from './_components/user-components/login-popup/l
 import { LoginRegistrationAccordionComponent } from './_components/login/login-registration-accordion/login-registration-accordion.component';
 import { NavbarComponent } from './_components/sidebar-navbar/navbar/navbar.component';
 import { AdminComponent } from './_components/admin/admin/admin.component';
+
 
 
 @NgModule({
@@ -103,6 +106,9 @@ import { AdminComponent } from './_components/admin/admin/admin.component';
     MatChipsModule,
     MatIconModule,
     MatExpansionModule,
+    NavbarModule,
+    WavesModule,
+    ButtonsModule,
     MDBBootstrapModule,
     AgmCoreModule.forRoot({
       apiKey: gmaps_environment.GMAPS_API_KEY // The API KEY belongs to Georg and can't be exposed on GITHUB (Hackers are crazy) 

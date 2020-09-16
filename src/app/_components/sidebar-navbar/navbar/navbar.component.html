@@ -1,42 +1,58 @@
-<nav class="navbar navbar-expand-lg navbar-mainbg">
-    <div class="btn">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <i class="fas fa-bars text-white"></i>
-            </button>  
-    </div>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav ml-auto">
-            <div class="hori-selector"><div class="left"></div><div class="right"></div></div>
-            <li >
-                <a routerLink="user-login" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}"
-                matTooltip="Login" matTooltipPosition="right" matTooltipClass="custom-tooltip">
-                  <i class="material-icons">lock_open</i>
-                </a>
-              </li>
-              <li>
-                <a routerLink="" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}"
-                matTooltip="Home" matTooltipPosition="right" matTooltipClass="custom-tooltip">
-                  <i class="material-icons">house</i>
-                </a>
-              </li>
-              <li>
-                <a routerLink="add-product" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}"
-                matTooltip="Produkt verleihen" matTooltipPosition="right" matTooltipClass="custom-tooltip">
-                  <i class="material-icons">outdoor_grill</i>
-                </a>
-              </li>
-              <li>
-                <a routerLink="users" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}"
-                matTooltip="Benutzer in deinem Wohnheim" matTooltipPosition="right" matTooltipClass="custom-tooltip">
-                  <i class="material-icons">supervised_user_circle</i>
-                </a>
-              </li>
-              <li>
-                <a routerLink="messages" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}"
-                matTooltip="Nachrichten" matTooltipPosition="right" matTooltipClass="custom-tooltip">
-                  <i class="material-icons">chat</i>
-                </a>
-              </li>
-        </ul>
-    </div>
-</nav>
+<!--Navbar-->
+<mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark brown darken-4" [containerInside]="false">
+
+  <!-- Navbar brand -->
+  <mdb-navbar-brand><a class="navbar-brand" href="#">
+    <img src="../../../assets/images/Pfad 3a.svg" class="hide-on-large" style="width: 50px; margin: 20px; ">
+  </a></mdb-navbar-brand>
+
+  <!-- Collapsible content -->
+  <links>
+
+    <!-- Links -->
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item ">
+        <a class="nav-link waves-light biggerLinks" mdbWavesEffect routerLink="user-login" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}">
+          <i class="material-icons center">lock_open</i>  Login / Registrieren <span class="sr-only">(current)</span>
+        </a>
+      </li>
+      <li class="nav-item ">
+        <a class="nav-link waves-light biggerLinks" mdbWavesEffect routerLink="" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}">
+          <i class="material-icons center">home</i> Home <span class="sr-only">(current)</span>
+        </a>
+      </li>
+      <li class="nav-item ">
+        <a class="nav-link waves-light biggerLinks" mdbWavesEffect routerLink="add-product" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}">
+          <i class="material-icons center">outdoor_grill</i> Produkt verleihen <span class="sr-only">(current)</span>
+        </a>
+      </li>
+      <li class="nav-item ">
+        <a class="nav-link waves-light biggerLinks" mdbWavesEffect routerLink="users" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}">
+          <i class="material-icons center">supervised_user_circle</i> Benutzer <span class="sr-only">(current)</span>
+        </a>
+      </li>
+      <li class="nav-item ">
+        <a class="nav-link waves-light biggerLinks" mdbWavesEffect routerLink="messages" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}">
+          <i class="material-icons center">chat</i> Nachrichten <span class="sr-only">(current)</span>
+        </a>
+      </li>
+
+    </ul>
+    <!-- Links -->
+
+    <!-- <ul class="navbar-nav ml-auto nav-flex-icons">
+      <li class="nav-item">
+        <a class="nav-link">1 <mdb-icon fas icon="envelope"></mdb-icon></a>
+      </li>
+      <li class="nav-item avatar " >
+        <a mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light" mdbWavesEffect>
+          <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-2.jpg" alt="" class="img-fluid rounded-circle z-depth-0"></a>
+        
+      </li>
+    </ul> -->
+  </links>
+  <!-- Collapsible content -->
+
+</mdb-navbar>
+<!--/.Navbar-->
+
