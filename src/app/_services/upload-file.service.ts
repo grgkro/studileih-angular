@@ -3,8 +3,8 @@ import { HttpClient, HttpRequest, HttpEvent } from '@angular/common/http';
 import { Observable } from 'rxjs/internal/Observable';
 import { DataService } from '../data.service';
 
-// const serverPath = 'http://localhost:5000';
-const serverPath = 'https://api.studileih.de';
+const serverPath = 'http://localhost:5000';
+// const serverPath = 'https://api.studileih.de';
 // const serverPath = 'https://studileih1.eu-central-1.elasticbeanstalk.com';
 // const serverPath = 'https://studileih-heroku.herokuapp.com'; 
 
@@ -26,10 +26,11 @@ export class UploadFileService {
   pushFileToStorage(file: File, userId: number, productId: number, imgType: string) {
     const formdata: FormData = new FormData();
     formdata.append('file', file);
-    formdata.append('userId', userId.toString());
     // if the file is a userPic, the productId will be null. if (productId ) is true, when productId != null (i dont know why, but if (productId != null) didnt work...)
-    if (productId ) {
-      formdata.append('productId', productId.toString());
+    if (productId) {
+      formdata.append('id', productId.toString());
+    } else {
+      formdata.append('id', userId.toString());
     }
     formdata.append('imgType', imgType);
     
