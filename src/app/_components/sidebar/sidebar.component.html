@@ -1,7 +1,7 @@
 <!-- erstellt die Sidebar (ähnlich zur Navbar)-->
 
 <!-- <div class="child"> -->
-<div class="parent sidebar" style=" background-color: var(--mainBlack);">
+<div class="parent hideSidebar" style=" background-color: var(--mainBlack);">
   <img src="../../../assets/images/Pfad 3a.svg" class="hide-on-large" style="width: 50px; margin: 20px; ">
   <nav>
 
@@ -43,59 +43,64 @@
 <!-- </div> -->
 
 <!--Navbar-->
-<mdb-navbar class="navbar" SideClass="navbar navbar-expand-lg navbar-dark brown darken-4" [containerInside]="false">
+<div class="hideNavbar">
+  <mdb-navbar  class="hideNavbar" SideClass="navbar navbar-expand-lg navbar-dark brown darken-4" [containerInside]="false">
 
-  <!-- Navbar brand -->
-  <mdb-navbar-brand><a class="navbar-brand" href="#">
-    <img src="../../../assets/images/Pfad 3a.svg" class="hide-on-large" style="width: 50px; margin: 20px; ">
-  </a></mdb-navbar-brand>
+    <!-- Navbar brand -->
+    <mdb-navbar-brand><a class="navbar-brand" routerLink="">
+      <img src="../../../assets/images/Pfad 3a.svg" class="hide-on-large" style="width: 50px; margin: 20px; ">
+    </a></mdb-navbar-brand>
+  
+    <!-- Collapsible content -->
+    <links>
+  
+      <!-- Links -->
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item ">
+          <a class="nav-link waves-light biggerLinks" mdbWavesEffect routerLink="user-login" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}">
+            <i class="material-icons center">lock_open</i> Login / Registrieren <span class="sr-only">(current)</span>
+          </a>
+        </li>
+        <li class="nav-item ">
+          <a class="nav-link waves-light biggerLinks" mdbWavesEffect routerLink="" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}">
+            <i class="material-icons center">home</i> Home <span class="sr-only">(current)</span>
+          </a>
+        </li>
+        <li class="nav-item ">
+          <a class="nav-link waves-light biggerLinks" mdbWavesEffect routerLink="add-product" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}">
+            <i class="material-icons center">outdoor_grill</i> Produkt verleihen <span class="sr-only">(current)</span>
+          </a>
+        </li>
+        <li class="nav-item ">
+          <a class="nav-link waves-light biggerLinks" mdbWavesEffect routerLink="users" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}">
+            <i class="material-icons center">supervised_user_circle</i> Benutzer <span class="sr-only">(current)</span>
+          </a>
+        </li>
+        <li class="nav-item ">
+          <a class="nav-link waves-light biggerLinks" mdbWavesEffect routerLink="messages" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}">
+            <i class="material-icons center">chat</i> Nachrichten <span class="sr-only">(current)</span>
+          </a>
+        </li>
+  
+      </ul>
+      <!-- Links -->
+  
+      <!-- <ul class="navbar-nav ml-auto nav-flex-icons">
+        <li class="nav-item">
+          <a class="nav-link">1 <mdb-icon fas icon="envelope"></mdb-icon></a>
+        </li>
+        <li class="nav-item avatar " >
+          <a mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light" mdbWavesEffect>
+            <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-2.jpg" alt="" class="img-fluid rounded-circle z-depth-0"></a>
+          
+        </li>
+      </ul> -->
+    </links>
+    <!-- Collapsible content -->
+  
+  </mdb-navbar>
+  <!--/.Navbar-->
 
-  <!-- Collapsible content -->
-  <links>
 
-    <!-- Links -->
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item ">
-        <a class="nav-link waves-light biggerLinks" mdbWavesEffect routerLink="user-login" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}">
-          <i class="material-icons center">lock_open</i>  Login / Registrieren <span class="sr-only">(current)</span>
-        </a>
-      </li>
-      <li class="nav-item ">
-        <a class="nav-link waves-light biggerLinks" mdbWavesEffect routerLink="" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}">
-          <i class="material-icons center">home</i> Home <span class="sr-only">(current)</span>
-        </a>
-      </li>
-      <li class="nav-item ">
-        <a class="nav-link waves-light biggerLinks" mdbWavesEffect routerLink="add-product" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}">
-          <i class="material-icons center">outdoor_grill</i> Produkt verleihen <span class="sr-only">(current)</span>
-        </a>
-      </li>
-      <li class="nav-item ">
-        <a class="nav-link waves-light biggerLinks" mdbWavesEffect routerLink="users" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}">
-          <i class="material-icons center">supervised_user_circle</i> Benutzer <span class="sr-only">(current)</span>
-        </a>
-      </li>
-      <li class="nav-item ">
-        <a class="nav-link waves-light biggerLinks" mdbWavesEffect routerLink="messages" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}">
-          <i class="material-icons center">chat</i> Nachrichten <span class="sr-only">(current)</span>
-        </a>
-      </li>
-
-    </ul>
-    <!-- Links -->
-
-    <!-- <ul class="navbar-nav ml-auto nav-flex-icons">
-      <li class="nav-item">
-        <a class="nav-link">1 <mdb-icon fas icon="envelope"></mdb-icon></a>
-      </li>
-      <li class="nav-item avatar " >
-        <a mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light" mdbWavesEffect>
-          <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-2.jpg" alt="" class="img-fluid rounded-circle z-depth-0"></a>
-        
-      </li>
-    </ul> -->
-  </links>
-  <!-- Collapsible content -->
-
-</mdb-navbar>
-<!--/.Navbar-->
+</div>
+  

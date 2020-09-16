@@ -215,9 +215,9 @@ nav {
     }
   }
  
-  
+
 @media (max-width: 438px) {
- .sidebar {
+ .hideSidebar {
    display: none;
  }
 
@@ -251,11 +251,7 @@ links, ul, li, a {
   }
 }
 
-@media (min-width: 438px) {
-  .navbar {
-    display: none;
-  }
- }
+
 
 
 }

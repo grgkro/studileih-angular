@@ -110,6 +110,13 @@ body { margin: 0;
         display: none;
       }
       }
+
+      
+  @media (min-width: 438px) {
+    .hideNavbar {
+      display: none !important;
+    }
+   }
     
 
 //   .enjoy-css {
