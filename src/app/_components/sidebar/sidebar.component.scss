@@ -46,7 +46,7 @@
 
 
 
-@media (max-width: 767px) {
+@media  (max-width: 767px) {
   // #container {
   //     display: grid;
   //     grid-template-rows: 70px auto;
@@ -137,7 +137,7 @@ nav {
     border-radius: 10px !important;
 }
 
-@media ( max-width: 769px) {
+@media   ( max-width: 769px) {
 // @media (min-width: 410px, max-width: 768px) {
   .parent {
     display: flex;
@@ -214,5 +214,48 @@ nav {
       } */
     }
   }
+ 
   
+@media (max-width: 438px) {
+ .sidebar {
+   display: none;
+ }
+
+ .navbar {
+   width: 100%;
+   padding: 0px;margin: 0px;
+ }
+
+ .biggerLinks {
+	height: 80px;
+	font-size: 24px;
+	text-align: center;
+	margin: auto;
+}
+
+.center {
+	padding: 20px 0;
+}
+
+links, ul, li, a {
+  width: 100%;
+}
+
+
+
+.activated {
+  background-color: var(--mainBlue);
+  width: 100%;
+  padding: 0px;
+  margin: 0px;
+  }
+}
+
+@media (min-width: 438px) {
+  .navbar {
+    display: none;
+  }
+ }
+
+
 }
