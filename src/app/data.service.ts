@@ -21,6 +21,7 @@ const serverPath = 'http://localhost:5000';
 })
 
 export class DataService {
+  
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -126,6 +127,10 @@ export class DataService {
 
   getUser(userId): Observable<User> {
     return this.http.get<User>(serverPath + '/users/dto/' + userId);
+  }
+
+  getUserForEditing(): Observable<User> {
+    return this.http.get<User>(serverPath + '/users/editing');
   }
 
   // addUser(formData: any): Observable<any> {

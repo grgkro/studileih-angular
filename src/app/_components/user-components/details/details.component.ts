@@ -33,20 +33,23 @@ import { TokenStorageService } from 'src/app/_services/token-storage.service';
 export class DetailsComponent implements OnInit {
 
   user: User;
+  loggedInUser: User;
   imageToShow: any;
   errorMessage: string;
   showUploadComponent: boolean = false;
   id: any;
   userDetails: User;
+  editingActivated: boolean;
 
   response: string;
   userId: number;
 
-  constructor(private route: ActivatedRoute, private data: DataService, private _update: UpdateService, private uploadFileService: UploadFileService, private sanitizer: DomSanitizer, private router: Router) { }
+  constructor(private route: ActivatedRoute, private data: DataService, private _update: UpdateService, private _token: TokenStorageService, private uploadFileService: UploadFileService, private sanitizer: DomSanitizer, private router: Router) { }
 
   ngOnInit() {
     this.loadUserWithUserPic();
     this.subscribeTriggeringObservable();
+    this.loggedInUser = this._token.getUser();   //  if the user changes, this will get updated
   }
 
   // This function gets called when the user clicks on "Foto hochladen": https://angular.io/guide/component-interaction
@@ -132,17 +135,10 @@ export class DetailsComponent implements OnInit {
 
 
 
-  editUser(user: User): void {
-    this.id = this.route.snapshot.params['id'];
-    this.loadUserDetails(this.id);
-    this.router.navigate(['edit-user/' + this.id]);
+  editUser(): void {
+    console.log("editing started");
+    this.editingActivated = true;
   };
-
-  loadUserDetails(id) {
-    this.data.getUser(id).subscribe(user => {
-      this.userDetails = user;
-    });
-  }
 
   // when a new photo gets uploaded, the triggeringObservable will be triggered and the following code will be excecuted (to refresh the photots, so that it immediately shows the newly uploaded photo.)
   subscribeTriggeringObservable() {

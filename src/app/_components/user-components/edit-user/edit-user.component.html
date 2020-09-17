@@ -1,47 +1,43 @@
-<div class="col-md-6 user-container">
-    <h2 class="text-center">Add User</h2>
-    <form [formGroup] ="editForm" (ngSubmit)="onSubmit()">
-      <div class="form-group">
-        <label for="name">User Name:</label>
-        <input type="text" formControlName="name" placeholder="name" name="Name" class="form-control" id="name">
-      </div>
-    
-          <div class="form-group">
-            <label for="email">Email:</label>
-            <input formControlName="email" placeholder="Email" name="Email" class="form-control" id="email">
-          </div>
-      <div class="form-group">
-        <label for="password">Password:</label>
-        <input type="text" formControlName="password" placeholder="Password" name="password" class="form-control" id="password">
-      </div>
-  
-  
-      <div class="form-group">
-        <label for="dorm">Dorm:</label>
-        <input formControlName="dorm" placeholder="Dorm" name="dorm" class="form-control" id="dorm">
-      </div>
-  
-      <div class="form-group">
-        <label for="room">Room:</label>
-        <input type="number" formControlName="room" placeholder="Room" name="room" class="form-control" id="room">
-      </div>
-  
-      <div class="form-group">
-        <label for="profilePic">Profile Picture:</label>
-        <input type="text" formControlName="profilePic" placeholder="Profile picture" name="profilePic" class="form-control" id="profilePic">
-      </div>
+<h2 class="text-center">Dein Profil bearbeiten</h2>
+<form [formGroup]="editForm" (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label for="name">Name:</label>
+    <input type="text" formControlName="name" placeholder="name" name="Name" class="form-control" id="name">
+  </div>
+
+  <div class="form-group">
+    <label for="email">Email:</label>
+    <input formControlName="email" placeholder="Email" name="Email" class="form-control" id="email">
+  </div>
+  <div class="form-group">
+    <label for="password">Neues Passwort:</label>
+    <input type="text" formControlName="password" placeholder="Password" name="password" class="form-control"
+      id="password">
+  </div>
+
+
+  <div class="form-group">
+    <label for="dorm">Wohnheim:</label>
+    <input formControlName="dorm" placeholder="Dorm" name="dorm" class="form-control" id="dorm">
+  </div>
+
+
+  <div class="form-group">
+    <label for="profilePic">Profile Picture:</label>
+    <input type="text" formControlName="profilePic" placeholder="Profile picture" name="profilePic" class="form-control"
+      id="profilePic">
+  </div>
 
   <div class="row">
-      <div class="col-4">
-        <button class="btn btn-success">Add</button>
-      </div>
-      <div class="col-4">
-        <button type="button" class="btn btn-danger">
-          <a routerLink="/users">
-            Cancel
-          </a>
-        </button>
-      </div>
+    <div class="col-4">
+      <button type="submit" class="btn btn-success">Speichern</button>
+    </div>
+    <div class="col-4">
+      <button type="button" class="btn btn-danger">
+        <a routerLink="/users">
+          Abbrechen
+        </a>
+      </button>
+    </div>
   </div>
-    </form>
-  </div>
+</form>
