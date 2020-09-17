@@ -20,6 +20,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { HelperService } from 'src/app/_services/helper.service';
 import { User } from 'src/app/_models/user';
 import { TokenStorageService } from 'src/app/_services/token-storage.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ModalProfilePicComponent } from '../../modals/modal-profile-pic/modal-profile-pic.component';
 
 
 
@@ -31,7 +33,6 @@ import { TokenStorageService } from 'src/app/_services/token-storage.service';
   styleUrls: ['./details.component.scss']
 })
 export class DetailsComponent implements OnInit {
-
   user: User;
   loggedInUser: User;
   imageToShow: any;
@@ -44,7 +45,9 @@ export class DetailsComponent implements OnInit {
   response: string;
   userId: number;
 
-  constructor(private route: ActivatedRoute, private data: DataService, private _update: UpdateService, private _token: TokenStorageService, private uploadFileService: UploadFileService, private sanitizer: DomSanitizer, private router: Router) { }
+  email: string;
+
+  constructor(public dialog: MatDialog, private route: ActivatedRoute, private data: DataService, private _update: UpdateService, private _token: TokenStorageService, private uploadFileService: UploadFileService, private sanitizer: DomSanitizer, private router: Router) { }
 
   ngOnInit() {
     this.loadUserWithUserPic();
@@ -52,6 +55,16 @@ export class DetailsComponent implements OnInit {
     this.loggedInUser = this._token.getUser();   //  if the user changes, this will get updated
   }
 
+  openDialog(): void {
+    const dialogRef = this.dialog.open(ModalProfilePicComponent, {
+      width: '300px',
+      data: {userId: this.user.id}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.email = result;
+    });
+  }
  
 
   loadUserWithUserPic() {

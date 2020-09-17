@@ -4,7 +4,7 @@
   <h1 style="margin-left: 3.5rem;">{{ user?.name }}</h1>
 
   <!-- loads the user image. If no image is available, a default pic gets shown -->
-  <img [src]="imageToShow" class="images userPic" alt="User Profile Picture" *ngIf="imageToShow; else noImageFound">
+  <img [src]="imageToShow" (click)="openDialog()" class="images userPic" alt="User Profile Picture" *ngIf="imageToShow; else noImageFound">
   <ng-template #noImageFound>
     <img src="https://cdn-0.askleo.com/wp-content/uploads/2013/07/image_not_found.png" alt="Fallbackimage">
   </ng-template>
