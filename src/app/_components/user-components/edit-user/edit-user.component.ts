@@ -96,6 +96,10 @@ export class EditUserComponent implements OnInit {
       
   }
 
+  cancelEditing() {
+    this.router.navigate(['/users'])
+  }
+
    //get the list of cities that was previously loaded on the main page
    updateAllCities(): void {
     this._update.currentAllCities$

@@ -15,29 +15,38 @@
       id="password">
   </div>
 
-  <label>Bitte wähle dein Wohnheim aus: </label>
+  <div class="row">
+    <div class="col-xs-4 col-sm-12 col-md-12 col-lg-4 ">
+      <label>Bitte wähle dein Wohnheim aus: </label>
+    </div>
+    <div class="col-xs-4 col-sm-6 col-md-6 col-lg-4">
+      <mat-form-field appearance="fill">
+        <mat-label style="font-weight: 600; font-size: 1rem">Stadt</mat-label>
+        <mat-select formControlName="city" (selectionChange)="changeSelectedCity($event)">
+          <mat-option style="background-color: rgb(0, 168, 255, 0.5);" *ngFor="let city of allCities" [value]="city">
+            {{city}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="col-xs-4 col-sm-6 col-md-6 col-lg-4">
+      <mat-form-field appearance="fill">
+        <mat-label style="font-weight: 600; font-size: 1rem">Wohnheim</mat-label>
+        <mat-select required formControlName="dorm" (selectionChange)="changeSelectedDorm($event)">
+          <mat-optgroup *ngFor="let group of dormGroups" [label]="group.name" [disabled]="group.disabled">
+            <mat-option style="background-color: rgb(0, 168, 255, 0.3);" *ngFor="let dorms of group.dorms"
+              [value]="dorms.name">
+              {{dorms.name}}
+            </mat-option>
+          </mat-optgroup>
+        </mat-select>
+        <mat-error *ngIf="dorm.hasError('required')">Du musst ein Wohnheim auswählen.</mat-error>
+      </mat-form-field>
+    </div>
+  </div>
 
-  <mat-form-field appearance="fill">
-    <mat-label style="font-weight: 600; font-size: 1rem">Stadt</mat-label>
-    <mat-select formControlName="city" (selectionChange)="changeSelectedCity($event)">
-      <mat-option style="background-color: rgb(0, 168, 255, 0.5);" *ngFor="let city of allCities" [value]="city">
-        {{city}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field appearance="fill">
-    <mat-label style="font-weight: 600; font-size: 1rem">Wohnheim</mat-label>
-    <mat-select required formControlName="dorm" (selectionChange)="changeSelectedDorm($event)">
-      <mat-optgroup *ngFor="let group of dormGroups" [label]="group.name" [disabled]="group.disabled">
-        <mat-option style="background-color: rgb(0, 168, 255, 0.3);" *ngFor="let dorms of group.dorms"
-          [value]="dorms.name">
-          {{dorms.name}}
-        </mat-option>
-      </mat-optgroup>
-    </mat-select>
-    <mat-error *ngIf="dorm.hasError('required')">Du musst ein Wohnheim auswählen.</mat-error>
-  </mat-form-field>
 
+  <br>
   <br>
 
   <!-- <div class="row">
@@ -47,15 +56,21 @@
   </div> -->
 
   <div class="row">
-    <div class="col-4">
-      <button type="submit" class="btn btn-success">Speichern</button>
+    <div class="col-xs-4 col-sm-1 col-md-1 col-lg-2 ">
+
     </div>
-    <div class="col-4">
-      <button type="button" class="btn btn-danger">
-        <a routerLink="/users">
-          Abbrechen
-        </a>
+    <div class="col-xs-2 col-sm-5 col-md-5 col-lg-4">
+      <button type="submit" class="btn btn-success customBtn">Speichern</button>
+    </div>
+    <div class="col-xs-2 col-sm-5 col-md-5 col-lg-4">
+      <button type="button" class="btn btn-danger customBtn" (click)="cancelEditing()">
+
+        Abbrechen
+
       </button>
+    </div>
+    <div class="col-xs-4 col-sm-1 col-md-1 col-lg-2 ">
+
     </div>
   </div>
 </form>

@@ -1,62 +1,76 @@
-
 <div class="container centerHorizontal" *ngIf="user">
   <!-- Falls der User schon geladen ist, dann führe das Folgende aus-->
-  <h1 >{{ user?.name }}</h1>
+  <h1>{{ user?.name }}</h1>
 
-  <!-- loads the user image. If no image is available, a default pic gets shown -->
-  <img matTooltip="Zum Bild ändern klicken" matTooltipPosition="right" matTooltipClass="custom-tooltip" [src]="imageToShow" (click)="openDialog()" class="images userPic" alt="User Profile Picture" *ngIf="imageToShow; else noImageFound">
+  <div *ngIf="loggedInUser.id === user.id">
+    <img matTooltip="Zum Bild ändern klicken" matTooltipPosition="right" matTooltipClass="custom-tooltip"
+    [src]="imageToShow" (click)="openDialog()" class="images userPic changeCursor" alt="User Profile Picture"
+    *ngIf="imageToShow; else noImageFound">
   <ng-template #noImageFound>
-    <img src="../../../../assets/images/noImage.JPG" alt="Fallbackimage" matTooltip="Klicke auf das Bild, um ein Profilbild hochzuladen." matTooltipPosition="right" matTooltipClass="custom-tooltip">
+    <img src="../../../../assets/images/noImage.JPG" alt="Fallbackimage"
+      matTooltip="Klicke auf das Bild, um ein Profilbild hochzuladen." matTooltipPosition="right"
+      matTooltipClass="custom-tooltip">
   </ng-template>
+  </div>
+
+  <div *ngIf="loggedInUser.id != user.id">
+    <img [src]="imageToShow" (click)="openDialog()" class="images userPic" alt="User Profile Picture"
+    *ngIf="imageToShow; else noImageFound">
+  <ng-template #noImageFound>
+    <img src="../../../../assets/images/noImage.JPG" alt="Fallbackimage">
+  </ng-template>
+  </div>
+  <!-- loads the user image. If no image is available, a default pic gets shown -->
+  
   <br>
   <br>
 
   <ul>
     <li><strong>Benutzername:</strong> {{ user?.name }}</li>
-    <li><strong>Anzahl Produkte:</strong> {{ user?.products.length }}</li>   
-
-    <li *ngIf="loggedInUser.id === user.id">
-      
-         
-              <button class="btn btn-danger">
-                <svg class="bi bi-trash" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
-                  <path fill-rule="evenodd"
-                    d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
-                </svg>
-              </button>
-            
-            
-              <button class="btn btn-success" (click)="editUser()" style="margin-left: 20px;">
-                Edit
-              </button>
-            
-        <!-- </div>
-      </div> -->
-    </li>
+    <li><strong>Anzahl Produkte:</strong> {{ user?.products.length }}</li>
   </ul>
 
-  <div>
-    
-    <br>
-   <br>
+  <div class="row" *ngIf="loggedInUser.id === user.id">
+    <div class="col-xs-4 col-sm-1 col-md-1 col-lg-2 ">
 
-   <div class="row" *ngIf="editingActivated">
-    <div class=" col" >
-     <app-edit-user></app-edit-user>
-   </div>
-   </div>
-   
+    </div>
+<div class="col-xs-2 col-sm-5 col-md-5 col-lg-4">
+  <button class="btn btn-success customBtn" (click)="editUser()">
+    Bearbeiten
+  </button>
+</div>
+<div class="col-xs-2 col-sm-5 col-md-5 col-lg-4">
+  <button class="btn btn-danger customBtn" >
+    <svg class="bi bi-trash" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+      <path fill-rule="evenodd"
+        d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+    </svg>
+  </button>
+ </div>
+<div class="col-xs-4 col-sm-1 col-md-1 col-lg-2">
 
+</div>
    
-      
-     
-   
-   
-    <strong>{{ response }}</strong> 
-    <strong>{{ errorMessage }}</strong>
   </div>
 
+  <br>
+  <br>
+
+  <div class="row" *ngIf="editingActivated">
+    <div class=" col">
+      <app-edit-user></app-edit-user>
+    </div>
+  </div>
+
+
+
+
+
+
+
+  <strong>{{ response }}</strong>
+  <strong>{{ errorMessage }}</strong>
 </div>
