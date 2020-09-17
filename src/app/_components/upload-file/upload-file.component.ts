@@ -9,6 +9,7 @@ import { HelperService } from 'src/app/_services/helper.service';
 import { Subject, Observable, Observer } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -38,7 +39,7 @@ export class UploadFileComponent {
  // Angular takes care of unsubscribing from many observable subscriptions like those returned from the Http service or when using the async pipe. But the routeParam$ and the _update.currentShowUploadComponent needs to be unsubscribed by hand on ngDestroy. Otherwise, we risk a memory leak when the component is destroyed. https://malcoded.com/posts/angular-async-pipe/   https://www.digitalocean.com/community/tutorials/angular-takeuntil-rxjs-unsubscribe
  destroy$: Subject<boolean> = new Subject<boolean>();
 
-  constructor(private uploadFileService: UploadFileService, private _update: UpdateService) { }
+  constructor(private uploadFileService: UploadFileService, private _update: UpdateService, private _snackBar: MatSnackBar) { }
 
   ngOnDestroy() {            // Angular takes care of unsubscribing from many observable subscriptions like those returned from the Http service or when using the async pipe. But the routeParam$ and the _update.currentShowUploadComponent needs to be unsubscribed by hand on ngDestroy. Otherwise, we risk a memory leak when the component is destroyed. https://malcoded.com/posts/angular-async-pipe/   https://www.digitalocean.com/community/tutorials/angular-takeuntil-rxjs-unsubscribe
     this.destroy$.next(true);

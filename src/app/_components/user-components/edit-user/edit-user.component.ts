@@ -203,13 +203,11 @@ export class EditUserComponent implements OnInit {
   }
 
   saveFile(selectedFile: File) {
-    this.uploadFileService.pushFileToStorage(selectedFile, this.user.id, null, "user").subscribe((response: any) => {
-      if (response == "Dein Foto wurde gespeichert.")   //it would be better to check the response status == 200, but I dont know how
-        this.response = response;
-      console.log(response)
-      // this._update.changeShowUploadComponent(false);  // if the user uploaded a product photo, we want do not show the upload component anymore in the productdetails component. But therefore we need the information in the productdetails component. -> If a user successfully uploads a product photo (status 200), the upload component changes showUploadComponent to false here. The _update service then updates this value for all subscribes.
-      // setTimeout(() => { this.router.navigate(['']); }, 700);  // after uploading a photo we go back to the main page immediatly -> could be changed, maybe better show a success message and stay on the current page...
-      // this._update.changeNewPhotoWasUploaded();   // ohne die Zeile, würde bei "upload new Photo" das Photo als USER profile pic behandelt werden. Wir wollen es aber als PRODUCT pic speichern. (Ist etwas ungeschickt gelöst...)
+    this.uploadFileService.pushFileToStorage(selectedFile, this.user.id, null, "user").subscribe(() => {
+      
+        this._snackBar.open("Dein Foto wurde gespeichert.", "", { duration: 2000 });
+      
+      
     },
       (err: HttpErrorResponse) => this.processError(err)    // if the image could not be loaded, this part will be executed instead
     );

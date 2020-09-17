@@ -40,9 +40,10 @@
 
   <br>
 
-  <div class="row" >
-    <div class=" col" >
-     <app-upload-file [isUserPic]=true (selectedFile)="onFileSelected($event)"></app-upload-file>   <!-- when a file gets selected in the upload-file component, we will get that as an output emitted into the user-details component-->
+  <div class="row">
+    <div class=" col">
+      <app-upload-file [isUserPic]=true (selectedFile)="onFileSelected($event)"></app-upload-file>
+      <!-- when a file gets selected in the upload-file component, we will get that as an output emitted into the user-details component-->
     </div>
   </div>
 
@@ -59,3 +60,21 @@
     </div>
   </div>
 </form>
+
+<!-- Modal #loginRegisterModal-->
+<!-- <div class="modal fade" id="loginRegisterModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-login-registration-accordion (isLoggedIn)="loginSuccessfullInChildComp($event)">
+        </app-login-registration-accordion>
+      </div>
+    </div>
+  </div>
+</div> -->
