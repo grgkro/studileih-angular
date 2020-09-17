@@ -55,6 +55,7 @@ import { LoginPopupComponent } from './_components/user-components/login-popup/l
 import { LoginRegistrationAccordionComponent } from './_components/login/login-registration-accordion/login-registration-accordion.component';
 import { NavbarComponent } from './_components/sidebar-navbar/navbar/navbar.component';
 import { AdminComponent } from './_components/admin/admin/admin.component';
+import { DormDropdownComponent } from './_components/dorm-components/dorm-dropdown/dorm-dropdown.component';
 
 
 
@@ -83,7 +84,8 @@ import { AdminComponent } from './_components/admin/admin/admin.component';
     LoginPopupComponent,
     LoginRegistrationAccordionComponent,
     NavbarComponent,
-    AdminComponent
+    AdminComponent,
+    DormDropdownComponent
   ],
   imports: [
     BrowserModule,

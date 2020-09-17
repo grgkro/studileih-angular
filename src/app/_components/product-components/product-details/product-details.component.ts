@@ -102,7 +102,7 @@ export class ProductDetailsComponent implements OnInit {
 
   saveFile(selectedFile: File) {
     // This uploadfunction is responsible for handling uploads of user profile images and product pics. (Unecessary complicated, splitting it in two functions would be better for seperation of concerns)
-    this.uploadFileService.pushFileToStorage(selectedFile, this.user.id, this.product.id, "productPic").subscribe((response: any) => {
+    this.uploadFileService.pushFileToStorage(selectedFile, this.user.id, this.product.id, "product").subscribe((response: any) => {
       if (response == "Dein Foto wurde gespeichert.")   //it would be better to check the response status == 200, but I dont know how
         this.response = response;
       // this._update.changeNewPhotoWasUploaded();

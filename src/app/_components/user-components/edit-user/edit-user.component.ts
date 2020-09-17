@@ -10,6 +10,9 @@ import { DormGroup } from 'src/app/_models/dormGroup';
 import { Dorm } from 'src/app/_models/dorm';
 import { UpdateService } from 'src/app/_services/update.service';
 import { Subject } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { UploadFileService } from 'src/app/_services/upload-file.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-edit-user',
@@ -28,11 +31,11 @@ export class EditUserComponent implements OnInit {
   districts: string[] = [];     // die Liste hilft zu merken, welche Stadtviertel schon in dormGroups auftauchen, erspart mehrere for each schleifen
   dorms: Array<Dorm> = [];    // liste aller Wohnheime 
   selectedDorm: Dorm = { id: 1, name: "Alexanderstraße", lat: 48.767485, lng: 9.179693, city: "Stuttgart", district: "StuttgartMitte" }; // irgendwie müssen werte in JS immer am Anfang schon initialisiert werde, das regt richtig auf, wir überschreiben das im onInit sowieso gleich wieder, gibt's da ne andere Möglichkeit?
-
+  response: string;
    // Angular takes care of unsubscribing from many observable subscriptions like those returned from the Http service or when using the async pipe. But the routeParam$ and the _update.currentShowUploadComponent needs to be unsubscribed by hand on ngDestroy. Otherwise, we risk a memory leak when the component is destroyed. https://malcoded.com/posts/angular-async-pipe/   https://www.digitalocean.com/community/tutorials/angular-takeuntil-rxjs-unsubscribe
    destroy$: Subject<boolean> = new Subject<boolean>();
 
-  constructor(private formBuilder: FormBuilder, private _token: TokenStorageService, private _update: UpdateService, private router: Router, private dataService: DataService) { }
+  constructor(private formBuilder: FormBuilder, private _token: TokenStorageService,private uploadFileService: UploadFileService, private _update: UpdateService, private router: Router, private dataService: DataService, private _snackBar: MatSnackBar) { }
 
   ngOnInit() {
     this.editForm = this.formBuilder.group({
@@ -68,23 +71,23 @@ export class EditUserComponent implements OnInit {
     console.log(this.editForm.value)
     this.user.name = this.editForm.value.name;
     this.user.email = this.editForm.value.email;
-    alert(this.editForm.value.password)
     this.user.password = this.editForm.value.password;
-    alert(this.user.password)
+    this.user.dorm = this.selectedDorm;
 
     this.dataService.updateUser(this.user)
     .subscribe(
       updatedUser => {
-        
         if(updatedUser != null) {  
         this._token.saveToken(updatedUser.token);
         this._token.saveUser(updatedUser);
           console.log('User erfolgreich bearbeitet');
           console.log("New Token:", updatedUser.token);
           console.log(updatedUser)
+          this._snackBar.open("Deine Profiländerungen wurde gespeichert.", "", { duration: 2000 });
           this.router.navigate(['']);
         } else {
           console.log('User konnte nicht bearbeitet werden.');
+          this._snackBar.open("Profiländerungen konnten nicht gespeichert werden.", "", { duration: 2000 });
         }
       },
       (error: any) => {
@@ -192,6 +195,39 @@ export class EditUserComponent implements OnInit {
       }
     }
   }
+
+   // This function gets called when the user clicks on "Foto hochladen": https://angular.io/guide/component-interaction
+   onFileSelected(selectedFile: File) {
+    // This uploadfunction is responsible for handling uploads of user profile images and product pics. 
+    this.saveFile(selectedFile);
+  }
+
+  saveFile(selectedFile: File) {
+    this.uploadFileService.pushFileToStorage(selectedFile, this.user.id, null, "user").subscribe((response: any) => {
+      if (response == "Dein Foto wurde gespeichert.")   //it would be better to check the response status == 200, but I dont know how
+        this.response = response;
+      console.log(response)
+      // this._update.changeShowUploadComponent(false);  // if the user uploaded a product photo, we want do not show the upload component anymore in the productdetails component. But therefore we need the information in the productdetails component. -> If a user successfully uploads a product photo (status 200), the upload component changes showUploadComponent to false here. The _update service then updates this value for all subscribes.
+      // setTimeout(() => { this.router.navigate(['']); }, 700);  // after uploading a photo we go back to the main page immediatly -> could be changed, maybe better show a success message and stay on the current page...
+      // this._update.changeNewPhotoWasUploaded();   // ohne die Zeile, würde bei "upload new Photo" das Photo als USER profile pic behandelt werden. Wir wollen es aber als PRODUCT pic speichern. (Ist etwas ungeschickt gelöst...)
+    },
+      (err: HttpErrorResponse) => this.processError(err)    // if the image could not be loaded, this part will be executed instead
+    );
+  }
+
+    // takes the error and then displays a response to the user or only logs the error on the console (depending on if the error is useful for the user)
+    processError(err: HttpErrorResponse) {
+      if (err.error instanceof Error) {
+        console.log('An client-side or network error occurred:', err.error);
+      } else if (err.status == 404) {
+        console.log("User or ProfilePic not found");
+      } else {
+        //Backend returns unsuccessful response codes such as 400, 500 etc.
+        console.log('Backend returned status code: ', err.status);
+        console.log('Response body:', err.error);
+      }
+    }
+  
 
    // getter for form fields with validators -> so that we dont have to write addUser.get('name').value all the time.
    get name(){

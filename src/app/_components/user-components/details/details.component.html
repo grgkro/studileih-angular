@@ -41,16 +41,14 @@
     <br>
    <br>
 
-   <div *ngIf="editingActivated">
+   <div class="row" *ngIf="editingActivated">
+    <div class=" col" >
      <app-edit-user></app-edit-user>
+   </div>
    </div>
    
 
-   <div class="row" *ngIf="loggedInUser.id === user.id">
-     <div class=" col" >
-      <app-upload-file [isUserPic]=true (selectedFile)="onFileSelected($event)"></app-upload-file>   <!-- when a file gets selected in the upload-file component, we will get that as an output emitted into the user-details component-->
-     </div>
-   </div>
+   
       
      
    

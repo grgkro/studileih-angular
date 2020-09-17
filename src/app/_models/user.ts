@@ -1,3 +1,4 @@
+import { Dorm } from './dorm';
 // the model is needed to receive the dto from the backend
 
 import { Product } from './product';
@@ -11,6 +12,7 @@ export interface User {
     email?: string;
     password?: string;
     dormId?: number; 
+    dorm?: Dorm;
     room?: number;
     profilePic?: string;
     products?: Product[];
