@@ -1,18 +1,20 @@
 
 <div class="container centerHorizontal" *ngIf="user">
   <!-- Falls der User schon geladen ist, dann führe das Folgende aus-->
-  <h1 style="margin-left: 3.5rem;">{{ user?.name }}</h1>
+  <h1 >{{ user?.name }}</h1>
 
   <!-- loads the user image. If no image is available, a default pic gets shown -->
-  <img [src]="imageToShow" (click)="openDialog()" class="images userPic" alt="User Profile Picture" *ngIf="imageToShow; else noImageFound">
+  <img matTooltip="Zum Bild ändern klicken" matTooltipPosition="right" matTooltipClass="custom-tooltip" [src]="imageToShow" (click)="openDialog()" class="images userPic" alt="User Profile Picture" *ngIf="imageToShow; else noImageFound">
   <ng-template #noImageFound>
-    <img src="https://cdn-0.askleo.com/wp-content/uploads/2013/07/image_not_found.png" alt="Fallbackimage">
+    <img src="../../../../assets/images/noImage.JPG" alt="Fallbackimage" matTooltip="Klicke auf das Bild, um ein Profilbild hochzuladen." matTooltipPosition="right" matTooltipClass="custom-tooltip">
   </ng-template>
   <br>
   <br>
 
   <ul>
-    <li><strong>Username:</strong> {{ user?.name }}</li>
+    <li><strong>Benutzername:</strong> {{ user?.name }}</li>
+    <li><strong>Anzahl Produkte:</strong> {{ user?.products.length }}</li>   
+
     <li *ngIf="loggedInUser.id === user.id">
       
          

@@ -84,14 +84,14 @@ export class EditUserComponent implements OnInit {
           console.log("New Token:", updatedUser.token);
           console.log(updatedUser)
           this._snackBar.open("Deine Profiländerungen wurde gespeichert.", "", { duration: 2000 });
-          this.router.navigate(['']);
+          this.router.navigate(['/users']);
         } else {
           console.log('User konnte nicht bearbeitet werden.');
           this._snackBar.open("Profiländerungen konnten nicht gespeichert werden.", "", { duration: 2000 });
         }
       },
       (error: any) => {
-        alert(error);
+        console.log(error);
       });
       
   }

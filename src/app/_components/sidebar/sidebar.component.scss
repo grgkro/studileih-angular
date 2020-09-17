@@ -1,3 +1,7 @@
+ul {
+  list-style-type: none !important;
+}
+
 // this part works and can not be changed anymore!!!
 @media (min-width: 768px) {
   #container {
@@ -10,7 +14,6 @@
           padding: 30px 50px;
    
           ul {
-              list-style-type: none;
               margin:0;padding:0;
           
               li {
@@ -57,7 +60,6 @@
       //     padding: 30px 50px;
    nav >
           ul {
-              list-style-type: none;
               // margin:0;padding:0;
                display: inline ;
               // width: 100%;
@@ -107,7 +109,6 @@ nav {
   height: 100%;
 
   ul {
-    list-style-type: none;
     padding: 0;
     margin: 0;
 
@@ -169,7 +170,6 @@ nav {
     ul {
       position:relative; 
       left:-1.3rem;  
-      list-style-type: none;
       // text-align:middle;
       //     vertical-align: middle;
       //     text-align: center;

@@ -152,11 +152,13 @@ export class UsersComponent implements OnInit {
 
 
   loadProfilePic(user: User) {
+    if (user.profilePic != null && user.profilePic != undefined) {
+      this.uploadFileService.getUserPic(user.id).subscribe(       // load user image
+        image => {
+          this.createImageFromBlob(image, user);
+        })
+    }
     
-    this.uploadFileService.getUserPic(user.id).subscribe(       // load user image
-      image => {
-        this.createImageFromBlob(image, user);
-      })
   }
 
   // This image upload code is basically taken from here: https://stackoverflow.com/questions/45530752/getting-image-from-api-in-angular-4-5  (first answer) or see the code directly: https://stackblitz.com/edit/angular-1yr75s

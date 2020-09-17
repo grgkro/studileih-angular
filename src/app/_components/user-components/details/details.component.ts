@@ -87,6 +87,7 @@ export class DetailsComponent implements OnInit {
 
 
   loadUserProfilePic() {
+    if (this.user.profilePic != null && this.user.profilePic != undefined) {
     console.log(this.user.id)
     this.uploadFileService.getUserPic(this.user.id).subscribe(       // load user image
       image => {
@@ -94,6 +95,7 @@ export class DetailsComponent implements OnInit {
         this.createImageFromBlob(image);
         // saveAs(val, "test.png")                // uncomment this to download the image in the browser (you also need to uncomment the import file-saver)
       })
+    }
   }
 
   // Hide or Show the Upload function (the "Durchsuchen" Button)
