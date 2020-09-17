@@ -46,6 +46,9 @@ export class EditUserComponent implements OnInit {
     console.log(this.editForm.value)
     this.user.name = this.editForm.value.name;
     this.user.email = this.editForm.value.email;
+    alert(this.editForm.value.password)
+    this.user.password = this.editForm.value.password;
+    alert(this.user.password)
 
     this.dataService.updateUser(this.user)
     .subscribe(
