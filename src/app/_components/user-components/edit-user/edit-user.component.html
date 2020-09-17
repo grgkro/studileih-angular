@@ -15,6 +15,30 @@
       id="password">
   </div>
 
+  <label>Bitte wähle dein Wohnheim aus: </label>
+
+  <mat-form-field appearance="fill">
+    <mat-label style="font-weight: 600; font-size: 1rem">Stadt</mat-label>
+    <mat-select formControlName="city" (selectionChange)="changeSelectedCity($event)">
+      <mat-option style="background-color: rgb(0, 168, 255, 0.5);" *ngFor="let city of allCities" [value]="city">
+        {{city}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label style="font-weight: 600; font-size: 1rem">Wohnheim</mat-label>
+    <mat-select required formControlName="dorm" (selectionChange)="changeSelectedDorm($event)">
+      <mat-optgroup *ngFor="let group of dormGroups" [label]="group.name" [disabled]="group.disabled">
+        <mat-option style="background-color: rgb(0, 168, 255, 0.3);" *ngFor="let dorms of group.dorms"
+          [value]="dorms.name">
+          {{dorms.name}}
+        </mat-option>
+      </mat-optgroup>
+    </mat-select>
+    <mat-error *ngIf="dorm.hasError('required')">Du musst ein Wohnheim auswählen.</mat-error>
+  </mat-form-field>
+
+  <br>
 
   <div class="form-group">
     <label for="dorm">Wohnheim:</label>
