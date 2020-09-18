@@ -171,7 +171,7 @@ https://blog.angular.io/version-10-of-angular-now-available-78960babd41
           </div>
           <hr class="my-2" />
           <div class="row justify-content-between">
-               <div class="col-3">
+               <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 ">
                     <mat-form-field appearance="fill">
                          <mat-label style="font-size: 17px;">Von wann bis wann?</mat-label>
 
@@ -184,7 +184,7 @@ https://blog.angular.io/version-10-of-angular-now-available-78960babd41
                          <mat-date-range-picker #picker></mat-date-range-picker>
                     </mat-form-field>
                </div>
-               <div class="col-3">
+               <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 ">
                     <div class="md-form" style="position: relative; top: -0.4rem;">
                          <input type="time" id="input" class="form-control" value="13:00" placeholder="13:00" mdbInput
                               [(ngModel)]="pickUpTime" />
@@ -192,7 +192,7 @@ https://blog.angular.io/version-10-of-angular-now-available-78960babd41
                               {{ startDate.toLocaleDateString() }} um: </label>
                     </div>
                </div>
-               <div class="col-3">
+               <div class="col-xs-12 col-sm-12 col-md-8 col-lg-4 ">
                     <div class="md-form" style="position: relative; top: -0.4rem;">
                          <input type="time" id="input" class="form-control" value="13:00" placeholder="13:00" mdbInput
                               [(ngModel)]="returnTime" />
@@ -200,56 +200,59 @@ https://blog.angular.io/version-10-of-angular-now-available-78960babd41
                               um: </label>
                     </div>
                </div>
+          </div>
 
-
-               <div *ngIf="isLoggedIn" class="col-sm-3">
+          <div class="row">
+               <div *ngIf="isLoggedIn" class="col-xs-4 col-sm-12 col-md-12 col-lg-4 ">
                     <button class="button" type="submit" mdbBtn color="primary" class="waves-light" mdbWavesEffect
                          (click)="onAnfrageSubmit()">Anfragen</button>
                </div>
 
                <!-- if user is not logged in but wants to "Anfragen" -> show normal login if window >= 768px-->
-               <div id="normalLogin">
-                    <div *ngIf="!isLoggedIn" class="col-sm-3">
+               <!-- <div id="normalLogin"> -->
+               <div *ngIf="!isLoggedIn" class="col-xs-4 col-sm-12 col-md-12 col-lg-4 ">
 
-                         <button mdbBtn type="button" size="lg" color="primary" class="waves-light" mdbWavesEffect
-                              class="btn btn-success" data-toggle="modal" data-target="#loginRegisterModal"
-                              >Anfragen(mitNormalLogin)</button>
-                    </div>
-                    <div *ngIf="!isLoggedIn && isAnfragenClicked" class="col-sm-3">
-                         <app-login-registration-accordion (isLoggedIn)="loginSuccessfullInChildComp($event)"></app-login-registration-accordion>
-                    </div>
+                    <button mdbBtn type="button" size="lg" color="primary" class="waves-light" mdbWavesEffect
+                         class="btn btn-success" data-toggle="modal"
+                         data-target="#loginRegisterModal">Anfragen(mitNormalLogin)</button>
                </div>
+               <div *ngIf="!isLoggedIn && isAnfragenClicked" class="col-sm-3">
+                    <app-login-registration-accordion (isLoggedIn)="loginSuccessfullInChildComp($event)">
+                    </app-login-registration-accordion>
+               </div>
+               <!-- </div> -->
 
                <!-- if user is not logged in but wants to "Anfragen" -> show login as a popup if on screens smaller 768px-->
-               <div id="loginAsPopup">
-                    <div *ngIf="!isLoggedIn" class="col-sm-3"> 
-                         <button class="button" type="submit" mdbBtn color="primary" class="waves-light" mdbWavesEffect
-                              (click)="showLoginPopup()">Anfragen(LoginAsPopup)</button>
-                    </div>
-                    <div *ngIf="!isLoggedIn && isAnfragenClicked" class="col-sm-3">
-                         <app-login-popup></app-login-popup>
-                    </div>
-               </div>
+               <!-- <div id="loginAsPopup">
+          <div *ngIf="!isLoggedIn" class="col-xs-4 col-sm-12 col-md-12 col-lg-4 "> 
+               <button class="button" type="submit" mdbBtn color="primary" class="waves-light" mdbWavesEffect
+                    (click)="showLoginPopup()">Anfragen(LoginAsPopup)</button>
+          </div>
+          <div *ngIf="!isLoggedIn && isAnfragenClicked" class="col-sm-3">
+               <app-login-popup></app-login-popup>
+          </div>
+     </div> -->
+          </div>
 
-               <!-- Modal #loginRegisterModal-->
-               <div class="modal fade" id="loginRegisterModal" tabindex="-1" role="dialog"
-                    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                         <div class="modal-content">
-                              <div class="modal-header">
-                                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                   </button>
-                              </div>
-                              <div class="modal-body">
-                                   <app-login-registration-accordion (isLoggedIn)="loginSuccessfullInChildComp($event)">
-                                   </app-login-registration-accordion>
-                              </div>
+
+          <!-- Modal #loginRegisterModal-->
+          <div class="modal fade" id="loginRegisterModal" tabindex="-1" role="dialog"
+               aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+               <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                         <div class="modal-header">
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                   <span aria-hidden="true">&times;</span>
+                              </button>
+                         </div>
+                         <div class="modal-body">
+                              <app-login-registration-accordion (isLoggedIn)="loginSuccessfullInChildComp($event)">
+                              </app-login-registration-accordion>
                          </div>
                     </div>
                </div>
-
           </div>
-     </div>
 
+     </div>
 </div>
+
