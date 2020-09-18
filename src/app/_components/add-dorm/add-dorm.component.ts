@@ -15,7 +15,7 @@ export class AddDormComponent implements OnInit {
 
   ngOnInit(): void {
     this.dormForm = this.formBuilder.group({
-      name: [''],
+      name: ['', Validators.required],
       city: ['', Validators.required],
       street: ['', Validators.required],
       houseNumber: ['', Validators.required]

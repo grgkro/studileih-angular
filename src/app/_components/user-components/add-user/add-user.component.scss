@@ -3,3 +3,15 @@
     background-color: rgb(0, 168, 255, 0.2); 
     display: block
   } 
+
+  @media (min-width: 510px) {
+    .addSomeSpace { 
+      margin: 0 20px 0 0;
+    }
+  }
+
+  @media (min-width: 345px) and (max-width: 510px) {
+    .addSomeSpace { 
+      margin: 0 20px 0 20px;
+    }
+  }
