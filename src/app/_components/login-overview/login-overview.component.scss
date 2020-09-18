@@ -1,0 +1,25 @@
+
+.wrapperForCentering {
+    align-items: center; 
+    // width: 350px;
+}
+
+.gif {
+    border: 5px solid pink;
+}
+
+.logoutBtn {
+    margin: 20px;
+}
+
+@media (max-width:390px) {
+    .gif { 
+        width: 80vw;
+    }
+}
+
+// @media (max-width: 185px) {
+//     .logoutBtn {
+//         width: 100px;
+//     }
+// }
