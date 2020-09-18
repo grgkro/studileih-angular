@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl, FormGroupDirective, NgForm } from "@angular/forms";
 import { Router } from '@angular/router';
 import { DataService } from '../../../data.service';
@@ -12,6 +12,7 @@ import { AuthenticationService } from 'src/app/_services/authentication.service'
 import { User } from 'src/app/_models/user';
 import { TokenStorageService } from 'src/app/_services/token-storage.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AddDormComponent } from '../../add-dorm/add-dorm.component';
 
 
 @Component({
@@ -21,6 +22,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class AddUserComponent implements OnInit {
   @Output() isLoggedIn = new EventEmitter<boolean>();
+  @ViewChild(AddDormComponent) childComponentAddDorm: AddDormComponent;
 
   constructor(private formBuilder: FormBuilder,
     private _auth: AuthenticationService,
@@ -74,6 +76,7 @@ export class AddUserComponent implements OnInit {
   addDorm(): void {
     if (!this.showAddDorm) {
       this.showAddDorm = true;
+      this.addForm.controls['dorm'].disable();
     } else {
       this.showAddDorm = false;
       console.log("Shouldnt happen")
@@ -82,6 +85,7 @@ export class AddUserComponent implements OnInit {
 
   cancelAddDorm():void {
     this.showAddDorm = false;
+    this.addForm.controls['dorm'].enable();
   }
 
   //get the list of cities that was previously loaded on the main page
@@ -132,6 +136,10 @@ export class AddUserComponent implements OnInit {
 
   //this sends all data to the backend when button "add" was clicked
   onFormSubmit() {
+    console.log("city", this.childComponentAddDorm.getFormdata().get("name"));
+    console.log("city", this.childComponentAddDorm.getFormdata().get("city"));
+    console.log("city", this.childComponentAddDorm.getFormdata().get("street"));
+    console.log("city", this.childComponentAddDorm.getFormdata().get("houseNumber"));
     this.hasUserSubmitted = true;
     var formData: any = new FormData();
     formData.append("name", this.addForm.get('name').value);

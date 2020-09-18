@@ -23,13 +23,18 @@ export class AddDormComponent implements OnInit {
       houseNumber: ['', Validators.required]
     })
    
+  //   this.dormForm.valueChanges.subscribe(x => {
+  //     console.log('form value changed')
+  //     console.log(x)
+  //     console.log(this.getFormdata().forEach(element => console.log(element)));
+  // })
   }
 
-  onDormFormSubmit():void {
-    this.sendEmailToAdmin(this.createFormdata());
+  onDormFormSubmit() {
+    this.sendEmailToAdmin(this.getFormdata());
   }
 
-  createFormdata(): FormData {
+  getFormdata(): FormData {
     const formdata: FormData = new FormData();
     formdata.append('name', this.dormForm.get('name').value);
     formdata.append('city', this.dormForm.get('city').value);
