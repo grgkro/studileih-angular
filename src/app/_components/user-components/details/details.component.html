@@ -4,20 +4,20 @@
 
   <div *ngIf="loggedInUser.id === user.id">
     <img matTooltip="Zum Bild ändern klicken" matTooltipPosition="right" matTooltipClass="custom-tooltip"
-    [src]="imageToShow" (click)="openDialog()" class="images userPic changeCursor" alt="User Profile Picture"
+    [src]="imageToShow" (click)="openDialog()" class="images userPic changeCursor" alt="Dein Profilbild (lädt...)"
     *ngIf="imageToShow; else noImageFound">
   <ng-template #noImageFound>
-    <img src="../../../../assets/images/noImage.JPG" alt="Fallbackimage"
+    <img src="../../../../assets/images/noImage.JPG" alt="Hier klicken um Profilbild hochzuladen" (click)="openDialog()" class="changeCursor"
       matTooltip="Klicke auf das Bild, um ein Profilbild hochzuladen." matTooltipPosition="right"
       matTooltipClass="custom-tooltip">
   </ng-template>
   </div>
 
   <div *ngIf="loggedInUser.id != user.id">
-    <img [src]="imageToShow" (click)="openDialog()" class="images userPic" alt="User Profile Picture"
+    <img [src]="imageToShow"  class="images userPic " alt="Profilbild lädt..."
     *ngIf="imageToShow; else noImageFound">
   <ng-template #noImageFound>
-    <img src="../../../../assets/images/noImage.JPG" alt="Fallbackimage">
+    <img src="../../../../assets/images/noImage.JPG" alt="Nutzer hat noch kein Profilbild, oder Profilbild konnte nicht geladen werden.">
   </ng-template>
   </div>
   <!-- loads the user image. If no image is available, a default pic gets shown -->

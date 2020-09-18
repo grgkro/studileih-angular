@@ -4,11 +4,11 @@
     <app-login-registration-accordion (isLoggedIn)="loginSuccessfullInChildComp($event)"></app-login-registration-accordion>
   </div>
 
-  <div *ngIf="isLoggedIn" class="wrapperForCentering" >
+  <div *ngIf="isLoggedIn" class="itemsCentering" >
     <h1>Du bist drin. </h1>
     <img src="../../../assets/images/loggedin.gif" class="gif"  />
     <br>
-    <button class="logoutBtn" type="button" (click)="logout()" mdbBtn color="secondary" class="waves-light"
+    <button class="logoutBtn " type="button" (click)="logout()" mdbBtn color="secondary" class="waves-light"
       cmdbWavesEffect>Logout</button>
   </div>
 
