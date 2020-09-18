@@ -2,7 +2,7 @@
 <label for="addDorm">Dein Wohnheim ist nicht dabei? Nach drücken auf "Wohnheim hinzufügen" werden unsere Admins dein Wohnheim innerhalb der nächsten 2-3 Tage hinzufügen:</label>
   
 
-    <form [formGroup]="dormForm" (ngSubmit)="onDormFormSubmit()">
+    <form [formGroup]="dormForm" >
       <div class="form-group">
         <label for="dormName">Name des Wohnheims*:</label>
         <input required type="text" formControlName="name" placeholder="z.B. Max-Kade-Wohnheim, oder Straße + Hausnummer"

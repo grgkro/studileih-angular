@@ -11,6 +11,7 @@ import { Subject } from 'rxjs/internal/Subject';
 import { takeUntil } from 'rxjs/internal/operators/takeUntil';
 import { Observable } from 'rxjs';
 import { User } from '../../../_models/user';
+import { TokenStorageService } from 'src/app/_services/token-storage.service';
 
 
 
@@ -62,11 +63,12 @@ export class ProductsComponent implements OnInit {
   // Angular takes care of unsubscribing from many observable subscriptions like those returned from the Http service or when using the async pipe. But the routeParam$ and the _update.currentShowUploadComponent needs to be unsubscribed by hand on ngDestroy. Otherwise, we risk a memory leak when the component is destroyed. https://malcoded.com/posts/angular-async-pipe/   https://www.digitalocean.com/community/tutorials/angular-takeuntil-rxjs-unsubscribe
   destroy$: Subject<boolean> = new Subject<boolean>();
 
-  constructor(private activatedRoute: ActivatedRoute, private _data: DataService, private _update: UpdateService, private sanitizer: DomSanitizer, private router: Router) { }
+  constructor(private activatedRoute: ActivatedRoute, private _data: DataService, private _update: UpdateService, private _token: TokenStorageService, private sanitizer: DomSanitizer, private router: Router) { }
 
   ngOnInit() {
     this.products = this.activatedRoute.snapshot.data['products'];  //load all products from the product resolver service (the resolver pre-loads them from the database, before this component gets rendered) 
     // TODO: if the current dorm has products -> show those products first. Underneath that list show all products of that city. Underneath that show a list of all products.
+    this.user = this._token.getUser();
     this.getSelectedDorm();  // get the currently selected dorm by subscribing to the currentSelectedDorm Observable
     this.loadProductImages();
    
@@ -96,7 +98,10 @@ export class ProductsComponent implements OnInit {
           // this.productsWithoutDormProducts = this.products.filter(product => !this.dormProducts.includes(product)); 
         });
         // stupid solution, don't know why line two lines up doesn't work, would be much cleaner solution!
-        this._data.getProductsWithoutDormProducts(this.selectedDorm.id).subscribe(products => {this.productsWithoutDormProducts = products})
+        this._data.getProductsWithoutDormProducts(this.selectedDorm.id).subscribe(products => {
+          products = products.filter(product => !(product.userId != this.user.id && product.dorm == null));
+          this.productsWithoutDormProducts = products
+        })
        
          
       })

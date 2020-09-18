@@ -1,7 +1,25 @@
+<div *ngIf="currentUser.dormId === null">
+    <div class="container">
+        <div class="row justify-content-center ">
+            <div class="col">
+                <div *ngIf="!isLoggedIn" style="display: inline-block">
+                    <h1>Benutzer in deinem Wohnheim: Bitte einloggen oder registrieren</h1>
+                </div>
+                <div *ngIf="isLoggedIn" style="display: inline-block">
+                    <h1 class="display-3">Benutzer in deinem Wohnheim: </h1>
+                    <hr class="my-2" />
+                    <h3>Du hast noch kein Wohnheim. Andere Benutzer können erst angezeigt werden, sobald dein Wohnheim bestätigt wurde.</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div *ngIf="currentUser && dorms">
     <div class="container">
         <div class="row justify-content-center ">
-            <div class="col-11">
+            <div class="col">
                 <div *ngIf="!isLoggedIn" style="display: inline-block" >
                     <h1>Benutzer in deinem Wohnheim: Bitte einloggen oder registrieren</h1>
                 </div>
@@ -9,12 +27,8 @@
                     <h1>Benutzer im Wohnheim {{ dorms[currentUser.dormId - 1].name }}:</h1>
                 </div>
             </div>
-            <div class="col-1">
-                <a routerLink="/add-user" routerLinkActive="activated" [routerLinkActiveOptions]="{exact:true}">
-                    <i class="material-icons">add</i>
-                </a>
-            </div>
         </div>
+        <hr class="my-2" />
 
         <div *ngIf="!isLoggedIn">
             <app-login-registration-accordion (isLoggedIn)="loginSuccessfullInChildComp($event)"></app-login-registration-accordion>

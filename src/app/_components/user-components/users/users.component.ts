@@ -60,6 +60,7 @@ export class UsersComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentUser = this._token.getUser();
+    console.log(this.currentUser)
     this.checkIfUserIsLoggedIn();
     this.users$ = this._data.getUsersByDorm();   // we dont subscribe here, bc we also need the Observable users$ on the HTML side.
     

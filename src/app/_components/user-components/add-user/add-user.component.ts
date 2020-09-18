@@ -6,6 +6,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { UpdateService } from '../../../_services/update.service';
 import { DormGroup } from '../../../_models/dormGroup';
 import { Dorm } from '../../../_models/dorm';
+import { NewDormRequest } from '../../../_models/newDormRequest';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { AuthenticationService } from 'src/app/_services/authentication.service';
@@ -25,13 +26,16 @@ export class AddUserComponent implements OnInit {
   @ViewChild(AddDormComponent) childComponentAddDorm: AddDormComponent;
 
   constructor(private formBuilder: FormBuilder,
+    private router: Router,
     private _auth: AuthenticationService,
+    private _data: DataService,
     private _token: TokenStorageService,
     private dataService: DataService,
     private _update: UpdateService,
     private _snackBar: MatSnackBar) { }
 
   addForm: FormGroup;
+  newDorm: NewDormRequest = { name: '', city: '', street: '', houseNumber: null};
   
 
   showUploadComponent: boolean = false;
@@ -45,7 +49,7 @@ export class AddUserComponent implements OnInit {
   allCities: string[] = [];        // die Liste hilft zu merken, welche Städte schon in dormGroups auftauchen, erspart mehrere for each schleifen
   districts: string[] = [];     // die Liste hilft zu merken, welche Stadtviertel schon in dormGroups auftauchen, erspart mehrere for each schleifen
   dorms: Array<Dorm> = [];    // liste aller Wohnheime 
-  selectedDorm: Dorm = { id: 1, name: "Alexanderstraße", lat: 48.767485, lng: 9.179693, city: "Stuttgart", district: "StuttgartMitte" }; // irgendwie müssen werte in JS immer am Anfang schon initialisiert werde, das regt richtig auf, wir überschreiben das im onInit sowieso gleich wieder, gibt's da ne andere Möglichkeit?
+  selectedDorm: Dorm = { id: 0 }; // irgendwie müssen werte in JS immer am Anfang schon initialisiert werde, das regt richtig auf, wir überschreiben das im onInit sowieso gleich wieder, gibt's da ne andere Möglichkeit?
   hasUserSubmitted: boolean = false;
   showAddDorm: boolean = false;
   user: User;
@@ -77,15 +81,16 @@ export class AddUserComponent implements OnInit {
     if (!this.showAddDorm) {
       this.showAddDorm = true;
       this.addForm.controls['dorm'].disable();
-    } else {
-      this.showAddDorm = false;
-      console.log("Shouldnt happen")
-    }
+    } 
   }
 
   cancelAddDorm():void {
     this.showAddDorm = false;
     this.addForm.controls['dorm'].enable();
+  }
+
+  cancelRegistration():void {
+    this.router.navigate(['products']);
   }
 
   //get the list of cities that was previously loaded on the main page
@@ -136,10 +141,6 @@ export class AddUserComponent implements OnInit {
 
   //this sends all data to the backend when button "add" was clicked
   onFormSubmit() {
-    console.log("city", this.childComponentAddDorm.getFormdata().get("name"));
-    console.log("city", this.childComponentAddDorm.getFormdata().get("city"));
-    console.log("city", this.childComponentAddDorm.getFormdata().get("street"));
-    console.log("city", this.childComponentAddDorm.getFormdata().get("houseNumber"));
     this.hasUserSubmitted = true;
     var formData: any = new FormData();
     formData.append("name", this.addForm.get('name').value);
@@ -165,6 +166,24 @@ export class AddUserComponent implements OnInit {
               // if the login component is included in a parent component e.g. message component, we need to tell the parent that the user is now logged in.
               this.isLoggedIn.emit(true);
               this.accessAPI()
+              if (this.showAddDorm) {
+                console.log("ADDDORM WAS USED")
+                console.log("city", this.childComponentAddDorm.getFormdata().get("name"));
+                console.log("city", this.childComponentAddDorm.getFormdata().get("city"));
+                console.log("city", this.childComponentAddDorm.getFormdata().get("street"));
+                console.log("city", this.childComponentAddDorm.getFormdata().get("houseNumber"));
+                this.newDorm = {
+                  name: this.childComponentAddDorm.getFormdata().get("name").toString(),
+                  city: this.childComponentAddDorm.getFormdata().get("city").toString(),
+                  street: this.childComponentAddDorm.getFormdata().get("street").toString(),
+                  houseNumber: this.childComponentAddDorm.getFormdata().get("houseNumber").toString(),
+                }
+                this._data.sendEmailToAdmin(this.newDorm).subscribe((res) => {
+                  console.log(res)
+                  this._snackBar.open(res, "", { duration: 2000 }) 
+                })
+
+              }
             }
           } )
         } 

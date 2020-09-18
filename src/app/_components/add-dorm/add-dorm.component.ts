@@ -30,9 +30,9 @@ export class AddDormComponent implements OnInit {
   // })
   }
 
-  onDormFormSubmit() {
-    this.sendEmailToAdmin(this.getFormdata());
-  }
+  // onDormFormSubmit() {
+  //   this.sendEmailToAdmin(this.getFormdata());
+  // }
 
   getFormdata(): FormData {
     const formdata: FormData = new FormData();
@@ -43,11 +43,6 @@ export class AddDormComponent implements OnInit {
     return formdata;
   }
 
-  sendEmailToAdmin(formdata: FormData) {
-    this._data.sendEmailToAdmin(formdata).subscribe(res => {
-      console.log(res)
-      this._snackBar.open(res, "", { duration: 4000 });
-    });
-  }
+  
 
 }

@@ -1,11 +1,11 @@
 
 export interface Dorm {
     id: number;
-    name: string;
+    name?: string;
     district?: string;
-    city: string;
-    lat: number;
-    lng: number;
+    city?: string;
+    lat?: number;
+    lng?: number;
     zoom?: number;
     address_street?: string;
     address_country?: string;

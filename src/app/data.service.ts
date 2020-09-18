@@ -11,6 +11,7 @@ import { Message } from './_models/message';
 import { Chat } from './_models/chat';
 import { AuthRequest } from './_models/authRequest';
 import { environment } from '../environments/environment';
+import { NewDormRequest } from './_models/newDormRequest';
 
 
 
@@ -147,8 +148,8 @@ export class DataService {
     return this.http.post(environment.serverPath + '/emails/sendEmail', formdata, {responseType: 'text' });
   }
 
-  sendEmailToAdmin(formdata: FormData) {
-    return this.http.post(environment.serverPath + '/emails/sendEmail/admin', formdata, {responseType: 'text' });
+  sendEmailToAdmin(newDorm: NewDormRequest) {
+    return this.http.post(environment.serverPath + '/emails/sendEmail/admin', newDorm, {responseType: 'text' });
   }
 
   sendMessageToOwner(formdata: FormData) {
