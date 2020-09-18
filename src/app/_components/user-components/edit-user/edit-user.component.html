@@ -5,9 +5,15 @@
     <input type="text" formControlName="name" placeholder="name" name="Name" class="form-control" id="name">
   </div>
 
+
   <div class="form-group">
     <label for="email">Email:</label>
-    <input formControlName="email" placeholder="Email" name="Email" class="form-control" id="email">
+    <input required formControlName="email" placeholder="email@gmail.com" name="Email" class="form-control" id="email"
+      [ngClass]="{'is-invalid': email.errors && (email.touched || email.dirty), 'is-valid': email.valid}">
+    <small *ngIf="email.errors?.required && (email.touched || email.dirty)" class="text-danger">Bitte eine Email Adresse
+      eingeben.</small>
+    <small *ngIf="email.errors?.pattern && (email.touched || email.dirty)" class="text-danger">Bitte eine gültige Email
+      Adresse eingeben.</small>
   </div>
   <div class="form-group">
     <label for="password">Neues Passwort:</label>
@@ -60,7 +66,7 @@
 
     </div>
     <div class="col-xs-2 col-sm-5 col-md-5 col-lg-4">
-      <button type="submit" class="btn btn-success customBtn">Speichern</button>
+      <button type="submit" class="btn btn-success customBtn" [disabled]="!editForm.valid">Speichern</button>
     </div>
     <div class="col-xs-2 col-sm-5 col-md-5 col-lg-4">
       <button type="button" class="btn btn-danger customBtn" (click)="cancelEditing()">

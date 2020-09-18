@@ -3,7 +3,7 @@ import { User } from '../../../_models/user';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../../../data.service';
 import { switchMap, first, takeUntil } from 'rxjs/operators';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { TokenStorageService } from 'src/app/_services/token-storage.service';
 import { FormControl } from '@angular/forms';
 import { DormGroup } from 'src/app/_models/dormGroup';
@@ -40,7 +40,7 @@ export class EditUserComponent implements OnInit {
   ngOnInit() {
     this.editForm = this.formBuilder.group({
       name: ['' ],
-      email: [''],
+      email: ['', [Validators.required, Validators.email, Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")]],
       password: [''],
       city: [''],
       dorm: [''],
@@ -69,9 +69,13 @@ export class EditUserComponent implements OnInit {
 
   onSubmit() {
     console.log(this.editForm.value)
-    this.user.name = this.editForm.value.name;
+    if (this.editForm.value.name != null && this.editForm.value.name.trim().length > 0) {
+      this.user.name = this.editForm.value.name;
+    }
     this.user.email = this.editForm.value.email;
-    this.user.password = this.editForm.value.password;
+    if (this.editForm.value.password != null && this.editForm.value.password.trim().length > 0) {
+      this.user.password = this.editForm.value.password;
+    }
     this.user.dorm = this.selectedDorm;
 
     this.dataService.updateUser(this.user)
