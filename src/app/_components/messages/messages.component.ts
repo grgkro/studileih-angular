@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { DataService } from '../../data.service';
 import { UpdateService } from 'src/app/_services/update.service';
 import { User } from 'src/app/_models/user';
@@ -8,6 +8,7 @@ import { Chat } from 'src/app/_models/chat';
 import { Subject, Observable } from 'rxjs';
 import { AuthenticationService } from 'src/app/_services/authentication.service';
 import { TokenStorageService } from 'src/app/_services/token-storage.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-messages',
@@ -53,7 +54,7 @@ isLoggedIn: boolean = false;
   destroy$: Subject<boolean> = new Subject<boolean>();
 
   constructor(private _data: DataService, private _update: UpdateService, private _token: TokenStorageService,
-    private authService: AuthenticationService) { }
+    private authService: AuthenticationService, private _snackBar: MatSnackBar, private cd: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.user = this._token.getUser();
@@ -105,29 +106,15 @@ isLoggedIn: boolean = false;
       }
       );
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      
   }
 
   deleteChat(messageId: number) {
-    console.log("Nachricht mit id: " + messageId + " gelöscht... (Just kidding. lol");
-  }
+    this._data.deleteChat(messageId).subscribe(res => {
+      this._snackBar.open(res, "", { duration: 2000 }),
+      this.chats = [];
+      this.ngOnInit();
+  })
+}
 
 }
 

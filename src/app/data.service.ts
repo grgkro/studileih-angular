@@ -20,7 +20,6 @@ import { NewDormRequest } from './_models/newDormRequest';
 })
 
 export class DataService {
-  
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -183,6 +182,10 @@ export class DataService {
 
   getChatById(id: number): Observable<Chat> {
     return this.http.get<Chat>(environment.serverPath + "/chats/" + id)
+  }
+
+  deleteChat(chatId: number) {
+    return this.http.delete(environment.serverPath + '/delete/chat/' + chatId, { responseType: 'text' })
   }
 
 }

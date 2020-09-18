@@ -1,4 +1,4 @@
-<div class="container" style=" align-items: center; text-align: center;   width: 100vw ">
+<div class="container alignContainer" >
 
   <div *ngIf="!isLoggedIn">
     <app-login-registration-accordion (isLoggedIn)="loginSuccessfullInChildComp($event)"></app-login-registration-accordion>

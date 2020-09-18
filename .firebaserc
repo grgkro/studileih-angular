@@ -9,6 +9,7 @@
     }
   },
   "projects": {
+    "2": "studileih-ceb70",
     "prod": "studileih-ceb70",
     "studileih": "studileih-ceb70",
     "prodNew": "studileih-ceb70",
@@ -22,6 +23,7 @@
     "aws-eb-7": "studileih-ceb70",
     "abc": "studileih-ceb70",
     "aws": "studileih-ceb70",
-    "almost-finished": "studileih-ceb70"
+    "almost-finished": "studileih-ceb70",
+    "finished-1": "studileih-ceb70"
   }
 }
