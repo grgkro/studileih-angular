@@ -56,13 +56,9 @@ export class DetailsComponent implements OnInit {
   }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(ModalProfilePicComponent, {
+    this.dialog.open(ModalProfilePicComponent, {
       width: '300px',
       data: {userId: this.user.id}
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      this.email = result;
     });
   }
  

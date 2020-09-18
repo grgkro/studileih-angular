@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { DataService } from 'src/app/data.service';
 
 @Component({
   selector: 'app-add-dorm',
@@ -11,7 +13,7 @@ export class AddDormComponent implements OnInit {
   dormForm: FormGroup;
  
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder, private _data: DataService, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.dormForm = this.formBuilder.group({
@@ -24,8 +26,23 @@ export class AddDormComponent implements OnInit {
   }
 
   onDormFormSubmit():void {
-    console.log("dormForm submitted, not implemented yet")
-    // this._data.addDorm().subscribe();
+    this.sendEmailToAdmin(this.createFormdata());
+  }
+
+  createFormdata(): FormData {
+    const formdata: FormData = new FormData();
+    formdata.append('name', this.dormForm.get('name').value);
+    formdata.append('city', this.dormForm.get('city').value);
+    formdata.append('street', this.dormForm.get('street').value);
+    formdata.append('houseNumber', this.dormForm.get('houseNumber').value);
+    return formdata;
+  }
+
+  sendEmailToAdmin(formdata: FormData) {
+    this._data.sendEmailToAdmin(formdata).subscribe(res => {
+      console.log(res)
+      this._snackBar.open(res, "", { duration: 4000 });
+    });
   }
 
 }

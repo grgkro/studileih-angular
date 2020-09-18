@@ -10,11 +10,9 @@ import { Dorm } from './_models/dorm';
 import { Message } from './_models/message';
 import { Chat } from './_models/chat';
 import { AuthRequest } from './_models/authRequest';
+import { environment } from '../environments/environment';
 
-const serverPath = 'http://localhost:5000';
-// const serverPath = 'https://api.studileih.de';
-// const serverPath = 'https://studileih1.eu-central-1.elasticbeanstalk.com';
-// const serverPath = 'https://studileih-heroku.herokuapp.com';
+
 
 @Injectable({
   providedIn: 'root'
@@ -32,51 +30,51 @@ export class DataService {
   constructor(private http: HttpClient) { }
 
   getAdmin(): Observable<any> {
-    return this.http.get<any>(serverPath + '/admin', { observe: 'response' })
+    return this.http.get<any>(environment.serverPath + '/admin', { observe: 'response' })
   }
 
   getProductsByDorm(id: number): Observable<Product[]> {
-    return this.http.get<Product[]>(serverPath + '/productsByDorm' + '/' + id)
+    return this.http.get<Product[]>(environment.serverPath + '/productsByDorm' + '/' + id)
   }
 
   getProductsWithoutDormProducts(id: number): Observable<Product[]> {
-    return this.http.get<Product[]>(serverPath + '/productsWithouthDormProducts' + '/' + id)
+    return this.http.get<Product[]>(environment.serverPath + '/productsWithouthDormProducts' + '/' + id)
   }
 
   getDormLocations(): Observable<Dorm[]> {
-    return this.http.get<Dorm[]>(serverPath +'/dorms');
+    return this.http.get<Dorm[]>(environment.serverPath +'/dorms');
   }
   
 
   getProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(serverPath + '/products');
+    return this.http.get<Product[]>(environment.serverPath + '/products');
   }
 
   getProduct(id: number): Observable<Product> {
-    return this.http.get<Product>(serverPath + '/products/' + id)
+    return this.http.get<Product>(environment.serverPath + '/products/' + id)
   }
 
   addProduct(formData: any) : Observable<any> {
-    return this.http.post(serverPath + '/products',
+    return this.http.post(environment.serverPath + '/products',
       formData)
   }
 
   editProduct(formData: any) : Observable<any> {
-    return this.http.put(serverPath + '/products',
+    return this.http.put(environment.serverPath + '/products',
       formData, { responseType: 'text' })
   }
 
   deleteProduct(id: number): Observable<any> {
     const formdata: FormData = new FormData();
     formdata.append('id', id.toString());
-    return this.http.post(serverPath + '/products/delete/' + id, formdata, { responseType: 'text' });
+    return this.http.post(environment.serverPath + '/products/delete/' + id, formdata, { responseType: 'text' });
   }
 
   loadProductPicByFilename(filename: string, productId: number): Observable<Blob> {
     const formdata: FormData = new FormData();
     formdata.append('filename', filename);
     formdata.append('productId', productId.toString());
-    return this.http.post(serverPath + '/images/loadProductPicByFilename', formdata, { responseType: 'blob' });
+    return this.http.post(environment.serverPath + '/images/loadProductPicByFilename', formdata, { responseType: 'blob' });
   }
 
   archivePicByFilename(filename: string, imgType: string, productId: number): Observable<any> {
@@ -84,21 +82,21 @@ export class DataService {
     formdata.append('filename', filename);
     formdata.append('imgType', imgType);
     formdata.append('productId', productId.toString());
-    return this.http.post(serverPath + '/images/archivePicByFilename', formdata, { responseType: 'text' });
+    return this.http.post(environment.serverPath + '/images/archivePicByFilename', formdata, { responseType: 'text' });
   }
 
   deleteArchive(archiveType: string, id: number): Observable<string> {
     const formdata: FormData = new FormData();
     formdata.append('archiveType', archiveType);
     formdata.append('id', id.toString());
-    return this.http.post(serverPath + '/images/deleteArchive', formdata, { responseType: 'text' });
+    return this.http.post(environment.serverPath + '/images/deleteArchive', formdata, { responseType: 'text' });
   }
 
   deleteImageFolder(folderType: string, id: number): Observable<string> {
     const formdata: FormData = new FormData();
     formdata.append('folderType', folderType);
     formdata.append('id', id.toString());
-    return this.http.post(serverPath + '/images/deleteImageFolder', formdata, { responseType: 'text' });
+    return this.http.post(environment.serverPath + '/images/deleteImageFolder', formdata, { responseType: 'text' });
   }
 
   restorePicByFilename(filename: string, imgType: string, productId: number) {
@@ -107,50 +105,54 @@ export class DataService {
     formdata.append('imgType', imgType);
     formdata.append('productId', productId.toString());
     console.log("_data restore " + filename)
-    return this.http.post(serverPath + '/images/restorePicByFilename', formdata, { responseType: 'text' });
+    return this.http.post(environment.serverPath + '/images/restorePicByFilename', formdata, { responseType: 'text' });
   }
 
   deleteProductPicByFilename(filename: string, productId: number) {
     const formdata: FormData = new FormData();
     formdata.append('filename', filename);
     formdata.append('productId', productId.toString());
-    return this.http.post(serverPath + '/images/deleteProductPicByFilename', formdata, {responseType: 'text' });
+    return this.http.post(environment.serverPath + '/images/deleteProductPicByFilename', formdata, {responseType: 'text' });
   }
 
   getOwner(productId: number): Observable<User> {
-    return this.http.get<User>(serverPath + '/users/owner/' + productId)
+    return this.http.get<User>(environment.serverPath + '/users/owner/' + productId)
   }
 
   getUsersByDorm(): Observable<User[]> {
-    return this.http.get<User[]>(serverPath + '/users/usersByDorm')
+    return this.http.get<User[]>(environment.serverPath + '/users/usersByDorm')
   }
 
   getUser(userId): Observable<User> {
-    return this.http.get<User>(serverPath + '/users/dto/' + userId);
+    return this.http.get<User>(environment.serverPath + '/users/dto/' + userId);
   }
 
   getUserForEditing(): Observable<User> {
-    return this.http.get<User>(serverPath + '/users/editing');
+    return this.http.get<User>(environment.serverPath + '/users/editing');
   }
 
   // addUser(formData: any): Observable<any> {
-  //   return this.http.post(serverPath,formData,{ responseType: 'text' })
+  //   return this.http.post(environment.serverPath,formData,{ responseType: 'text' })
   // }
 
   deleteUser(id: number): Observable<User> {
-    return this.http.delete<User>(serverPath + '/users/' + id)
+    return this.http.delete<User>(environment.serverPath + '/users/' + id)
   }
 
   updateUser(user: User): Observable<User> {
-    return this.http.put<User>(serverPath + '/users/' + user.id, user)
+    return this.http.put<User>(environment.serverPath + '/users/' + user.id, user)
   }
 
   sendEmailToOwner(formdata: FormData) {
-    return this.http.post(serverPath + '/emails/sendEmail', formdata, {responseType: 'text' });
+    return this.http.post(environment.serverPath + '/emails/sendEmail', formdata, {responseType: 'text' });
+  }
+
+  sendEmailToAdmin(formdata: FormData) {
+    return this.http.post(environment.serverPath + '/emails/sendEmail/admin', formdata, {responseType: 'text' });
   }
 
   sendMessageToOwner(formdata: FormData) {
-    return this.http.post(serverPath + '/messages/sendMessage', formdata, {responseType: 'text' });
+    return this.http.post(environment.serverPath + '/messages/sendMessage', formdata, {responseType: 'text' });
   }
 
   // when a message was received, we have to update the receivedAt timestamp of that message
@@ -159,27 +161,27 @@ export class DataService {
     formdata.append('chatId', chatId.toString());
     formdata.append('messageId', messageId.toString());
     formdata.append('receivedAt', receivedAt);
-    return this.http.post(serverPath + '/messages/updateMessage', formdata, {responseType: 'text' });
+    return this.http.post(environment.serverPath + '/messages/updateMessage', formdata, {responseType: 'text' });
   }
 
   sendReply(message: Message) {
-    return this.http.post(serverPath + '/messages/sendReply', message, {responseType: 'text' });
+    return this.http.post(environment.serverPath + '/messages/sendReply', message, {responseType: 'text' });
   }
 
   sendEmailReply(message: Message) {
-    return this.http.post(serverPath + '/messages/sendEmailReply', message, {responseType: 'text' });
+    return this.http.post(environment.serverPath + '/messages/sendEmailReply', message, {responseType: 'text' });
   }
 
   getChatsByLoggedInUserPrincipal(): Observable<Chat[]> {
-    return this.http.get<Chat[]>(serverPath + "/chats/")
+    return this.http.get<Chat[]>(environment.serverPath + "/chats/")
   }
 
   getMessagesByChatId(id: number): Observable<any> {
-    return this.http.get(serverPath + '/chats/messagesByChatId/'+ id);   
+    return this.http.get(environment.serverPath + '/chats/messagesByChatId/'+ id);   
   }
 
   getChatById(id: number): Observable<Chat> {
-    return this.http.get<Chat>(serverPath + "/chats/" + id)
+    return this.http.get<Chat>(environment.serverPath + "/chats/" + id)
   }
 
 }

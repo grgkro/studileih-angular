@@ -279,6 +279,7 @@ export class ProductDetailsComponent implements OnInit {
         console.log(data);
         // this.products = this.products.filter(product => product.id !== id);
         console.log('Product deleted successfully!');
+        this._snackBar.open("Dein Produkt wurde gelöscht.", "", { duration: 3000 });
         this.router.navigate(['products']);
         // we have to reload the product images, because we dont store the productId with the images, so if the order of products changes, the images would get mixed up.
         // this.loadProductImages();

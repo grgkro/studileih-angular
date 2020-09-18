@@ -1,13 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AuthRequest } from '../_models/authRequest';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { DataService } from '../data.service';
+import { environment } from '../../environments/environment';
 
-// const serverPath = 'https://studileih-heroku.herokuapp.com';
-const serverPath = 'http://localhost:5000';
-// const serverPath = 'https://api.studileih.de';
-// const serverPath = 'https://studileih1.eu-central-1.elasticbeanstalk.com';
 
 @Injectable({
   providedIn: 'root'
@@ -18,15 +14,15 @@ export class AuthenticationService {
 
   login(authRequest: AuthRequest): Observable<any> {
     console.log(authRequest)
-    return this.http.post(serverPath + '/authenticate', authRequest, { observe: 'response' });
+    return this.http.post(environment.serverPath + '/authenticate', authRequest, { observe: 'response' });
   }
 
   welcome(): Observable<any> {
-    return this.http.get(serverPath + '/welcome', { observe: 'response', withCredentials: true })
+    return this.http.get(environment.serverPath + '/welcome', { observe: 'response', withCredentials: true })
   }
 
   register(formData: FormData): Observable<any> {
-    return this.http.post(serverPath + '/users/register', formData, { observe: 'response', responseType: 'text'})
+    return this.http.post(environment.serverPath + '/users/register', formData, { observe: 'response', responseType: 'text'})
   }
 
   

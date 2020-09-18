@@ -1,12 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpRequest, HttpEvent } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/internal/Observable';
-import { DataService } from '../data.service';
-
-const serverPath = 'http://localhost:5000';
-// const serverPath = 'https://api.studileih.de';
-// const serverPath = 'https://studileih1.eu-central-1.elasticbeanstalk.com';
-// const serverPath = 'https://studileih-heroku.herokuapp.com'; 
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -15,9 +10,7 @@ export class UploadFileService {
   getImage(imageUrl: string): Observable<Blob> {
     return this.http.get(imageUrl, { responseType: 'blob' });
   }
-
   
- 
   constructor(private http: HttpClient) { }
  
    // With this uploadfunction you can send the userId, productId, dormId 
@@ -34,16 +27,11 @@ export class UploadFileService {
     }
     formdata.append('imgType', imgType);
     
-    return this.http.post(serverPath + '/postImage', formdata, {responseType: 'text' });  //ohne {responseType: 'text' } hat es auch bei Http Status: 200 einen error gegeben (Vom Backend kommt eine Response mit Text statt JSON im Body)  
+    return this.http.post(environment.serverPath + '/postImage', formdata, {responseType: 'text' });  //ohne {responseType: 'text' } hat es auch bei Http Status: 200 einen error gegeben (Vom Backend kommt eine Response mit Text statt JSON im Body)  
     }
   
   // loads profilePic of user -> it's a post request, because we have to post the userId to Spring.
   getUserPic(userId: number): Observable<Blob> {
-    return this.http.post(serverPath + '/loadProfilePicByUserId', userId, { responseType: 'blob' } );
+    return this.http.post(environment.serverPath + '/loadProfilePicByUserId', userId, { responseType: 'blob' } );
   }
-
-  /* // loads profilePic of user -> Spring returns a fake userDto with the base64code as groupName
-  getProfilePictureOfUser(userId: number) {
-    return this.http.post<User>(this.serverPath + '/getProfilePicByUserId', userId);
-  } */
 }
