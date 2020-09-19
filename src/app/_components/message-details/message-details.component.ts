@@ -2,8 +2,6 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Subject } from 'rxjs';
 import { User } from 'src/app/_models/user';
 import { Chat } from 'src/app/_models/chat';
-import { UpdateService } from 'src/app/_services/update.service';
-import { takeUntil } from 'rxjs/operators';
 import { Message } from 'src/app/_models/message';
 import { DataService } from 'src/app/data.service';
 import { TokenStorageService } from 'src/app/_services/token-storage.service';
@@ -32,10 +30,7 @@ export class MessageDetailsComponent implements OnInit {
   isOwnMessage: boolean = true;
   ownEmail: string;
 
-
-
-
-  constructor(private _data: DataService, private _update: UpdateService, private _token: TokenStorageService) { }
+  constructor(private _data: DataService, private _token: TokenStorageService) { }
 
   ngOnInit(chatMessage = this.chatMessage, chatId = this.chatId) {
     this.user = this._token.getUser();
@@ -52,10 +47,6 @@ export class MessageDetailsComponent implements OnInit {
     } else {
       this.receivedAt = new Date(chatMessage.receivedAt);
     }
-  }
-
-  ngOnChanges() {
-    // this.feed = this.chat.getMessages();
   }
 
   ngOnDestroy() {            // Angular takes care of unsubscribing from many observable subscriptions like those returned from the Http service or when using the async pipe. But the routeParam$ and the _update.currentShowUploadComponent needs to be unsubscribed by hand on ngDestroy. Otherwise, we risk a memory leak when the component is destroyed. https://malcoded.com/posts/angular-async-pipe/   https://www.digitalocean.com/community/tutorials/angular-takeuntil-rxjs-unsubscribe

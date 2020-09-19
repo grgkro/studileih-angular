@@ -1,11 +1,11 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DataService } from '../../data.service';
 import { UpdateService } from 'src/app/_services/update.service';
 import { User } from 'src/app/_models/user';
 import { Message } from 'src/app/_models/message';
 import { trigger, style, transition, animate, query, stagger } from '@angular/animations';
 import { Chat } from 'src/app/_models/chat';
-import { Subject, Observable } from 'rxjs';
+import { Subject } from 'rxjs';
 import { AuthenticationService } from 'src/app/_services/authentication.service';
 import { TokenStorageService } from 'src/app/_services/token-storage.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -54,7 +54,7 @@ isLoggedIn: boolean = false;
   destroy$: Subject<boolean> = new Subject<boolean>();
 
   constructor(private _data: DataService, private _update: UpdateService, private _token: TokenStorageService,
-    private authService: AuthenticationService, private _snackBar: MatSnackBar, private cd: ChangeDetectorRef) { }
+    private authService: AuthenticationService, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.user = this._token.getUser();

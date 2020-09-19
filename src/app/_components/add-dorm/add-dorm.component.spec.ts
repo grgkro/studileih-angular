@@ -1,7 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AddDormComponent } from './add-dorm.component';
-import { FormBuilder } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 describe('AddDormComponent', () => {
   let component: AddDormComponent;
@@ -9,9 +11,8 @@ describe('AddDormComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      providers: [
-        FormBuilder
-      ],
+      imports: [ HttpClientTestingModule, ReactiveFormsModule, MatSnackBarModule],
+      
       declarations: [ AddDormComponent ]
     })
     .compileComponents();

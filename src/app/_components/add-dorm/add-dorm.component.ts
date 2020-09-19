@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { DataService } from 'src/app/data.service';
 
 @Component({
   selector: 'app-add-dorm',
@@ -13,7 +11,7 @@ export class AddDormComponent implements OnInit {
   dormForm: FormGroup;
  
 
-  constructor(private formBuilder: FormBuilder, private _data: DataService, private _snackBar: MatSnackBar) { }
+  constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
     this.dormForm = this.formBuilder.group({
@@ -22,17 +20,7 @@ export class AddDormComponent implements OnInit {
       street: ['', Validators.required],
       houseNumber: ['', Validators.required]
     })
-   
-  //   this.dormForm.valueChanges.subscribe(x => {
-  //     console.log('form value changed')
-  //     console.log(x)
-  //     console.log(this.getFormdata().forEach(element => console.log(element)));
-  // })
   }
-
-  // onDormFormSubmit() {
-  //   this.sendEmailToAdmin(this.getFormdata());
-  // }
 
   getFormdata(): FormData {
     const formdata: FormData = new FormData();

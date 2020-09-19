@@ -13,16 +13,13 @@ describe('UserLoginComponent', () => {
   let fixture: ComponentFixture<UserLoginComponent>;
   let tokenStorageServiceStub: Partial<TokenStorageService>;
   let authenticationServiceStub: Partial<AuthenticationService>;
-  // let tokenStorageService;
-  // let authenticationService;
+
 
   // https://stackoverflow.com/questions/63533754/angular-unit-testing-with-jasmine-error-please-add-an-ngmodule-annotation/63675374#63675374
   tokenStorageServiceStub = {
     saveToken: () => {}
   };
-  
-  
-  
+ 
   authenticationServiceStub = {
     login: () => of({status: 200, body: {}})
   }
